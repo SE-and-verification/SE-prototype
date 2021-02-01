@@ -3,12 +3,13 @@ package aes
 import chisel3._
 import chisel3.util._
 
+class MixColumnsIO extends Bundle{
+  val state_in = Input(Vec(Params.StateLength, UInt(8.W)))
+  val state_out = Output(Vec(Params.StateLength, UInt(8.W)))
+}
 // implements MixColumns
 class MixColumns(Pipelined: Boolean = false) extends Module {
-  val io = IO(new Bundle {
-    val state_in = Input(Vec(Params.StateLength, UInt(8.W)))
-    val state_out = Output(Vec(Params.StateLength, UInt(8.W)))
-  })
+  val io = IO(new MixColumnsIO)
 
   val mul02 = VecInit(Array(
     0x00.U, 0x02.U, 0x04.U, 0x06.U, 0x08.U, 0x0a.U, 0x0c.U, 0x0e.U, 0x10.U, 0x12.U, 0x14.U, 0x16.U, 0x18.U, 0x1a.U, 0x1c.U, 0x1e.U,

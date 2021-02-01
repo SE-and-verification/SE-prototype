@@ -3,6 +3,14 @@ package aes
 import chisel3._
 import chisel3.util._
 
+class UnrolledAESIO extends Bundle{
+  val AES_mode = Input(UInt(2.W)) //  0=00=off, 1=01=expanded key update, 2=10=cipher, 3=11=inverse cipher
+  //
+  val input_text = Input(Vec(Params.StateLength, UInt(8.W))) // plaintext, ciphertext, roundKey
+  //
+  val output_text = Output(Vec(Params.StateLength, UInt(8.W))) // ciphertext or plaintext
+  val output_valid = Output(Bool())
+}
 // implements wrapper for unrolled AES cipher and inverse cipher
 // change Nk=4 for AES128, NK=6 for AES192, Nk=8 for AES256
 // change expandedKeyMemType= ROM, Mem, SyncReadMem
@@ -16,14 +24,7 @@ class UnrolledAES(Nk: Int, unrolled: Int, SubBytes_SCD: Boolean, InvSubBytes_SCD
   val EKDepth: Int = 16 // enough memory for any expanded key
   require((unrolled > 0) && (unrolled < Nrplus1))
 
-  val io = IO(new Bundle {
-    val AES_mode = Input(UInt(2.W)) //  0=00=off, 1=01=expanded key update, 2=10=cipher, 3=11=inverse cipher
-    //
-    val input_text = Input(Vec(Params.StateLength, UInt(8.W))) // plaintext, ciphertext, roundKey
-    //
-    val output_text = Output(Vec(Params.StateLength, UInt(8.W))) // ciphertext or plaintext
-    val output_valid = Output(Bool())
-  })
+  val io = IO(new UnrolledAESIO)
 
   // Declare instances and array of Cipher and Inverse Cipher Rounds
   val CipherRoundARK = CipherRound("AddRoundKeyOnly", SubBytes_SCD)

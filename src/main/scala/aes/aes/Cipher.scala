@@ -3,6 +3,13 @@ package aes
 import chisel3._
 import chisel3.util._
 
+class CipherIO extends Bundle{
+  val plaintext = Input(Vec(Params.StateLength, UInt(8.W)))
+  val roundKey = Input(Vec(Params.StateLength, UInt(8.W)))
+  val start = Input(Bool())
+  val state_out = Output(Vec(Params.StateLength, UInt(8.W)))
+  val state_out_valid = Output(Bool())
+}
 // implements AES_Encrypt
 // change Nk=4 for AES128, NK=6 for AES192, Nk=8 for AES256
 class Cipher(Nk: Int, SubBytes_SCD: Boolean) extends Module {
@@ -11,13 +18,7 @@ class Cipher(Nk: Int, SubBytes_SCD: Boolean) extends Module {
   val Nr: Int = Nk + 6 // 10, 12, 14 rounds
   val Nrplus1: Int = Nr + 1 // 10+1, 12+1, 14+1
 
-  val io = IO(new Bundle {
-    val plaintext = Input(Vec(Params.StateLength, UInt(8.W)))
-    val roundKey = Input(Vec(Params.StateLength, UInt(8.W)))
-    val start = Input(Bool())
-    val state_out = Output(Vec(Params.StateLength, UInt(8.W)))
-    val state_out_valid = Output(Bool())
-  })
+  val io = IO(new CipherIO)
 
   // Instantiate module objects
   val AddRoundKeyModule = AddRoundKey()

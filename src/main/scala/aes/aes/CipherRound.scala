@@ -3,19 +3,20 @@ package aes
 import chisel3._
 import chisel3.util._
 
+class CipherRoundIO extends Bundle{
+  val input_valid = Input(Bool())
+  val state_in = Input(Vec(Params.StateLength, UInt(8.W)))
+  val roundKey = Input(Vec(Params.StateLength, UInt(8.W)))
+  val state_out = Output(Vec(Params.StateLength, UInt(8.W)))
+  val output_valid = Output(Bool())
+}
 // implements AES_Encrypt round transforms
 class CipherRound(transform: String, SubBytes_SCD: Boolean = false) extends Module {
   require(transform == "AddRoundKeyOnly" || transform == "NoMixColumns" || transform == "CompleteRound")
-  val io = IO(new Bundle {
-    val input_valid = Input(Bool())
-    val state_in = Input(Vec(Params.StateLength, UInt(8.W)))
-    val roundKey = Input(Vec(Params.StateLength, UInt(8.W)))
-    val state_out = Output(Vec(Params.StateLength, UInt(8.W)))
-    val output_valid = Output(Bool())
-  })
+  val io = IO(new CipherRoundIO)
 
   // A well defined 'DontCare' or Initialization value
-  val ZeroInit = Vec(Seq.fill(Params.StateLength)(0.U(8.W)))
+  val ZeroInit = Vec(Params.StateLength, 0.U(8.W))
 
   // Transform sequences
   if (transform == "AddRoundKeyOnly") {

@@ -3,15 +3,13 @@ package lfsr
 import chisel3._
 import chisel3.util.Cat
 
+class LFSRIO extends Bundle{
+  val lfsr_6 = Output(UInt(6.W))
+  val lfsr_3r = Output(UInt(3.W))
+}
 class LFSR extends Module {
   //declare input-output interface signals
-  val io = IO(new Bundle {
-    //clock and reset are default,
-    //no other inputs necessary
-    //lfsr_6 and lfsr_3r will have the random values
-    val lfsr_6 = Output(UInt(6.W))
-    val lfsr_3r = Output(UInt(3.W))
-  })
+  val io = IO(new LFSRIO)
 
   //declare the 6-bit register and initialize to 000001
   val D0123456 = RegInit(1.U(6.W)) //will init at reset

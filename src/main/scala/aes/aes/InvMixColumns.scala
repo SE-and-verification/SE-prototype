@@ -3,12 +3,13 @@ package aes
 import chisel3._
 import chisel3.util._
 
+class InvMixColumnsIO extends Bundle{
+  val state_in = Input(Vec(Params.StateLength, UInt(8.W)))
+val state_out = Output(Vec(Params.StateLength, UInt(8.W)))
+}
 // implements InvMixColumns
 class InvMixColumns(Pipelined: Boolean = false) extends Module {
-  val io = IO(new Bundle {
-    val state_in = Input(Vec(Params.StateLength, UInt(8.W)))
-    val state_out = Output(Vec(Params.StateLength, UInt(8.W)))
-  })
+  val io = IO(new InvMixColumnsIO)
 
   /*
   val mul02 = VecInit(Array(

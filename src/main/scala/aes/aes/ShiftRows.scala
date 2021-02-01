@@ -2,12 +2,13 @@ package aes
 
 import chisel3._
 
+class ShiftRowsIO extends Bundle{
+  val state_in = Input(Vec(Params.StateLength, UInt(8.W)))
+  val state_out = Output(Vec(Params.StateLength, UInt(8.W)))
+}
 // implements ShiftRows
 class ShiftRows extends Module {
-  val io = IO(new Bundle {
-    val state_in = Input(Vec(Params.StateLength, UInt(8.W)))
-    val state_out = Output(Vec(Params.StateLength, UInt(8.W)))
-  })
+  val io = IO(new ShiftRowsIO)
 
   io.state_out(0) := io.state_in(0)
   io.state_out(1) := io.state_in(5)

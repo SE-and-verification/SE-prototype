@@ -4,12 +4,13 @@ import chisel3._
 import chisel3.util._
 import lfsr.LFSR
 
+class InvSubBytesIO extends Bundle{
+  val state_in = Input(Vec(Params.StateLength, UInt(8.W)))
+  val state_out = Output(Vec(Params.StateLength, UInt(8.W)))
+} 
 // implements InvSubBytes
 class InvSubBytes(SCD: Boolean = false, Pipelined: Boolean = false) extends Module {
-  val io = IO(new Bundle {
-    val state_in = Input(Vec(Params.StateLength, UInt(8.W)))
-    val state_out = Output(Vec(Params.StateLength, UInt(8.W)))
-  })
+  val io = IO(new InvSubBytesIO)
 
   val inverted_s_box = VecInit(Array(
     0x52.U, 0x09.U, 0x6a.U, 0xd5.U, 0x30.U, 0x36.U, 0xa5.U, 0x38.U, 0xbf.U, 0x40.U, 0xa3.U, 0x9e.U, 0x81.U, 0xf3.U, 0xd7.U, 0xfb.U,

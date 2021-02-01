@@ -1,0 +1,10 @@
+*
+!*.*
+!*/
+
+# Above ignores all files without an extension
+
+*.dump
+.vscode/*
+*.out
+*.stats

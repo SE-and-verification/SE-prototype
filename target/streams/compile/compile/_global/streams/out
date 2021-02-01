@@ -1,0 +1,7 @@
+[0m[[0m[31merror[0m] [0m[0m/home/chshibo/Documents/Projects/SE-prototype/src/main/scala/SE.scala:41:36: value cond_operator is not a member of se.SEInput[0m
+[0m[[0m[31merror[0m] [0m[0m	val cond_op_buffer = RegEnable(in.cond_operator, ctrl.in.valid)[0m
+[0m[[0m[31merror[0m] [0m[0m	                                  ^[0m
+[0m[[0m[31merror[0m] [0m[0m/home/chshibo/Documents/Projects/SE-prototype/src/main/scala/SE.scala:56:17: value cond_operator is not a member of se.seoperation.SEOpInput[0m
+[0m[[0m[31merror[0m] [0m[0m	seoperation.in.cond_operator := cond_op_buffer.do_asUInt[0m
+[0m[[0m[31merror[0m] [0m[0m	               ^[0m
+[0m[[0m[31merror[0m] [0m[0mtwo errors found[0m
