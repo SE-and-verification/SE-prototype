@@ -68,4 +68,16 @@ class SE extends SimpleChiselModuleBase{
 	aes_cipher.io.input_roundKeys := key
 	ctrl.out.valid := aes_cipher.io.output_valid
 	out.result := aes_cipher.io.output_text
+
+	InfoAnnotator.info(in.op1, "SensitiveInput")
+	InfoAnnotator.info(in.op2, "SensitiveInput")
+	InfoAnnotator.info(in.cond, "SensitiveInput")
+
+	InfoAnnotator.info(aes_invcipher, "Decryption")
+	InfoAnnotator.info(aes_cipher, "Encryption")
+	InfoAnnotator.info(seoperation, "Private")
+	InfoAnnotator.info(out.result, "SensitiveOutput")
+	InfoAnnotator.info(key, "KeyStore")
+
+
 }

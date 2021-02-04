@@ -1,4 +1,4 @@
-default: compile
+default: generate
 
 base_dir   = $(abspath .)
 src_dir    = $(base_dir)/src/main
@@ -6,7 +6,11 @@ gen_dir    = $(base_dir)/generated-src
 out_dir    = $(base_dir)/outputs
 
 SBT       = sbt
-SBT_FLAGS = -ivy $(HOME)/.ivy2
+SBT_FLAGS = -ivy $(HOME)/.ivy2 
+
+generate:
+	$(SBT) $(SBT_FLAGS) 'runMain se.Main -foaf se'
+
 sbt:
 	$(SBT) $(SBT_FLAGS)
 
