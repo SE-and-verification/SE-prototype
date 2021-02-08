@@ -49,17 +49,14 @@ class SE extends SimpleChiselModuleBase{
 	aes_invcipher.io.input_op2 := in.op2
 	aes_invcipher.io.input_cond := in.cond
 	aes_invcipher.io.input_roundKeys := key
-	aes_invcipher.io.input_valid := op1_encrypted_buffer || op2_encrypted_buffer || cond_encrypted_buffer
+	aes_invcipher.io.input_valid := ctrl.in.valid
 
 	seoperation.in.inst := inst_buffer.do_asUInt
 	seoperation.in.op1_input := Mux(op1_encrypted_buffer, aes_invcipher.io.output_op1.do_asUInt, op1_buffer.do_asUInt)
 	seoperation.in.op2_input := Mux(op2_encrypted_buffer, aes_invcipher.io.output_op2.do_asUInt, op2_buffer.do_asUInt)
 	seoperation.in.cond_input := Mux(cond_encrypted_buffer, aes_invcipher.io.output_cond.do_asUInt, cond_buffer.do_asUInt)
 
-	seoperation.ctrl.in.valid := valid_buffer && 
-					(( (!op1_encrypted_buffer)
-							&& (!op2_encrypted_buffer)
-							&& (!cond_encrypted_buffer) ) || aes_invcipher.io.output_valid)
+	seoperation.ctrl.in.valid := aes_invcipher.io.output_valid
 	seoperation.ctrl.out.ready := ctrl.out.ready
 	
 	ctrl.in.ready := !valid_buffer
