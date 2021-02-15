@@ -14,8 +14,8 @@
 [0m[[0m[0mdebug[0m] [0m[0m	  /home/chshibo/Documents/Projects/SE-prototype/target/scala-2.12/classes/se/seoperation/SEControl$.class[0m
 [0m[[0m[0mdebug[0m] [0m[0m	se/seoperation/SEOperation.class[0m
 [0m[[0m[0mdebug[0m] [0m[0m	  /home/chshibo/Documents/Projects/SE-prototype/target/scala-2.12/classes/se/seoperation/SEOperation.class[0m
-[0m[[0m[0mdebug[0m] [0m[0m	se/seoperation/ALU.class[0m
-[0m[[0m[0mdebug[0m] [0m[0m	  /home/chshibo/Documents/Projects/SE-prototype/target/scala-2.12/classes/se/seoperation/ALU.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	se/seoperation/FU.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  /home/chshibo/Documents/Projects/SE-prototype/target/scala-2.12/classes/se/seoperation/FU.class[0m
 [0m[[0m[0mdebug[0m] [0m[0m	se/seoperation/RegFileInputType.class[0m
 [0m[[0m[0mdebug[0m] [0m[0m	  /home/chshibo/Documents/Projects/SE-prototype/target/scala-2.12/classes/se/seoperation/RegFileInputType.class[0m
 [0m[[0m[0mdebug[0m] [0m[0m	se/seoperation/Instructions$.class[0m
@@ -28,14 +28,14 @@
 [0m[[0m[0mdebug[0m] [0m[0m	  /home/chshibo/Documents/Projects/SE-prototype/target/scala-2.12/classes/se/seoperation/SEControlInput.class[0m
 [0m[[0m[0mdebug[0m] [0m[0m	se/seoperation/SEOpInput.class[0m
 [0m[[0m[0mdebug[0m] [0m[0m	  /home/chshibo/Documents/Projects/SE-prototype/target/scala-2.12/classes/se/seoperation/SEOpInput.class[0m
-[0m[[0m[0mdebug[0m] [0m[0m	se/seoperation/ALU$.class[0m
-[0m[[0m[0mdebug[0m] [0m[0m	  /home/chshibo/Documents/Projects/SE-prototype/target/scala-2.12/classes/se/seoperation/ALU$.class[0m
 [0m[[0m[0mdebug[0m] [0m[0m	se/seoperation/AlUOutput.class[0m
 [0m[[0m[0mdebug[0m] [0m[0m	  /home/chshibo/Documents/Projects/SE-prototype/target/scala-2.12/classes/se/seoperation/AlUOutput.class[0m
 [0m[[0m[0mdebug[0m] [0m[0m	se/seoperation/AlUInput.class[0m
 [0m[[0m[0mdebug[0m] [0m[0m	  /home/chshibo/Documents/Projects/SE-prototype/target/scala-2.12/classes/se/seoperation/AlUInput.class[0m
 [0m[[0m[0mdebug[0m] [0m[0m	se/seoperation/RegFileOutputType.class[0m
 [0m[[0m[0mdebug[0m] [0m[0m	  /home/chshibo/Documents/Projects/SE-prototype/target/scala-2.12/classes/se/seoperation/RegFileOutputType.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	se/seoperation/FU$.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  /home/chshibo/Documents/Projects/SE-prototype/target/scala-2.12/classes/se/seoperation/FU$.class[0m
 [0m[[0m[0mdebug[0m] [0m[0m	se/InfoAnnotation$.class[0m
 [0m[[0m[0mdebug[0m] [0m[0m	  /home/chshibo/Documents/Projects/SE-prototype/target/scala-2.12/classes/se/InfoAnnotation$.class[0m
 [0m[[0m[0mdebug[0m] [0m[0m	se/SE.class[0m

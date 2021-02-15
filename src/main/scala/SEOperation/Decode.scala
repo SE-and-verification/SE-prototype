@@ -15,21 +15,31 @@ object SEControl {
   val ILLEGAL = false.B
 
   import Instructions._
-  import ALU._
+  import FU._
 
-  val default = List(ALU_XXX, ILLEGAL, N)
+  val default = List(FU_XXX, ILLEGAL, N)
   val map = Array(
-    ADD   -> List(ALU_ADD, ILLEGAL, N),
-    SUB   -> List(ALU_SUB, ILLEGAL, N),
-    SLL   -> List(ALU_SLL, ILLEGAL, N),
-    SLT   -> List(ALU_SLT, ILLEGAL, N),
-    SLTU  -> List(ALU_SLTU, ILLEGAL, N),
-    XOR   -> List(ALU_XOR, ILLEGAL, N),
-    SRL   -> List(ALU_SRL, ILLEGAL, N),
-    SRA   -> List(ALU_SRA, ILLEGAL, N),
-    OR    -> List(ALU_OR , ILLEGAL, N),
-    AND   -> List(ALU_AND, ILLEGAL, N),
-    CMOV  -> List(ALU_XXX, ILLEGAL, Y)
+    ADD   -> List(FU_ADD, LEGAL, N),
+    SUB   -> List(FU_SUB, LEGAL, N),
+    SLL   -> List(FU_SLL, LEGAL, N),
+    SLT   -> List(FU_SLT, LEGAL, N),
+    SLTU  -> List(FU_SLTU, LEGAL, N),
+    XOR   -> List(FU_XOR, LEGAL, N),
+    SRL   -> List(FU_SRL, LEGAL, N),
+    SRA   -> List(FU_SRA, LEGAL, N),
+    OR    -> List(FU_OR , LEGAL, N),
+    AND   -> List(FU_AND, LEGAL, N),
+    CMOV  -> List(FU_XXX, LEGAL, Y),
+    SGT   -> List(FU_SGT, LEGAL, N),
+    SGTU  -> List(FU_SGTU, LEGAL, N),
+    EQ    -> List(FU_EQ, LEGAL, N),
+    NEQ   -> List(FU_NEQ, LEGAL, N),
+    SLE   -> List(FU_SLE, LEGAL, N),
+    SLEU  -> List(FU_SLEU, LEGAL, N),
+    SGE   -> List(FU_SGE, LEGAL, N),
+    SGEU  -> List(FU_SGEU, LEGAL, N),
+    MULT   -> List(FU_MULT, LEGAL, N),
+    DIV   -> List(FU_DIV, LEGAL, N),
 	)
 }
 
@@ -40,7 +50,7 @@ class SEControlInput extends Bundle{
 
 class SEControlOutput extends Bundle{
   val inst      = Output(UInt(8.W))
-  val alu_op    = Output(UInt(4.W))
+  val fu_op    = Output(UInt(5.W))
   val legal     = Output(Bool())
   val cmov  = Output(Bool())
 }
@@ -56,7 +66,7 @@ class SEControl extends SimpleChiselModule {
   ctrl.out.valid := ctrl.in.valid
   
   out.inst := in.inst
-  out.alu_op := ctrlSignals(0)
+  out.fu_op := ctrlSignals(0)
   out.legal := ctrlSignals(1)
   out.cmov := ctrlSignals(2)
 }

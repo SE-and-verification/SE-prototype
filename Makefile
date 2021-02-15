@@ -1,4 +1,4 @@
-default: generate
+default: benchamrk
 
 base_dir   = $(abspath .)
 src_dir    = $(base_dir)/src/main
@@ -8,8 +8,19 @@ out_dir    = $(base_dir)/outputs
 SBT       = sbt
 SBT_FLAGS = -ivy $(HOME)/.ivy2 
 
+VERILATOR_FLAGS = -I obj_dir -I/usr/share/verilator/include module.cpp /usr/share/verilator/include/verilated.cpp
+benchamrk: MOV_VERI_FILES
+
+MOV_VERI_FILES: VSE.o
+	cp obj_dir/* emtdprivacy-functional-library-cb3f92117882/src/verilator/
+VSE.o: verilator_generate
+	cd obj_dir; make -f VSE.mk ; cd ..
+
+verilator_generate: generate
+	verilator -Wno-fatal -cc $(gen_dir)/SE.v
+
 generate:
-	$(SBT) $(SBT_FLAGS) 'runMain se.Main -foaf se'
+	$(SBT) $(SBT_FLAGS) 'run -td $(gen_dir) -foaf se'
 
 sbt:
 	$(SBT) $(SBT_FLAGS)
@@ -22,38 +33,38 @@ $(gen_dir)/Tile.v: $(wildcard $(src_dir)/scala/*.scala)
 CXXFLAGS += -std=c++11 -Wall -Wno-unused-variable
 
 # compile verilator
-VERILATOR = verilator --cc --exe
-VERILATOR_FLAGS = --assert -Wno-STMTDLY -O3 --trace \
-	--top-module Tile -Mdir $(gen_dir)/VTile.csrc \
-	-CFLAGS "$(CXXFLAGS) -include $(gen_dir)/VTile.csrc/VTile.h" 
+# VERILATOR = verilator --cc --exe
+# VERILATOR_FLAGS = --assert -Wno-STMTDLY -O3 --trace \
+# 	--top-module Tile -Mdir $(gen_dir)/VTile.csrc \
+# 	-CFLAGS "$(CXXFLAGS) -include $(gen_dir)/VTile.csrc/VTile.h" 
 
-$(base_dir)/VTile: $(gen_dir)/Tile.v $(src_dir)/cc/top.cc $(src_dir)/cc/mm.cc $(src_dir)/cc/mm.h
-	$(VERILATOR) $(VERILATOR_FLAGS) -o $@ $< $(word 2, $^) $(word 3, $^)
-	$(MAKE) -C $(gen_dir)/VTile.csrc -f VTile.mk
+# $(base_dir)/VTile: $(gen_dir)/Tile.v $(src_dir)/cc/top.cc $(src_dir)/cc/mm.cc $(src_dir)/cc/mm.h
+# 	$(VERILATOR) $(VERILATOR_FLAGS) -o $@ $< $(word 2, $^) $(word 3, $^)
+# 	$(MAKE) -C $(gen_dir)/VTile.csrc -f VTile.mk
 
-verilator: $(base_dir)/VTile
+# verilator: $(base_dir)/VTile
 
-# isa tests + benchmarks with verilator
-test_hex_files = $(wildcard $(base_dir)/src/test/resources/*.hex)
-test_out_files = $(foreach f,$(test_hex_files),$(patsubst %.hex,%.out,$(out_dir)/$(notdir $f)))
+# # isa tests + benchmarks with verilator
+# test_hex_files = $(wildcard $(base_dir)/src/test/resources/*.hex)
+# test_out_files = $(foreach f,$(test_hex_files),$(patsubst %.hex,%.out,$(out_dir)/$(notdir $f)))
 
-$(test_out_files): $(out_dir)/%.out: $(base_dir)/VTile $(base_dir)/src/test/resources/%.hex
-	mkdir -p $(out_dir)
-	$^ $(patsubst %.out,%.vcd,$@) 2> $@
+# $(test_out_files): $(out_dir)/%.out: $(base_dir)/VTile $(base_dir)/src/test/resources/%.hex
+# 	mkdir -p $(out_dir)
+# 	$^ $(patsubst %.out,%.vcd,$@) 2> $@
 
-run-tests: $(test_out_files)
+# run-tests: $(test_out_files)
 
-# run custom benchamrk
-custom_bmark_hex ?= $(base_dir)/custom-bmark/main.hex
-custom_bmark_out  = $(patsubst %.hex,%.out,$(out_dir)/$(notdir $(custom_bmark_hex)))
-$(custom_bmark_hex):
-	$(MAKE) -C custom-bmark
+# # run custom benchamrk
+# custom_bmark_hex ?= $(base_dir)/custom-bmark/main.hex
+# custom_bmark_out  = $(patsubst %.hex,%.out,$(out_dir)/$(notdir $(custom_bmark_hex)))
+# $(custom_bmark_hex):
+# 	$(MAKE) -C custom-bmark
 
-$(custom_bmark_out): $(base_dir)/VTile $(custom_bmark_hex)
-	mkdir -p $(out_dir)
-	$^ $(patsubst %.out,%.vcd,$@) 2> $@
+# $(custom_bmark_out): $(base_dir)/VTile $(custom_bmark_hex)
+# 	mkdir -p $(out_dir)
+# 	$^ $(patsubst %.out,%.vcd,$@) 2> $@
 
-run-custom-bmark: $(custom_bmark_out) 
+# run-custom-bmark: $(custom_bmark_out) 
 	
 # unit tests + integration tests 
 test:

@@ -1,4 +1,9 @@
-[0m[[0m[33mwarn[0m] [0m[0mthere was one deprecation warning (since 3.2.2)[0m
-[0m[[0m[33mwarn[0m] [0m[0mthere was one deprecation warning (since 3.2.4)[0m
-[0m[[0m[33mwarn[0m] [0m[0mthere were two deprecation warnings in total; re-run with -deprecation for details[0m
-[0m[[0m[33mwarn[0m] [0m[0mthree warnings found[0m
+[0m[[0m[31merror[0m] [0m[0m/home/chshibo/Documents/Projects/SE-prototype/src/main/scala/SEOperation/FU.scala:62:44: not found: value FU_SU[0m
+[0m[[0m[31merror[0m] [0m[0m  when(in.fu_op === FU_ADD || in.fu_op === FU_SU){[0m
+[0m[[0m[31merror[0m] [0m[0m                                           ^[0m
+[0m[[0m[31merror[0m] [0m[0m/home/chshibo/Documents/Projects/SE-prototype/src/main/scala/SEOperation/FU.scala:89:72: type mismatch;[0m
+[0m[[0m[31merror[0m] [0m[0m found   : Int(0)[0m
+[0m[[0m[31merror[0m] [0m[0m required: chisel3.UInt[0m
+[0m[[0m[31merror[0m] [0m[0m    output := Mux(in.A(63) === in.B(63), ~((in.A - in.B)(63)) &&(sum=/=0), ~in.A(63))[0m
+[0m[[0m[31merror[0m] [0m[0m                                                                       ^[0m
+[0m[[0m[31merror[0m] [0m[0mtwo errors found[0m

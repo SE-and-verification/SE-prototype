@@ -10,17 +10,17 @@ import se.seoperation._
 class SEInput extends Bundle{
 	val inst = UInt(8.W)
 
-	val op1 = Vec(Params.StateLength, UInt(8.W))
+	val op1 = UInt(128.W)
 	val op1_encrypted = Bool()
 
-	val op2 = Vec(Params.StateLength, UInt(8.W))
+	val op2 = UInt(128.W)
 	val op2_encrypted = Bool()
 
-	val cond = Vec(Params.StateLength, UInt(8.W))
+	val cond = UInt(128.W)
 }
 
 class SEOutput extends Bundle{
-	val result = Vec(Params.StateLength, UInt(8.W))
+	val result = UInt(128.W)
 }
 
 class SE extends SimpleChiselModuleBase{
@@ -45,9 +45,9 @@ class SE extends SimpleChiselModuleBase{
 	val key = ExpandedKey.expandedKey128
 	valid_buffer := Mux(ctrl.in.valid, true.B, Mux(seoperation.ctrl.in.valid, false.B, valid_buffer))
 
-	aes_invcipher.io.input_op1 := in.op1
-	aes_invcipher.io.input_op2 := in.op2
-	aes_invcipher.io.input_cond := in.cond
+	aes_invcipher.io.input_op1.connectFromBits(in.op1)
+	aes_invcipher.io.input_op2.connectFromBits(in.op2)
+	aes_invcipher.io.input_cond.connectFromBits(in.cond)
 	aes_invcipher.io.input_roundKeys := key
 	aes_invcipher.io.input_valid := ctrl.in.valid
 
@@ -64,7 +64,7 @@ class SE extends SimpleChiselModuleBase{
 	aes_cipher.io.input_valid := seoperation.ctrl.out.valid
 	aes_cipher.io.input_roundKeys := key
 	ctrl.out.valid := aes_cipher.io.output_valid
-	out.result := aes_cipher.io.output_text
+	out.result := aes_cipher.io.output_text.do_asUInt
 
 	InfoAnnotator.info(in.op1, "SensitiveInput")
 	InfoAnnotator.info(in.op2, "SensitiveInput")

@@ -20,6 +20,16 @@ object Instructions {
   // Compare
   def SLT    = BitPat("b000001001")
   def SLTU   = BitPat("b000001010")
+  def SGT    = BitPat("b000001011")
+  def SGTU   = BitPat("b000001100")
+  def EQ     = BitPat("b000001101")
+  def NEQ    = BitPat("b000001110")
+  def SLE    = BitPat("b000001111")
+  def SLEU   = BitPat("b000010001")
+  def SGE    = BitPat("b000010010")
+  def SGEU   = BitPat("b000010011")
+  def MULT    = BitPat("b000010100")
+  def DIV    = BitPat("b000010101")
   // Conditional
   def CMOV   = BitPat("b1????????")
 }

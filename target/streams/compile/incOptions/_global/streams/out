@@ -1,14 +1,23 @@
 [0m[[0m[0mdebug[0m] [0m[0mCreated transactional ClassFileManager with tempDir = /home/chshibo/Documents/Projects/SE-prototype/target/scala-2.12/classes.bak[0m
 [0m[[0m[0mdebug[0m] [0m[0mAbout to delete class files:[0m
-[0m[[0m[0mdebug[0m] [0m[0m	SEInput.class[0m
-[0m[[0m[0mdebug[0m] [0m[0m	SE.class[0m
-[0m[[0m[0mdebug[0m] [0m[0m	SEOutput.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	SEControl.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	SEControl$.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	SEControlInput.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	SEControlOutput.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	Instructions.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	Instructions$.class[0m
 [0m[[0m[0mdebug[0m] [0m[0mWe backup class files:[0m
-[0m[[0m[0mdebug[0m] [0m[0m	SEInput.class[0m
-[0m[[0m[0mdebug[0m] [0m[0m	SE.class[0m
-[0m[[0m[0mdebug[0m] [0m[0m	SEOutput.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	SEControl.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	SEControl$.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	SEControlInput.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	SEControlOutput.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	Instructions.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	Instructions$.class[0m
 [0m[[0m[0mdebug[0m] [0m[0mRegistering generated classes:[0m
-[0m[[0m[0mdebug[0m] [0m[0m	SEInput.class[0m
-[0m[[0m[0mdebug[0m] [0m[0m	SE.class[0m
-[0m[[0m[0mdebug[0m] [0m[0m	SEOutput.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	SEControl.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	SEControl$.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	SEControlInput.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	SEControlOutput.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	Instructions.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	Instructions$.class[0m
 [0m[[0m[0mdebug[0m] [0m[0mRemoving the temporary directory used for backing up class files: /home/chshibo/Documents/Projects/SE-prototype/target/scala-2.12/classes.bak[0m
