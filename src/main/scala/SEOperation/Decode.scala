@@ -38,8 +38,9 @@ object SEControl {
     SLEU  -> List(FU_SLEU, LEGAL, N),
     SGE   -> List(FU_SGE, LEGAL, N),
     SGEU  -> List(FU_SGEU, LEGAL, N),
-    MULT   -> List(FU_MULT, LEGAL, N),
+    MULT  -> List(FU_MULT, LEGAL, N),
     DIV   -> List(FU_DIV, LEGAL, N),
+    NEG   -> List(FU_NEG, LEGAL, N)
 	)
 }
 

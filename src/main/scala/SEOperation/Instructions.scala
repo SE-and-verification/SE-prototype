@@ -25,11 +25,12 @@ object Instructions {
   def EQ     = BitPat("b00001101")
   def NEQ    = BitPat("b00001110")
   def SLE    = BitPat("b00001111")
-  def SLEU   = BitPat("b00010001")
-  def SGE    = BitPat("b00010010")
-  def SGEU   = BitPat("b00010011")
-  def MULT   = BitPat("b00010100")
-  def DIV    = BitPat("b00010101")
+  def SLEU   = BitPat("b00010000")
+  def SGE    = BitPat("b00010001")
+  def SGEU   = BitPat("b00010010")
+  def MULT   = BitPat("b00010011")
+  def DIV    = BitPat("b00010100")
+  def NEG    = BitPat("b00010101")
   // Conditional
   def CMOV   = BitPat("b1???????")
 }

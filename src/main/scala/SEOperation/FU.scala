@@ -28,7 +28,8 @@ object FU {
   val FU_NEQ    = 22.U(5.W)
   val FU_SGE    = 23.U(5.W)
   val FU_SGEU   = 24.U(5.W)
-  val FU_XXX    = 25.U(5.W)
+  val FU_NEG    = 26.U(5.W)
+  val FU_XXX    = 26.U(5.W)
 }
 
 import FU._
@@ -97,6 +98,8 @@ class FU extends SimpleChiselModule{
     output := in.A >= in.B
   }.elsewhen(in.fu_op === FU_SGE){
     output := Mux(in.A(63) === in.B(63), ~((in.A - in.B)(63)), ~in.A(63))
+  }.elsewhen(in.fu_op === FU_NEG){
+    output := Mux(in.A === 0.U, 1.U, 0.U)
   }otherwise{
     output := 0.U
   }
