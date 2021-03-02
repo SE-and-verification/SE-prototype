@@ -23,7 +23,7 @@ class SEOpOutput extends Bundle{
 class SEOperation extends SimpleChiselModule{
   val in = IO(Input(new SEOpInput))
   val out = IO(Output(new SEOpOutput))
-  val ctrl = IO(new DecoupledIOCtrl(1,1))
+  val ctrl = IO(new DecoupledIOCtrl(0,0))
 	
 	val decode = Module(new SEControl)
 	val fu = Module(new FU)
@@ -35,7 +35,6 @@ class SEOperation extends SimpleChiselModule{
 
 
 	decode.ctrl.out.ready := fu.ctrl.in.ready
-
 	fu.ctrl.in.valid := decode.ctrl.out.valid && decode.out.legal
 	fu.ctrl.out.ready := ctrl.in.valid
 
@@ -44,5 +43,6 @@ class SEOperation extends SimpleChiselModule{
   fu.in.B := op2
   fu.in.fu_op := Mux(decode.out.cmov, Mux(cond >= 0.U, FU_COPY_A, FU_COPY_B), decode.out.fu_op)
 
-	SimpleChiselBundle(fu.out.out) >>> out
+	out.raw_result := fu.out.out
+	ctrl.out.valid := fu.ctrl.out.valid
 }

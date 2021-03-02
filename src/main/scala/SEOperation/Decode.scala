@@ -17,7 +17,7 @@ object SEControl {
   import Instructions._
   import FU._
 
-  val default = List(FU_XXX, ILLEGAL, N)
+  val default = List(FU_XXX, LEGAL, N)
   val map = Array(
     ADD   -> List(FU_ADD, LEGAL, N),
     SUB   -> List(FU_SUB, LEGAL, N),

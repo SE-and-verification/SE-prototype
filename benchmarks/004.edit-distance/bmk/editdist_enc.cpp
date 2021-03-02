@@ -27,13 +27,13 @@
 //#include "../../../encrypted-datatype-library/src/datatypes/enc_lib.h"
 //#include "../../../encrypted-datatype-library/src/datatypes/enc_string.h"
 
-#define MIN(x, y, z) ((x < y).GET_DECRYPTED_VALUE() && (x < z).GET_DECRYPTED_VALUE() ? x : (y < z).GET_DECRYPTED_VALUE() ? y : z)
+#define MIN(x, y, z) ((x < y) && (x < z) ? x : (y < z) ? y : z)
 
 
 using namespace enc_lib;
 using namespace std;
 
-enc_int editDistance(enc_string, enc_string);
+enc_int editDistance(enc_string<10>, enc_string<10>);
 
 vector<string> random_s = {"TTGCCGTT","TGTTATTC","CCGCATTG","GAGGCCTT","TTGCCGTC","CATAACTT","CAGGCCTG","GTCAGGTA","ATTTCGGT","TGCTGAAC","CACGTTGC","CCCCTGTT","GATGCCCG","CGCGAGTG","TGCAGCGA","TGTCGGTT","CGCAAGTT","TTAACCCG","TATTGTTC","ACCCCCGC","GCCTACCT","GAAATTAA","GGCTCCTT","GCGACTTT","GGTAGTCA","TATGCGTA","GGTACGCT","CACTGGGC","ATTGAGCC","GGGACGGG"};
 vector<string> biased_s = {"AGATTAGA","CAGATAGT","GTAGTCCT","CGATATAA","GCCGTCGG","GTCCCAAC","AGTTGACA","TCGTCAAT","GGGGACTA","CAGATGCT","AGGCACAA","TAAGACAA","TCGATGTT","GAGTCTGA","CTTTTAAG","ACCGCCCG","TCTTGTGC","CGGTGTGC","ACAGTAGA","TGATATAG","CATACATA","CCCTAACT","ACACTACG","AGACGCAC","TCGCCATC","ATGCTTCT","CAATGCTA","TCGATATA","CCATGTTG","AATTGCAA"};
@@ -44,9 +44,9 @@ vector<string> biased_d = {"ATAGCTGAA","GGTTGTTC","ATGCATTT","TACCCTT","TATATCTG
 void findDistanceWithinArray(vector<string> arr){
     int len = arr.size();
     for(int i = 0, j = len - 1 ; i < len/2; i++, j--){
-        enc_string x = arr[i];
-        enc_string y = arr[j];
-        cout << "Distance between " + arr[i] + " ," + arr[j] +" : " << editDistance(x, y).GET_DECRYPTED_VALUE()<<endl;
+        enc_string<10> x = enc_string<10>(arr[i].c_str());
+        enc_string<10> y =  enc_string<10>(arr[j].c_str());
+        cout << "Distance between " + arr[i] + " ," + arr[j] +" : " << editDistance(x, y)<<endl;
     }
     cout<<endl;
 } 
@@ -54,59 +54,59 @@ void findDistanceWithinArray(vector<string> arr){
 void findDistanceBetweenArray(vector<string> arr1, vector<string> arr2){
     int len = arr1.size();
     for(int i = 0 ; i < len ; i++){
-        enc_string x = arr1[i];
-        enc_string y = arr2[i];
-        cout << "Distance between " + arr1[i] + " ," + arr2[i] +" : " << editDistance(x, y).GET_DECRYPTED_VALUE()<<endl; 
+        enc_string<10> x = enc_string<10>(arr1[i].c_str());
+        enc_string<10> y = enc_string<10>(arr2[i].c_str());
+        cout << "Distance between " + arr1[i] + " ," + arr2[i] +" : " << editDistance(x, y)<<endl; 
     }
     cout<<endl;
 }
 
 inline void checkForSameAndEmpty(){
-    enc_string empty = "";
-    enc_string random = random_s[0];
-    enc_string biased = biased_s[0];
-    cout << "Distance between \"\" ," + random_s[0] +" : " << editDistance(empty, random).GET_DECRYPTED_VALUE()<<endl; 
-    cout << "Distance between " + biased_s[0] + " ," + biased_s[0] +" : " << editDistance(biased, biased).GET_DECRYPTED_VALUE()<<endl; 
+    enc_string<10> empty = "";
+    enc_string<10> random = enc_string<10>(random_s[0].c_str());
+    enc_string<10> biased = enc_string<10>(biased_s[0].c_str());
+    cout << "Distance between \"\" ," + random_s[0] +" : " << editDistance(empty, random)<<endl; 
+    cout << "Distance between " + biased_s[0] + " ," + biased_s[0] +" : " << editDistance(biased, biased)<<endl; 
 
 }
 
-enc_int editDistance(enc_string str1, enc_string str2){
+enc_int editDistance(enc_string<10> str1, enc_string<10> str2){
     enc_int dist = 0;
-    if(str1.size().GET_DECRYPTED_VALUE() == 0){
-        dist = str2.size().GET_DECRYPTED_VALUE();
+    if(str1.size() == 0){
+        dist = str2.size();
     }
-    else if(str2.size().GET_DECRYPTED_VALUE() == 0){
-        dist = str1.size().GET_DECRYPTED_VALUE();
+    else if(str2.size() == 0){
+        dist = str1.size();
     }
     else{
-        enc_int edit_matrix[str1.size().GET_DECRYPTED_VALUE() + 1][str2.size().GET_DECRYPTED_VALUE() + 1];
+        enc_int edit_matrix[str1.size() + 1][str2.size() + 1];
         
-        for (int i = 0; (i < str1.size() + 1).GET_DECRYPTED_VALUE(); i++ )
+        for (int i = 0; (i < str1.size() + 1); i++ )
         {
             edit_matrix[i][0] = i;
         }
 
-        for (int j = 0; (j < str2.size() + 1).GET_DECRYPTED_VALUE(); j++ )
+        for (int j = 0; (j < str2.size() + 1); j++ )
         {
             edit_matrix[0][j] = j;
         }
 
         int i, j;
-        for (i = 0; (i < str1.size()).GET_DECRYPTED_VALUE(); i++ )
+        for (i = 0; (i < str1.size()); i++ )
         {
-            for (j = 0; (j < str2.size()).GET_DECRYPTED_VALUE(); j++ )
+            for (j = 0; (j < str2.size()); j++ )
             {
                 int edit = 1;
-                if((str1[i] == str2[j]).GET_DECRYPTED_VALUE()){
+                if((str1[i] == str2[j])){
                     edit = 0;
                 }
                 
                 edit_matrix[i + 1][j + 1] = MIN( edit_matrix[i] [j + 1] + 1,
-                edit_matrix[i + 1][j] + 1, edit_matrix[i] [j] + edit).GET_DECRYPTED_VALUE();
+                edit_matrix[i + 1][j] + 1, edit_matrix[i] [j] + edit);
             }
             
         }
-        dist = edit_matrix[str1.size().GET_DECRYPTED_VALUE()][str2.size().GET_DECRYPTED_VALUE()].GET_DECRYPTED_VALUE();
+        dist = edit_matrix[str1.size()][str2.size()];
 
     }
     return dist;
@@ -116,33 +116,33 @@ enc_int editDistance(enc_string str1, enc_string str2){
 int main() 
 { 
     
-    setParameters(SymmCipher::XOR, 0x0505050505050505, 0x0505050505050505, 0);
+    setParameters(SymmCipher::XOR, 0x0001020304050607, 0x08090a0b0c0d0e0f, 0);
 
     // Result must be 0
 	/*enc_string str1 = "bat"; 
 	enc_string str2 = "bat";
-    cout << "Distance 1: "<< editDistance(str2, str1).GET_DECRYPTED_VALUE()<< endl; 
+    cout << "Distance 1: "<< editDistance(str2, str1)<< endl; 
 
     // Result must be 2
     enc_string str3 = "b"; 
 	enc_string str4 = "bat";
-    //cout << "Distance 2: "<< editDistance(str3, str4).GET_DECRYPTED_VALUE()<< endl;
+    //cout << "Distance 2: "<< editDistance(str3, str4)<< endl;
 
    /* // Result must be 3
     enc_string str5 = ""; 
 	enc_string str6 = "bat";
-    cout << "Distance 3-1: "<< editDistance(str5, str6).GET_DECRYPTED_VALUE()<< "   "; 
-    cout << "Distance 3-2: "<< editDistance(str6, str5).GET_DECRYPTED_VALUE()<< endl; 
+    cout << "Distance 3-1: "<< editDistance(str5, str6)<< "   "; 
+    cout << "Distance 3-2: "<< editDistance(str6, str5)<< endl; 
 
     // Result must be 0
     enc_string str7 = ""; 
 	enc_string str8 = "";
-	cout << "Distance 4: "<< editDistance(str7, str8).GET_DECRYPTED_VALUE()<< endl; 
+	cout << "Distance 4: "<< editDistance(str7, str8)<< endl; 
 
     // Result must be 5
     enc_string str9 = "intention"; 
 	enc_string str10 = "execution";
-	cout << "Distance 5: "<< editDistance(str9, str10).GET_DECRYPTED_VALUE()<< endl;*/
+	cout << "Distance 5: "<< editDistance(str9, str10)<< endl;*/
 
 
     cout<<"------Within the randoms array------"<<endl;

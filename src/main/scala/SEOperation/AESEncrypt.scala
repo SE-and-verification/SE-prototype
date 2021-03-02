@@ -32,19 +32,22 @@ class AESEncrypt extends Module {
 
 	dataOut := io.input_roundKeys(address)
 
-	// address logistics
 	when(io.input_valid) {
-		address := address + 1.U
-	}
-	.otherwise {
 		address := 0.U
 	}
-
+	.otherwise {
+		when(address =/= Nr.U){
+      address := address + 1.U
+    }
+	}
+  val input_reverse = Wire(Vec(Params.StateLength, UInt(8.W)))
+  for(i <- 0 until Params.StateLength)
+    input_reverse(i) := io.input_text(Params.StateLength-i-1)
   // The roundKey for each round can go to both the cipher and inverse cipher (for now TODO)
   CipherModule.io.roundKey := dataOut
 
   // The input text can go to both the cipher and the inverse cipher (for now TODO)
-  CipherModule.io.plaintext := io.input_text
+  CipherModule.io.plaintext := input_reverse
 
   // Cipher starts at AES_Mode=2
   CipherModule.io.start := io.input_valid

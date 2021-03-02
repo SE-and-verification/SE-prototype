@@ -39,15 +39,12 @@ class AESDecrypt extends Module {
 	dataOut := io.input_roundKeys(address)
 
 	when(io.input_valid) {
-		when(address === 0.U) {
-			address := Nr.U
-		}
-		.otherwise {
-			address := address - 1.U
-		}
+		address := Nr.U
 	}
 	.otherwise {
-		address := 0.U
+		when(address =/= 0.U){
+      address := address - 1.U
+    }
 	}
 
   // The roundKey for each round can go to both the cipher and inverse cipher (for now TODO)

@@ -1,4 +1,4 @@
-default: benchamrk
+default: VSE.o
 
 base_dir   = $(abspath .)
 src_dir    = $(base_dir)/src/main
@@ -9,10 +9,7 @@ SBT       = sbt
 SBT_FLAGS = -ivy $(HOME)/.ivy2 
 
 VERILATOR_FLAGS = -I obj_dir -I/usr/share/verilator/include module.cpp /usr/share/verilator/include/verilated.cpp
-benchamrk: MOV_VERI_FILES
 
-MOV_VERI_FILES: VSE.o
-	cp obj_dir/* emtdprivacy-functional-library-cb3f92117882/src/verilator/
 VSE.o: verilator_generate
 	cd obj_dir; make -f VSE.mk ; cd ..
 

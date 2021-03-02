@@ -47,7 +47,7 @@ class AlUOutput extends Bundle{
 class FU extends SimpleChiselModule{
   val in = IO(Input(new AlUInput))
   val out = IO(Output(new AlUOutput))
-  val ctrl = IO(new DecoupledIOCtrl(1,0))
+  val ctrl = IO(new DecoupledIOCtrl(0,0))
 
   ctrl.out.ready >>> ctrl.in.ready
   ctrl.in.valid  >>> ctrl.out.valid

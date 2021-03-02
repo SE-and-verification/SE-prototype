@@ -3,7 +3,7 @@
     "class":"firrtl.transforms.DedupedResult",
     "original":"~SE|AddRoundKey",
     "duplicate":"~SE|SE/aes_invcipher:AESDecrypt/InvCipherModule1:InvCipher/AddRoundKeyModule:AddRoundKey",
-    "index":0.1875
+    "index":0.10344827586206896
   },
   {
     "class":"firrtl.transforms.DedupedResult",
@@ -14,31 +14,31 @@
     "class":"firrtl.transforms.DedupedResult",
     "original":"~SE|InvSubBytes",
     "duplicate":"~SE|SE/aes_invcipher:AESDecrypt/InvCipherModule1:InvCipher/InvSubBytesModule:InvSubBytes",
-    "index":0.25
+    "index":0.1724137931034483
   },
   {
     "class":"firrtl.transforms.DedupedResult",
     "original":"~SE|InvShiftRows",
     "duplicate":"~SE|SE/aes_invcipher:AESDecrypt/InvCipherModule1:InvCipher/InvShiftRowsModule:InvShiftRows",
-    "index":0.28125
+    "index":0.20689655172413793
   },
   {
     "class":"firrtl.transforms.DedupedResult",
     "original":"~SE|InvMixColumns",
     "duplicate":"~SE|SE/aes_invcipher:AESDecrypt/InvCipherModule1:InvCipher/InvMixColumnsModule:InvMixColumns",
-    "index":0.3125
+    "index":0.2413793103448276
   },
   {
     "class":"firrtl.transforms.DedupedResult",
     "original":"~SE|InvCipher",
     "duplicate":"~SE|SE/aes_invcipher:AESDecrypt/InvCipherModule1:InvCipher",
-    "index":0.34375
+    "index":0.27586206896551724
   },
   {
     "class":"firrtl.transforms.DedupedResult",
     "original":"~SE|AddRoundKey_1",
     "duplicate":"~SE|SE/aes_invcipher:AESDecrypt/InvCipherModule2:InvCipher/AddRoundKeyModule:AddRoundKey",
-    "index":0.375
+    "index":0.3103448275862069
   },
   {
     "class":"firrtl.transforms.DedupedResult",
@@ -49,31 +49,31 @@
     "class":"firrtl.transforms.DedupedResult",
     "original":"~SE|InvSubBytes_1",
     "duplicate":"~SE|SE/aes_invcipher:AESDecrypt/InvCipherModule2:InvCipher/InvSubBytesModule:InvSubBytes",
-    "index":0.4375
+    "index":0.3793103448275862
   },
   {
     "class":"firrtl.transforms.DedupedResult",
     "original":"~SE|InvShiftRows_1",
     "duplicate":"~SE|SE/aes_invcipher:AESDecrypt/InvCipherModule2:InvCipher/InvShiftRowsModule:InvShiftRows",
-    "index":0.46875
+    "index":0.41379310344827586
   },
   {
     "class":"firrtl.transforms.DedupedResult",
     "original":"~SE|InvMixColumns_1",
     "duplicate":"~SE|SE/aes_invcipher:AESDecrypt/InvCipherModule2:InvCipher/InvMixColumnsModule:InvMixColumns",
-    "index":0.5
+    "index":0.4482758620689655
   },
   {
     "class":"firrtl.transforms.DedupedResult",
     "original":"~SE|InvCipher_1",
     "duplicate":"~SE|SE/aes_invcipher:AESDecrypt/InvCipherModule2:InvCipher",
-    "index":0.53125
+    "index":0.4827586206896552
   },
   {
     "class":"firrtl.transforms.DedupedResult",
     "original":"~SE|AddRoundKey_2",
     "duplicate":"~SE|SE/aes_invcipher:AESDecrypt/InvCipherModule3:InvCipher/AddRoundKeyModule:AddRoundKey",
-    "index":0.5625
+    "index":0.5172413793103449
   },
   {
     "class":"firrtl.transforms.DedupedResult",
@@ -84,31 +84,31 @@
     "class":"firrtl.transforms.DedupedResult",
     "original":"~SE|InvSubBytes_2",
     "duplicate":"~SE|SE/aes_invcipher:AESDecrypt/InvCipherModule3:InvCipher/InvSubBytesModule:InvSubBytes",
-    "index":0.625
+    "index":0.5862068965517241
   },
   {
     "class":"firrtl.transforms.DedupedResult",
     "original":"~SE|InvShiftRows_2",
     "duplicate":"~SE|SE/aes_invcipher:AESDecrypt/InvCipherModule3:InvCipher/InvShiftRowsModule:InvShiftRows",
-    "index":0.65625
+    "index":0.6206896551724138
   },
   {
     "class":"firrtl.transforms.DedupedResult",
     "original":"~SE|InvMixColumns_2",
     "duplicate":"~SE|SE/aes_invcipher:AESDecrypt/InvCipherModule3:InvCipher/InvMixColumnsModule:InvMixColumns",
-    "index":0.6875
+    "index":0.6551724137931034
   },
   {
     "class":"firrtl.transforms.DedupedResult",
     "original":"~SE|InvCipher_2",
     "duplicate":"~SE|SE/aes_invcipher:AESDecrypt/InvCipherModule3:InvCipher",
-    "index":0.71875
+    "index":0.6896551724137931
   },
   {
     "class":"firrtl.transforms.DedupedResult",
     "original":"~SE|AddRoundKey_3",
     "duplicate":"~SE|SE/aes_cipher:AESEncrypt/CipherModule:Cipher/AddRoundKeyModule:AddRoundKey",
-    "index":0.78125
+    "index":0.7586206896551724
   },
   {
     "class":"firrtl.transforms.DedupedResult",
