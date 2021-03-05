@@ -10,14 +10,17 @@ class SEOpInput extends Bundle{
 	val inst = UInt(8.W)
 
 	val op1_input = UInt(128.W)
+	val op1_is_a_type = Bool()
 
 	val op2_input  = UInt(128.W)
+	val op2_is_a_type = Bool()
 
 	val cond_input  = UInt(128.W)
 }
 
 class SEOpOutput extends Bundle{
 	val raw_result = UInt(64.W)
+	val raw_result_is_a_byte = Bool()
 }
 
 class SEOperation extends SimpleChiselModule{
@@ -27,6 +30,7 @@ class SEOperation extends SimpleChiselModule{
 	
 	val decode = Module(new SEControl)
 	val fu = Module(new FU)
+
 	val op1 = in.op1_input(127,64)
 	val op2 = in.op2_input(127,64)
 	val cond = in.cond_input(127,64)
@@ -43,6 +47,7 @@ class SEOperation extends SimpleChiselModule{
   fu.in.B := op2
   fu.in.fu_op := Mux(decode.out.cmov, Mux(cond >= 0.U, FU_COPY_A, FU_COPY_B), decode.out.fu_op)
 
-	out.raw_result := fu.out.out
+	out.raw_result_is_a_byte := decode.out.isCmp || (in.op1_is_a_type && in.op2_is_a_type)
+	out.raw_result := Mux(out.raw_result_is_a_byte, fu.out.out<<56,fu.out.out)
 	ctrl.out.valid := fu.ctrl.out.valid
 }

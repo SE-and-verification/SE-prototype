@@ -6,17 +6,23 @@ import chisel3.util._
 import chisel3.simplechisel.util._
 import aes._
 import se.seoperation._
+import chisel3.util.random._
 
 class SEInput extends Bundle{
-	val inst = UInt(8.W)
+	val inst = UInt(8.W) // Instruction encoding is defined in SEOperation/Instructions.scala
 
 	val op1 = UInt(128.W)
-	val op1_encrypted = Bool()
+	/* True if operand is encrypted, false if it is plaintext.
+		 If plaintext, it is placed at the most significant parts.*/
+	val op1_encrypted = Bool() 
+	val op1_is_a_type = Bool() // True is operand is a boolean or a char
 
 	val op2 = UInt(128.W)
 	val op2_encrypted = Bool()
+	val op2_is_a_type = Bool()	
 
-	val cond = UInt(128.W)
+	// The condition for CMOV. Should always be encrypted. Can be anything if not used
+	val cond = UInt(128.W) 
 }
 
 class SEOutput extends Bundle{
@@ -24,31 +30,47 @@ class SEOutput extends Bundle{
 }
 
 class SE extends SimpleChiselModuleBase{
+	// Define the input, output ports and the control bits
 	val ctrl = IO(new DecoupledIOCtrl(1,1))
 	val in = IO(Input(new SEInput))
 	val out = IO(Output(new SEOutput))
 
+	// Instantiate the components
+	/*
+	seoperation: the module to actually compute on decrypted plaintexts
+	key: preset expanded AES ROM key
+	*/
 	val seoperation = Module(new SEOperation)
 	val aes_invcipher = Module(new AESDecrypt)
 	val aes_cipher = Module(new AESEncrypt)
+	val key = ExpandedKey.expandedKey128
 
+	// Once we receive the data, first latch them into buffers. 
 	val inst_buffer = RegEnable(in.inst, ctrl.in.valid)
+
 	val op1_buffer = RegEnable(in.op1, ctrl.in.valid)
 	val op1_encrypted_buffer = RegEnable(in.op1_encrypted, ctrl.in.valid)
+	val op1_is_a_type_buffer = RegEnable(in.op1_is_a_type, ctrl.in.valid)
+
 	val op2_buffer = RegEnable( in.op2, ctrl.in.valid)
 	val op2_encrypted_buffer = RegEnable(in.op2_encrypted, ctrl.in.valid)
+	val op2_is_a_type_buffer = RegEnable(in.op2_is_a_type, ctrl.in.valid)
+
 	val cond_buffer = RegEnable( in.cond, ctrl.in.valid)
 
 	val valid_buffer = Reg(Bool())
-	val key = ExpandedKey.expandedKey128
-	valid_buffer := Mux(ctrl.in.valid, true.B, Mux(seoperation.ctrl.in.valid, false.B, valid_buffer))
 
+	valid_buffer := Mux(ctrl.in.valid, true.B, Mux(seoperation.ctrl.in.valid, false.B, valid_buffer))
+	ctrl.in.ready := !valid_buffer
+
+	// Feed the ciphertexts into the invcipher
 	aes_invcipher.io.input_op1.connectFromBits(Mux(valid_buffer,op1_buffer,in.op1))
 	aes_invcipher.io.input_op2.connectFromBits(Mux(valid_buffer,op2_buffer,in.op2))
 	aes_invcipher.io.input_cond.connectFromBits(Mux(valid_buffer,cond_buffer,in.cond))
 	aes_invcipher.io.input_roundKeys := key
 	aes_invcipher.io.input_valid := ctrl.in.valid
 
+	// Reverse the byte order so we can convert them into uint with Chisel infrastructure.
 	val op1_reverse = Wire(Vec(Params.StateLength, UInt(8.W)))
 	val op2_reverse = Wire(Vec(Params.StateLength, UInt(8.W)))
 	val cond_reverse = Wire(Vec(Params.StateLength, UInt(8.W)))
@@ -57,25 +79,36 @@ class SE extends SimpleChiselModuleBase{
 		op2_reverse(i) := aes_invcipher.io.output_op2(Params.StateLength-i-1)
 		cond_reverse(i) := aes_invcipher.io.output_cond(Params.StateLength-i-1)
 	}
+
+	// Feed the decrypted values to the seoperation module. Depends on whether the data is encrypted when it comes in.
 	seoperation.in.inst := inst_buffer.do_asUInt
 	seoperation.in.op1_input := Mux(op1_encrypted_buffer, op1_reverse.do_asUInt, op1_buffer.do_asUInt)
+	seoperation.in.op1_is_a_type := op1_is_a_type_buffer 
 	seoperation.in.op2_input := Mux(op2_encrypted_buffer, op2_reverse.do_asUInt, op2_buffer.do_asUInt)
+	seoperation.in.op2_is_a_type := op2_is_a_type_buffer 
 	seoperation.in.cond_input := cond_reverse.do_asUInt
 
 	seoperation.ctrl.in.valid := aes_invcipher.io.output_valid
 	seoperation.ctrl.out.ready := ctrl.out.ready
-	// when(ctrl.in.valid && ctrl.in.ready){printf("SE Input:\n\toperand1:%x\n\toperand2:%x\n\tcond:%x\n",in.op1, in.op2, in.cond)}
-	// when(seoperation.ctrl.in.valid && seoperation.ctrl.in.ready){printf("SEOp Input:\n\top1_encrypted_buffer:%x\n\top2_encrypted_buffer:%x\n",op1_encrypted_buffer, op2_encrypted_buffer)}
-	// when(seoperation.ctrl.out.valid){printf("result:%x\n",seoperation.out.raw_result)}
 
+  // Once we receive the result form the seoperation, we latech the result first.
 	val result_valid_buffer = Reg(Bool())
 	result_valid_buffer := Mux(seoperation.ctrl.out.valid, true.B, Mux(ctrl.out.valid, false.B, result_valid_buffer))
-	val result_buffer = RegEnable( seoperation.out.raw_result, seoperation.ctrl.out.valid)
 
-	ctrl.in.ready := !valid_buffer
-	aes_cipher.io.input_text.connectFromBits((Cat(Mux(result_valid_buffer,result_buffer,seoperation.out.raw_result), 0.U(64.W))))
+	// Pad with RNG
+	val bit64_randnum = LFSR(64)
+	val bit120_randnum = LFSR(120)
+	val byte_padded_result = Cat(seoperation.out.raw_result(63,56),bit120_randnum)
+	val padded_64_result = Cat(seoperation.out.raw_result,bit64_randnum)
+	val padded_result = Mux(seoperation.out.raw_result_is_a_byte,byte_padded_result, padded_64_result)
+	val result_buffer = RegEnable( padded_result, seoperation.ctrl.out.valid)
+
+	// Connect the cipher
+	aes_cipher.io.input_text.connectFromBits(Mux(result_valid_buffer, result_buffer, padded_result))
 	aes_cipher.io.input_valid := seoperation.ctrl.out.valid
 	aes_cipher.io.input_roundKeys := key
+
+	// Connect the output side
 	ctrl.out.valid := aes_cipher.io.output_valid
 	out.result := aes_cipher.io.output_text.do_asUInt
 
@@ -88,6 +121,5 @@ class SE extends SimpleChiselModuleBase{
 	InfoAnnotator.info(seoperation, "Private")
 	InfoAnnotator.info(out.result, "SensitiveOutput")
 	InfoAnnotator.info(key, "KeyStore")
-
 
 }

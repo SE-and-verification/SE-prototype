@@ -116,19 +116,19 @@ enc_int editDistance(enc_string<10> str1, enc_string<10> str2){
 int main() 
 { 
     
-    setParameters(SymmCipher::XOR, 0x0001020304050607, 0x08090a0b0c0d0e0f, 0);
+    setParameters();
 
     // Result must be 0
-	/*enc_string str1 = "bat"; 
+	enc_string str1 = "bat"; 
 	enc_string str2 = "bat";
     cout << "Distance 1: "<< editDistance(str2, str1)<< endl; 
 
     // Result must be 2
     enc_string str3 = "b"; 
 	enc_string str4 = "bat";
-    //cout << "Distance 2: "<< editDistance(str3, str4)<< endl;
+    cout << "Distance 2: "<< editDistance(str3, str4)<< endl;
 
-   /* // Result must be 3
+    // Result must be 3
     enc_string str5 = ""; 
 	enc_string str6 = "bat";
     cout << "Distance 3-1: "<< editDistance(str5, str6)<< "   "; 
@@ -142,7 +142,7 @@ int main()
     // Result must be 5
     enc_string str9 = "intention"; 
 	enc_string str10 = "execution";
-	cout << "Distance 5: "<< editDistance(str9, str10)<< endl;*/
+	cout << "Distance 5: "<< editDistance(str9, str10)<< endl;
 
 
     cout<<"------Within the randoms array------"<<endl;
