@@ -469,7 +469,7 @@ circuit SE :
   module SEOperation : 
     input clock : Clock
     input reset : Reset
-    input in : {cond_input : UInt<128>, op2_is_a_type : UInt<1>, op2_input : UInt<128>, op1_is_a_type : UInt<1>, op1_input : UInt<128>, inst : UInt<8>}
+    input in : {cond_input : UInt<128>, op2_is_a_byte : UInt<1>, op2_input : UInt<128>, op1_is_a_byte : UInt<1>, op1_input : UInt<128>, inst : UInt<8>}
     output out : {raw_result_is_a_byte : UInt<1>, raw_result : UInt<64>}
     output ctrl : {flip out : {ready : UInt<1>, flip valid : UInt<1>}, in : {ready : UInt<1>, flip valid : UInt<1>}}
     
@@ -493,7 +493,7 @@ circuit SE :
     node _T_2 = mux(_T_1, UInt<5>("h0a"), UInt<5>("h0b")) @[SEOperation.scala 48:42]
     node _T_3 = mux(decode.out.cmov, _T_2, decode.out.fu_op) @[SEOperation.scala 48:21]
     fu.in.fu_op <= _T_3 @[SEOperation.scala 48:15]
-    node _T_4 = and(in.op1_is_a_type, in.op2_is_a_type) @[SEOperation.scala 50:75]
+    node _T_4 = and(in.op1_is_a_byte, in.op2_is_a_byte) @[SEOperation.scala 50:75]
     node _T_5 = or(decode.out.isCmp, _T_4) @[SEOperation.scala 50:54]
     out.raw_result_is_a_byte <= _T_5 @[SEOperation.scala 50:34]
     node _T_6 = shl(fu.out.out, 56) @[SEOperation.scala 51:67]
@@ -7774,7 +7774,7 @@ circuit SE :
     input clock : Clock
     input reset : UInt<1>
     output ctrl : {flip out : {ready : UInt<1>, flip valid : UInt<1>}, in : {ready : UInt<1>, flip valid : UInt<1>}}
-    input in : {cond : UInt<128>, op2_is_a_type : UInt<1>, op2_encrypted : UInt<1>, op2 : UInt<128>, op1_is_a_type : UInt<1>, op1_encrypted : UInt<1>, op1 : UInt<128>, inst : UInt<8>}
+    input in : {cond : UInt<128>, op2_is_a_byte : UInt<1>, op2_encrypted : UInt<1>, op2 : UInt<128>, op1_is_a_byte : UInt<1>, op1_encrypted : UInt<1>, op1 : UInt<128>, inst : UInt<8>}
     output out : {result : UInt<128>}
     
     inst seoperation of SEOperation @[SE.scala 43:33]
@@ -9163,9 +9163,9 @@ circuit SE :
     when ctrl.in.valid : @[Reg.scala 16:19]
       op1_encrypted_buffer <= in.op1_encrypted @[Reg.scala 16:23]
       skip @[Reg.scala 16:19]
-    reg op1_is_a_type_buffer : UInt<1>, clock @[Reg.scala 15:16]
+    reg op1_is_a_byte_buffer : UInt<1>, clock @[Reg.scala 15:16]
     when ctrl.in.valid : @[Reg.scala 16:19]
-      op1_is_a_type_buffer <= in.op1_is_a_type @[Reg.scala 16:23]
+      op1_is_a_byte_buffer <= in.op1_is_a_byte @[Reg.scala 16:23]
       skip @[Reg.scala 16:19]
     reg op2_buffer : UInt<128>, clock @[Reg.scala 15:16]
     when ctrl.in.valid : @[Reg.scala 16:19]
@@ -9175,9 +9175,9 @@ circuit SE :
     when ctrl.in.valid : @[Reg.scala 16:19]
       op2_encrypted_buffer <= in.op2_encrypted @[Reg.scala 16:23]
       skip @[Reg.scala 16:19]
-    reg op2_is_a_type_buffer : UInt<1>, clock @[Reg.scala 15:16]
+    reg op2_is_a_byte_buffer : UInt<1>, clock @[Reg.scala 15:16]
     when ctrl.in.valid : @[Reg.scala 16:19]
-      op2_is_a_type_buffer <= in.op2_is_a_type @[Reg.scala 16:23]
+      op2_is_a_byte_buffer <= in.op2_is_a_byte @[Reg.scala 16:23]
       skip @[Reg.scala 16:19]
     reg cond_buffer : UInt<128>, clock @[Reg.scala 15:16]
     when ctrl.in.valid : @[Reg.scala 16:19]
@@ -9540,7 +9540,7 @@ circuit SE :
     node _T_54 = cat(hi, lo) @[SE.scala 85:75]
     node _T_55 = mux(op1_encrypted_buffer, _T_54, op1_buffer) @[SE.scala 85:40]
     seoperation.in.op1_input <= _T_55 @[SE.scala 85:34]
-    seoperation.in.op1_is_a_type <= op1_is_a_type_buffer @[SE.scala 86:38]
+    seoperation.in.op1_is_a_byte <= op1_is_a_byte_buffer @[SE.scala 86:38]
     node lo_lo_lo_1 = cat(op2_reverse[1], op2_reverse[0]) @[SE.scala 87:75]
     node lo_lo_hi_1 = cat(op2_reverse[3], op2_reverse[2]) @[SE.scala 87:75]
     node lo_lo_1 = cat(lo_lo_hi_1, lo_lo_lo_1) @[SE.scala 87:75]
@@ -9558,7 +9558,7 @@ circuit SE :
     node _T_56 = cat(hi_1, lo_1) @[SE.scala 87:75]
     node _T_57 = mux(op2_encrypted_buffer, _T_56, op2_buffer) @[SE.scala 87:40]
     seoperation.in.op2_input <= _T_57 @[SE.scala 87:34]
-    seoperation.in.op2_is_a_type <= op2_is_a_type_buffer @[SE.scala 88:38]
+    seoperation.in.op2_is_a_byte <= op2_is_a_byte_buffer @[SE.scala 88:38]
     node lo_lo_lo_2 = cat(cond_reverse[1], cond_reverse[0]) @[SE.scala 89:51]
     node lo_lo_hi_2 = cat(cond_reverse[3], cond_reverse[2]) @[SE.scala 89:51]
     node lo_lo_2 = cat(lo_lo_hi_2, lo_lo_lo_2) @[SE.scala 89:51]

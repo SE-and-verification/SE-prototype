@@ -15,11 +15,11 @@ class SEInput extends Bundle{
 	/* True if operand is encrypted, false if it is plaintext.
 		 If plaintext, it is placed at the most significant parts.*/
 	val op1_encrypted = Bool() 
-	val op1_is_a_type = Bool() // True is operand is a boolean or a char
+	val op1_is_a_byte = Bool() // True is operand is a boolean or a char
 
 	val op2 = UInt(128.W)
 	val op2_encrypted = Bool()
-	val op2_is_a_type = Bool()	
+	val op2_is_a_byte = Bool()	
 
 	// The condition for CMOV. Should always be encrypted. Can be anything if not used
 	val cond = UInt(128.W) 
@@ -50,11 +50,11 @@ class SE extends SimpleChiselModuleBase{
 
 	val op1_buffer = RegEnable(in.op1, ctrl.in.valid)
 	val op1_encrypted_buffer = RegEnable(in.op1_encrypted, ctrl.in.valid)
-	val op1_is_a_type_buffer = RegEnable(in.op1_is_a_type, ctrl.in.valid)
+	val op1_is_a_byte_buffer = RegEnable(in.op1_is_a_byte, ctrl.in.valid)
 
 	val op2_buffer = RegEnable( in.op2, ctrl.in.valid)
 	val op2_encrypted_buffer = RegEnable(in.op2_encrypted, ctrl.in.valid)
-	val op2_is_a_type_buffer = RegEnable(in.op2_is_a_type, ctrl.in.valid)
+	val op2_is_a_byte_buffer = RegEnable(in.op2_is_a_byte, ctrl.in.valid)
 
 	val cond_buffer = RegEnable( in.cond, ctrl.in.valid)
 
@@ -83,9 +83,9 @@ class SE extends SimpleChiselModuleBase{
 	// Feed the decrypted values to the seoperation module. Depends on whether the data is encrypted when it comes in.
 	seoperation.in.inst := inst_buffer.do_asUInt
 	seoperation.in.op1_input := Mux(op1_encrypted_buffer, op1_reverse.do_asUInt, op1_buffer.do_asUInt)
-	seoperation.in.op1_is_a_type := op1_is_a_type_buffer 
+	seoperation.in.op1_is_a_byte := op1_is_a_byte_buffer 
 	seoperation.in.op2_input := Mux(op2_encrypted_buffer, op2_reverse.do_asUInt, op2_buffer.do_asUInt)
-	seoperation.in.op2_is_a_type := op2_is_a_type_buffer 
+	seoperation.in.op2_is_a_byte := op2_is_a_byte_buffer 
 	seoperation.in.cond_input := cond_reverse.do_asUInt
 
 	seoperation.ctrl.in.valid := aes_invcipher.io.output_valid

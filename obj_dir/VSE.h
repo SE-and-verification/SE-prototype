@@ -36,9 +36,9 @@ VL_MODULE(VSE) {
     VL_OUT8(ctrl_out_valid,0,0);
     VL_OUT8(ctrl_in_ready,0,0);
     VL_IN8(ctrl_in_valid,0,0);
-    VL_IN8(in_op2_is_a_type,0,0);
+    VL_IN8(in_op2_is_a_byte,0,0);
     VL_IN8(in_op2_encrypted,0,0);
-    VL_IN8(in_op1_is_a_type,0,0);
+    VL_IN8(in_op1_is_a_byte,0,0);
     VL_IN8(in_op1_encrypted,0,0);
     VL_IN8(in_inst,7,0);
     VL_INW(in_cond,127,0,4);
@@ -54,9 +54,9 @@ VL_MODULE(VSE) {
         CData/*0:0*/ SE__DOT__aes_invcipher_io_output_valid;
         CData/*7:0*/ SE__DOT__inst_buffer;
         CData/*0:0*/ SE__DOT__op1_encrypted_buffer;
-        CData/*0:0*/ SE__DOT__op1_is_a_type_buffer;
+        CData/*0:0*/ SE__DOT__op1_is_a_byte_buffer;
         CData/*0:0*/ SE__DOT__op2_encrypted_buffer;
-        CData/*0:0*/ SE__DOT__op2_is_a_type_buffer;
+        CData/*0:0*/ SE__DOT__op2_is_a_byte_buffer;
         CData/*0:0*/ SE__DOT__valid_buffer;
         CData/*0:0*/ SE__DOT___T;
         CData/*0:0*/ SE__DOT__result_valid_buffer;
