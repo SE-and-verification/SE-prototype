@@ -109,8 +109,15 @@ class SE extends SimpleChiselModuleBase{
 	aes_cipher.io.input_roundKeys := key
 
 	// Connect the output side
-	ctrl.out.valid := aes_cipher.io.output_valid
-	out.result := aes_cipher.io.output_text.do_asUInt
+	val output_buffer = RegEnable(aes_cipher.io.output_text.do_asUInt, aes_cipher.io.output_valid)
+	val output_valid = Reg(Bool())
+	when(aes_cipher.io.output_valid){
+		output_valid := true.B
+	}.elsewhen(ctrl.out.valid && ctrl.out.ready){
+		output_valid := false.B
+	}
+	ctrl.out.valid := output_valid
+	out.result := output_buffer
 
 	InfoAnnotator.info(in.op1, "SensitiveInput")
 	InfoAnnotator.info(in.op2, "SensitiveInput")
@@ -121,5 +128,5 @@ class SE extends SimpleChiselModuleBase{
 	InfoAnnotator.info(seoperation, "Private")
 	InfoAnnotator.info(out.result, "SensitiveOutput")
 	InfoAnnotator.info(key, "KeyStore")
-
+	
 }

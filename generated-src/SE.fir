@@ -152,6 +152,18 @@ circuit SE :
     clock_counter_val <= _counterVal_T_1 @[SimpleChiselAbstraction.scala 89:16]
     node debug_input_enable = and(ctrl.in.valid, ctrl.in.ready) @[SimpleChiselAbstraction.scala 164:52]
     node debug_output_enable = and(ctrl.out.valid, ctrl.out.ready) @[SimpleChiselAbstraction.scala 165:54]
+    when debug_input_enable :
+      printf(clock, UInt<1>(1), "Cycle: %d Module:SEControl inputs\n", clock_counter_val)
+      printf(clock, UInt<1>(1), "inst=0x%x\n", in.inst)
+      skip
+    when debug_output_enable :
+      printf(clock, UInt<1>(1), "Cycle: %d Module:SEControl outputs\n", clock_counter_val)
+      printf(clock, UInt<1>(1), "inst=0x%x\n", out.inst)
+      printf(clock, UInt<1>(1), "fu_op=0x%x\n", out.fu_op)
+      printf(clock, UInt<1>(1), "legal=0x%x\n", out.legal)
+      printf(clock, UInt<1>(1), "cmov=0x%x\n", out.cmov)
+      printf(clock, UInt<1>(1), "isCmp=0x%x\n", out.isCmp)
+      skip
     
   module FU : 
     input clock : Clock
@@ -465,6 +477,16 @@ circuit SE :
     clock_counter_val <= _counterVal_T_1 @[SimpleChiselAbstraction.scala 89:16]
     node debug_input_enable = and(ctrl.in.valid, ctrl.in.ready) @[SimpleChiselAbstraction.scala 164:52]
     node debug_output_enable = and(ctrl.out.valid, ctrl.out.ready) @[SimpleChiselAbstraction.scala 165:54]
+    when debug_input_enable :
+      printf(clock, UInt<1>(1), "Cycle: %d Module:FU inputs\n", clock_counter_val)
+      printf(clock, UInt<1>(1), "A=0x%x\n", in.A)
+      printf(clock, UInt<1>(1), "B=0x%x\n", in.B)
+      printf(clock, UInt<1>(1), "fu_op=0x%x\n", in.fu_op)
+      skip
+    when debug_output_enable :
+      printf(clock, UInt<1>(1), "Cycle: %d Module:FU outputs\n", clock_counter_val)
+      printf(clock, UInt<1>(1), "out=0x%x\n", out.out)
+      skip
     
   module SEOperation : 
     input clock : Clock
@@ -508,6 +530,20 @@ circuit SE :
     clock_counter_val <= _counterVal_T_1 @[SimpleChiselAbstraction.scala 89:16]
     node debug_input_enable = and(ctrl.in.valid, ctrl.in.ready) @[SimpleChiselAbstraction.scala 164:52]
     node debug_output_enable = and(ctrl.out.valid, ctrl.out.ready) @[SimpleChiselAbstraction.scala 165:54]
+    when debug_input_enable :
+      printf(clock, UInt<1>(1), "Cycle: %d Module:SEOperation inputs\n", clock_counter_val)
+      printf(clock, UInt<1>(1), "inst=0x%x\n", in.inst)
+      printf(clock, UInt<1>(1), "op1_input=0x%x\n", in.op1_input)
+      printf(clock, UInt<1>(1), "op1_is_a_byte=0x%x\n", in.op1_is_a_byte)
+      printf(clock, UInt<1>(1), "op2_input=0x%x\n", in.op2_input)
+      printf(clock, UInt<1>(1), "op2_is_a_byte=0x%x\n", in.op2_is_a_byte)
+      printf(clock, UInt<1>(1), "cond_input=0x%x\n", in.cond_input)
+      skip
+    when debug_output_enable :
+      printf(clock, UInt<1>(1), "Cycle: %d Module:SEOperation outputs\n", clock_counter_val)
+      printf(clock, UInt<1>(1), "raw_result=0x%x\n", out.raw_result)
+      printf(clock, UInt<1>(1), "raw_result_is_a_byte=0x%x\n", out.raw_result_is_a_byte)
+      skip
     
   module AddRoundKey : 
     input clock : Clock
@@ -10177,21 +10213,34 @@ circuit SE :
     aes_cipher.io.input_roundKeys[10][13] <= key[10][13] @[SE.scala 109:39]
     aes_cipher.io.input_roundKeys[10][14] <= key[10][14] @[SE.scala 109:39]
     aes_cipher.io.input_roundKeys[10][15] <= key[10][15] @[SE.scala 109:39]
-    ctrl.out.valid <= aes_cipher.io.output_valid @[SE.scala 112:24]
-    node lo_lo_lo_5 = cat(aes_cipher.io.output_text[1], aes_cipher.io.output_text[0]) @[SE.scala 113:49]
-    node lo_lo_hi_5 = cat(aes_cipher.io.output_text[3], aes_cipher.io.output_text[2]) @[SE.scala 113:49]
-    node lo_lo_5 = cat(lo_lo_hi_5, lo_lo_lo_5) @[SE.scala 113:49]
-    node lo_hi_lo_5 = cat(aes_cipher.io.output_text[5], aes_cipher.io.output_text[4]) @[SE.scala 113:49]
-    node lo_hi_hi_5 = cat(aes_cipher.io.output_text[7], aes_cipher.io.output_text[6]) @[SE.scala 113:49]
-    node lo_hi_5 = cat(lo_hi_hi_5, lo_hi_lo_5) @[SE.scala 113:49]
-    node lo_5 = cat(lo_hi_5, lo_lo_5) @[SE.scala 113:49]
-    node hi_lo_lo_5 = cat(aes_cipher.io.output_text[9], aes_cipher.io.output_text[8]) @[SE.scala 113:49]
-    node hi_lo_hi_5 = cat(aes_cipher.io.output_text[11], aes_cipher.io.output_text[10]) @[SE.scala 113:49]
-    node hi_lo_5 = cat(hi_lo_hi_5, hi_lo_lo_5) @[SE.scala 113:49]
-    node hi_hi_lo_5 = cat(aes_cipher.io.output_text[13], aes_cipher.io.output_text[12]) @[SE.scala 113:49]
-    node hi_hi_hi_5 = cat(aes_cipher.io.output_text[15], aes_cipher.io.output_text[14]) @[SE.scala 113:49]
-    node hi_hi_5 = cat(hi_hi_hi_5, hi_hi_lo_5) @[SE.scala 113:49]
-    node hi_6 = cat(hi_hi_5, hi_lo_5) @[SE.scala 113:49]
-    node _T_78 = cat(hi_6, lo_5) @[SE.scala 113:49]
-    out.result <= _T_78 @[SE.scala 113:20]
+    node lo_lo_lo_5 = cat(aes_cipher.io.output_text[1], aes_cipher.io.output_text[0]) @[SE.scala 112:65]
+    node lo_lo_hi_5 = cat(aes_cipher.io.output_text[3], aes_cipher.io.output_text[2]) @[SE.scala 112:65]
+    node lo_lo_5 = cat(lo_lo_hi_5, lo_lo_lo_5) @[SE.scala 112:65]
+    node lo_hi_lo_5 = cat(aes_cipher.io.output_text[5], aes_cipher.io.output_text[4]) @[SE.scala 112:65]
+    node lo_hi_hi_5 = cat(aes_cipher.io.output_text[7], aes_cipher.io.output_text[6]) @[SE.scala 112:65]
+    node lo_hi_5 = cat(lo_hi_hi_5, lo_hi_lo_5) @[SE.scala 112:65]
+    node lo_5 = cat(lo_hi_5, lo_lo_5) @[SE.scala 112:65]
+    node hi_lo_lo_5 = cat(aes_cipher.io.output_text[9], aes_cipher.io.output_text[8]) @[SE.scala 112:65]
+    node hi_lo_hi_5 = cat(aes_cipher.io.output_text[11], aes_cipher.io.output_text[10]) @[SE.scala 112:65]
+    node hi_lo_5 = cat(hi_lo_hi_5, hi_lo_lo_5) @[SE.scala 112:65]
+    node hi_hi_lo_5 = cat(aes_cipher.io.output_text[13], aes_cipher.io.output_text[12]) @[SE.scala 112:65]
+    node hi_hi_hi_5 = cat(aes_cipher.io.output_text[15], aes_cipher.io.output_text[14]) @[SE.scala 112:65]
+    node hi_hi_5 = cat(hi_hi_hi_5, hi_hi_lo_5) @[SE.scala 112:65]
+    node hi_6 = cat(hi_hi_5, hi_lo_5) @[SE.scala 112:65]
+    node _T_78 = cat(hi_6, lo_5) @[SE.scala 112:65]
+    reg output_buffer : UInt<128>, clock @[Reg.scala 15:16]
+    when aes_cipher.io.output_valid : @[Reg.scala 16:19]
+      output_buffer <= _T_78 @[Reg.scala 16:23]
+      skip @[Reg.scala 16:19]
+    reg output_valid : UInt<1>, clock @[SE.scala 113:31]
+    when aes_cipher.io.output_valid : @[SE.scala 114:41]
+      output_valid <= UInt<1>("h01") @[SE.scala 115:30]
+      skip @[SE.scala 114:41]
+    else : @[SE.scala 116:53]
+      node _T_79 = and(ctrl.out.valid, ctrl.out.ready) @[SE.scala 116:35]
+      when _T_79 : @[SE.scala 116:53]
+        output_valid <= UInt<1>("h00") @[SE.scala 117:30]
+        skip @[SE.scala 116:53]
+    ctrl.out.valid <= output_valid @[SE.scala 119:24]
+    out.result <= output_buffer @[SE.scala 120:20]
     

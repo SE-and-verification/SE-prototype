@@ -1,0 +1,215 @@
+digraph SEOperation {
+stylesheet = "styles.css"
+rankdir="LR" 
+
+subgraph cluster_SEOperation {
+  label="SEOperation"
+  URL=""
+  bgcolor="#FFF8DC"
+  cluster_SEOperation_in_op2_is_a_byte [shape = "rectangle" style="filled" fillcolor="#CCCCCC" label="in_op2_is_a_byte" rank="0"]
+     
+cluster_SEOperation_in_op2_input [shape = "rectangle" style="filled" fillcolor="#CCCCCC" label="in_op2_input" rank="0"]
+     
+cluster_SEOperation_in_op1_is_a_byte [shape = "rectangle" style="filled" fillcolor="#CCCCCC" label="in_op1_is_a_byte" rank="0"]
+     
+cluster_SEOperation_in_op1_input [shape = "rectangle" style="filled" fillcolor="#CCCCCC" label="in_op1_input" rank="0"]
+     
+cluster_SEOperation_in_inst [shape = "rectangle" style="filled" fillcolor="#CCCCCC" label="in_inst" rank="0"]
+     
+cluster_SEOperation_ctrl_in_valid [shape = "rectangle" style="filled" fillcolor="#CCCCCC" label="ctrl_in_valid" rank="0"]
+     
+cluster_SEOperation_out_raw_result_is_a_byte [shape = "rectangle" style="filled" fillcolor="#E0FFFF" label="out_raw_result_is_a_byte" rank="1000"]
+     
+cluster_SEOperation_out_raw_result [shape = "rectangle" style="filled" fillcolor="#E0FFFF" label="out_raw_result" rank="1000"]
+     
+cluster_SEOperation_ctrl_out_valid [shape = "rectangle" style="filled" fillcolor="#E0FFFF" label="ctrl_out_valid" rank="1000"]
+     
+
+subgraph cluster_SEOperation_fu {
+  label="fu"
+  URL="FU.dot.svg"
+  bgcolor="#ADD8E6"
+  cluster_SEOperation_fu_in_fu_op [shape = "rectangle" style="filled" fillcolor="#CCCCCC" label="in_fu_op" rank="0"]
+     
+cluster_SEOperation_fu_in_B [shape = "rectangle" style="filled" fillcolor="#CCCCCC" label="in_B" rank="0"]
+     
+cluster_SEOperation_fu_in_A [shape = "rectangle" style="filled" fillcolor="#CCCCCC" label="in_A" rank="0"]
+     
+cluster_SEOperation_fu_ctrl_in_valid [shape = "rectangle" style="filled" fillcolor="#CCCCCC" label="ctrl_in_valid" rank="0"]
+     
+cluster_SEOperation_fu_out_out [shape = "rectangle" style="filled" fillcolor="#E0FFFF" label="out_out" rank="1000"]
+     
+cluster_SEOperation_fu_ctrl_out_valid [shape = "rectangle" style="filled" fillcolor="#E0FFFF" label="ctrl_out_valid" rank="1000"]
+     
+
+  
+  
+  
+}
+     
+
+subgraph cluster_SEOperation_decode {
+  label="decode"
+  URL="SEControl.dot.svg"
+  bgcolor="#ADD8E6"
+  cluster_SEOperation_decode_in_inst [shape = "rectangle" style="filled" fillcolor="#CCCCCC" label="in_inst" rank="0"]
+     
+cluster_SEOperation_decode_ctrl_in_valid [shape = "rectangle" style="filled" fillcolor="#CCCCCC" label="ctrl_in_valid" rank="0"]
+     
+cluster_SEOperation_decode_out_isCmp [shape = "rectangle" style="filled" fillcolor="#E0FFFF" label="out_isCmp" rank="1000"]
+     
+cluster_SEOperation_decode_out_cmov [shape = "rectangle" style="filled" fillcolor="#E0FFFF" label="out_cmov" rank="1000"]
+     
+cluster_SEOperation_decode_out_fu_op [shape = "rectangle" style="filled" fillcolor="#E0FFFF" label="out_fu_op" rank="1000"]
+     
+cluster_SEOperation_decode_ctrl_out_valid [shape = "rectangle" style="filled" fillcolor="#E0FFFF" label="ctrl_out_valid" rank="1000"]
+     
+
+  
+  
+  
+}
+     
+
+op_or_957 [shape = "plaintext" label=<
+<TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="4" BGCOLOR="#D8BFD8">
+  <TR>
+    <TD PORT="in1">&#x25cf;</TD>
+    <TD ROWSPAN="2" > or </TD>
+    <TD ROWSPAN="2" PORT="out">&#x25cf;</TD>
+  </TR>
+  <TR>
+    <TD PORT="in2">&#x25cf;</TD>
+  </TR>
+</TABLE>>];
+       
+
+op_and_958 [shape = "plaintext" label=<
+<TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="4" BGCOLOR="#D8BFD8">
+  <TR>
+    <TD PORT="in1">&#x25cf;</TD>
+    <TD ROWSPAN="2" > and </TD>
+    <TD ROWSPAN="2" PORT="out">&#x25cf;</TD>
+  </TR>
+  <TR>
+    <TD PORT="in2">&#x25cf;</TD>
+  </TR>
+</TABLE>>];
+       
+
+op_bits_959 [shape = "plaintext" label=<
+<TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="4" BGCOLOR="#D8BFD8">
+  <TR>
+    <TD PORT="in1">&#x25cf;</TD>
+    <TD ROWSPAN="2" > bits </TD>
+    <TD ROWSPAN="2" PORT="out">&#x25cf;</TD>
+  </TR>
+  <TR>
+    <TD>(63, 0)</TD>
+  </TR>
+</TABLE>>];
+       
+
+mux_235277810 [shape = "plaintext" label=<
+<TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="4" BGCOLOR="#AFEEEE">
+  <TR>
+    <TD PORT="in1">&#x25cf;</TD>
+    <TD ROWSPAN="2" PORT="select">a?</TD>
+    <TD ROWSPAN="2" PORT="out">&#x25cf;</TD>
+  </TR>
+  <TR>
+    <TD PORT="in2">&#x25cf;</TD>
+  </TR>
+</TABLE>>];
+       
+
+op_shl_960 [shape = "plaintext" label=<
+<TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="4" BGCOLOR="#D8BFD8">
+  <TR>
+    <TD PORT="in1">&#x25cf;</TD>
+    <TD ROWSPAN="2" > shl </TD>
+    <TD ROWSPAN="2" PORT="out">&#x25cf;</TD>
+  </TR>
+  <TR>
+    <TD>56</TD>
+  </TR>
+</TABLE>>];
+       
+
+op_pad_961 [shape = "plaintext" label=<
+<TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="4" BGCOLOR="#D8BFD8">
+  <TR>
+    <TD PORT="in1">&#x25cf;</TD>
+    <TD > pad </TD>
+    <TD PORT="out">&#x25cf;</TD>
+  </TR>
+</TABLE>>];
+       
+
+mux_814332865 [shape = "plaintext" label=<
+<TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="4" BGCOLOR="#AFEEEE">
+  <TR>
+    <TD PORT="in1">10</TD>
+    <TD ROWSPAN="2" PORT="select">a?</TD>
+    <TD ROWSPAN="2" PORT="out">&#x25cf;</TD>
+  </TR>
+  <TR>
+    <TD PORT="in2">&#x25cf;</TD>
+  </TR>
+</TABLE>>];
+       
+
+op_bits_962 [shape = "plaintext" label=<
+<TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="4" BGCOLOR="#D8BFD8">
+  <TR>
+    <TD PORT="in1">&#x25cf;</TD>
+    <TD ROWSPAN="2" > bits </TD>
+    <TD ROWSPAN="2" PORT="out">&#x25cf;</TD>
+  </TR>
+  <TR>
+    <TD>(127, 64)</TD>
+  </TR>
+</TABLE>>];
+       
+
+op_bits_963 [shape = "plaintext" label=<
+<TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="4" BGCOLOR="#D8BFD8">
+  <TR>
+    <TD PORT="in1">&#x25cf;</TD>
+    <TD ROWSPAN="2" > bits </TD>
+    <TD ROWSPAN="2" PORT="out">&#x25cf;</TD>
+  </TR>
+  <TR>
+    <TD>(127, 64)</TD>
+  </TR>
+</TABLE>>];
+       
+
+  cluster_SEOperation_fu_out_out -> op_shl_960:in1
+  op_shl_960:out -> mux_235277810:in1
+  cluster_SEOperation_decode_ctrl_out_valid -> cluster_SEOperation_fu_ctrl_in_valid
+  op_or_957:out -> cluster_SEOperation_out_raw_result_is_a_byte
+  op_bits_963:out -> cluster_SEOperation_fu_in_A
+  cluster_SEOperation_decode_out_fu_op -> mux_814332865:in2
+  mux_235277810:out -> op_bits_959:in1
+  cluster_SEOperation_fu_ctrl_out_valid -> cluster_SEOperation_ctrl_out_valid
+  cluster_SEOperation_in_op2_is_a_byte -> op_and_958:in2
+  cluster_SEOperation_in_op2_input -> op_bits_962:in1
+  cluster_SEOperation_decode_out_cmov -> mux_814332865:select
+  op_pad_961:out -> mux_235277810:in2
+  cluster_SEOperation_in_op1_input -> op_bits_963:in1
+  op_bits_962:out -> cluster_SEOperation_fu_in_B
+  cluster_SEOperation_in_op1_is_a_byte -> op_and_958:in1
+  op_bits_959:out -> cluster_SEOperation_out_raw_result
+  op_and_958:out -> op_or_957:in2
+  cluster_SEOperation_in_inst -> cluster_SEOperation_decode_in_inst
+  cluster_SEOperation_fu_out_out -> op_pad_961:in1
+  cluster_SEOperation_out_raw_result_is_a_byte -> mux_235277810:select
+  cluster_SEOperation_ctrl_in_valid -> cluster_SEOperation_decode_ctrl_in_valid
+  mux_814332865:out -> cluster_SEOperation_fu_in_fu_op
+  cluster_SEOperation_decode_out_isCmp -> op_or_957:in1
+  
+  
+}
+     
+}

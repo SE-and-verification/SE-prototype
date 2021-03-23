@@ -1,19 +1,4 @@
-[0m[[0m[31merror[0m] [0m[0m/home/chshibo/Documents/Projects/SE-prototype/src/main/scala/SE.scala:98:22: not found: value LFSR[0m
-[0m[[0m[31merror[0m] [0m[0m	val bit64_randnum = LFSR(64)[0m
-[0m[[0m[31merror[0m] [0m[0m	                    ^[0m
-[0m[[0m[31merror[0m] [0m[0m/home/chshibo/Documents/Projects/SE-prototype/src/main/scala/SE.scala:99:23: not found: value LFSR[0m
-[0m[[0m[31merror[0m] [0m[0m	val bit120_randnum = LFSR(120)[0m
-[0m[[0m[31merror[0m] [0m[0m	                     ^[0m
-[0m[[0m[31merror[0m] [0m[0m/home/chshibo/Documents/Projects/SE-prototype/src/main/scala/aes/aes/InvSubBytes.scala:5:8: not found: object lfsr[0m
-[0m[[0m[31merror[0m] [0m[0mimport lfsr.LFSR[0m
-[0m[[0m[31merror[0m] [0m[0m       ^[0m
-[0m[[0m[31merror[0m] [0m[0m/home/chshibo/Documents/Projects/SE-prototype/src/main/scala/aes/aes/InvSubBytes.scala:43:22: not found: value LFSR[0m
-[0m[[0m[31merror[0m] [0m[0m    val LFSRModule = LFSR()[0m
-[0m[[0m[31merror[0m] [0m[0m                     ^[0m
-[0m[[0m[31merror[0m] [0m[0m/home/chshibo/Documents/Projects/SE-prototype/src/main/scala/aes/aes/SubBytes.scala:5:8: not found: object lfsr[0m
-[0m[[0m[31merror[0m] [0m[0mimport lfsr.LFSR[0m
-[0m[[0m[31merror[0m] [0m[0m       ^[0m
-[0m[[0m[31merror[0m] [0m[0m/home/chshibo/Documents/Projects/SE-prototype/src/main/scala/aes/aes/SubBytes.scala:42:22: not found: value LFSR[0m
-[0m[[0m[31merror[0m] [0m[0m    val LFSRModule = LFSR()[0m
-[0m[[0m[31merror[0m] [0m[0m                     ^[0m
-[0m[[0m[31merror[0m] [0m[0m6 errors found[0m
+[0m[[0m[33mwarn[0m] [0m[0mthere was one deprecation warning (since 3.2.2)[0m
+[0m[[0m[33mwarn[0m] [0m[0mthere was one deprecation warning (since 3.2.4)[0m
+[0m[[0m[33mwarn[0m] [0m[0mthere were two deprecation warnings in total; re-run with -deprecation for details[0m
+[0m[[0m[33mwarn[0m] [0m[0mthree warnings found[0m
