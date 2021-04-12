@@ -7,7 +7,7 @@
 #ifndef _VSE__SYMS_H_
 #define _VSE__SYMS_H_  // guard
 
-#include "verilated_heavy.h"
+#include "verilated.h"
 
 // INCLUDE MODULE CLASSES
 #include "VSE.h"

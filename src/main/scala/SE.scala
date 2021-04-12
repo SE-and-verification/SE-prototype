@@ -110,7 +110,8 @@ class SE extends SimpleChiselModuleBase{
 
 	// Connect the output side
 	val output_buffer = RegEnable(aes_cipher.io.output_text.do_asUInt, aes_cipher.io.output_valid)
-	val output_valid = Reg(Bool())
+	val output_valid = RegInit(false.B)
+
 	when(aes_cipher.io.output_valid){
 		output_valid := true.B
 	}.elsewhen(ctrl.out.valid && ctrl.out.ready){

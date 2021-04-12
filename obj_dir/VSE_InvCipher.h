@@ -5,7 +5,7 @@
 #ifndef _VSE_INVCIPHER_H_
 #define _VSE_INVCIPHER_H_  // guard
 
-#include "verilated_heavy.h"
+#include "verilated.h"
 
 //==========
 
@@ -1121,11 +1121,11 @@ VL_MODULE(VSE_InvCipher) {
     void __Vconfigure(VSE__Syms* symsp, bool first);
     void _combo__TOP__SE__DOT__aes_invcipher__DOT__InvCipherModule1__7(VSE__Syms* __restrict vlSymsp);
     void _combo__TOP__SE__DOT__aes_invcipher__DOT__InvCipherModule2__8(VSE__Syms* __restrict vlSymsp);
-    void _combo__TOP__SE__DOT__aes_invcipher__DOT__InvCipherModule3__9(VSE__Syms* __restrict vlSymsp);
   private:
     void _ctor_var_reset() VL_ATTR_COLD;
   public:
-    void _sequent__TOP__SE__DOT__aes_invcipher__DOT__InvCipherModule1__1(VSE__Syms* __restrict vlSymsp);
+    void _sequent__TOP__SE__DOT__aes_invcipher__DOT__InvCipherModule1__2(VSE__Syms* __restrict vlSymsp);
+    void _sequent__TOP__SE__DOT__aes_invcipher__DOT__InvCipherModule3__1(VSE__Syms* __restrict vlSymsp);
     void _settle__TOP__SE__DOT__aes_invcipher__DOT__InvCipherModule1__4(VSE__Syms* __restrict vlSymsp) VL_ATTR_COLD;
     void _settle__TOP__SE__DOT__aes_invcipher__DOT__InvCipherModule2__5(VSE__Syms* __restrict vlSymsp) VL_ATTR_COLD;
     void _settle__TOP__SE__DOT__aes_invcipher__DOT__InvCipherModule3__6(VSE__Syms* __restrict vlSymsp) VL_ATTR_COLD;
