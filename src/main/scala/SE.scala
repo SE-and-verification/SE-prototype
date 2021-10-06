@@ -1,9 +1,7 @@
 package se
 
 import chisel3._
-import chisel3.simplechisel._
 import chisel3.util._
-import chisel3.simplechisel.util._
 import aes._
 import se.seoperation._
 import chisel3.util.random._
@@ -29,9 +27,8 @@ class SEOutput extends Bundle{
 	val result = UInt(128.W)
 }
 
-class SE extends SimpleChiselModuleBase{
+class SE extends Module{
 	// Define the input, output ports and the control bits
-	val ctrl = IO(new DecoupledIOCtrl(1,1))
 	val in = IO(Input(new SEInput))
 	val out = IO(Output(new SEOutput))
 
@@ -81,31 +78,28 @@ class SE extends SimpleChiselModuleBase{
 	}
 
 	// Feed the decrypted values to the seoperation module. Depends on whether the data is encrypted when it comes in.
-	seoperation.in.inst := inst_buffer.do_asUInt
-	seoperation.in.op1_input := Mux(op1_encrypted_buffer, op1_reverse.do_asUInt, op1_buffer.do_asUInt)
-	seoperation.in.op1_is_a_byte := op1_is_a_byte_buffer 
-	seoperation.in.op2_input := Mux(op2_encrypted_buffer, op2_reverse.do_asUInt, op2_buffer.do_asUInt)
-	seoperation.in.op2_is_a_byte := op2_is_a_byte_buffer 
-	seoperation.in.cond_input := cond_reverse.do_asUInt
-
-	seoperation.ctrl.in.valid := aes_invcipher.io.output_valid
-	seoperation.ctrl.out.ready := ctrl.out.ready
+	seoperation.io.inst := inst_buffer.do_asUInt
+	seoperation.io.op1_input := Mux(op1_encrypted_buffer, op1_reverse.do_asUInt, op1_buffer.do_asUInt)
+	seoperation.io.op1_is_a_byte := op1_is_a_byte_buffer 
+	seoperation.io.op2_input := Mux(op2_encrypted_buffer, op2_reverse.do_asUInt, op2_buffer.do_asUInt)
+	seoperation.io.op2_is_a_byte := op2_is_a_byte_buffer 
+	seoperation.io.cond_input := cond_reverse.do_asUInt
 
   // Once we receive the result form the seoperation, we latech the result first.
 	val result_valid_buffer = Reg(Bool())
-	result_valid_buffer := Mux(seoperation.ctrl.out.valid, true.B, Mux(ctrl.out.valid, false.B, result_valid_buffer))
+	result_valid_buffer := Mux(aes_invcipher.io.output_valid, true.B, Mux(ctrl.out.valid, false.B, result_valid_buffer))
 
 	// Pad with RNG
 	val bit64_randnum = LFSR(64)
 	val bit120_randnum = LFSR(120)
-	val byte_padded_result = Cat(seoperation.out.raw_result(63,56),bit120_randnum)
-	val padded_64_result = Cat(seoperation.out.raw_result,bit64_randnum)
-	val padded_result = Mux(seoperation.out.raw_result_is_a_byte,byte_padded_result, padded_64_result)
-	val result_buffer = RegEnable( padded_result, seoperation.ctrl.out.valid)
+	val byte_padded_result = Cat(seoperation.io.raw_result(63,56),bit120_randnum)
+	val padded_64_result = Cat(seoperation.io.raw_result,bit64_randnum)
+	val padded_result = Mux(seoperation.io.raw_result_is_a_byte,byte_padded_result, padded_64_result)
+	val result_buffer = RegEnable( padded_result, aes_invcipher.io.output_valid)
 
 	// Connect the cipher
 	aes_cipher.io.input_text.connectFromBits(Mux(result_valid_buffer, result_buffer, padded_result))
-	aes_cipher.io.input_valid := seoperation.ctrl.out.valid
+	aes_cipher.io.input_valid := aes_invcipher.io.output_valid
 	aes_cipher.io.input_roundKeys := key
 
 	// Connect the output side

@@ -2,8 +2,6 @@ package se.seoperation
 
 import chisel3._
 import chisel3.util._
-import chisel3.simplechisel._
-import chisel3.simplechisel.util._
 
 class  RegFileInputType extends Bundle{
     val raddr1 = UInt(5.W)
@@ -20,7 +18,7 @@ class RegFileOutputType extends Bundle{
 }
 
 
-class RegFile extends SimpleChiselModule {
+class RegFile extends Module {
 
   val in = IO(Input(new RegFileInputType))
   val out = IO(Output(new RegFileOutputType))

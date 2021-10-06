@@ -65,7 +65,7 @@ VL_MODULE(VSE) {
         CData/*0:0*/ SE__DOT___GEN_11;
         CData/*4:0*/ SE__DOT__seoperation__DOT__fu_in_fu_op;
         CData/*0:0*/ SE__DOT__seoperation__DOT__fu__DOT___T_7;
-        CData/*0:0*/ SE__DOT__seoperation__DOT__fu__DOT___T_159;
+        CData/*0:0*/ SE__DOT__seoperation__DOT__fu__DOT___T_155;
         CData/*0:0*/ SE__DOT__seoperation__DOT__fu__DOT___GEN_6;
         CData/*4:0*/ SE__DOT__seoperation__DOT__decode__DOT___T_64;
         CData/*3:0*/ SE__DOT__aes_invcipher__DOT__address;
@@ -928,8 +928,7 @@ VL_MODULE(VSE) {
         WData/*127:0*/ SE__DOT__output_buffer[4];
         WData/*119:0*/ SE__DOT__seoperation__DOT___T_7[4];
         WData/*64:0*/ SE__DOT__seoperation__DOT__fu__DOT___T_77[3];
-        WData/*127:0*/ SE__DOT__seoperation__DOT__fu__DOT___GEN_15[4];
-        WData/*127:0*/ SE__DOT__seoperation__DOT__fu__DOT___GEN_19[4];
+        QData/*63:0*/ SE__DOT__seoperation__DOT__fu_out_out;
         QData/*63:0*/ SE__DOT__seoperation__DOT__fu__DOT__sum;
         QData/*63:0*/ SE__DOT__seoperation__DOT__fu__DOT___T_22;
         QData/*63:0*/ SE__DOT__seoperation__DOT__fu__DOT___T_32;
@@ -942,7 +941,8 @@ VL_MODULE(VSE) {
         QData/*63:0*/ SE__DOT__seoperation__DOT__fu__DOT___T_106;
         QData/*63:0*/ SE__DOT__seoperation__DOT__fu__DOT___T_116;
         QData/*63:0*/ SE__DOT__seoperation__DOT__fu__DOT___T_126;
-        QData/*63:0*/ SE__DOT__seoperation__DOT__fu__DOT___T_167;
+        QData/*63:0*/ SE__DOT__seoperation__DOT__fu__DOT___T_163;
+        QData/*63:0*/ SE__DOT__seoperation__DOT__fu__DOT___GEN_15;
     };
     
     // LOCAL VARIABLES

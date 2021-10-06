@@ -1119,8 +1119,8 @@ VL_MODULE(VSE_InvCipher) {
     
     // INTERNAL METHODS
     void __Vconfigure(VSE__Syms* symsp, bool first);
-    void _combo__TOP__SE__DOT__aes_invcipher__DOT__InvCipherModule1__7(VSE__Syms* __restrict vlSymsp);
-    void _combo__TOP__SE__DOT__aes_invcipher__DOT__InvCipherModule2__8(VSE__Syms* __restrict vlSymsp);
+    void _combo__TOP__SE__DOT__aes_invcipher__DOT__InvCipherModule1__8(VSE__Syms* __restrict vlSymsp);
+    void _combo__TOP__SE__DOT__aes_invcipher__DOT__InvCipherModule2__7(VSE__Syms* __restrict vlSymsp);
   private:
     void _ctor_var_reset() VL_ATTR_COLD;
   public:
