@@ -9,8 +9,12 @@ make
 ## Make tiny crypt
 
 ```bash
-cd functional-library/src/ciphers/aes/tinyCrypt_without_Git
+pushd functional-library/src/ciphers/aes/tinyCrypt_without_Git
 make
+popd
+pushd functional-library/src/rng/mersenne-twister-1
+make
+popd
 ```
 
 ## Compile abd run test casts
