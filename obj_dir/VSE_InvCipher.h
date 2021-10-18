@@ -19,40 +19,6 @@ VL_MODULE(VSE_InvCipher) {
     // PORTS
     VL_IN8(clock,0,0);
     VL_IN8(reset,0,0);
-    VL_OUT8(io_state_out_valid,0,0);
-    VL_OUT8(io_state_out_0,7,0);
-    VL_OUT8(io_state_out_1,7,0);
-    VL_OUT8(io_state_out_2,7,0);
-    VL_OUT8(io_state_out_3,7,0);
-    VL_OUT8(io_state_out_4,7,0);
-    VL_OUT8(io_state_out_5,7,0);
-    VL_OUT8(io_state_out_6,7,0);
-    VL_OUT8(io_state_out_7,7,0);
-    VL_OUT8(io_state_out_8,7,0);
-    VL_OUT8(io_state_out_9,7,0);
-    VL_OUT8(io_state_out_10,7,0);
-    VL_OUT8(io_state_out_11,7,0);
-    VL_OUT8(io_state_out_12,7,0);
-    VL_OUT8(io_state_out_13,7,0);
-    VL_OUT8(io_state_out_14,7,0);
-    VL_OUT8(io_state_out_15,7,0);
-    VL_IN8(io_start,0,0);
-    VL_IN8(io_roundKey_0,7,0);
-    VL_IN8(io_roundKey_1,7,0);
-    VL_IN8(io_roundKey_2,7,0);
-    VL_IN8(io_roundKey_3,7,0);
-    VL_IN8(io_roundKey_4,7,0);
-    VL_IN8(io_roundKey_5,7,0);
-    VL_IN8(io_roundKey_6,7,0);
-    VL_IN8(io_roundKey_7,7,0);
-    VL_IN8(io_roundKey_8,7,0);
-    VL_IN8(io_roundKey_9,7,0);
-    VL_IN8(io_roundKey_10,7,0);
-    VL_IN8(io_roundKey_11,7,0);
-    VL_IN8(io_roundKey_12,7,0);
-    VL_IN8(io_roundKey_13,7,0);
-    VL_IN8(io_roundKey_14,7,0);
-    VL_IN8(io_roundKey_15,7,0);
     VL_IN8(io_ciphertext_0,7,0);
     VL_IN8(io_ciphertext_1,7,0);
     VL_IN8(io_ciphertext_2,7,0);
@@ -69,6 +35,40 @@ VL_MODULE(VSE_InvCipher) {
     VL_IN8(io_ciphertext_13,7,0);
     VL_IN8(io_ciphertext_14,7,0);
     VL_IN8(io_ciphertext_15,7,0);
+    VL_IN8(io_roundKey_0,7,0);
+    VL_IN8(io_roundKey_1,7,0);
+    VL_IN8(io_roundKey_2,7,0);
+    VL_IN8(io_roundKey_3,7,0);
+    VL_IN8(io_roundKey_4,7,0);
+    VL_IN8(io_roundKey_5,7,0);
+    VL_IN8(io_roundKey_6,7,0);
+    VL_IN8(io_roundKey_7,7,0);
+    VL_IN8(io_roundKey_8,7,0);
+    VL_IN8(io_roundKey_9,7,0);
+    VL_IN8(io_roundKey_10,7,0);
+    VL_IN8(io_roundKey_11,7,0);
+    VL_IN8(io_roundKey_12,7,0);
+    VL_IN8(io_roundKey_13,7,0);
+    VL_IN8(io_roundKey_14,7,0);
+    VL_IN8(io_roundKey_15,7,0);
+    VL_IN8(io_start,0,0);
+    VL_OUT8(io_state_out_0,7,0);
+    VL_OUT8(io_state_out_1,7,0);
+    VL_OUT8(io_state_out_2,7,0);
+    VL_OUT8(io_state_out_3,7,0);
+    VL_OUT8(io_state_out_4,7,0);
+    VL_OUT8(io_state_out_5,7,0);
+    VL_OUT8(io_state_out_6,7,0);
+    VL_OUT8(io_state_out_7,7,0);
+    VL_OUT8(io_state_out_8,7,0);
+    VL_OUT8(io_state_out_9,7,0);
+    VL_OUT8(io_state_out_10,7,0);
+    VL_OUT8(io_state_out_11,7,0);
+    VL_OUT8(io_state_out_12,7,0);
+    VL_OUT8(io_state_out_13,7,0);
+    VL_OUT8(io_state_out_14,7,0);
+    VL_OUT8(io_state_out_15,7,0);
+    VL_OUT8(io_state_out_valid,0,0);
     
     // LOCAL SIGNALS
     // Anonymous structures to workaround compiler member-count bugs
@@ -107,12 +107,8 @@ VL_MODULE(VSE_InvCipher) {
         CData/*7:0*/ __PVT__state_15;
         CData/*3:0*/ __PVT__rounds;
         CData/*1:0*/ __PVT__STM;
-        CData/*0:0*/ __PVT___T;
-        CData/*0:0*/ __PVT___T_1;
         CData/*3:0*/ __PVT___T_3;
-        CData/*0:0*/ __PVT___T_4;
         CData/*1:0*/ __PVT___GEN_1;
-        CData/*0:0*/ __PVT___T_13;
         CData/*7:0*/ __PVT__InvSubBytesModule__DOT___GEN_20;
         CData/*7:0*/ __PVT__InvSubBytesModule__DOT___GEN_41;
         CData/*7:0*/ __PVT__InvSubBytesModule__DOT___GEN_62;
@@ -137,12 +133,12 @@ VL_MODULE(VSE_InvCipher) {
         CData/*7:0*/ __PVT__InvSubBytesModule__DOT___GEN_465;
         CData/*7:0*/ __PVT__InvSubBytesModule__DOT___GEN_486;
         CData/*7:0*/ __PVT__InvSubBytesModule__DOT___GEN_507;
-    };
-    struct {
         CData/*7:0*/ __PVT__InvSubBytesModule__DOT___GEN_532;
         CData/*7:0*/ __PVT__InvSubBytesModule__DOT___GEN_553;
         CData/*7:0*/ __PVT__InvSubBytesModule__DOT___GEN_574;
         CData/*7:0*/ __PVT__InvSubBytesModule__DOT___GEN_595;
+    };
+    struct {
         CData/*7:0*/ __PVT__InvSubBytesModule__DOT___GEN_616;
         CData/*7:0*/ __PVT__InvSubBytesModule__DOT___GEN_637;
         CData/*7:0*/ __PVT__InvSubBytesModule__DOT___GEN_658;
@@ -203,12 +199,12 @@ VL_MODULE(VSE_InvCipher) {
         CData/*7:0*/ __PVT__InvSubBytesModule__DOT___GEN_1833;
         CData/*7:0*/ __PVT__InvSubBytesModule__DOT___GEN_1854;
         CData/*7:0*/ __PVT__InvSubBytesModule__DOT___GEN_1875;
-    };
-    struct {
         CData/*7:0*/ __PVT__InvSubBytesModule__DOT___GEN_1896;
         CData/*7:0*/ __PVT__InvSubBytesModule__DOT___GEN_1917;
         CData/*7:0*/ __PVT__InvSubBytesModule__DOT___GEN_1938;
         CData/*7:0*/ __PVT__InvSubBytesModule__DOT___GEN_1959;
+    };
+    struct {
         CData/*7:0*/ __PVT__InvSubBytesModule__DOT___GEN_1980;
         CData/*7:0*/ __PVT__InvSubBytesModule__DOT___GEN_2001;
         CData/*7:0*/ __PVT__InvSubBytesModule__DOT___GEN_2022;
@@ -269,12 +265,12 @@ VL_MODULE(VSE_InvCipher) {
         CData/*7:0*/ __PVT__InvSubBytesModule__DOT___GEN_3197;
         CData/*7:0*/ __PVT__InvSubBytesModule__DOT___GEN_3218;
         CData/*7:0*/ __PVT__InvSubBytesModule__DOT___GEN_3239;
-    };
-    struct {
         CData/*7:0*/ __PVT__InvSubBytesModule__DOT___GEN_3260;
         CData/*7:0*/ __PVT__InvSubBytesModule__DOT___GEN_3281;
         CData/*7:0*/ __PVT__InvSubBytesModule__DOT___GEN_3302;
         CData/*7:0*/ __PVT__InvSubBytesModule__DOT___GEN_3323;
+    };
+    struct {
         CData/*7:0*/ __PVT__InvSubBytesModule__DOT___GEN_3348;
         CData/*7:0*/ __PVT__InvSubBytesModule__DOT___GEN_3369;
         CData/*7:0*/ __PVT__InvSubBytesModule__DOT___GEN_3390;
@@ -335,12 +331,12 @@ VL_MODULE(VSE_InvCipher) {
         CData/*7:0*/ __PVT__InvMixColumnsModule__DOT___GEN_465;
         CData/*7:0*/ __PVT__InvMixColumnsModule__DOT___GEN_486;
         CData/*7:0*/ __PVT__InvMixColumnsModule__DOT___GEN_507;
-    };
-    struct {
         CData/*7:0*/ __PVT__InvMixColumnsModule__DOT___GEN_532;
         CData/*7:0*/ __PVT__InvMixColumnsModule__DOT___GEN_553;
         CData/*7:0*/ __PVT__InvMixColumnsModule__DOT___GEN_574;
         CData/*7:0*/ __PVT__InvMixColumnsModule__DOT___GEN_595;
+    };
+    struct {
         CData/*7:0*/ __PVT__InvMixColumnsModule__DOT___GEN_616;
         CData/*7:0*/ __PVT__InvMixColumnsModule__DOT___GEN_637;
         CData/*7:0*/ __PVT__InvMixColumnsModule__DOT___GEN_658;
@@ -401,12 +397,12 @@ VL_MODULE(VSE_InvCipher) {
         CData/*7:0*/ __PVT__InvMixColumnsModule__DOT___GEN_1833;
         CData/*7:0*/ __PVT__InvMixColumnsModule__DOT___GEN_1854;
         CData/*7:0*/ __PVT__InvMixColumnsModule__DOT___GEN_1875;
-    };
-    struct {
         CData/*7:0*/ __PVT__InvMixColumnsModule__DOT___GEN_1896;
         CData/*7:0*/ __PVT__InvMixColumnsModule__DOT___GEN_1917;
         CData/*7:0*/ __PVT__InvMixColumnsModule__DOT___GEN_1938;
         CData/*7:0*/ __PVT__InvMixColumnsModule__DOT___GEN_1959;
+    };
+    struct {
         CData/*7:0*/ __PVT__InvMixColumnsModule__DOT___GEN_1980;
         CData/*7:0*/ __PVT__InvMixColumnsModule__DOT___GEN_2001;
         CData/*7:0*/ __PVT__InvMixColumnsModule__DOT___GEN_2022;
@@ -467,12 +463,12 @@ VL_MODULE(VSE_InvCipher) {
         CData/*7:0*/ __PVT__InvMixColumnsModule__DOT___GEN_3197;
         CData/*7:0*/ __PVT__InvMixColumnsModule__DOT___GEN_3218;
         CData/*7:0*/ __PVT__InvMixColumnsModule__DOT___GEN_3239;
-    };
-    struct {
         CData/*7:0*/ __PVT__InvMixColumnsModule__DOT___GEN_3260;
         CData/*7:0*/ __PVT__InvMixColumnsModule__DOT___GEN_3281;
         CData/*7:0*/ __PVT__InvMixColumnsModule__DOT___GEN_3302;
         CData/*7:0*/ __PVT__InvMixColumnsModule__DOT___GEN_3323;
+    };
+    struct {
         CData/*7:0*/ __PVT__InvMixColumnsModule__DOT___GEN_3348;
         CData/*7:0*/ __PVT__InvMixColumnsModule__DOT___GEN_3369;
         CData/*7:0*/ __PVT__InvMixColumnsModule__DOT___GEN_3390;
@@ -533,12 +529,12 @@ VL_MODULE(VSE_InvCipher) {
         CData/*7:0*/ __PVT__InvMixColumnsModule__DOT___GEN_4561;
         CData/*7:0*/ __PVT__InvMixColumnsModule__DOT___GEN_4582;
         CData/*7:0*/ __PVT__InvMixColumnsModule__DOT___GEN_4603;
-    };
-    struct {
         CData/*7:0*/ __PVT__InvMixColumnsModule__DOT___GEN_4628;
         CData/*7:0*/ __PVT__InvMixColumnsModule__DOT___GEN_4649;
         CData/*7:0*/ __PVT__InvMixColumnsModule__DOT___GEN_4670;
         CData/*7:0*/ __PVT__InvMixColumnsModule__DOT___GEN_4691;
+    };
+    struct {
         CData/*7:0*/ __PVT__InvMixColumnsModule__DOT___GEN_4712;
         CData/*7:0*/ __PVT__InvMixColumnsModule__DOT___GEN_4733;
         CData/*7:0*/ __PVT__InvMixColumnsModule__DOT___GEN_4754;
@@ -599,12 +595,12 @@ VL_MODULE(VSE_InvCipher) {
         CData/*7:0*/ __PVT__InvMixColumnsModule__DOT___GEN_5929;
         CData/*7:0*/ __PVT__InvMixColumnsModule__DOT___GEN_5950;
         CData/*7:0*/ __PVT__InvMixColumnsModule__DOT___GEN_5971;
-    };
-    struct {
         CData/*7:0*/ __PVT__InvMixColumnsModule__DOT___GEN_5992;
         CData/*7:0*/ __PVT__InvMixColumnsModule__DOT___GEN_6013;
         CData/*7:0*/ __PVT__InvMixColumnsModule__DOT___GEN_6034;
         CData/*7:0*/ __PVT__InvMixColumnsModule__DOT___GEN_6055;
+    };
+    struct {
         CData/*7:0*/ __PVT__InvMixColumnsModule__DOT___GEN_6076;
         CData/*7:0*/ __PVT__InvMixColumnsModule__DOT___GEN_6097;
         CData/*7:0*/ __PVT__InvMixColumnsModule__DOT___GEN_6118;
@@ -665,12 +661,12 @@ VL_MODULE(VSE_InvCipher) {
         CData/*7:0*/ __PVT__InvMixColumnsModule__DOT___GEN_7293;
         CData/*7:0*/ __PVT__InvMixColumnsModule__DOT___GEN_7314;
         CData/*7:0*/ __PVT__InvMixColumnsModule__DOT___GEN_7335;
-    };
-    struct {
         CData/*7:0*/ __PVT__InvMixColumnsModule__DOT___GEN_7356;
         CData/*7:0*/ __PVT__InvMixColumnsModule__DOT___GEN_7377;
         CData/*7:0*/ __PVT__InvMixColumnsModule__DOT___GEN_7398;
         CData/*7:0*/ __PVT__InvMixColumnsModule__DOT___GEN_7419;
+    };
+    struct {
         CData/*7:0*/ __PVT__InvMixColumnsModule__DOT___GEN_7444;
         CData/*7:0*/ __PVT__InvMixColumnsModule__DOT___GEN_7465;
         CData/*7:0*/ __PVT__InvMixColumnsModule__DOT___GEN_7486;
@@ -731,12 +727,12 @@ VL_MODULE(VSE_InvCipher) {
         CData/*7:0*/ __PVT__InvMixColumnsModule__DOT___GEN_8657;
         CData/*7:0*/ __PVT__InvMixColumnsModule__DOT___GEN_8678;
         CData/*7:0*/ __PVT__InvMixColumnsModule__DOT___GEN_8699;
-    };
-    struct {
         CData/*7:0*/ __PVT__InvMixColumnsModule__DOT___GEN_8724;
         CData/*7:0*/ __PVT__InvMixColumnsModule__DOT___GEN_8745;
         CData/*7:0*/ __PVT__InvMixColumnsModule__DOT___GEN_8766;
         CData/*7:0*/ __PVT__InvMixColumnsModule__DOT___GEN_8787;
+    };
+    struct {
         CData/*7:0*/ __PVT__InvMixColumnsModule__DOT___GEN_8808;
         CData/*7:0*/ __PVT__InvMixColumnsModule__DOT___GEN_8829;
         CData/*7:0*/ __PVT__InvMixColumnsModule__DOT___GEN_8850;
@@ -797,12 +793,12 @@ VL_MODULE(VSE_InvCipher) {
         CData/*7:0*/ __PVT__InvMixColumnsModule__DOT___GEN_10025;
         CData/*7:0*/ __PVT__InvMixColumnsModule__DOT___GEN_10046;
         CData/*7:0*/ __PVT__InvMixColumnsModule__DOT___GEN_10067;
-    };
-    struct {
         CData/*7:0*/ __PVT__InvMixColumnsModule__DOT___GEN_10088;
         CData/*7:0*/ __PVT__InvMixColumnsModule__DOT___GEN_10109;
         CData/*7:0*/ __PVT__InvMixColumnsModule__DOT___GEN_10130;
         CData/*7:0*/ __PVT__InvMixColumnsModule__DOT___GEN_10151;
+    };
+    struct {
         CData/*7:0*/ __PVT__InvMixColumnsModule__DOT___GEN_10172;
         CData/*7:0*/ __PVT__InvMixColumnsModule__DOT___GEN_10193;
         CData/*7:0*/ __PVT__InvMixColumnsModule__DOT___GEN_10214;
@@ -863,12 +859,12 @@ VL_MODULE(VSE_InvCipher) {
         CData/*7:0*/ __PVT__InvMixColumnsModule__DOT___GEN_11389;
         CData/*7:0*/ __PVT__InvMixColumnsModule__DOT___GEN_11410;
         CData/*7:0*/ __PVT__InvMixColumnsModule__DOT___GEN_11431;
-    };
-    struct {
         CData/*7:0*/ __PVT__InvMixColumnsModule__DOT___GEN_11452;
         CData/*7:0*/ __PVT__InvMixColumnsModule__DOT___GEN_11473;
         CData/*7:0*/ __PVT__InvMixColumnsModule__DOT___GEN_11494;
         CData/*7:0*/ __PVT__InvMixColumnsModule__DOT___GEN_11515;
+    };
+    struct {
         CData/*7:0*/ __PVT__InvMixColumnsModule__DOT___GEN_11540;
         CData/*7:0*/ __PVT__InvMixColumnsModule__DOT___GEN_11561;
         CData/*7:0*/ __PVT__InvMixColumnsModule__DOT___GEN_11582;
@@ -929,12 +925,12 @@ VL_MODULE(VSE_InvCipher) {
         CData/*7:0*/ __PVT__InvMixColumnsModule__DOT___GEN_12753;
         CData/*7:0*/ __PVT__InvMixColumnsModule__DOT___GEN_12774;
         CData/*7:0*/ __PVT__InvMixColumnsModule__DOT___GEN_12795;
-    };
-    struct {
         CData/*7:0*/ __PVT__InvMixColumnsModule__DOT___GEN_12820;
         CData/*7:0*/ __PVT__InvMixColumnsModule__DOT___GEN_12841;
         CData/*7:0*/ __PVT__InvMixColumnsModule__DOT___GEN_12862;
         CData/*7:0*/ __PVT__InvMixColumnsModule__DOT___GEN_12883;
+    };
+    struct {
         CData/*7:0*/ __PVT__InvMixColumnsModule__DOT___GEN_12904;
         CData/*7:0*/ __PVT__InvMixColumnsModule__DOT___GEN_12925;
         CData/*7:0*/ __PVT__InvMixColumnsModule__DOT___GEN_12946;
@@ -995,12 +991,12 @@ VL_MODULE(VSE_InvCipher) {
         CData/*7:0*/ __PVT__InvMixColumnsModule__DOT___GEN_14121;
         CData/*7:0*/ __PVT__InvMixColumnsModule__DOT___GEN_14142;
         CData/*7:0*/ __PVT__InvMixColumnsModule__DOT___GEN_14163;
-    };
-    struct {
         CData/*7:0*/ __PVT__InvMixColumnsModule__DOT___GEN_14184;
         CData/*7:0*/ __PVT__InvMixColumnsModule__DOT___GEN_14205;
         CData/*7:0*/ __PVT__InvMixColumnsModule__DOT___GEN_14226;
         CData/*7:0*/ __PVT__InvMixColumnsModule__DOT___GEN_14247;
+    };
+    struct {
         CData/*7:0*/ __PVT__InvMixColumnsModule__DOT___GEN_14268;
         CData/*7:0*/ __PVT__InvMixColumnsModule__DOT___GEN_14289;
         CData/*7:0*/ __PVT__InvMixColumnsModule__DOT___GEN_14310;
@@ -1061,12 +1057,12 @@ VL_MODULE(VSE_InvCipher) {
         CData/*7:0*/ __PVT__InvMixColumnsModule__DOT___GEN_15485;
         CData/*7:0*/ __PVT__InvMixColumnsModule__DOT___GEN_15506;
         CData/*7:0*/ __PVT__InvMixColumnsModule__DOT___GEN_15527;
-    };
-    struct {
         CData/*7:0*/ __PVT__InvMixColumnsModule__DOT___GEN_15548;
         CData/*7:0*/ __PVT__InvMixColumnsModule__DOT___GEN_15569;
         CData/*7:0*/ __PVT__InvMixColumnsModule__DOT___GEN_15590;
         CData/*7:0*/ __PVT__InvMixColumnsModule__DOT___GEN_15611;
+    };
+    struct {
         CData/*7:0*/ __PVT__InvMixColumnsModule__DOT___GEN_15636;
         CData/*7:0*/ __PVT__InvMixColumnsModule__DOT___GEN_15657;
         CData/*7:0*/ __PVT__InvMixColumnsModule__DOT___GEN_15678;
@@ -1105,6 +1101,9 @@ VL_MODULE(VSE_InvCipher) {
         CData/*7:0*/ __PVT__InvMixColumnsModule__DOT___GEN_16379;
     };
     
+    // LOCAL VARIABLES
+    CData/*1:0*/ __Vdly__STM;
+    
     // INTERNAL VARIABLES
   private:
     VSE__Syms* __VlSymsp;  // Symbol table
@@ -1119,12 +1118,11 @@ VL_MODULE(VSE_InvCipher) {
     
     // INTERNAL METHODS
     void __Vconfigure(VSE__Syms* symsp, bool first);
-    void _combo__TOP__SE__DOT__aes_invcipher__DOT__InvCipherModule1__8(VSE__Syms* __restrict vlSymsp);
-    void _combo__TOP__SE__DOT__aes_invcipher__DOT__InvCipherModule2__7(VSE__Syms* __restrict vlSymsp);
   private:
     void _ctor_var_reset() VL_ATTR_COLD;
   public:
     void _sequent__TOP__SE__DOT__aes_invcipher__DOT__InvCipherModule1__2(VSE__Syms* __restrict vlSymsp);
+    void _sequent__TOP__SE__DOT__aes_invcipher__DOT__InvCipherModule2__3(VSE__Syms* __restrict vlSymsp);
     void _sequent__TOP__SE__DOT__aes_invcipher__DOT__InvCipherModule3__1(VSE__Syms* __restrict vlSymsp);
     void _settle__TOP__SE__DOT__aes_invcipher__DOT__InvCipherModule1__4(VSE__Syms* __restrict vlSymsp) VL_ATTR_COLD;
     void _settle__TOP__SE__DOT__aes_invcipher__DOT__InvCipherModule2__5(VSE__Syms* __restrict vlSymsp) VL_ATTR_COLD;

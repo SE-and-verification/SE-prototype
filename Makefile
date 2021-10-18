@@ -16,8 +16,11 @@ VSE.o: verilator_generate
 verilator_generate: generate
 	verilator -Wno-fatal -cc $(gen_dir)/SE.v
 
+# generate:
+# 	$(SBT) $(SBT_FLAGS) 'run -td $(gen_dir) -foaf se'
+
 generate:
-	$(SBT) $(SBT_FLAGS) 'run -td $(gen_dir) -foaf se'
+	$(SBT) $(SBT_FLAGS) 'run $(gen_dir)'
 
 sbt:
 	$(SBT) $(SBT_FLAGS)

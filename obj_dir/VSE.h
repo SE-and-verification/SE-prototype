@@ -32,64 +32,67 @@ VL_MODULE(VSE) {
     // propagate new values into/out from the Verilated model.
     VL_IN8(clock,0,0);
     VL_IN8(reset,0,0);
-    VL_IN8(ctrl_out_ready,0,0);
-    VL_OUT8(ctrl_out_valid,0,0);
-    VL_OUT8(ctrl_in_ready,0,0);
-    VL_IN8(ctrl_in_valid,0,0);
-    VL_IN8(in_op2_is_a_byte,0,0);
-    VL_IN8(in_op2_encrypted,0,0);
-    VL_IN8(in_op1_is_a_byte,0,0);
-    VL_IN8(in_op1_encrypted,0,0);
-    VL_IN8(in_inst,7,0);
-    VL_INW(in_cond,127,0,4);
-    VL_INW(in_op2,127,0,4);
-    VL_INW(in_op1,127,0,4);
-    VL_OUTW(out_result,127,0,4);
+    VL_IN8(io_in_inst,7,0);
+    VL_IN8(io_in_valid,0,0);
+    VL_OUT8(io_in_ready,0,0);
+    VL_OUT8(io_out_valid,0,0);
+    VL_IN8(io_out_ready,0,0);
+    VL_INW(io_in_op1,127,0,4);
+    VL_INW(io_in_op2,127,0,4);
+    VL_INW(io_in_cond,127,0,4);
+    VL_OUTW(io_out_result,127,0,4);
     
     // LOCAL SIGNALS
     // Internals; generally not touched by application code
     // Anonymous structures to workaround compiler member-count bugs
     struct {
-        CData/*0:0*/ SE__DOT__seoperation_out_raw_result_is_a_byte;
         CData/*0:0*/ SE__DOT__aes_invcipher_io_output_valid;
         CData/*7:0*/ SE__DOT__inst_buffer;
-        CData/*0:0*/ SE__DOT__op1_encrypted_buffer;
-        CData/*0:0*/ SE__DOT__op1_is_a_byte_buffer;
-        CData/*0:0*/ SE__DOT__op2_encrypted_buffer;
-        CData/*0:0*/ SE__DOT__op2_is_a_byte_buffer;
         CData/*0:0*/ SE__DOT__valid_buffer;
-        CData/*0:0*/ SE__DOT___T;
+        CData/*0:0*/ SE__DOT___T_1;
         CData/*0:0*/ SE__DOT__result_valid_buffer;
         CData/*0:0*/ SE__DOT___T_59;
         CData/*0:0*/ SE__DOT__output_valid;
-        CData/*0:0*/ SE__DOT___GEN_11;
-        CData/*4:0*/ SE__DOT__seoperation__DOT__fu_in_fu_op;
-        CData/*0:0*/ SE__DOT__seoperation__DOT__fu__DOT___T_7;
-        CData/*0:0*/ SE__DOT__seoperation__DOT__fu__DOT___T_155;
-        CData/*0:0*/ SE__DOT__seoperation__DOT__fu__DOT___GEN_6;
-        CData/*4:0*/ SE__DOT__seoperation__DOT__decode__DOT___T_64;
+        CData/*0:0*/ SE__DOT___GEN_7;
+        CData/*2:0*/ SE__DOT__seoperation__DOT__decode_io_fu_op;
+        CData/*1:0*/ SE__DOT__seoperation__DOT__decode_io_fu_type;
+        CData/*0:0*/ SE__DOT__seoperation__DOT__decode_io_signed;
         CData/*3:0*/ SE__DOT__aes_invcipher__DOT__address;
-        CData/*7:0*/ SE__DOT__aes_invcipher__DOT___GEN_144;
-        CData/*7:0*/ SE__DOT__aes_invcipher__DOT___GEN_145;
-        CData/*7:0*/ SE__DOT__aes_invcipher__DOT___GEN_146;
-        CData/*7:0*/ SE__DOT__aes_invcipher__DOT___GEN_147;
-        CData/*7:0*/ SE__DOT__aes_invcipher__DOT___GEN_148;
-        CData/*7:0*/ SE__DOT__aes_invcipher__DOT___GEN_149;
-        CData/*7:0*/ SE__DOT__aes_invcipher__DOT___GEN_150;
-        CData/*7:0*/ SE__DOT__aes_invcipher__DOT___GEN_151;
+        CData/*7:0*/ SE__DOT__aes_invcipher__DOT___GEN_9;
+        CData/*7:0*/ SE__DOT__aes_invcipher__DOT___GEN_20;
+        CData/*7:0*/ SE__DOT__aes_invcipher__DOT___GEN_31;
+        CData/*7:0*/ SE__DOT__aes_invcipher__DOT___GEN_42;
+        CData/*7:0*/ SE__DOT__aes_invcipher__DOT___GEN_53;
+        CData/*7:0*/ SE__DOT__aes_invcipher__DOT___GEN_64;
+        CData/*7:0*/ SE__DOT__aes_invcipher__DOT___GEN_75;
+        CData/*7:0*/ SE__DOT__aes_invcipher__DOT___GEN_86;
+        CData/*7:0*/ SE__DOT__aes_invcipher__DOT___GEN_97;
+        CData/*7:0*/ SE__DOT__aes_invcipher__DOT___GEN_108;
+        CData/*7:0*/ SE__DOT__aes_invcipher__DOT___GEN_119;
+        CData/*7:0*/ SE__DOT__aes_invcipher__DOT___GEN_130;
+        CData/*7:0*/ SE__DOT__aes_invcipher__DOT___GEN_141;
         CData/*7:0*/ SE__DOT__aes_invcipher__DOT___GEN_152;
-        CData/*7:0*/ SE__DOT__aes_invcipher__DOT___GEN_153;
-        CData/*7:0*/ SE__DOT__aes_invcipher__DOT___GEN_154;
-        CData/*7:0*/ SE__DOT__aes_invcipher__DOT___GEN_155;
-        CData/*7:0*/ SE__DOT__aes_invcipher__DOT___GEN_156;
-        CData/*7:0*/ SE__DOT__aes_invcipher__DOT___GEN_157;
-        CData/*7:0*/ SE__DOT__aes_invcipher__DOT___GEN_158;
-        CData/*7:0*/ SE__DOT__aes_invcipher__DOT___GEN_159;
-        CData/*0:0*/ SE__DOT__aes_invcipher__DOT___T;
+        CData/*7:0*/ SE__DOT__aes_invcipher__DOT___GEN_163;
+        CData/*7:0*/ SE__DOT__aes_invcipher__DOT___GEN_174;
         CData/*3:0*/ SE__DOT__aes_invcipher__DOT___T_2;
         CData/*3:0*/ SE__DOT__aes_cipher__DOT__address;
-        CData/*0:0*/ SE__DOT__aes_cipher__DOT___T;
         CData/*3:0*/ SE__DOT__aes_cipher__DOT___T_2;
+        CData/*7:0*/ SE__DOT__aes_cipher__DOT__CipherModule__DOT__AddRoundKeyModule_io_state_out_0;
+        CData/*7:0*/ SE__DOT__aes_cipher__DOT__CipherModule__DOT__AddRoundKeyModule_io_state_out_1;
+        CData/*7:0*/ SE__DOT__aes_cipher__DOT__CipherModule__DOT__AddRoundKeyModule_io_state_out_2;
+        CData/*7:0*/ SE__DOT__aes_cipher__DOT__CipherModule__DOT__AddRoundKeyModule_io_state_out_3;
+        CData/*7:0*/ SE__DOT__aes_cipher__DOT__CipherModule__DOT__AddRoundKeyModule_io_state_out_4;
+        CData/*7:0*/ SE__DOT__aes_cipher__DOT__CipherModule__DOT__AddRoundKeyModule_io_state_out_5;
+        CData/*7:0*/ SE__DOT__aes_cipher__DOT__CipherModule__DOT__AddRoundKeyModule_io_state_out_6;
+        CData/*7:0*/ SE__DOT__aes_cipher__DOT__CipherModule__DOT__AddRoundKeyModule_io_state_out_7;
+        CData/*7:0*/ SE__DOT__aes_cipher__DOT__CipherModule__DOT__AddRoundKeyModule_io_state_out_8;
+        CData/*7:0*/ SE__DOT__aes_cipher__DOT__CipherModule__DOT__AddRoundKeyModule_io_state_out_9;
+        CData/*7:0*/ SE__DOT__aes_cipher__DOT__CipherModule__DOT__AddRoundKeyModule_io_state_out_10;
+        CData/*7:0*/ SE__DOT__aes_cipher__DOT__CipherModule__DOT__AddRoundKeyModule_io_state_out_11;
+        CData/*7:0*/ SE__DOT__aes_cipher__DOT__CipherModule__DOT__AddRoundKeyModule_io_state_out_12;
+        CData/*7:0*/ SE__DOT__aes_cipher__DOT__CipherModule__DOT__AddRoundKeyModule_io_state_out_13;
+        CData/*7:0*/ SE__DOT__aes_cipher__DOT__CipherModule__DOT__AddRoundKeyModule_io_state_out_14;
+        CData/*7:0*/ SE__DOT__aes_cipher__DOT__CipherModule__DOT__AddRoundKeyModule_io_state_out_15;
         CData/*7:0*/ SE__DOT__aes_cipher__DOT__CipherModule__DOT__SubBytesModule_io_state_out_0;
         CData/*7:0*/ SE__DOT__aes_cipher__DOT__CipherModule__DOT__SubBytesModule_io_state_out_1;
         CData/*7:0*/ SE__DOT__aes_cipher__DOT__CipherModule__DOT__SubBytesModule_io_state_out_2;
@@ -107,6 +110,8 @@ VL_MODULE(VSE) {
         CData/*7:0*/ SE__DOT__aes_cipher__DOT__CipherModule__DOT__SubBytesModule_io_state_out_14;
         CData/*7:0*/ SE__DOT__aes_cipher__DOT__CipherModule__DOT__SubBytesModule_io_state_out_15;
         CData/*7:0*/ SE__DOT__aes_cipher__DOT__CipherModule__DOT__state_0;
+    };
+    struct {
         CData/*7:0*/ SE__DOT__aes_cipher__DOT__CipherModule__DOT__state_1;
         CData/*7:0*/ SE__DOT__aes_cipher__DOT__CipherModule__DOT__state_2;
         CData/*7:0*/ SE__DOT__aes_cipher__DOT__CipherModule__DOT__state_3;
@@ -114,8 +119,6 @@ VL_MODULE(VSE) {
         CData/*7:0*/ SE__DOT__aes_cipher__DOT__CipherModule__DOT__state_5;
         CData/*7:0*/ SE__DOT__aes_cipher__DOT__CipherModule__DOT__state_6;
         CData/*7:0*/ SE__DOT__aes_cipher__DOT__CipherModule__DOT__state_7;
-    };
-    struct {
         CData/*7:0*/ SE__DOT__aes_cipher__DOT__CipherModule__DOT__state_8;
         CData/*7:0*/ SE__DOT__aes_cipher__DOT__CipherModule__DOT__state_9;
         CData/*7:0*/ SE__DOT__aes_cipher__DOT__CipherModule__DOT__state_10;
@@ -126,10 +129,7 @@ VL_MODULE(VSE) {
         CData/*7:0*/ SE__DOT__aes_cipher__DOT__CipherModule__DOT__state_15;
         CData/*3:0*/ SE__DOT__aes_cipher__DOT__CipherModule__DOT__rounds;
         CData/*1:0*/ SE__DOT__aes_cipher__DOT__CipherModule__DOT__STM;
-        CData/*0:0*/ SE__DOT__aes_cipher__DOT__CipherModule__DOT___T;
-        CData/*0:0*/ SE__DOT__aes_cipher__DOT__CipherModule__DOT___T_1;
         CData/*3:0*/ SE__DOT__aes_cipher__DOT__CipherModule__DOT___T_3;
-        CData/*0:0*/ SE__DOT__aes_cipher__DOT__CipherModule__DOT___T_4;
         CData/*1:0*/ SE__DOT__aes_cipher__DOT__CipherModule__DOT___GEN_1;
         CData/*7:0*/ SE__DOT__aes_cipher__DOT__CipherModule__DOT__SubBytesModule__DOT___GEN_20;
         CData/*7:0*/ SE__DOT__aes_cipher__DOT__CipherModule__DOT__SubBytesModule__DOT___GEN_41;
@@ -176,12 +176,12 @@ VL_MODULE(VSE) {
         CData/*7:0*/ SE__DOT__aes_cipher__DOT__CipherModule__DOT__SubBytesModule__DOT___GEN_914;
         CData/*7:0*/ SE__DOT__aes_cipher__DOT__CipherModule__DOT__SubBytesModule__DOT___GEN_935;
         CData/*7:0*/ SE__DOT__aes_cipher__DOT__CipherModule__DOT__SubBytesModule__DOT___GEN_956;
+    };
+    struct {
         CData/*7:0*/ SE__DOT__aes_cipher__DOT__CipherModule__DOT__SubBytesModule__DOT___GEN_977;
         CData/*7:0*/ SE__DOT__aes_cipher__DOT__CipherModule__DOT__SubBytesModule__DOT___GEN_998;
         CData/*7:0*/ SE__DOT__aes_cipher__DOT__CipherModule__DOT__SubBytesModule__DOT___GEN_1019;
         CData/*7:0*/ SE__DOT__aes_cipher__DOT__CipherModule__DOT__SubBytesModule__DOT___GEN_1044;
-    };
-    struct {
         CData/*7:0*/ SE__DOT__aes_cipher__DOT__CipherModule__DOT__SubBytesModule__DOT___GEN_1065;
         CData/*7:0*/ SE__DOT__aes_cipher__DOT__CipherModule__DOT__SubBytesModule__DOT___GEN_1086;
         CData/*7:0*/ SE__DOT__aes_cipher__DOT__CipherModule__DOT__SubBytesModule__DOT___GEN_1107;
@@ -242,12 +242,12 @@ VL_MODULE(VSE) {
         CData/*7:0*/ SE__DOT__aes_cipher__DOT__CipherModule__DOT__SubBytesModule__DOT___GEN_2278;
         CData/*7:0*/ SE__DOT__aes_cipher__DOT__CipherModule__DOT__SubBytesModule__DOT___GEN_2299;
         CData/*7:0*/ SE__DOT__aes_cipher__DOT__CipherModule__DOT__SubBytesModule__DOT___GEN_2324;
+    };
+    struct {
         CData/*7:0*/ SE__DOT__aes_cipher__DOT__CipherModule__DOT__SubBytesModule__DOT___GEN_2345;
         CData/*7:0*/ SE__DOT__aes_cipher__DOT__CipherModule__DOT__SubBytesModule__DOT___GEN_2366;
         CData/*7:0*/ SE__DOT__aes_cipher__DOT__CipherModule__DOT__SubBytesModule__DOT___GEN_2387;
         CData/*7:0*/ SE__DOT__aes_cipher__DOT__CipherModule__DOT__SubBytesModule__DOT___GEN_2408;
-    };
-    struct {
         CData/*7:0*/ SE__DOT__aes_cipher__DOT__CipherModule__DOT__SubBytesModule__DOT___GEN_2429;
         CData/*7:0*/ SE__DOT__aes_cipher__DOT__CipherModule__DOT__SubBytesModule__DOT___GEN_2450;
         CData/*7:0*/ SE__DOT__aes_cipher__DOT__CipherModule__DOT__SubBytesModule__DOT___GEN_2471;
@@ -308,12 +308,12 @@ VL_MODULE(VSE) {
         CData/*7:0*/ SE__DOT__aes_cipher__DOT__CipherModule__DOT__SubBytesModule__DOT___GEN_3646;
         CData/*7:0*/ SE__DOT__aes_cipher__DOT__CipherModule__DOT__SubBytesModule__DOT___GEN_3667;
         CData/*7:0*/ SE__DOT__aes_cipher__DOT__CipherModule__DOT__SubBytesModule__DOT___GEN_3688;
+    };
+    struct {
         CData/*7:0*/ SE__DOT__aes_cipher__DOT__CipherModule__DOT__SubBytesModule__DOT___GEN_3709;
         CData/*7:0*/ SE__DOT__aes_cipher__DOT__CipherModule__DOT__SubBytesModule__DOT___GEN_3730;
         CData/*7:0*/ SE__DOT__aes_cipher__DOT__CipherModule__DOT__SubBytesModule__DOT___GEN_3751;
         CData/*7:0*/ SE__DOT__aes_cipher__DOT__CipherModule__DOT__SubBytesModule__DOT___GEN_3772;
-    };
-    struct {
         CData/*7:0*/ SE__DOT__aes_cipher__DOT__CipherModule__DOT__SubBytesModule__DOT___GEN_3793;
         CData/*7:0*/ SE__DOT__aes_cipher__DOT__CipherModule__DOT__SubBytesModule__DOT___GEN_3814;
         CData/*7:0*/ SE__DOT__aes_cipher__DOT__CipherModule__DOT__SubBytesModule__DOT___GEN_3835;
@@ -374,12 +374,12 @@ VL_MODULE(VSE) {
         CData/*7:0*/ SE__DOT__aes_cipher__DOT__CipherModule__DOT__MixColumnsModule__DOT___GEN_914;
         CData/*7:0*/ SE__DOT__aes_cipher__DOT__CipherModule__DOT__MixColumnsModule__DOT___GEN_935;
         CData/*7:0*/ SE__DOT__aes_cipher__DOT__CipherModule__DOT__MixColumnsModule__DOT___GEN_956;
+    };
+    struct {
         CData/*7:0*/ SE__DOT__aes_cipher__DOT__CipherModule__DOT__MixColumnsModule__DOT___GEN_977;
         CData/*7:0*/ SE__DOT__aes_cipher__DOT__CipherModule__DOT__MixColumnsModule__DOT___GEN_998;
         CData/*7:0*/ SE__DOT__aes_cipher__DOT__CipherModule__DOT__MixColumnsModule__DOT___GEN_1019;
         CData/*7:0*/ SE__DOT__aes_cipher__DOT__CipherModule__DOT__MixColumnsModule__DOT___GEN_1044;
-    };
-    struct {
         CData/*7:0*/ SE__DOT__aes_cipher__DOT__CipherModule__DOT__MixColumnsModule__DOT___GEN_1065;
         CData/*7:0*/ SE__DOT__aes_cipher__DOT__CipherModule__DOT__MixColumnsModule__DOT___GEN_1086;
         CData/*7:0*/ SE__DOT__aes_cipher__DOT__CipherModule__DOT__MixColumnsModule__DOT___GEN_1107;
@@ -440,12 +440,12 @@ VL_MODULE(VSE) {
         CData/*7:0*/ SE__DOT__aes_cipher__DOT__CipherModule__DOT__MixColumnsModule__DOT___GEN_2278;
         CData/*7:0*/ SE__DOT__aes_cipher__DOT__CipherModule__DOT__MixColumnsModule__DOT___GEN_2299;
         CData/*7:0*/ SE__DOT__aes_cipher__DOT__CipherModule__DOT__MixColumnsModule__DOT___GEN_2324;
+    };
+    struct {
         CData/*7:0*/ SE__DOT__aes_cipher__DOT__CipherModule__DOT__MixColumnsModule__DOT___GEN_2345;
         CData/*7:0*/ SE__DOT__aes_cipher__DOT__CipherModule__DOT__MixColumnsModule__DOT___GEN_2366;
         CData/*7:0*/ SE__DOT__aes_cipher__DOT__CipherModule__DOT__MixColumnsModule__DOT___GEN_2387;
         CData/*7:0*/ SE__DOT__aes_cipher__DOT__CipherModule__DOT__MixColumnsModule__DOT___GEN_2408;
-    };
-    struct {
         CData/*7:0*/ SE__DOT__aes_cipher__DOT__CipherModule__DOT__MixColumnsModule__DOT___GEN_2429;
         CData/*7:0*/ SE__DOT__aes_cipher__DOT__CipherModule__DOT__MixColumnsModule__DOT___GEN_2450;
         CData/*7:0*/ SE__DOT__aes_cipher__DOT__CipherModule__DOT__MixColumnsModule__DOT___GEN_2471;
@@ -506,12 +506,12 @@ VL_MODULE(VSE) {
         CData/*7:0*/ SE__DOT__aes_cipher__DOT__CipherModule__DOT__MixColumnsModule__DOT___GEN_3646;
         CData/*7:0*/ SE__DOT__aes_cipher__DOT__CipherModule__DOT__MixColumnsModule__DOT___GEN_3667;
         CData/*7:0*/ SE__DOT__aes_cipher__DOT__CipherModule__DOT__MixColumnsModule__DOT___GEN_3688;
+    };
+    struct {
         CData/*7:0*/ SE__DOT__aes_cipher__DOT__CipherModule__DOT__MixColumnsModule__DOT___GEN_3709;
         CData/*7:0*/ SE__DOT__aes_cipher__DOT__CipherModule__DOT__MixColumnsModule__DOT___GEN_3730;
         CData/*7:0*/ SE__DOT__aes_cipher__DOT__CipherModule__DOT__MixColumnsModule__DOT___GEN_3751;
         CData/*7:0*/ SE__DOT__aes_cipher__DOT__CipherModule__DOT__MixColumnsModule__DOT___GEN_3772;
-    };
-    struct {
         CData/*7:0*/ SE__DOT__aes_cipher__DOT__CipherModule__DOT__MixColumnsModule__DOT___GEN_3793;
         CData/*7:0*/ SE__DOT__aes_cipher__DOT__CipherModule__DOT__MixColumnsModule__DOT___GEN_3814;
         CData/*7:0*/ SE__DOT__aes_cipher__DOT__CipherModule__DOT__MixColumnsModule__DOT___GEN_3835;
@@ -572,12 +572,12 @@ VL_MODULE(VSE) {
         CData/*7:0*/ SE__DOT__aes_cipher__DOT__CipherModule__DOT__MixColumnsModule__DOT___GEN_5010;
         CData/*7:0*/ SE__DOT__aes_cipher__DOT__CipherModule__DOT__MixColumnsModule__DOT___GEN_5031;
         CData/*7:0*/ SE__DOT__aes_cipher__DOT__CipherModule__DOT__MixColumnsModule__DOT___GEN_5052;
+    };
+    struct {
         CData/*7:0*/ SE__DOT__aes_cipher__DOT__CipherModule__DOT__MixColumnsModule__DOT___GEN_5073;
         CData/*7:0*/ SE__DOT__aes_cipher__DOT__CipherModule__DOT__MixColumnsModule__DOT___GEN_5094;
         CData/*7:0*/ SE__DOT__aes_cipher__DOT__CipherModule__DOT__MixColumnsModule__DOT___GEN_5115;
         CData/*7:0*/ SE__DOT__aes_cipher__DOT__CipherModule__DOT__MixColumnsModule__DOT___GEN_5140;
-    };
-    struct {
         CData/*7:0*/ SE__DOT__aes_cipher__DOT__CipherModule__DOT__MixColumnsModule__DOT___GEN_5161;
         CData/*7:0*/ SE__DOT__aes_cipher__DOT__CipherModule__DOT__MixColumnsModule__DOT___GEN_5182;
         CData/*7:0*/ SE__DOT__aes_cipher__DOT__CipherModule__DOT__MixColumnsModule__DOT___GEN_5203;
@@ -638,12 +638,12 @@ VL_MODULE(VSE) {
         CData/*7:0*/ SE__DOT__aes_cipher__DOT__CipherModule__DOT__MixColumnsModule__DOT___GEN_6374;
         CData/*7:0*/ SE__DOT__aes_cipher__DOT__CipherModule__DOT__MixColumnsModule__DOT___GEN_6395;
         CData/*7:0*/ SE__DOT__aes_cipher__DOT__CipherModule__DOT__MixColumnsModule__DOT___GEN_6420;
+    };
+    struct {
         CData/*7:0*/ SE__DOT__aes_cipher__DOT__CipherModule__DOT__MixColumnsModule__DOT___GEN_6441;
         CData/*7:0*/ SE__DOT__aes_cipher__DOT__CipherModule__DOT__MixColumnsModule__DOT___GEN_6462;
         CData/*7:0*/ SE__DOT__aes_cipher__DOT__CipherModule__DOT__MixColumnsModule__DOT___GEN_6483;
         CData/*7:0*/ SE__DOT__aes_cipher__DOT__CipherModule__DOT__MixColumnsModule__DOT___GEN_6504;
-    };
-    struct {
         CData/*7:0*/ SE__DOT__aes_cipher__DOT__CipherModule__DOT__MixColumnsModule__DOT___GEN_6525;
         CData/*7:0*/ SE__DOT__aes_cipher__DOT__CipherModule__DOT__MixColumnsModule__DOT___GEN_6546;
         CData/*7:0*/ SE__DOT__aes_cipher__DOT__CipherModule__DOT__MixColumnsModule__DOT___GEN_6567;
@@ -704,12 +704,12 @@ VL_MODULE(VSE) {
         CData/*7:0*/ SE__DOT__aes_cipher__DOT__CipherModule__DOT__MixColumnsModule__DOT___GEN_7742;
         CData/*7:0*/ SE__DOT__aes_cipher__DOT__CipherModule__DOT__MixColumnsModule__DOT___GEN_7763;
         CData/*7:0*/ SE__DOT__aes_cipher__DOT__CipherModule__DOT__MixColumnsModule__DOT___GEN_7784;
+    };
+    struct {
         CData/*7:0*/ SE__DOT__aes_cipher__DOT__CipherModule__DOT__MixColumnsModule__DOT___GEN_7805;
         CData/*7:0*/ SE__DOT__aes_cipher__DOT__CipherModule__DOT__MixColumnsModule__DOT___GEN_7826;
         CData/*7:0*/ SE__DOT__aes_cipher__DOT__CipherModule__DOT__MixColumnsModule__DOT___GEN_7847;
         CData/*7:0*/ SE__DOT__aes_cipher__DOT__CipherModule__DOT__MixColumnsModule__DOT___GEN_7868;
-    };
-    struct {
         CData/*7:0*/ SE__DOT__aes_cipher__DOT__CipherModule__DOT__MixColumnsModule__DOT___GEN_7889;
         CData/*7:0*/ SE__DOT__aes_cipher__DOT__CipherModule__DOT__MixColumnsModule__DOT___GEN_7910;
         CData/*7:0*/ SE__DOT__aes_cipher__DOT__CipherModule__DOT__MixColumnsModule__DOT___GEN_7931;
@@ -770,12 +770,12 @@ VL_MODULE(VSE) {
         CData/*0:0*/ SE__DOT__prng__DOT__state_42;
         CData/*0:0*/ SE__DOT__prng__DOT__state_43;
         CData/*0:0*/ SE__DOT__prng__DOT__state_44;
+    };
+    struct {
         CData/*0:0*/ SE__DOT__prng__DOT__state_45;
         CData/*0:0*/ SE__DOT__prng__DOT__state_46;
         CData/*0:0*/ SE__DOT__prng__DOT__state_47;
         CData/*0:0*/ SE__DOT__prng__DOT__state_48;
-    };
-    struct {
         CData/*0:0*/ SE__DOT__prng__DOT__state_49;
         CData/*0:0*/ SE__DOT__prng__DOT__state_50;
         CData/*0:0*/ SE__DOT__prng__DOT__state_51;
@@ -791,158 +791,16 @@ VL_MODULE(VSE) {
         CData/*0:0*/ SE__DOT__prng__DOT__state_61;
         CData/*0:0*/ SE__DOT__prng__DOT__state_62;
         CData/*0:0*/ SE__DOT__prng__DOT__state_63;
-        CData/*0:0*/ SE__DOT__prng_1__DOT__state_0;
-        CData/*0:0*/ SE__DOT__prng_1__DOT__state_1;
-        CData/*0:0*/ SE__DOT__prng_1__DOT__state_2;
-        CData/*0:0*/ SE__DOT__prng_1__DOT__state_3;
-        CData/*0:0*/ SE__DOT__prng_1__DOT__state_4;
-        CData/*0:0*/ SE__DOT__prng_1__DOT__state_5;
-        CData/*0:0*/ SE__DOT__prng_1__DOT__state_6;
-        CData/*0:0*/ SE__DOT__prng_1__DOT__state_7;
-        CData/*0:0*/ SE__DOT__prng_1__DOT__state_8;
-        CData/*0:0*/ SE__DOT__prng_1__DOT__state_9;
-        CData/*0:0*/ SE__DOT__prng_1__DOT__state_10;
-        CData/*0:0*/ SE__DOT__prng_1__DOT__state_11;
-        CData/*0:0*/ SE__DOT__prng_1__DOT__state_12;
-        CData/*0:0*/ SE__DOT__prng_1__DOT__state_13;
-        CData/*0:0*/ SE__DOT__prng_1__DOT__state_14;
-        CData/*0:0*/ SE__DOT__prng_1__DOT__state_15;
-        CData/*0:0*/ SE__DOT__prng_1__DOT__state_16;
-        CData/*0:0*/ SE__DOT__prng_1__DOT__state_17;
-        CData/*0:0*/ SE__DOT__prng_1__DOT__state_18;
-        CData/*0:0*/ SE__DOT__prng_1__DOT__state_19;
-        CData/*0:0*/ SE__DOT__prng_1__DOT__state_20;
-        CData/*0:0*/ SE__DOT__prng_1__DOT__state_21;
-        CData/*0:0*/ SE__DOT__prng_1__DOT__state_22;
-        CData/*0:0*/ SE__DOT__prng_1__DOT__state_23;
-        CData/*0:0*/ SE__DOT__prng_1__DOT__state_24;
-        CData/*0:0*/ SE__DOT__prng_1__DOT__state_25;
-        CData/*0:0*/ SE__DOT__prng_1__DOT__state_26;
-        CData/*0:0*/ SE__DOT__prng_1__DOT__state_27;
-        CData/*0:0*/ SE__DOT__prng_1__DOT__state_28;
-        CData/*0:0*/ SE__DOT__prng_1__DOT__state_29;
-        CData/*0:0*/ SE__DOT__prng_1__DOT__state_30;
-        CData/*0:0*/ SE__DOT__prng_1__DOT__state_31;
-        CData/*0:0*/ SE__DOT__prng_1__DOT__state_32;
-        CData/*0:0*/ SE__DOT__prng_1__DOT__state_33;
-        CData/*0:0*/ SE__DOT__prng_1__DOT__state_34;
-        CData/*0:0*/ SE__DOT__prng_1__DOT__state_35;
-        CData/*0:0*/ SE__DOT__prng_1__DOT__state_36;
-        CData/*0:0*/ SE__DOT__prng_1__DOT__state_37;
-        CData/*0:0*/ SE__DOT__prng_1__DOT__state_38;
-        CData/*0:0*/ SE__DOT__prng_1__DOT__state_39;
-        CData/*0:0*/ SE__DOT__prng_1__DOT__state_40;
-        CData/*0:0*/ SE__DOT__prng_1__DOT__state_41;
-        CData/*0:0*/ SE__DOT__prng_1__DOT__state_42;
-        CData/*0:0*/ SE__DOT__prng_1__DOT__state_43;
-        CData/*0:0*/ SE__DOT__prng_1__DOT__state_44;
-        CData/*0:0*/ SE__DOT__prng_1__DOT__state_45;
-        CData/*0:0*/ SE__DOT__prng_1__DOT__state_46;
-        CData/*0:0*/ SE__DOT__prng_1__DOT__state_47;
-        CData/*0:0*/ SE__DOT__prng_1__DOT__state_48;
-    };
-    struct {
-        CData/*0:0*/ SE__DOT__prng_1__DOT__state_49;
-        CData/*0:0*/ SE__DOT__prng_1__DOT__state_50;
-        CData/*0:0*/ SE__DOT__prng_1__DOT__state_51;
-        CData/*0:0*/ SE__DOT__prng_1__DOT__state_52;
-        CData/*0:0*/ SE__DOT__prng_1__DOT__state_53;
-        CData/*0:0*/ SE__DOT__prng_1__DOT__state_54;
-        CData/*0:0*/ SE__DOT__prng_1__DOT__state_55;
-        CData/*0:0*/ SE__DOT__prng_1__DOT__state_56;
-        CData/*0:0*/ SE__DOT__prng_1__DOT__state_57;
-        CData/*0:0*/ SE__DOT__prng_1__DOT__state_58;
-        CData/*0:0*/ SE__DOT__prng_1__DOT__state_59;
-        CData/*0:0*/ SE__DOT__prng_1__DOT__state_60;
-        CData/*0:0*/ SE__DOT__prng_1__DOT__state_61;
-        CData/*0:0*/ SE__DOT__prng_1__DOT__state_62;
-        CData/*0:0*/ SE__DOT__prng_1__DOT__state_63;
-        CData/*0:0*/ SE__DOT__prng_1__DOT__state_64;
-        CData/*0:0*/ SE__DOT__prng_1__DOT__state_65;
-        CData/*0:0*/ SE__DOT__prng_1__DOT__state_66;
-        CData/*0:0*/ SE__DOT__prng_1__DOT__state_67;
-        CData/*0:0*/ SE__DOT__prng_1__DOT__state_68;
-        CData/*0:0*/ SE__DOT__prng_1__DOT__state_69;
-        CData/*0:0*/ SE__DOT__prng_1__DOT__state_70;
-        CData/*0:0*/ SE__DOT__prng_1__DOT__state_71;
-        CData/*0:0*/ SE__DOT__prng_1__DOT__state_72;
-        CData/*0:0*/ SE__DOT__prng_1__DOT__state_73;
-        CData/*0:0*/ SE__DOT__prng_1__DOT__state_74;
-        CData/*0:0*/ SE__DOT__prng_1__DOT__state_75;
-        CData/*0:0*/ SE__DOT__prng_1__DOT__state_76;
-        CData/*0:0*/ SE__DOT__prng_1__DOT__state_77;
-        CData/*0:0*/ SE__DOT__prng_1__DOT__state_78;
-        CData/*0:0*/ SE__DOT__prng_1__DOT__state_79;
-        CData/*0:0*/ SE__DOT__prng_1__DOT__state_80;
-        CData/*0:0*/ SE__DOT__prng_1__DOT__state_81;
-        CData/*0:0*/ SE__DOT__prng_1__DOT__state_82;
-        CData/*0:0*/ SE__DOT__prng_1__DOT__state_83;
-        CData/*0:0*/ SE__DOT__prng_1__DOT__state_84;
-        CData/*0:0*/ SE__DOT__prng_1__DOT__state_85;
-        CData/*0:0*/ SE__DOT__prng_1__DOT__state_86;
-        CData/*0:0*/ SE__DOT__prng_1__DOT__state_87;
-        CData/*0:0*/ SE__DOT__prng_1__DOT__state_88;
-        CData/*0:0*/ SE__DOT__prng_1__DOT__state_89;
-        CData/*0:0*/ SE__DOT__prng_1__DOT__state_90;
-        CData/*0:0*/ SE__DOT__prng_1__DOT__state_91;
-        CData/*0:0*/ SE__DOT__prng_1__DOT__state_92;
-        CData/*0:0*/ SE__DOT__prng_1__DOT__state_93;
-        CData/*0:0*/ SE__DOT__prng_1__DOT__state_94;
-        CData/*0:0*/ SE__DOT__prng_1__DOT__state_95;
-        CData/*0:0*/ SE__DOT__prng_1__DOT__state_96;
-        CData/*0:0*/ SE__DOT__prng_1__DOT__state_97;
-        CData/*0:0*/ SE__DOT__prng_1__DOT__state_98;
-        CData/*0:0*/ SE__DOT__prng_1__DOT__state_99;
-        CData/*0:0*/ SE__DOT__prng_1__DOT__state_100;
-        CData/*0:0*/ SE__DOT__prng_1__DOT__state_101;
-        CData/*0:0*/ SE__DOT__prng_1__DOT__state_102;
-        CData/*0:0*/ SE__DOT__prng_1__DOT__state_103;
-        CData/*0:0*/ SE__DOT__prng_1__DOT__state_104;
-        CData/*0:0*/ SE__DOT__prng_1__DOT__state_105;
-        CData/*0:0*/ SE__DOT__prng_1__DOT__state_106;
-        CData/*0:0*/ SE__DOT__prng_1__DOT__state_107;
-        CData/*0:0*/ SE__DOT__prng_1__DOT__state_108;
-        CData/*0:0*/ SE__DOT__prng_1__DOT__state_109;
-        CData/*0:0*/ SE__DOT__prng_1__DOT__state_110;
-        CData/*0:0*/ SE__DOT__prng_1__DOT__state_111;
-        CData/*0:0*/ SE__DOT__prng_1__DOT__state_112;
-    };
-    struct {
-        CData/*0:0*/ SE__DOT__prng_1__DOT__state_113;
-        CData/*0:0*/ SE__DOT__prng_1__DOT__state_114;
-        CData/*0:0*/ SE__DOT__prng_1__DOT__state_115;
-        CData/*0:0*/ SE__DOT__prng_1__DOT__state_116;
-        CData/*0:0*/ SE__DOT__prng_1__DOT__state_117;
-        CData/*0:0*/ SE__DOT__prng_1__DOT__state_118;
-        CData/*0:0*/ SE__DOT__prng_1__DOT__state_119;
-        WData/*127:0*/ SE__DOT__seoperation_in_op2_input[4];
-        WData/*127:0*/ SE__DOT__seoperation_in_op1_input[4];
         WData/*127:0*/ SE__DOT__op1_buffer[4];
         WData/*127:0*/ SE__DOT__op2_buffer[4];
-        WData/*127:0*/ SE__DOT___T_3[4];
-        WData/*127:0*/ SE__DOT___T_20[4];
-        WData/*127:0*/ SE__DOT__byte_padded_result[4];
-        WData/*127:0*/ SE__DOT__padded_64_result[4];
+        WData/*127:0*/ SE__DOT__cond_buffer[4];
+        WData/*127:0*/ SE__DOT__op2_asUInt[4];
+        WData/*127:0*/ SE__DOT__padded_result[4];
         WData/*127:0*/ SE__DOT__result_buffer[4];
         WData/*127:0*/ SE__DOT___T_61[4];
         WData/*127:0*/ SE__DOT__output_buffer[4];
-        WData/*119:0*/ SE__DOT__seoperation__DOT___T_7[4];
-        WData/*64:0*/ SE__DOT__seoperation__DOT__fu__DOT___T_77[3];
-        QData/*63:0*/ SE__DOT__seoperation__DOT__fu_out_out;
-        QData/*63:0*/ SE__DOT__seoperation__DOT__fu__DOT__sum;
-        QData/*63:0*/ SE__DOT__seoperation__DOT__fu__DOT___T_22;
-        QData/*63:0*/ SE__DOT__seoperation__DOT__fu__DOT___T_32;
-        QData/*63:0*/ SE__DOT__seoperation__DOT__fu__DOT___T_42;
-        QData/*63:0*/ SE__DOT__seoperation__DOT__fu__DOT___T_52;
-        QData/*63:0*/ SE__DOT__seoperation__DOT__fu__DOT___T_62;
-        QData/*63:0*/ SE__DOT__seoperation__DOT__fu__DOT__shin;
-        QData/*63:0*/ SE__DOT__seoperation__DOT__fu__DOT___T_86;
-        QData/*63:0*/ SE__DOT__seoperation__DOT__fu__DOT___T_96;
-        QData/*63:0*/ SE__DOT__seoperation__DOT__fu__DOT___T_106;
-        QData/*63:0*/ SE__DOT__seoperation__DOT__fu__DOT___T_116;
-        QData/*63:0*/ SE__DOT__seoperation__DOT__fu__DOT___T_126;
-        QData/*63:0*/ SE__DOT__seoperation__DOT__fu__DOT___T_163;
-        QData/*63:0*/ SE__DOT__seoperation__DOT__fu__DOT___GEN_15;
+        WData/*127:0*/ SE__DOT__seoperation__DOT__fu__DOT___GEN_12[4];
+        QData/*63:0*/ SE__DOT__seoperation_io_op1_input;
     };
     
     // LOCAL VARIABLES

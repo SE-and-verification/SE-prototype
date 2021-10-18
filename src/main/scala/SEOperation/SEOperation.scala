@@ -12,16 +12,13 @@ import COND._
 class SEOpIO extends Bundle{
 	val inst = Input(UInt(8.W))
 
-	val op1_input = Input(UInt(128.W))
-	val op1_is_a_byte = Input(Bool())
+	val op1_input = Input(UInt(64.W))
 
-	val op2_input  = Input(UInt(128.W))
-	val op2_is_a_byte = Input(Bool())
+	val op2_input  = Input(UInt(64.W))
 
-	val cond_input  = Input(UInt(128.W))
+	val cond_input  = Input(UInt(64.W))
 
-	val raw_result = Output(UInt(64.W))
-	val raw_result_is_a_byte = Output(Bool())
+	val result = Output(UInt(64.W))
 }
 
 class SEOperation extends Module{
@@ -30,18 +27,19 @@ class SEOperation extends Module{
 	val decode = Module(new SEControl)
 	val fu = Module(new FU)
 
-	val op1 = io.op1_input(127,64)
-	val op2 = io.op2_input(127,64)
-	val cond = io.cond_input(127,64)
+	val op1 = io.op1_input
+	val op2 = io.op2_input
+	val cond = io.cond_input
 
 	decode.io.inst_in := io.inst
 
  
   fu.io.A := op1
   fu.io.B := op2
+	fu.io.cond := cond
   fu.io.fu_op := decode.io.fu_op
-	fu.io.fu_type := Mux(decode.io.fu_op === FU_COND, Mux(cond >= 0.U, COND_A, COND_B), decode.io.fu_op)
+	fu.io.fu_type := decode.io.fu_type
+	fu.io.signed := decode.io.signed
 
-	io.raw_result_is_a_byte := decode.io.fu_op === FU_COMP || (io.op1_is_a_byte && io.op2_is_a_byte)
-	io.raw_result := Mux(io.raw_result_is_a_byte, fu.io.out<<56,fu.io.out)
+	io.result := fu.io.out
 }
