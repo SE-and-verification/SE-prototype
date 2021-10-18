@@ -9,8 +9,9 @@ import SHIFT._
 import LOGICAL._
 import COND._
 
-class SEOpIO extends Bundle{
+class SEOpIO  extends Bundle{
 	val inst = Input(UInt(8.W))
+	val valid = Input(Bool())
 
 	val op1_input = Input(UInt(64.W))
 
@@ -21,8 +22,11 @@ class SEOpIO extends Bundle{
 	val result = Output(UInt(64.W))
 }
 
-class SEOperation extends Module{
-  val io = IO(new SEOpIO)
+
+class SEOperation(implicit debug: Boolean) extends Module{
+
+	val io = IO(new SEOpIO)
+
 	
 	val decode = Module(new SEControl)
 	val fu = Module(new FU)
@@ -40,6 +44,17 @@ class SEOperation extends Module{
   fu.io.fu_op := decode.io.fu_op
 	fu.io.fu_type := decode.io.fu_type
 	fu.io.signed := decode.io.signed
-
 	io.result := fu.io.out
+
+	if(debug){
+		when(io.valid){
+			printf("\n------fu-----\n")
+			printf("fu op1: %x\n",op1)
+			printf("fu op2: %x\n",op2)
+			printf("fu cond: %x\n",cond)
+			printf("fu result: %x\n",io.result)
+			printf("fu fu_op: %d\n",decode.io.fu_op)
+			printf("fu fu_type: %d\n",decode.io.fu_type)
+		}
+	}
 }

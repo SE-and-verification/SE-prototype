@@ -6,6 +6,7 @@ import java.io.{File, FileWriter}
 import chisel3._
 
 object Main extends App {
+  implicit val debug = false
   val dir = new File(args(0)) ; dir.mkdirs
   // val raw = new FileWriter(new File(dir, "se_raw.fir"))
   // val raw_firrtl = chisel3.Driver.execute(args,() => new SE)

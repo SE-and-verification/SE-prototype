@@ -17,6 +17,7 @@ SE::SE(void){
 		SE::tickcount = 0;
 		SE::module = new VSE;
 	}
+	SE::reset();
 }
 void SE::tick(){
 	// Increment our own internal time reference
@@ -42,9 +43,9 @@ void SE::tick(){
 void SE::reset(){
 	SE::module->reset = 1;
 	// Make sure any inheritance gets applied
+
 	SE::tick();
 	SE::module->reset = 0;
-	SE::tick();
 }
 
 

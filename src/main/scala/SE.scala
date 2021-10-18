@@ -30,7 +30,7 @@ class SEIO extends Bundle{
 	val out = new SEOutput
 }
 
-class SE extends Module{
+class SE(implicit debug:Boolean) extends Module{
 	// Define the input, output ports and the control bits
 	val io = IO(new SEIO)
 
@@ -56,16 +56,41 @@ class SE extends Module{
 	val valid_buffer = Reg(Bool())
 
 	val n_result_valid_buffer = Wire(Bool())
+	val ready_for_input = RegInit(true.B)
+	io.in.ready := ready_for_input
 
 	valid_buffer := Mux(io.in.valid && io.in.ready, true.B, Mux(aes_invcipher.io.input_valid, false.B, valid_buffer))
-	io.in.ready := !valid_buffer
-
+	when(io.in.valid && io.in.ready){
+		ready_for_input := false.B
+	}.elsewhen(io.out.valid && io.out.ready){
+		ready_for_input := true.B
+	}
+	if(debug){
+		when(reset.asBool){
+			printf("resetting\n")
+		}
+		when(io.in.valid && io.in.ready){
+			printf("changed to false\n")
+		}.elsewhen(io.out.valid && io.out.ready){
+			printf("changed to true\n")
+		}
+	}
+	if(debug){
+		when(valid_buffer){
+			printf("\n-----front----\n")
+			printf("op1 buffer:%x\n",op1_buffer)
+			printf("op2 buffer:%x\n",op2_buffer)
+			printf("cond:%x\n",cond_buffer)
+			printf("inst:%b\n",inst_buffer)
+		}
+	}
 	// Feed the ciphertexts into the invcipher
 	aes_invcipher.io.input_op1 := op1_buffer.asTypeOf(aes_invcipher.io.input_op1)
 	aes_invcipher.io.input_op2 := op2_buffer.asTypeOf(aes_invcipher.io.input_op2)
 	aes_invcipher.io.input_cond := cond_buffer.asTypeOf(aes_invcipher.io.input_cond)
 	aes_invcipher.io.input_roundKeys := key
 	aes_invcipher.io.input_valid := valid_buffer
+
 
 	// Reverse the byte order so we can convert them into uint with Chisel infrastructure.
 	val op1_reverse = Wire(Vec(Params.StateLength, UInt(8.W)))
@@ -77,13 +102,27 @@ class SE extends Module{
 		cond_reverse(i) := aes_invcipher.io.output_cond(Params.StateLength-i-1)
 	}
 
+	val mid_inst_buffer = RegEnable(inst_buffer,aes_invcipher.io.input_valid)
+	val mid_op1_buffer = RegEnable(op1_buffer,aes_invcipher.io.input_valid)
+
 	// Feed the decrypted values to the seoperation module. Depends on whether the data is encrypted when it comes in.
-	seoperation.io.inst := inst_buffer.do_asUInt
+	seoperation.io.inst := mid_inst_buffer
+	seoperation.io.valid := aes_invcipher.io.output_valid
 	val op1_asUInt = op1_reverse.do_asUInt
 	val op2_asUInt = op2_reverse.do_asUInt
 	val cond_asUInt = cond_reverse.do_asUInt
 
-	seoperation.io.op1_input := Mux(inst_buffer(7,5) === 5.U(3.W), op1_buffer(127,64),op1_asUInt(127,64))
+	if(debug){
+		when(aes_invcipher.io.output_valid){
+			printf("\n-----mid----\n")
+			printf("op1_asUInt:%x\n",seoperation.io.op1_input)
+			printf("op2_asUInt:%x\n",seoperation.io.op2_input)
+			printf("cond_asUInt:%x\n",seoperation.io.cond_input)
+			printf("inst:%b\n",mid_inst_buffer)
+		}
+	}
+
+	seoperation.io.op1_input := Mux(inst_buffer(7,5) === 5.U(3.W), mid_op1_buffer(127,64),op1_asUInt(127,64))
 	seoperation.io.op2_input := op2_asUInt(127,64)
 	seoperation.io.cond_input := cond_asUInt(127,64)
 
@@ -92,12 +131,18 @@ class SE extends Module{
 	n_result_valid_buffer := Mux(aes_invcipher.io.output_valid, true.B, Mux(aes_cipher.io.input_valid, false.B, result_valid_buffer))
 
 	// Pad with RNG
-	val bit64_randnum = LFSR(64)
+	val bit64_randnum = LFSR(64, clock.asBool, Some(scala.math.BigInt(64, scala.util.Random)))
 	val padded_result = Cat(seoperation.io.result,bit64_randnum)
 	val result_buffer = RegEnable( padded_result, aes_invcipher.io.output_valid)
-
+	if(debug){
+		when(result_valid_buffer){
+			printf("\n-----back----\n")
+			printf("padded_result:%x\n",result_buffer )
+			printf("seoperation.io.result:%x\n",seoperation.io.result)
+		}
+	}
 	// Connect the cipher
-	aes_cipher.io.input_text := Mux(result_valid_buffer, result_buffer, padded_result).asTypeOf(aes_cipher.io.input_text)
+	aes_cipher.io.input_text := result_buffer.asTypeOf(aes_cipher.io.input_text)
 	aes_cipher.io.input_valid := result_valid_buffer
 	aes_cipher.io.input_roundKeys := key
 

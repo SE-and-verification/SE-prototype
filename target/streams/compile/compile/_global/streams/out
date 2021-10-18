@@ -1,4 +1,6 @@
-[0m[[0m[31merror[0m] [0m[0m/home/chshibo/Documents/Projects/SE-prototype/src/main/scala/SEOperation/SEOperation.scala:39:16: not found: value cond_input[0m
-[0m[[0m[31merror[0m] [0m[0m	fu.io.cond := cond_input[0m
-[0m[[0m[31merror[0m] [0m[0m	              ^[0m
+[0m[[0m[31merror[0m] [0m[0m/home/chshibo/Documents/Projects/SE-prototype/src/main/scala/SE.scala:134:31: type mismatch;[0m
+[0m[[0m[31merror[0m] [0m[0m found   : chisel3.Clock[0m
+[0m[[0m[31merror[0m] [0m[0m required: chisel3.Bool[0m
+[0m[[0m[31merror[0m] [0m[0m	val bit64_randnum = LFSR(64, clock, Some(scala.math.BigInt(64, scala.util.Random)))[0m
+[0m[[0m[31merror[0m] [0m[0m	                             ^[0m
 [0m[[0m[31merror[0m] [0m[0mone error found[0m
