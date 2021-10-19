@@ -31,9 +31,11 @@ int main(){
 	printf("%d:\n",2);
 	print128(l2.ciphertext.convert_to_128());
 	print128(l3.ciphertext.convert_to_128());
+	printf("ticks: %d\n", SE::real_tickcount);
 	print128(SE::SECompute(l2.ciphertext.convert_to_128(), l1.ciphertext.convert_to_128(), 0, Instruction::ADD()));
 	print128(l6.ciphertext.convert_to_128());
+	printf("ticks: %d\n", SE::real_tickcount);
 	print128(SE::SECompute(l2.ciphertext.convert_to_128(), l3.ciphertext.convert_to_128(), 0, Instruction::MULT()));
-	printf("ticks: %d\n", SE::tickcount);
+	printf("ticks: %d\n", SE::real_tickcount);
 	return 0;
 }

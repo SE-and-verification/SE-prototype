@@ -8,6 +8,8 @@
 #include <iostream>
 VSE* SE::module = new VSE;
 unsigned int SE::tickcount = 0;
+unsigned int SE::real_tickcount = 0;
+
 
 SE::~SE(void){
 	delete SE::module;
@@ -43,7 +45,8 @@ void SE::tick(){
 void SE::reset(){
 	SE::module->reset = 1;
 	// Make sure any inheritance gets applied
-
+	SE::tickcount = 0;
+	SE::real_tickcount = 0;
 	SE::tick();
 	SE::module->reset = 0;
 }
@@ -64,10 +67,13 @@ __uint128_t SE::SECompute(__uint128_t op1, __uint128_t op2, __uint128_t cond,
 	memcpy(&SE::module->io_in_op2, &op2, sizeof(op2));
 	memcpy(&SE::module->io_in_cond, &cond, sizeof(cond));
 	SE::tick();
+	SE::real_tickcount ++;
 	SE::module->io_in_valid = false;
 	SE::tick();
+	SE::real_tickcount ++;
 	while(!SE::module->io_out_valid){
 		SE::tick();
+		SE::real_tickcount ++;
 	}
 	__uint128_t result = 0;
 	memcpy(&result, &SE::module->io_out_result, sizeof(SE::module->io_out_result));
