@@ -140,7 +140,7 @@ class SE(implicit debug:Boolean) extends Module{
 	n_result_valid_buffer := Mux(aes_invcipher.io.output_valid, true.B, Mux(aes_cipher.io.input_valid, false.B, result_valid_buffer))
 
 	// Pad with RNG
-	val bit64_randnum = LFSR(64, clock.asBool, Some(scala.math.BigInt(64, scala.util.Random)))
+	val bit64_randnum = PRNG(new MaxPeriodFibonacciLFSR(64, Some(scala.math.BigInt(64, scala.util.Random))))
 	val padded_result = Cat(seoperation.io.result,bit64_randnum)
 	val result_buffer = RegEnable( padded_result, aes_invcipher.io.output_valid)
 	if(debug){
