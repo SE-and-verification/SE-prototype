@@ -17,6 +17,9 @@ class SEInput extends Bundle{
 	val cond = Input(UInt(128.W)) 
 	val valid = Input(Bool())
 	val ready = Output(Bool())
+
+	val changeKey_en = Input(Bool())
+	val newKey = Input(Vec(11, Vec(16, UInt(8.W))))
 }
 
 class SEOutput extends Bundle{
@@ -30,6 +33,7 @@ class SEIO extends Bundle{
 	val out = new SEOutput
 }
 
+
 class SE(implicit debug:Boolean) extends Module{
 	// Define the input, output ports and the control bits
 	val io = IO(new SEIO)
@@ -42,8 +46,13 @@ class SE(implicit debug:Boolean) extends Module{
 	val seoperation = Module(new SEOperation)
 	val aes_invcipher = Module(new AESDecrypt)
 	val aes_cipher = Module(new AESEncrypt)
-	val key = ExpandedKey.expandedKey128
+	val key = Reg(Vec(11, Vec(16,UInt(8.W))))
 
+	when(reset.asBool){
+		key := ExpandedKey.expandedKey128
+	}.elsewhen(io.in.changeKey_en){
+		key := io.in.newKey
+	}
 	// Once we receive the data, first latch them into buffers. 
 	val inst_buffer = RegEnable(io.in.inst, io.in.valid)
 
