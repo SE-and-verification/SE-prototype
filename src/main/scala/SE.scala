@@ -26,6 +26,7 @@ class SEOutput extends Bundle{
 	val result = Output(UInt(128.W))
 	val valid = Output(Bool())
 	val ready = Input(Bool())
+	val cntr = Output(UInt(8.W))
 }
 
 class SEIO extends Bundle{
@@ -37,8 +38,20 @@ class SEIO extends Bundle{
 class SE(implicit debug:Boolean) extends Module{
 	// Define the input, output ports and the control bits
 	val io = IO(new SEIO)
-
-	// Instantiate the components
+	val counterOn = RegInit(false.B)
+	val cnter = new Counter(100)
+	when(counterOn){
+		cnter.inc()
+	}
+	when(io.in.valid && io.in.ready){
+		counterOn := true.B
+	}.elsewhen(io.out.valid && io.out.ready){
+		counterOn := false.B
+	}
+	when(io.out.valid && io.out.ready){
+		cnter.reset()
+	}
+	io.out.cntr := cnter.value
 	/*
 	seoperation: the module to actually compute on decrypted plaintexts
 	key: preset expanded AES ROM key

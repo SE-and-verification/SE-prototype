@@ -282,6 +282,8 @@ __uint128_t SE::SECompute(__uint128_t op1, __uint128_t op2, __uint128_t cond,
 	}
 	__uint128_t result = 0;
 	memcpy(&result, &SE::module->io_out_result, sizeof(SE::module->io_out_result));
-
+	uint8_t num_cycle = 0;
+	memcpy(&num_cycle, &SE::module->io_out_cntr, sizeof(SE::module->io_out_cntr));
+	std::cout << "number cycles: "<< std::dec <<(int)num_cycle << std::endl;
 	return result;
 }
