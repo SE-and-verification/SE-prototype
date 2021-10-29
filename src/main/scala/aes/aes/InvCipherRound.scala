@@ -16,7 +16,7 @@ class InvCipherRound(transform: String, InvSubBytes_SCD: Boolean) extends Module
   val io = IO(new InvCipherRoundIO)
 
   // A well defined 'DontCare' or Initialization value
-  val ZeroInit = Vec(Params.StateLength, 0.U(8.W))
+  val ZeroInit = VecInit.tabulate(Params.StateLength)((x:Int)=> 0.U(8.W))
 
   // Transform sequences
   if (transform == "AddRoundKeyOnly") {

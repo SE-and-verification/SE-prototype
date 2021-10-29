@@ -16,7 +16,7 @@ class CipherRound(transform: String, SubBytes_SCD: Boolean = false) extends Modu
   val io = IO(new CipherRoundIO)
 
   // A well defined 'DontCare' or Initialization value
-  val ZeroInit = Vec(Params.StateLength, 0.U(8.W))
+  val ZeroInit = VecInit.tabulate(Params.StateLength)((x:Int)=> 0.U(8.W))
 
   // Transform sequences
   if (transform == "AddRoundKeyOnly") {

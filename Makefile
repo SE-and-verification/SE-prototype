@@ -8,7 +8,7 @@ out_dir    = $(base_dir)/outputs
 SBT       = sbt
 SBT_FLAGS = -ivy $(HOME)/.ivy2 
 
-VERILATOR_FLAGS = -I obj_dir -I/usr/share/verilator/include module.cpp /usr/share/verilator/include/verilated.cpp
+VERILATOR_FLAGS =--debug -g3 -I obj_dir -I/usr/share/verilator/include module.cpp /usr/share/verilator/include/verilated.cpp
 
 VSE.o: verilator_generate
 	cd obj_dir; make -f VSE.mk ; cd ..
@@ -71,9 +71,9 @@ test:
 	$(SBT) $(SBT_FLAGS) test
 
 clean:
-	rm -rf $(gen_dir) $(out_dir) test_run_dir
+	rm -rf $(gen_dir) $(out_dir) test_run_dir obj_dir/*
 
 cleanall: clean
-	rm -rf target project/target
+	rm -rf target project/target 
 
 .PHONY: sbt compile verilator run-tests run-custom-bmark test clean cleanall

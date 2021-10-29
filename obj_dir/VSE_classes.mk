@@ -18,7 +18,10 @@ VM_TRACE_THREADED = 0
 # Generated module classes, fast-path, compile with highest optimization
 VM_CLASSES_FAST += \
 	VSE \
-	VSE_InvCipher \
+	VSE_InvCipherRound_3 \
+	VSE_CipherRound_1 \
+	VSE_InvSubBytes \
+	VSE_SubBytes \
 
 # Generated module classes, non-fast-path, compile with low/medium optimization
 VM_CLASSES_SLOW += \

@@ -164,7 +164,12 @@ class SE(implicit debug:Boolean) extends Module{
 		}
 	}
 	// Connect the cipher
-	aes_cipher.io.input_text := result_buffer.asTypeOf(aes_cipher.io.input_text)
+	val aes_input = result_buffer.asTypeOf(aes_cipher.io.input_text)
+	val aes_input_reverse = Wire(Vec(Params.StateLength, UInt(8.W)))
+	for(i <- 0 until Params.StateLength){
+		aes_input_reverse(i) := aes_input(Params.StateLength-i-1)
+	}
+	aes_cipher.io.input_text := aes_input_reverse
 	aes_cipher.io.input_valid := result_valid_buffer
 	aes_cipher.io.input_roundKeys := key
 

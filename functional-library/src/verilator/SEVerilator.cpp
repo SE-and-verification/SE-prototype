@@ -262,6 +262,7 @@ __uint128_t SE::SECompute(__uint128_t op1, __uint128_t op2, __uint128_t cond,
 			uint8_t inst){
 	while (!SE::module->io_in_ready)
 	{
+			// std::cout<<"looping"<<std::endl;
 		SE::tick();
 	}
 	SE::module->io_in_valid = true;

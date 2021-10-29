@@ -27,48 +27,53 @@ class AESDecrypt extends Module {
 
   val io = IO(new DecryptIO)
 
-
-  val InvCipherModule1 = InvCipher(4, true)
-  val InvCipherModule2 = InvCipher(4, true)
-  val InvCipherModule3 = InvCipher(4, true)
-
-  // use the same address and dataOut val elements to interface with the parameterized memory
-  val address = RegInit(0.U(log2Ceil(EKDepth).W))
-  val dataOut = Wire(Vec(Params.StateLength, UInt(8.W)))
-
-	dataOut := io.input_roundKeys(address)
-
-	when(io.input_valid) {
-		address := Nr.U
-	}
-	.otherwise {
-		when(address =/= 0.U){
-      address := address - 1.U
+  val InvCipherRoundARK = Array.fill(3){
+    InvCipherRound("AddRoundKeyOnly", true)
     }
-	}
+  val InvCipherRounds = Array.fill(3){ 
+    Array.fill(Nr - 1) {
+      InvCipherRound("CompleteRound", true)
+    }
+  }
+  val InvCipherRoundNMC = Array.fill(3){ 
+    InvCipherRound("NoInvMixColumns", true)
+  }
 
-  // The roundKey for each round can go to both the cipher and inverse cipher (for now TODO)
-  InvCipherModule1.io.roundKey := dataOut
-  InvCipherModule1.io.ciphertext <> io.input_op1
-  InvCipherModule1.io.start := (io.input_valid) // no delay for Mem and ROM
+  InvCipherRoundARK(0).io.input_valid := io.input_valid
+  InvCipherRoundARK(0).io.state_in := io.input_op1
+  InvCipherRoundARK(0).io.roundKey := io.input_roundKeys(Nr)
 
-  InvCipherModule2.io.roundKey := dataOut
-  InvCipherModule2.io.ciphertext <> io.input_op2
-  InvCipherModule2.io.start := (io.input_valid) // no delay for Mem and ROM
+  InvCipherRoundARK(1).io.input_valid := io.input_valid
+  InvCipherRoundARK(1).io.state_in := io.input_op2
+  InvCipherRoundARK(1).io.roundKey := io.input_roundKeys(Nr)
 
-  InvCipherModule3.io.roundKey := dataOut
-  InvCipherModule3.io.ciphertext <> io.input_cond
-  InvCipherModule3.io.start := (io.input_valid) // no delay for Mem and ROM
+  InvCipherRoundARK(2).io.input_valid := io.input_valid
+  InvCipherRoundARK(2).io.state_in := io.input_cond
+  InvCipherRoundARK(2).io.roundKey := io.input_roundKeys(Nr)
+  // Cipher Nr-1 rounds
+  for(j <- 0 to 2){
+    for (i <- 0 until (Nr - 1)){
+      if (i == 0) {
+        InvCipherRounds(j)(i).io.input_valid := InvCipherRoundARK(j).io.output_valid
+        InvCipherRounds(j)(i).io.state_in := InvCipherRoundARK(j).io.state_out
+      }
+      else {
+        InvCipherRounds(j)(i).io.input_valid := InvCipherRounds(j)(i - 1).io.output_valid
+        InvCipherRounds(j)(i).io.state_in := InvCipherRounds(j)(i - 1).io.state_out
+      }
+      InvCipherRounds(j)(i).io.roundKey := io.input_roundKeys(Nr - i - 1)
+    }
+}
+  // Cipher last round
+  for(j <- 0 to 2){
+    InvCipherRoundNMC(j).io.input_valid := InvCipherRounds(j)(Nr - 1 - 1).io.output_valid
+    InvCipherRoundNMC(j).io.state_in := InvCipherRounds(j)(Nr - 1 - 1).io.state_out
+    InvCipherRoundNMC(j).io.roundKey := io.input_roundKeys(0)
+  }
 
-  // AES output_valid can be the Cipher.output_valid OR InvCipher.output_valid
-  io.output_valid := InvCipherModule1.io.state_out_valid || InvCipherModule2.io.state_out_valid || InvCipherModule3.io.state_out_valid 
+  io.output_op1 := InvCipherRoundNMC(0).io.state_out
+  io.output_op2 := InvCipherRoundNMC(1).io.state_out
+  io.output_cond := InvCipherRoundNMC(2).io.state_out
+  io.output_valid := InvCipherRoundNMC(0).io.output_valid || InvCipherRoundNMC(1).io.output_valid || InvCipherRoundNMC(2).io.output_valid
 
-  // AES output can be managed using a Mux on the Cipher output and the InvCipher output
-  io.output_op1 := InvCipherModule1.io.state_out
-  io.output_op2 := InvCipherModule2.io.state_out
-  io.output_cond := InvCipherModule3.io.state_out
-
-
-  // Debug statements
-  // printf("AES mode=%b, mem_address=%d, mem_dataOut=%x%x%x%x%x%x%x%x%x%x%x%x%x%x%x%x \n", io.AES_mode, address, dataOut(0), dataOut(1), dataOut(2), dataOut(3), dataOut(4), dataOut(5), dataOut(6), dataOut(7), dataOut(8), dataOut(9), dataOut(10), dataOut(11), dataOut(12), dataOut(13), dataOut(14), dataOut(15))
 }

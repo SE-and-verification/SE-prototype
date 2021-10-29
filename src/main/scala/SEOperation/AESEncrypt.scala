@@ -22,39 +22,40 @@ class AESEncrypt extends Module {
 
   val io = IO(new EncryptIO)
 
-  // Instantiate module objects
-  val CipherModule = Cipher(4, true)
+ val CipherRoundARK = CipherRound("AddRoundKeyOnly", true)
+  val CipherRounds = Array.fill(Nr - 1) {
+    CipherRound("CompleteRound", true)
+  }
+  val CipherRoundNMC = CipherRound("NoMixColumns", true)
 
+  CipherRoundARK.io.input_valid := io.input_valid
+  CipherRoundARK.io.state_in := io.input_text
+  CipherRoundARK.io.roundKey := io.input_roundKeys(0)
 
-  // use the same address and dataOut val elements to interface with the parameterized memory
-  val address = RegInit(0.U(log2Ceil(EKDepth).W))
-  val dataOut = Wire(Vec(Params.StateLength, UInt(8.W)))
-
-	dataOut := io.input_roundKeys(address)
-
-	when(io.input_valid) {
-		address := 0.U
-	}
-	.otherwise {
-		when(address =/= Nr.U){
-      address := address + 1.U
+  // Cipher Nr-1 rounds
+  for (i <- 0 until (Nr - 1)) yield {
+    if (i == 0) {
+      CipherRounds(i).io.input_valid := CipherRoundARK.io.output_valid
+      CipherRounds(i).io.state_in := CipherRoundARK.io.state_out
     }
-	}
-  val input_reverse = Wire(Vec(Params.StateLength, UInt(8.W)))
-  for(i <- 0 until Params.StateLength)
-    input_reverse(i) := io.input_text(Params.StateLength-i-1)
-  // The roundKey for each round can go to both the cipher and inverse cipher (for now TODO)
-  CipherModule.io.roundKey := dataOut
+    else {
+      CipherRounds(i).io.input_valid := CipherRounds(i - 1).io.output_valid
+      CipherRounds(i).io.state_in := CipherRounds(i - 1).io.state_out
+    }
+    CipherRounds(i).io.roundKey := io.input_roundKeys(i + 1)
+  }
 
-  // The input text can go to both the cipher and the inverse cipher (for now TODO)
-  CipherModule.io.plaintext := input_reverse
+  // Cipher last round
+  CipherRoundNMC.io.input_valid := CipherRounds(Nr - 1 - 1).io.output_valid
+  CipherRoundNMC.io.state_in := CipherRounds(Nr - 1 - 1).io.state_out
+  CipherRoundNMC.io.roundKey := io.input_roundKeys(Nr)
 
-  // Cipher starts at AES_Mode=2
-  CipherModule.io.start := io.input_valid
-
-  // AES output_valid can be the Cipher.output_valid OR InvCipher.output_valid
-  io.output_valid := CipherModule.io.state_out_valid
-  // AES output can be managed using a Mux on the Cipher output and the InvCipher output
-  io.output_text := CipherModule.io.state_out
-
+  io.output_valid := CipherRoundNMC.io.output_valid
+  io.output_text := CipherRoundNMC.io.state_out
+  // when(io.input_valid){
+  //   printf("input valid \n")
+  // }
+  // when(io.output_valid){
+  //   printf("output valid \n")
+  // }
 }
