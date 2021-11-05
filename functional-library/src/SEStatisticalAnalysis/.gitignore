@@ -1,0 +1,11 @@
+*.o
+main
+test 
+test.cpp
+.vscode/
+bin/
+*.out
+*.enc
+*.in
+*.time
+*.test
