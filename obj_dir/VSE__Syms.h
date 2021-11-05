@@ -1,11 +1,10 @@
 // Verilated -*- C++ -*-
 // DESCRIPTION: Verilator output: Symbol table internal header
 //
-// Internal details; most calling programs do not need this header,
-// unless using verilator public meta comments.
+// Internal details; most calling programs do not need this header
 
-#ifndef _VSE__SYMS_H_
-#define _VSE__SYMS_H_  // guard
+#ifndef _VSE__Syms_H_
+#define _VSE__Syms_H_
 
 #include "verilated.h"
 
@@ -110,6 +109,6 @@ class VSE__Syms : public VerilatedSyms {
     // METHODS
     inline const char* name() { return __Vm_namep; }
     
-} VL_ATTR_ALIGNED(VL_CACHE_LINE_BYTES);
+} VL_ATTR_ALIGNED(64);
 
 #endif  // guard

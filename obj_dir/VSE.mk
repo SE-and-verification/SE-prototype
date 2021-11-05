@@ -10,11 +10,11 @@ default: VSE__ALL.a
 # Perl executable (from $PERL)
 PERL = perl
 # Path to Verilator kit (from $VERILATOR_ROOT)
-VERILATOR_ROOT = /usr/share/verilator
+VERILATOR_ROOT = /usr/local/share/verilator
 # SystemC include directory with systemc.h (from $SYSTEMC_INCLUDE)
-SYSTEMC_INCLUDE ?= /usr/include
+SYSTEMC_INCLUDE ?= 
 # SystemC library directory with libsystemc.a (from $SYSTEMC_LIBDIR)
-SYSTEMC_LIBDIR ?= /usr/lib/x86_64-linux-gnu
+SYSTEMC_LIBDIR ?= 
 
 ### Switches...
 # SystemC output mode?  0/1 (from --sc)
