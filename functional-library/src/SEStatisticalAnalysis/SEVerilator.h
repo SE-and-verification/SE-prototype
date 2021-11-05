@@ -1,6 +1,6 @@
 #include <stdlib.h>
 #include <stdint.h>
-#include "../SE-prototype/obj_dir/VSE.h"
+#include "../../../obj_dir/VSE.h"
 #include "verilated.h"
 #include <math.h>
 #ifndef __SE_H

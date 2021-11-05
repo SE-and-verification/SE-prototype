@@ -3,3 +3,4 @@
 obj_dir/*
 project/*
 target/*
+generated-src/* 
