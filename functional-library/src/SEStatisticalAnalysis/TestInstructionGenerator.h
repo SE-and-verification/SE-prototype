@@ -15,10 +15,10 @@ static const int TOTAL_INST = 4;
 // static uint8_t insts[TOTAL_INST]={Instruction::ADD(),Instruction::MULT(),Instruction::SUB(),Instruction::CMOV()};
 
 static InstructionTime insts[TOTAL_INST] ={
-    {Instruction::ADD(),24},
-    {Instruction::MULT(),24},
-    {Instruction::SUB(),24},
-    {Instruction::CMOV(),24}
+    {Instruction::ADD(),25},
+    {Instruction::MULT(),25},
+    {Instruction::SUB(),25},
+    {Instruction::CMOV(),25}
 };
 
 struct TestInstruction{
