@@ -31,7 +31,7 @@ void TestInstructionGenerator::GenerateTestInstruction( TestInstruction * inst) 
     /**
      * for c move generate the condition at random
     */
-    if (instruction == 96)//Instruction::CMOV()
+    if (instruction == Instruction::CMOV())//Instruction::CMOV()
     {
         uint8_t cond = rand()%2; 
         enc_lib::enc_int econd = cond;

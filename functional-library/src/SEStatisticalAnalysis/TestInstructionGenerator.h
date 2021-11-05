@@ -23,12 +23,12 @@ static InstructionTime insts[TOTAL_INST] ={
 
 struct TestInstruction{
     __uint128_t op1; //128bit cipher text of operand 1 
-    int cOp1;
+    int cOp1; // clear text of operand 1 
     __uint128_t op2; //128bit cipher text of operand 2
-    int cOp2;
+    int cOp2; //clear text of operand 2
     __uint128_t cond; //conditional move ??
-    int cCond;
-        uint8_t inst; //instruction to execute. Defined in Instructions.h
+    int cCond; //clear text of condition 
+        uint8_t inst; //instruction to execute. As defined in Instructions.h
 };
 
 class TestInstructionGenerator{
