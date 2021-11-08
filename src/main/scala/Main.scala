@@ -4,7 +4,7 @@ package se
 
 import java.io.{File, FileWriter}
 import chisel3._
-
+import chisel3.stage._
 object Main extends App {
   implicit val debug = false
   val dir = new File(args(0)) ; dir.mkdirs
@@ -18,7 +18,10 @@ object Main extends App {
   // writer.close
 
   val verilog = new FileWriter(new File(dir, s"SE.v"))
-  verilog write getVerilogString(new SE)
+  verilog write ChiselStage.emitVerilog(new SE)
   verilog.close
-  
+
+  val firrtl_file =new FileWriter(new File(dir, s"SE.fir"))
+  firrtl_file write ChiselStage.emitFirrtl(new SE)
+  firrtl_file.close
 }
