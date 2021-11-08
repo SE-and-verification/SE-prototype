@@ -72,5 +72,10 @@ int main(){
 	__uint128_t l9_SE_new = SE::SECompute(l3_SE_new, l6_SE_new, 0, Instruction::ADD());
 	print128(l9_SE_new);
 	print128dec(l9_SE_new);
+
+	__uint128_t shift_SE_new = SE::SECompute(l3_SE_new, l6_SE_new, 0, Instruction::SLL());
+
+	print128(shift_SE_new);
+	print128dec(shift_SE_new);
 	return 0;
 }
