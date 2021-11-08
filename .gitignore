@@ -1,3 +1,6 @@
 *.class
 *.log
 obj_dir/*
+project/*
+target/*
+generated-src/* 

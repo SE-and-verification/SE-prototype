@@ -1,7 +1,0 @@
-[0m[[0m[31merror[0m] [0m[0m/home/chshibo/Documents/Projects/SE-prototype/src/main/scala/Main.scala:21:28: value emitSystemVerilog is not a member of object chisel3.stage.ChiselMain[0m
-[0m[[0m[31merror[0m] [0m[0m  verilog write ChiselMain.emitSystemVerilog(new SE)[0m
-[0m[[0m[31merror[0m] [0m[0m                           ^[0m
-[0m[[0m[31merror[0m] [0m[0m/home/chshibo/Documents/Projects/SE-prototype/src/main/scala/Main.scala:25:32: value emitFirrtl is not a member of object chisel3.stage.ChiselMain[0m
-[0m[[0m[31merror[0m] [0m[0m  firrtl_file write ChiselMain.emitFirrtl(new SE)[0m
-[0m[[0m[31merror[0m] [0m[0m                               ^[0m
-[0m[[0m[31merror[0m] [0m[0mtwo errors found[0m
