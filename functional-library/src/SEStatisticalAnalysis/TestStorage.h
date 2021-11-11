@@ -27,7 +27,7 @@ class TestStorage {
         ofstream encResOut;
 
     public:
-        TestStorage(string outputFileName);
+        TestStorage(string outputFileName, int numberOfRuns);
         bool SaveResult(const TestInstruction *inst, const TestResult * res);
         ~TestStorage();
 };

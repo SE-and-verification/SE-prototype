@@ -1,7 +1,7 @@
 #include "Test.h"
 
 Test::Test(int numberOfRuns, string outFileName):
-  storage(outFileName)
+  storage(outFileName,numberOfRuns)
 {
   this->numberOfRuns = numberOfRuns;
 }

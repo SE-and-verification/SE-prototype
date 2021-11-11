@@ -12,12 +12,13 @@ bool TestResult::print() const{
     return true;
 }
 
-TestStorage::TestStorage(string outputFileName){
+TestStorage::TestStorage(string outputFileName,int numberOfRuns){
 	  this->encryptedResultOutFileName = outputFileName+".enc";
 	  this->timingResultOutFileName = outputFileName +".time";
 	  this->inputOutFileName = outputFileName +".in";
 
 	  encResOut.open(this->encryptedResultOutFileName);
+	  encResOut << "type: d\ncount: "<<numberOfRuns<<"\nnumbits: 128\n";// generate header files for diharder input format 
 	  this->timeOut.open(this->timingResultOutFileName);
 	  this->inout.open(this->inputOutFileName);
 }
@@ -35,7 +36,7 @@ bool TestStorage::SaveResult(const TestInstruction *inst, const TestResult *res)
 	*/
 	uint64_t lower = (uint64_t)res->output;
 	uint64_t upper = (uint64_t)(res->output>>64);
-	encResOut<<std::setw(16) << std::setfill('0') << std::hex << upper<<""<<lower<< std::endl;
+	encResOut<<std::setw(16) << std::setfill('0') << std::dec << upper<<""<<lower<< std::endl;
 
 	/**
 	 * write the clear instruction and clear op1, op2 and cond to the file 

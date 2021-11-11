@@ -5,7 +5,7 @@
 int main(){
 
     string fileName ("test.out");
-    Test t(4,fileName);
+    Test t(200,fileName);
     t.start();
 
     return 0;
