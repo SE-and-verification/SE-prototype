@@ -1264,7 +1264,128 @@ case class Module(info: Info, name: String, ports: Seq[Port], body: Statement) e
   def foreachPort(f:   Port => Unit):           Unit = ports.foreach(f)
   def foreachString(f: String => Unit):         Unit = f(name)
   def foreachInfo(f:   Info => Unit):           Unit = f(info)
-  def mapToTag                             : DefModule = this.copy(ports = ports.map(_.mapToTag), body = body.mapToTag)
+  def mapToTag                             : DefModule = {
+    if(name == "AESDecrypt"){
+      val new_ports = ports.map(_.mapToTag)
+      var n_body = body.mapToTag
+      for(p <- new_ports){
+        var found = false
+        p.direction match{
+          case Output =>{
+            val tmp_body = n_body.mapStmt(st => {
+              st match{
+                case c: Connect => { 
+                  c.loc match{
+                    case r:Reference =>{
+                      var retC = c;
+                      if(r.name == p.name && r.name != "io_output_valid"){
+                        found = true; 
+                        retC = c.copy(expr = UIntLiteral(1, IntWidth(1)))
+                      }
+                      retC
+                    }
+                    case _ => st
+                  }
+                }
+                case _ => st
+              }
+            })
+            n_body = tmp_body
+          }
+          case Input =>{
+            found = true
+          }
+        }
+        if(!found){
+          n_body match{
+            case bb: Block =>{
+              val res = new scala.collection.mutable.ArrayBuffer[Statement]()
+              var its = bb.stmts.iterator :: Nil
+              while (its.nonEmpty) {
+                val it = its.head
+                if (it.hasNext) {
+                  it.next() match {
+                    case EmptyStmt => // flatten out
+                    case b: Block =>
+                      its = b.stmts.iterator :: its
+                    case other =>
+                      res.append(other)
+                  }
+                } else {
+                  its = its.tail
+                }
+              }
+              res.append(Connect(info, new Reference(p.name, p.tpe), UIntLiteral(1, IntWidth(1)) ))
+              n_body = Block(res.toSeq)
+            }
+            case _ => ()
+          }
+        }
+      }
+      this.copy(ports = new_ports, body = n_body)
+    }else if(name == "AESEncrypt"){
+      val new_ports = ports.map(_.mapToTag)
+      var n_body = body.mapToTag
+      for(p <- new_ports){
+        var found = false
+        p.direction match{
+          case Output =>{
+            val tmp_body = n_body.mapStmt(st => {
+              st match{
+                case c: Connect => { 
+                  c.loc match{
+                    case r:Reference =>{
+                      var retC = c;
+                      if(r.name == p.name && r.name != "io_output_valid"){
+                        found = true; 
+                        retC = c.copy(expr = UIntLiteral(1, IntWidth(0)))
+                      }
+                      retC
+                    }
+                    case _ => st  
+                  }
+                }
+                case _ => st
+              }
+            })
+            n_body = tmp_body
+          }
+          case Input =>{
+            found = true
+          }
+        }
+
+        if(!found){
+          n_body match{
+            case bb: Block =>{
+              val res = new scala.collection.mutable.ArrayBuffer[Statement]()
+              var its = bb.stmts.iterator :: Nil
+              while (its.nonEmpty) {
+                val it = its.head
+                if (it.hasNext) {
+                  it.next() match {
+                    case EmptyStmt => // flatten out
+                    case b: Block =>
+                      its = b.stmts.iterator :: its
+                    case other =>
+                      res.append(other)
+                  }
+                } else {
+                  its = its.tail
+                }
+              }
+              res.append(Connect(info, new Reference(p.name, p.tpe), UIntLiteral(0, IntWidth(1)) ))
+              n_body = Block(res.toSeq)
+            }
+            case _ => ()
+          }
+        }
+      }
+      this.copy(ports = new_ports, body = n_body)
+    }else{
+      this.copy(ports = ports.map(_.mapToTag), body = body.mapToTag)
+    }
+  }
 }
 
 /** External Module

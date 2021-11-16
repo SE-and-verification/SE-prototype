@@ -28,9 +28,12 @@ class Tagrize extends Transform with DependencyAPIMigration{
     * and its form, as well as other related data.
     */
   def execute(state: CircuitState): CircuitState = {
-    val new_state = state.copy(circuit = state.circuit.mapToTag)
-    val writer = new FileWriter(new File("generated-src", s"tag.fir"))
-    writer.write(new_state.circuit.serialize)
-    new_state
+    val new_circuit = state.circuit.mapToTag
+    // val writer = new FileWriter(new File("generated-src", s"tag.fir"))
+    // writer.write(new_circuit.serialize)
+    // val vwriter = new FileWriter(new File("generated-src", s"tag.v"))
+    // val verilogEmitter = new VerilogEmitter
+    // verilogEmitter.emit(new_state, vwriter)
+    state.copy(circuit = new_circuit)
   }
 }
