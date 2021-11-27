@@ -1336,7 +1336,7 @@ case class Module(info: Info, name: String, ports: Seq[Port], body: Statement) e
                   c.loc match{
                     case r:Reference =>{
                       var retC = c;
-                      if(r.name == p.name && r.name != "io_output_valid"){
+                      if(r.name == p.name){
                         found = true; 
                         retC = c.copy(expr = UIntLiteral(1, IntWidth(0)))
                       }
