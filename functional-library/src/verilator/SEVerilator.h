@@ -8,7 +8,6 @@
 class SE{
 	public:
 		SE(void);
-		~SE(void);
 		static __uint128_t SECompute(__uint128_t op1= 0, __uint128_t op2= 0, __uint128_t cond= 0, 
 			uint8_t inst= 0);
 		static unsigned int tickcount;

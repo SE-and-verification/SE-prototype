@@ -347,19 +347,44 @@ class SEChangeKey(implicit debug:Boolean) extends Module{
 	seoperation.io.op2_input := op2_asUInt(127,64)
 	seoperation.io.cond_input := cond_asUInt(127,64)
 
+	val zeroPipe = Module(new Pipe(UInt(64.W),0))
+	val fourPipe = Module(new Pipe(UInt(64.W),4))
+	zeroPipe.io.enq.bits := seoperation.io.result
+	fourPipe.io.enq.bits := seoperation.io.result
+	when(aes_invcipher.io.output_valid){
+		when(seoperation.io.inst === Instructions.MULT){
+			when(seoperation.io.op1_input  === 0.U || seoperation.io.op2_input  === 0.U ){
+				zeroPipe.io.enq.valid := true.B
+				fourPipe.io.enq.valid := false.B
+			}.otherwise{
+				zeroPipe.io.enq.valid := false.B
+				fourPipe.io.enq.valid := true.B
+			}
+		}.otherwise{
+			zeroPipe.io.enq.valid := true.B
+			fourPipe.io.enq.valid := false.B
+		}
+	}
+	.otherwise{
+		zeroPipe.io.enq.valid := false.B
+		fourPipe.io.enq.valid := false.B
+	}
+
+	val r_valid = zeroPipe.io.deq.valid ||fourPipe.io.deq.valid
+	val r_result = Mux(zeroPipe.io.deq.valid, zeroPipe.io.deq.bits, fourPipe.io.deq.bits)
   // Once we receive the result form the seoperation, we latech the result first.
 	val result_valid_buffer = RegNext(n_result_valid_buffer)
-	n_result_valid_buffer := Mux(aes_invcipher.io.output_valid, true.B, Mux(aes_cipher.io.input_valid, false.B, result_valid_buffer))
+	n_result_valid_buffer := Mux(r_valid, true.B, Mux(aes_cipher.io.input_valid, false.B, result_valid_buffer))
 
 	// Pad with RNG
 	val bit64_randnum = PRNG(new MaxPeriodFibonacciLFSR(64, Some(scala.math.BigInt(64, scala.util.Random))))
-	val padded_result = Cat(seoperation.io.result,bit64_randnum)
+	val padded_result = Cat(r_result,bit64_randnum)
 	val result_buffer = RegEnable( padded_result, aes_invcipher.io.output_valid)
 	if(debug){
 		when(result_valid_buffer){
 			printf("\n-----back----\n")
 			printf("padded_result:%x\n",result_buffer )
-			printf("seoperation.io.result:%x\n",seoperation.io.result)
+			printf("seoperation.io.result:%x\n",r_result)
 		}
 	}
 	// Connect the cipher

@@ -33,6 +33,7 @@ int changeKey(uint8_t* key){
 int main(){
 	setParameters();
 	SE se_simulator;
+	enc_lib::enc_int l0 = 0;
 	enc_lib::enc_int l1 = 1;
 	enc_lib::enc_int l2 = 2;
 	enc_lib::enc_int l3 = l1+l2;
@@ -53,6 +54,11 @@ int main(){
 	__uint128_t l3_SE = SE::SECompute(l2.ciphertext.convert_to_128(), l1.ciphertext.convert_to_128(), 0, Instruction::ADD());
 	print128(l3_SE);
 	print128dec(l3_SE);
+
+	printf("ticks: %d\n", SE::real_tickcount);
+	__uint128_t l0_SE = SE::SECompute(l0.ciphertext.convert_to_128(), l1.ciphertext.convert_to_128(), 0, Instruction::MULT());
+	print128(l0_SE);
+	print128dec(l0_SE);
 
 	// print128(l6.ciphertext.convert_to_128());
 	printf("ticks: %d\n", SE::real_tickcount);
