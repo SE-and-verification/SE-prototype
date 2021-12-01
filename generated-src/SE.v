@@ -38491,6 +38491,7 @@ module AESEncrypt(
   output [7:0] io_output_text_13,
   output [7:0] io_output_text_14,
   output [7:0] io_output_text_15,
+  output [7:0] io_output_intermediate,
   output       io_output_valid
 );
   wire  CipherRoundARK_clock; // @[CipherRound.scala 95:84]
@@ -39301,6 +39302,7 @@ module AESEncrypt(
   assign io_output_text_13 = CipherRoundNMC_io_state_out_13; // @[AESEncrypt.scala 54:18]
   assign io_output_text_14 = CipherRoundNMC_io_state_out_14; // @[AESEncrypt.scala 54:18]
   assign io_output_text_15 = CipherRoundNMC_io_state_out_15; // @[AESEncrypt.scala 54:18]
+  assign io_output_intermediate = CipherRound_3_io_state_out_2; // @[AESEncrypt.scala 52:26]
   assign io_output_valid = CipherRoundNMC_io_output_valid; // @[AESEncrypt.scala 53:19]
   assign CipherRoundARK_clock = clock;
   assign CipherRoundARK_io_input_valid = io_input_valid; // @[AESEncrypt.scala 31:33]
@@ -39765,48 +39767,36 @@ module MaxPeriodFibonacciLFSR(
   assign io_out_62 = state_62; // @[PRNG.scala 69:10]
   assign io_out_63 = state_63; // @[PRNG.scala 69:10]
   always @(posedge clock) begin
-    state_0 <= reset | _T_2; // @[PRNG.scala 47:{50,50}]
+    if (reset) begin // @[PRNG.scala 47:50]
+      state_0 <= 1'h0; // @[PRNG.scala 47:50]
+    end else begin
+      state_0 <= _T_2;
+    end
     if (reset) begin // @[PRNG.scala 47:50]
       state_1 <= 1'h0; // @[PRNG.scala 47:50]
     end else begin
       state_1 <= state_0;
     end
-    if (reset) begin // @[PRNG.scala 47:50]
-      state_2 <= 1'h0; // @[PRNG.scala 47:50]
-    end else begin
-      state_2 <= state_1;
-    end
-    if (reset) begin // @[PRNG.scala 47:50]
-      state_3 <= 1'h0; // @[PRNG.scala 47:50]
-    end else begin
-      state_3 <= state_2;
-    end
+    state_2 <= reset | state_1; // @[PRNG.scala 47:{50,50}]
+    state_3 <= reset | state_2; // @[PRNG.scala 47:{50,50}]
     state_4 <= reset | state_3; // @[PRNG.scala 47:{50,50}]
+    state_5 <= reset | state_4; // @[PRNG.scala 47:{50,50}]
     if (reset) begin // @[PRNG.scala 47:50]
-      state_5 <= 1'h0; // @[PRNG.scala 47:50]
+      state_6 <= 1'h0; // @[PRNG.scala 47:50]
     end else begin
-      state_5 <= state_4;
+      state_6 <= state_5;
     end
-    state_6 <= reset | state_5; // @[PRNG.scala 47:{50,50}]
     state_7 <= reset | state_6; // @[PRNG.scala 47:{50,50}]
     state_8 <= reset | state_7; // @[PRNG.scala 47:{50,50}]
-    if (reset) begin // @[PRNG.scala 47:50]
-      state_9 <= 1'h0; // @[PRNG.scala 47:50]
-    end else begin
-      state_9 <= state_8;
-    end
+    state_9 <= reset | state_8; // @[PRNG.scala 47:{50,50}]
     state_10 <= reset | state_9; // @[PRNG.scala 47:{50,50}]
+    state_11 <= reset | state_10; // @[PRNG.scala 47:{50,50}]
+    state_12 <= reset | state_11; // @[PRNG.scala 47:{50,50}]
     if (reset) begin // @[PRNG.scala 47:50]
-      state_11 <= 1'h0; // @[PRNG.scala 47:50]
+      state_13 <= 1'h0; // @[PRNG.scala 47:50]
     end else begin
-      state_11 <= state_10;
+      state_13 <= state_12;
     end
-    if (reset) begin // @[PRNG.scala 47:50]
-      state_12 <= 1'h0; // @[PRNG.scala 47:50]
-    end else begin
-      state_12 <= state_11;
-    end
-    state_13 <= reset | state_12; // @[PRNG.scala 47:{50,50}]
     state_14 <= reset | state_13; // @[PRNG.scala 47:{50,50}]
     if (reset) begin // @[PRNG.scala 47:50]
       state_15 <= 1'h0; // @[PRNG.scala 47:50]
@@ -39814,11 +39804,7 @@ module MaxPeriodFibonacciLFSR(
       state_15 <= state_14;
     end
     state_16 <= reset | state_15; // @[PRNG.scala 47:{50,50}]
-    if (reset) begin // @[PRNG.scala 47:50]
-      state_17 <= 1'h0; // @[PRNG.scala 47:50]
-    end else begin
-      state_17 <= state_16;
-    end
+    state_17 <= reset | state_16; // @[PRNG.scala 47:{50,50}]
     if (reset) begin // @[PRNG.scala 47:50]
       state_18 <= 1'h0; // @[PRNG.scala 47:50]
     end else begin
@@ -39835,28 +39821,20 @@ module MaxPeriodFibonacciLFSR(
     end else begin
       state_21 <= state_20;
     end
-    if (reset) begin // @[PRNG.scala 47:50]
-      state_22 <= 1'h0; // @[PRNG.scala 47:50]
-    end else begin
-      state_22 <= state_21;
-    end
+    state_22 <= reset | state_21; // @[PRNG.scala 47:{50,50}]
     state_23 <= reset | state_22; // @[PRNG.scala 47:{50,50}]
-    state_24 <= reset | state_23; // @[PRNG.scala 47:{50,50}]
+    if (reset) begin // @[PRNG.scala 47:50]
+      state_24 <= 1'h0; // @[PRNG.scala 47:50]
+    end else begin
+      state_24 <= state_23;
+    end
     state_25 <= reset | state_24; // @[PRNG.scala 47:{50,50}]
     state_26 <= reset | state_25; // @[PRNG.scala 47:{50,50}]
     state_27 <= reset | state_26; // @[PRNG.scala 47:{50,50}]
-    if (reset) begin // @[PRNG.scala 47:50]
-      state_28 <= 1'h0; // @[PRNG.scala 47:50]
-    end else begin
-      state_28 <= state_27;
-    end
+    state_28 <= reset | state_27; // @[PRNG.scala 47:{50,50}]
     state_29 <= reset | state_28; // @[PRNG.scala 47:{50,50}]
     state_30 <= reset | state_29; // @[PRNG.scala 47:{50,50}]
-    if (reset) begin // @[PRNG.scala 47:50]
-      state_31 <= 1'h0; // @[PRNG.scala 47:50]
-    end else begin
-      state_31 <= state_30;
-    end
+    state_31 <= reset | state_30; // @[PRNG.scala 47:{50,50}]
     if (reset) begin // @[PRNG.scala 47:50]
       state_32 <= 1'h0; // @[PRNG.scala 47:50]
     end else begin
@@ -39867,32 +39845,44 @@ module MaxPeriodFibonacciLFSR(
     end else begin
       state_33 <= state_32;
     end
-    state_34 <= reset | state_33; // @[PRNG.scala 47:{50,50}]
+    if (reset) begin // @[PRNG.scala 47:50]
+      state_34 <= 1'h0; // @[PRNG.scala 47:50]
+    end else begin
+      state_34 <= state_33;
+    end
     if (reset) begin // @[PRNG.scala 47:50]
       state_35 <= 1'h0; // @[PRNG.scala 47:50]
     end else begin
       state_35 <= state_34;
     end
+    state_36 <= reset | state_35; // @[PRNG.scala 47:{50,50}]
     if (reset) begin // @[PRNG.scala 47:50]
-      state_36 <= 1'h0; // @[PRNG.scala 47:50]
+      state_37 <= 1'h0; // @[PRNG.scala 47:50]
     end else begin
-      state_36 <= state_35;
+      state_37 <= state_36;
     end
-    state_37 <= reset | state_36; // @[PRNG.scala 47:{50,50}]
     state_38 <= reset | state_37; // @[PRNG.scala 47:{50,50}]
     if (reset) begin // @[PRNG.scala 47:50]
       state_39 <= 1'h0; // @[PRNG.scala 47:50]
     end else begin
       state_39 <= state_38;
     end
+    state_40 <= reset | state_39; // @[PRNG.scala 47:{50,50}]
     if (reset) begin // @[PRNG.scala 47:50]
-      state_40 <= 1'h0; // @[PRNG.scala 47:50]
+      state_41 <= 1'h0; // @[PRNG.scala 47:50]
     end else begin
-      state_40 <= state_39;
+      state_41 <= state_40;
     end
-    state_41 <= reset | state_40; // @[PRNG.scala 47:{50,50}]
-    state_42 <= reset | state_41; // @[PRNG.scala 47:{50,50}]
-    state_43 <= reset | state_42; // @[PRNG.scala 47:{50,50}]
+    if (reset) begin // @[PRNG.scala 47:50]
+      state_42 <= 1'h0; // @[PRNG.scala 47:50]
+    end else begin
+      state_42 <= state_41;
+    end
+    if (reset) begin // @[PRNG.scala 47:50]
+      state_43 <= 1'h0; // @[PRNG.scala 47:50]
+    end else begin
+      state_43 <= state_42;
+    end
     if (reset) begin // @[PRNG.scala 47:50]
       state_44 <= 1'h0; // @[PRNG.scala 47:50]
     end else begin
@@ -39905,9 +39895,17 @@ module MaxPeriodFibonacciLFSR(
     end
     state_46 <= reset | state_45; // @[PRNG.scala 47:{50,50}]
     state_47 <= reset | state_46; // @[PRNG.scala 47:{50,50}]
-    state_48 <= reset | state_47; // @[PRNG.scala 47:{50,50}]
+    if (reset) begin // @[PRNG.scala 47:50]
+      state_48 <= 1'h0; // @[PRNG.scala 47:50]
+    end else begin
+      state_48 <= state_47;
+    end
     state_49 <= reset | state_48; // @[PRNG.scala 47:{50,50}]
-    state_50 <= reset | state_49; // @[PRNG.scala 47:{50,50}]
+    if (reset) begin // @[PRNG.scala 47:50]
+      state_50 <= 1'h0; // @[PRNG.scala 47:50]
+    end else begin
+      state_50 <= state_49;
+    end
     if (reset) begin // @[PRNG.scala 47:50]
       state_51 <= 1'h0; // @[PRNG.scala 47:50]
     end else begin
@@ -39918,31 +39916,35 @@ module MaxPeriodFibonacciLFSR(
     end else begin
       state_52 <= state_51;
     end
+    state_53 <= reset | state_52; // @[PRNG.scala 47:{50,50}]
+    state_54 <= reset | state_53; // @[PRNG.scala 47:{50,50}]
     if (reset) begin // @[PRNG.scala 47:50]
-      state_53 <= 1'h0; // @[PRNG.scala 47:50]
+      state_55 <= 1'h0; // @[PRNG.scala 47:50]
     end else begin
-      state_53 <= state_52;
+      state_55 <= state_54;
     end
     if (reset) begin // @[PRNG.scala 47:50]
-      state_54 <= 1'h0; // @[PRNG.scala 47:50]
+      state_56 <= 1'h0; // @[PRNG.scala 47:50]
     end else begin
-      state_54 <= state_53;
+      state_56 <= state_55;
     end
-    state_55 <= reset | state_54; // @[PRNG.scala 47:{50,50}]
-    state_56 <= reset | state_55; // @[PRNG.scala 47:{50,50}]
-    state_57 <= reset | state_56; // @[PRNG.scala 47:{50,50}]
-    state_58 <= reset | state_57; // @[PRNG.scala 47:{50,50}]
     if (reset) begin // @[PRNG.scala 47:50]
-      state_59 <= 1'h0; // @[PRNG.scala 47:50]
+      state_57 <= 1'h0; // @[PRNG.scala 47:50]
     end else begin
-      state_59 <= state_58;
+      state_57 <= state_56;
     end
-    state_60 <= reset | state_59; // @[PRNG.scala 47:{50,50}]
     if (reset) begin // @[PRNG.scala 47:50]
-      state_61 <= 1'h0; // @[PRNG.scala 47:50]
+      state_58 <= 1'h0; // @[PRNG.scala 47:50]
     end else begin
-      state_61 <= state_60;
+      state_58 <= state_57;
     end
+    state_59 <= reset | state_58; // @[PRNG.scala 47:{50,50}]
+    if (reset) begin // @[PRNG.scala 47:50]
+      state_60 <= 1'h0; // @[PRNG.scala 47:50]
+    end else begin
+      state_60 <= state_59;
+    end
+    state_61 <= reset | state_60; // @[PRNG.scala 47:{50,50}]
     if (reset) begin // @[PRNG.scala 47:50]
       state_62 <= 1'h0; // @[PRNG.scala 47:50]
     end else begin
@@ -40134,163 +40136,169 @@ module SE(
   output [127:0] io_out_result,
   output         io_out_valid,
   input          io_out_ready,
-  output [7:0]   io_out_cntr
+  output [7:0]   io_out_cntr,
+  output [7:0]   io_out_zero_cntr,
+  output [7:0]   io_out_mult_cntr,
+  output [7:0]   io_out_intermediate
 );
 `ifdef RANDOMIZE_REG_INIT
   reg [31:0] _RAND_0;
   reg [31:0] _RAND_1;
   reg [31:0] _RAND_2;
-  reg [127:0] _RAND_3;
-  reg [127:0] _RAND_4;
+  reg [31:0] _RAND_3;
+  reg [31:0] _RAND_4;
   reg [127:0] _RAND_5;
-  reg [31:0] _RAND_6;
-  reg [31:0] _RAND_7;
+  reg [127:0] _RAND_6;
+  reg [127:0] _RAND_7;
   reg [31:0] _RAND_8;
-  reg [127:0] _RAND_9;
+  reg [31:0] _RAND_9;
   reg [31:0] _RAND_10;
   reg [127:0] _RAND_11;
-  reg [127:0] _RAND_12;
-  reg [31:0] _RAND_13;
+  reg [31:0] _RAND_12;
+  reg [127:0] _RAND_13;
+  reg [127:0] _RAND_14;
+  reg [31:0] _RAND_15;
 `endif // RANDOMIZE_REG_INIT
-  wire [7:0] seoperation_io_inst; // @[SE.scala 76:33]
-  wire [63:0] seoperation_io_op1_input; // @[SE.scala 76:33]
-  wire [63:0] seoperation_io_op2_input; // @[SE.scala 76:33]
-  wire [63:0] seoperation_io_cond_input; // @[SE.scala 76:33]
-  wire [63:0] seoperation_io_result; // @[SE.scala 76:33]
-  wire  aes_invcipher_clock; // @[SE.scala 77:35]
-  wire  aes_invcipher_io_input_valid; // @[SE.scala 77:35]
-  wire [7:0] aes_invcipher_io_input_op1_0; // @[SE.scala 77:35]
-  wire [7:0] aes_invcipher_io_input_op1_1; // @[SE.scala 77:35]
-  wire [7:0] aes_invcipher_io_input_op1_2; // @[SE.scala 77:35]
-  wire [7:0] aes_invcipher_io_input_op1_3; // @[SE.scala 77:35]
-  wire [7:0] aes_invcipher_io_input_op1_4; // @[SE.scala 77:35]
-  wire [7:0] aes_invcipher_io_input_op1_5; // @[SE.scala 77:35]
-  wire [7:0] aes_invcipher_io_input_op1_6; // @[SE.scala 77:35]
-  wire [7:0] aes_invcipher_io_input_op1_7; // @[SE.scala 77:35]
-  wire [7:0] aes_invcipher_io_input_op1_8; // @[SE.scala 77:35]
-  wire [7:0] aes_invcipher_io_input_op1_9; // @[SE.scala 77:35]
-  wire [7:0] aes_invcipher_io_input_op1_10; // @[SE.scala 77:35]
-  wire [7:0] aes_invcipher_io_input_op1_11; // @[SE.scala 77:35]
-  wire [7:0] aes_invcipher_io_input_op1_12; // @[SE.scala 77:35]
-  wire [7:0] aes_invcipher_io_input_op1_13; // @[SE.scala 77:35]
-  wire [7:0] aes_invcipher_io_input_op1_14; // @[SE.scala 77:35]
-  wire [7:0] aes_invcipher_io_input_op1_15; // @[SE.scala 77:35]
-  wire [7:0] aes_invcipher_io_input_op2_0; // @[SE.scala 77:35]
-  wire [7:0] aes_invcipher_io_input_op2_1; // @[SE.scala 77:35]
-  wire [7:0] aes_invcipher_io_input_op2_2; // @[SE.scala 77:35]
-  wire [7:0] aes_invcipher_io_input_op2_3; // @[SE.scala 77:35]
-  wire [7:0] aes_invcipher_io_input_op2_4; // @[SE.scala 77:35]
-  wire [7:0] aes_invcipher_io_input_op2_5; // @[SE.scala 77:35]
-  wire [7:0] aes_invcipher_io_input_op2_6; // @[SE.scala 77:35]
-  wire [7:0] aes_invcipher_io_input_op2_7; // @[SE.scala 77:35]
-  wire [7:0] aes_invcipher_io_input_op2_8; // @[SE.scala 77:35]
-  wire [7:0] aes_invcipher_io_input_op2_9; // @[SE.scala 77:35]
-  wire [7:0] aes_invcipher_io_input_op2_10; // @[SE.scala 77:35]
-  wire [7:0] aes_invcipher_io_input_op2_11; // @[SE.scala 77:35]
-  wire [7:0] aes_invcipher_io_input_op2_12; // @[SE.scala 77:35]
-  wire [7:0] aes_invcipher_io_input_op2_13; // @[SE.scala 77:35]
-  wire [7:0] aes_invcipher_io_input_op2_14; // @[SE.scala 77:35]
-  wire [7:0] aes_invcipher_io_input_op2_15; // @[SE.scala 77:35]
-  wire [7:0] aes_invcipher_io_input_cond_0; // @[SE.scala 77:35]
-  wire [7:0] aes_invcipher_io_input_cond_1; // @[SE.scala 77:35]
-  wire [7:0] aes_invcipher_io_input_cond_2; // @[SE.scala 77:35]
-  wire [7:0] aes_invcipher_io_input_cond_3; // @[SE.scala 77:35]
-  wire [7:0] aes_invcipher_io_input_cond_4; // @[SE.scala 77:35]
-  wire [7:0] aes_invcipher_io_input_cond_5; // @[SE.scala 77:35]
-  wire [7:0] aes_invcipher_io_input_cond_6; // @[SE.scala 77:35]
-  wire [7:0] aes_invcipher_io_input_cond_7; // @[SE.scala 77:35]
-  wire [7:0] aes_invcipher_io_input_cond_8; // @[SE.scala 77:35]
-  wire [7:0] aes_invcipher_io_input_cond_9; // @[SE.scala 77:35]
-  wire [7:0] aes_invcipher_io_input_cond_10; // @[SE.scala 77:35]
-  wire [7:0] aes_invcipher_io_input_cond_11; // @[SE.scala 77:35]
-  wire [7:0] aes_invcipher_io_input_cond_12; // @[SE.scala 77:35]
-  wire [7:0] aes_invcipher_io_input_cond_13; // @[SE.scala 77:35]
-  wire [7:0] aes_invcipher_io_input_cond_14; // @[SE.scala 77:35]
-  wire [7:0] aes_invcipher_io_input_cond_15; // @[SE.scala 77:35]
-  wire [7:0] aes_invcipher_io_output_op1_0; // @[SE.scala 77:35]
-  wire [7:0] aes_invcipher_io_output_op1_1; // @[SE.scala 77:35]
-  wire [7:0] aes_invcipher_io_output_op1_2; // @[SE.scala 77:35]
-  wire [7:0] aes_invcipher_io_output_op1_3; // @[SE.scala 77:35]
-  wire [7:0] aes_invcipher_io_output_op1_4; // @[SE.scala 77:35]
-  wire [7:0] aes_invcipher_io_output_op1_5; // @[SE.scala 77:35]
-  wire [7:0] aes_invcipher_io_output_op1_6; // @[SE.scala 77:35]
-  wire [7:0] aes_invcipher_io_output_op1_7; // @[SE.scala 77:35]
-  wire [7:0] aes_invcipher_io_output_op1_8; // @[SE.scala 77:35]
-  wire [7:0] aes_invcipher_io_output_op1_9; // @[SE.scala 77:35]
-  wire [7:0] aes_invcipher_io_output_op1_10; // @[SE.scala 77:35]
-  wire [7:0] aes_invcipher_io_output_op1_11; // @[SE.scala 77:35]
-  wire [7:0] aes_invcipher_io_output_op1_12; // @[SE.scala 77:35]
-  wire [7:0] aes_invcipher_io_output_op1_13; // @[SE.scala 77:35]
-  wire [7:0] aes_invcipher_io_output_op1_14; // @[SE.scala 77:35]
-  wire [7:0] aes_invcipher_io_output_op1_15; // @[SE.scala 77:35]
-  wire [7:0] aes_invcipher_io_output_op2_0; // @[SE.scala 77:35]
-  wire [7:0] aes_invcipher_io_output_op2_1; // @[SE.scala 77:35]
-  wire [7:0] aes_invcipher_io_output_op2_2; // @[SE.scala 77:35]
-  wire [7:0] aes_invcipher_io_output_op2_3; // @[SE.scala 77:35]
-  wire [7:0] aes_invcipher_io_output_op2_4; // @[SE.scala 77:35]
-  wire [7:0] aes_invcipher_io_output_op2_5; // @[SE.scala 77:35]
-  wire [7:0] aes_invcipher_io_output_op2_6; // @[SE.scala 77:35]
-  wire [7:0] aes_invcipher_io_output_op2_7; // @[SE.scala 77:35]
-  wire [7:0] aes_invcipher_io_output_op2_8; // @[SE.scala 77:35]
-  wire [7:0] aes_invcipher_io_output_op2_9; // @[SE.scala 77:35]
-  wire [7:0] aes_invcipher_io_output_op2_10; // @[SE.scala 77:35]
-  wire [7:0] aes_invcipher_io_output_op2_11; // @[SE.scala 77:35]
-  wire [7:0] aes_invcipher_io_output_op2_12; // @[SE.scala 77:35]
-  wire [7:0] aes_invcipher_io_output_op2_13; // @[SE.scala 77:35]
-  wire [7:0] aes_invcipher_io_output_op2_14; // @[SE.scala 77:35]
-  wire [7:0] aes_invcipher_io_output_op2_15; // @[SE.scala 77:35]
-  wire [7:0] aes_invcipher_io_output_cond_0; // @[SE.scala 77:35]
-  wire [7:0] aes_invcipher_io_output_cond_1; // @[SE.scala 77:35]
-  wire [7:0] aes_invcipher_io_output_cond_2; // @[SE.scala 77:35]
-  wire [7:0] aes_invcipher_io_output_cond_3; // @[SE.scala 77:35]
-  wire [7:0] aes_invcipher_io_output_cond_4; // @[SE.scala 77:35]
-  wire [7:0] aes_invcipher_io_output_cond_5; // @[SE.scala 77:35]
-  wire [7:0] aes_invcipher_io_output_cond_6; // @[SE.scala 77:35]
-  wire [7:0] aes_invcipher_io_output_cond_7; // @[SE.scala 77:35]
-  wire [7:0] aes_invcipher_io_output_cond_8; // @[SE.scala 77:35]
-  wire [7:0] aes_invcipher_io_output_cond_9; // @[SE.scala 77:35]
-  wire [7:0] aes_invcipher_io_output_cond_10; // @[SE.scala 77:35]
-  wire [7:0] aes_invcipher_io_output_cond_11; // @[SE.scala 77:35]
-  wire [7:0] aes_invcipher_io_output_cond_12; // @[SE.scala 77:35]
-  wire [7:0] aes_invcipher_io_output_cond_13; // @[SE.scala 77:35]
-  wire [7:0] aes_invcipher_io_output_cond_14; // @[SE.scala 77:35]
-  wire [7:0] aes_invcipher_io_output_cond_15; // @[SE.scala 77:35]
-  wire  aes_invcipher_io_output_valid; // @[SE.scala 77:35]
-  wire  aes_cipher_clock; // @[SE.scala 78:32]
-  wire  aes_cipher_io_input_valid; // @[SE.scala 78:32]
-  wire [7:0] aes_cipher_io_input_text_0; // @[SE.scala 78:32]
-  wire [7:0] aes_cipher_io_input_text_1; // @[SE.scala 78:32]
-  wire [7:0] aes_cipher_io_input_text_2; // @[SE.scala 78:32]
-  wire [7:0] aes_cipher_io_input_text_3; // @[SE.scala 78:32]
-  wire [7:0] aes_cipher_io_input_text_4; // @[SE.scala 78:32]
-  wire [7:0] aes_cipher_io_input_text_5; // @[SE.scala 78:32]
-  wire [7:0] aes_cipher_io_input_text_6; // @[SE.scala 78:32]
-  wire [7:0] aes_cipher_io_input_text_7; // @[SE.scala 78:32]
-  wire [7:0] aes_cipher_io_input_text_8; // @[SE.scala 78:32]
-  wire [7:0] aes_cipher_io_input_text_9; // @[SE.scala 78:32]
-  wire [7:0] aes_cipher_io_input_text_10; // @[SE.scala 78:32]
-  wire [7:0] aes_cipher_io_input_text_11; // @[SE.scala 78:32]
-  wire [7:0] aes_cipher_io_input_text_12; // @[SE.scala 78:32]
-  wire [7:0] aes_cipher_io_input_text_13; // @[SE.scala 78:32]
-  wire [7:0] aes_cipher_io_input_text_14; // @[SE.scala 78:32]
-  wire [7:0] aes_cipher_io_input_text_15; // @[SE.scala 78:32]
-  wire [7:0] aes_cipher_io_output_text_0; // @[SE.scala 78:32]
-  wire [7:0] aes_cipher_io_output_text_1; // @[SE.scala 78:32]
-  wire [7:0] aes_cipher_io_output_text_2; // @[SE.scala 78:32]
-  wire [7:0] aes_cipher_io_output_text_3; // @[SE.scala 78:32]
-  wire [7:0] aes_cipher_io_output_text_4; // @[SE.scala 78:32]
-  wire [7:0] aes_cipher_io_output_text_5; // @[SE.scala 78:32]
-  wire [7:0] aes_cipher_io_output_text_6; // @[SE.scala 78:32]
-  wire [7:0] aes_cipher_io_output_text_7; // @[SE.scala 78:32]
-  wire [7:0] aes_cipher_io_output_text_8; // @[SE.scala 78:32]
-  wire [7:0] aes_cipher_io_output_text_9; // @[SE.scala 78:32]
-  wire [7:0] aes_cipher_io_output_text_10; // @[SE.scala 78:32]
-  wire [7:0] aes_cipher_io_output_text_11; // @[SE.scala 78:32]
-  wire [7:0] aes_cipher_io_output_text_12; // @[SE.scala 78:32]
-  wire [7:0] aes_cipher_io_output_text_13; // @[SE.scala 78:32]
-  wire [7:0] aes_cipher_io_output_text_14; // @[SE.scala 78:32]
-  wire [7:0] aes_cipher_io_output_text_15; // @[SE.scala 78:32]
-  wire  aes_cipher_io_output_valid; // @[SE.scala 78:32]
+  wire [7:0] seoperation_io_inst; // @[SE.scala 83:33]
+  wire [63:0] seoperation_io_op1_input; // @[SE.scala 83:33]
+  wire [63:0] seoperation_io_op2_input; // @[SE.scala 83:33]
+  wire [63:0] seoperation_io_cond_input; // @[SE.scala 83:33]
+  wire [63:0] seoperation_io_result; // @[SE.scala 83:33]
+  wire  aes_invcipher_clock; // @[SE.scala 84:35]
+  wire  aes_invcipher_io_input_valid; // @[SE.scala 84:35]
+  wire [7:0] aes_invcipher_io_input_op1_0; // @[SE.scala 84:35]
+  wire [7:0] aes_invcipher_io_input_op1_1; // @[SE.scala 84:35]
+  wire [7:0] aes_invcipher_io_input_op1_2; // @[SE.scala 84:35]
+  wire [7:0] aes_invcipher_io_input_op1_3; // @[SE.scala 84:35]
+  wire [7:0] aes_invcipher_io_input_op1_4; // @[SE.scala 84:35]
+  wire [7:0] aes_invcipher_io_input_op1_5; // @[SE.scala 84:35]
+  wire [7:0] aes_invcipher_io_input_op1_6; // @[SE.scala 84:35]
+  wire [7:0] aes_invcipher_io_input_op1_7; // @[SE.scala 84:35]
+  wire [7:0] aes_invcipher_io_input_op1_8; // @[SE.scala 84:35]
+  wire [7:0] aes_invcipher_io_input_op1_9; // @[SE.scala 84:35]
+  wire [7:0] aes_invcipher_io_input_op1_10; // @[SE.scala 84:35]
+  wire [7:0] aes_invcipher_io_input_op1_11; // @[SE.scala 84:35]
+  wire [7:0] aes_invcipher_io_input_op1_12; // @[SE.scala 84:35]
+  wire [7:0] aes_invcipher_io_input_op1_13; // @[SE.scala 84:35]
+  wire [7:0] aes_invcipher_io_input_op1_14; // @[SE.scala 84:35]
+  wire [7:0] aes_invcipher_io_input_op1_15; // @[SE.scala 84:35]
+  wire [7:0] aes_invcipher_io_input_op2_0; // @[SE.scala 84:35]
+  wire [7:0] aes_invcipher_io_input_op2_1; // @[SE.scala 84:35]
+  wire [7:0] aes_invcipher_io_input_op2_2; // @[SE.scala 84:35]
+  wire [7:0] aes_invcipher_io_input_op2_3; // @[SE.scala 84:35]
+  wire [7:0] aes_invcipher_io_input_op2_4; // @[SE.scala 84:35]
+  wire [7:0] aes_invcipher_io_input_op2_5; // @[SE.scala 84:35]
+  wire [7:0] aes_invcipher_io_input_op2_6; // @[SE.scala 84:35]
+  wire [7:0] aes_invcipher_io_input_op2_7; // @[SE.scala 84:35]
+  wire [7:0] aes_invcipher_io_input_op2_8; // @[SE.scala 84:35]
+  wire [7:0] aes_invcipher_io_input_op2_9; // @[SE.scala 84:35]
+  wire [7:0] aes_invcipher_io_input_op2_10; // @[SE.scala 84:35]
+  wire [7:0] aes_invcipher_io_input_op2_11; // @[SE.scala 84:35]
+  wire [7:0] aes_invcipher_io_input_op2_12; // @[SE.scala 84:35]
+  wire [7:0] aes_invcipher_io_input_op2_13; // @[SE.scala 84:35]
+  wire [7:0] aes_invcipher_io_input_op2_14; // @[SE.scala 84:35]
+  wire [7:0] aes_invcipher_io_input_op2_15; // @[SE.scala 84:35]
+  wire [7:0] aes_invcipher_io_input_cond_0; // @[SE.scala 84:35]
+  wire [7:0] aes_invcipher_io_input_cond_1; // @[SE.scala 84:35]
+  wire [7:0] aes_invcipher_io_input_cond_2; // @[SE.scala 84:35]
+  wire [7:0] aes_invcipher_io_input_cond_3; // @[SE.scala 84:35]
+  wire [7:0] aes_invcipher_io_input_cond_4; // @[SE.scala 84:35]
+  wire [7:0] aes_invcipher_io_input_cond_5; // @[SE.scala 84:35]
+  wire [7:0] aes_invcipher_io_input_cond_6; // @[SE.scala 84:35]
+  wire [7:0] aes_invcipher_io_input_cond_7; // @[SE.scala 84:35]
+  wire [7:0] aes_invcipher_io_input_cond_8; // @[SE.scala 84:35]
+  wire [7:0] aes_invcipher_io_input_cond_9; // @[SE.scala 84:35]
+  wire [7:0] aes_invcipher_io_input_cond_10; // @[SE.scala 84:35]
+  wire [7:0] aes_invcipher_io_input_cond_11; // @[SE.scala 84:35]
+  wire [7:0] aes_invcipher_io_input_cond_12; // @[SE.scala 84:35]
+  wire [7:0] aes_invcipher_io_input_cond_13; // @[SE.scala 84:35]
+  wire [7:0] aes_invcipher_io_input_cond_14; // @[SE.scala 84:35]
+  wire [7:0] aes_invcipher_io_input_cond_15; // @[SE.scala 84:35]
+  wire [7:0] aes_invcipher_io_output_op1_0; // @[SE.scala 84:35]
+  wire [7:0] aes_invcipher_io_output_op1_1; // @[SE.scala 84:35]
+  wire [7:0] aes_invcipher_io_output_op1_2; // @[SE.scala 84:35]
+  wire [7:0] aes_invcipher_io_output_op1_3; // @[SE.scala 84:35]
+  wire [7:0] aes_invcipher_io_output_op1_4; // @[SE.scala 84:35]
+  wire [7:0] aes_invcipher_io_output_op1_5; // @[SE.scala 84:35]
+  wire [7:0] aes_invcipher_io_output_op1_6; // @[SE.scala 84:35]
+  wire [7:0] aes_invcipher_io_output_op1_7; // @[SE.scala 84:35]
+  wire [7:0] aes_invcipher_io_output_op1_8; // @[SE.scala 84:35]
+  wire [7:0] aes_invcipher_io_output_op1_9; // @[SE.scala 84:35]
+  wire [7:0] aes_invcipher_io_output_op1_10; // @[SE.scala 84:35]
+  wire [7:0] aes_invcipher_io_output_op1_11; // @[SE.scala 84:35]
+  wire [7:0] aes_invcipher_io_output_op1_12; // @[SE.scala 84:35]
+  wire [7:0] aes_invcipher_io_output_op1_13; // @[SE.scala 84:35]
+  wire [7:0] aes_invcipher_io_output_op1_14; // @[SE.scala 84:35]
+  wire [7:0] aes_invcipher_io_output_op1_15; // @[SE.scala 84:35]
+  wire [7:0] aes_invcipher_io_output_op2_0; // @[SE.scala 84:35]
+  wire [7:0] aes_invcipher_io_output_op2_1; // @[SE.scala 84:35]
+  wire [7:0] aes_invcipher_io_output_op2_2; // @[SE.scala 84:35]
+  wire [7:0] aes_invcipher_io_output_op2_3; // @[SE.scala 84:35]
+  wire [7:0] aes_invcipher_io_output_op2_4; // @[SE.scala 84:35]
+  wire [7:0] aes_invcipher_io_output_op2_5; // @[SE.scala 84:35]
+  wire [7:0] aes_invcipher_io_output_op2_6; // @[SE.scala 84:35]
+  wire [7:0] aes_invcipher_io_output_op2_7; // @[SE.scala 84:35]
+  wire [7:0] aes_invcipher_io_output_op2_8; // @[SE.scala 84:35]
+  wire [7:0] aes_invcipher_io_output_op2_9; // @[SE.scala 84:35]
+  wire [7:0] aes_invcipher_io_output_op2_10; // @[SE.scala 84:35]
+  wire [7:0] aes_invcipher_io_output_op2_11; // @[SE.scala 84:35]
+  wire [7:0] aes_invcipher_io_output_op2_12; // @[SE.scala 84:35]
+  wire [7:0] aes_invcipher_io_output_op2_13; // @[SE.scala 84:35]
+  wire [7:0] aes_invcipher_io_output_op2_14; // @[SE.scala 84:35]
+  wire [7:0] aes_invcipher_io_output_op2_15; // @[SE.scala 84:35]
+  wire [7:0] aes_invcipher_io_output_cond_0; // @[SE.scala 84:35]
+  wire [7:0] aes_invcipher_io_output_cond_1; // @[SE.scala 84:35]
+  wire [7:0] aes_invcipher_io_output_cond_2; // @[SE.scala 84:35]
+  wire [7:0] aes_invcipher_io_output_cond_3; // @[SE.scala 84:35]
+  wire [7:0] aes_invcipher_io_output_cond_4; // @[SE.scala 84:35]
+  wire [7:0] aes_invcipher_io_output_cond_5; // @[SE.scala 84:35]
+  wire [7:0] aes_invcipher_io_output_cond_6; // @[SE.scala 84:35]
+  wire [7:0] aes_invcipher_io_output_cond_7; // @[SE.scala 84:35]
+  wire [7:0] aes_invcipher_io_output_cond_8; // @[SE.scala 84:35]
+  wire [7:0] aes_invcipher_io_output_cond_9; // @[SE.scala 84:35]
+  wire [7:0] aes_invcipher_io_output_cond_10; // @[SE.scala 84:35]
+  wire [7:0] aes_invcipher_io_output_cond_11; // @[SE.scala 84:35]
+  wire [7:0] aes_invcipher_io_output_cond_12; // @[SE.scala 84:35]
+  wire [7:0] aes_invcipher_io_output_cond_13; // @[SE.scala 84:35]
+  wire [7:0] aes_invcipher_io_output_cond_14; // @[SE.scala 84:35]
+  wire [7:0] aes_invcipher_io_output_cond_15; // @[SE.scala 84:35]
+  wire  aes_invcipher_io_output_valid; // @[SE.scala 84:35]
+  wire  aes_cipher_clock; // @[SE.scala 85:32]
+  wire  aes_cipher_io_input_valid; // @[SE.scala 85:32]
+  wire [7:0] aes_cipher_io_input_text_0; // @[SE.scala 85:32]
+  wire [7:0] aes_cipher_io_input_text_1; // @[SE.scala 85:32]
+  wire [7:0] aes_cipher_io_input_text_2; // @[SE.scala 85:32]
+  wire [7:0] aes_cipher_io_input_text_3; // @[SE.scala 85:32]
+  wire [7:0] aes_cipher_io_input_text_4; // @[SE.scala 85:32]
+  wire [7:0] aes_cipher_io_input_text_5; // @[SE.scala 85:32]
+  wire [7:0] aes_cipher_io_input_text_6; // @[SE.scala 85:32]
+  wire [7:0] aes_cipher_io_input_text_7; // @[SE.scala 85:32]
+  wire [7:0] aes_cipher_io_input_text_8; // @[SE.scala 85:32]
+  wire [7:0] aes_cipher_io_input_text_9; // @[SE.scala 85:32]
+  wire [7:0] aes_cipher_io_input_text_10; // @[SE.scala 85:32]
+  wire [7:0] aes_cipher_io_input_text_11; // @[SE.scala 85:32]
+  wire [7:0] aes_cipher_io_input_text_12; // @[SE.scala 85:32]
+  wire [7:0] aes_cipher_io_input_text_13; // @[SE.scala 85:32]
+  wire [7:0] aes_cipher_io_input_text_14; // @[SE.scala 85:32]
+  wire [7:0] aes_cipher_io_input_text_15; // @[SE.scala 85:32]
+  wire [7:0] aes_cipher_io_output_text_0; // @[SE.scala 85:32]
+  wire [7:0] aes_cipher_io_output_text_1; // @[SE.scala 85:32]
+  wire [7:0] aes_cipher_io_output_text_2; // @[SE.scala 85:32]
+  wire [7:0] aes_cipher_io_output_text_3; // @[SE.scala 85:32]
+  wire [7:0] aes_cipher_io_output_text_4; // @[SE.scala 85:32]
+  wire [7:0] aes_cipher_io_output_text_5; // @[SE.scala 85:32]
+  wire [7:0] aes_cipher_io_output_text_6; // @[SE.scala 85:32]
+  wire [7:0] aes_cipher_io_output_text_7; // @[SE.scala 85:32]
+  wire [7:0] aes_cipher_io_output_text_8; // @[SE.scala 85:32]
+  wire [7:0] aes_cipher_io_output_text_9; // @[SE.scala 85:32]
+  wire [7:0] aes_cipher_io_output_text_10; // @[SE.scala 85:32]
+  wire [7:0] aes_cipher_io_output_text_11; // @[SE.scala 85:32]
+  wire [7:0] aes_cipher_io_output_text_12; // @[SE.scala 85:32]
+  wire [7:0] aes_cipher_io_output_text_13; // @[SE.scala 85:32]
+  wire [7:0] aes_cipher_io_output_text_14; // @[SE.scala 85:32]
+  wire [7:0] aes_cipher_io_output_text_15; // @[SE.scala 85:32]
+  wire [7:0] aes_cipher_io_output_intermediate; // @[SE.scala 85:32]
+  wire  aes_cipher_io_output_valid; // @[SE.scala 85:32]
   wire  prng_clock; // @[PRNG.scala 82:22]
   wire  prng_reset; // @[PRNG.scala 82:22]
   wire  prng_io_out_0; // @[PRNG.scala 82:22]
@@ -40357,87 +40365,89 @@ module SE(
   wire  prng_io_out_61; // @[PRNG.scala 82:22]
   wire  prng_io_out_62; // @[PRNG.scala 82:22]
   wire  prng_io_out_63; // @[PRNG.scala 82:22]
-  reg  counterOn; // @[SE.scala 58:32]
+  reg  counterOn; // @[SE.scala 61:32]
   reg [6:0] value; // @[Counter.scala 60:40]
+  reg [7:0] zero_cntr; // @[SE.scala 63:32]
+  reg [7:0] mult_cntr; // @[SE.scala 64:32]
   wire  wrap = value == 7'h63; // @[Counter.scala 72:24]
   wire [6:0] _value_T_1 = value + 7'h1; // @[Counter.scala 76:24]
-  wire  _T = io_in_valid & io_in_ready; // @[SE.scala 63:26]
-  wire  _T_1 = io_out_valid & io_out_ready; // @[SE.scala 65:33]
-  wire  _GEN_2 = io_out_valid & io_out_ready ? 1'h0 : counterOn; // @[SE.scala 65:49 66:27 58:32]
-  wire  _GEN_3 = io_in_valid & io_in_ready | _GEN_2; // @[SE.scala 63:41 64:27]
+  wire  _T = io_in_valid & io_in_ready; // @[SE.scala 70:26]
+  wire  _T_1 = io_out_valid & io_out_ready; // @[SE.scala 72:33]
+  wire  _GEN_2 = io_out_valid & io_out_ready ? 1'h0 : counterOn; // @[SE.scala 72:49 73:27 61:32]
+  wire  _GEN_3 = io_in_valid & io_in_ready | _GEN_2; // @[SE.scala 70:41 71:27]
   reg [7:0] inst_buffer; // @[Reg.scala 15:16]
   reg [127:0] op1_buffer; // @[Reg.scala 15:16]
   reg [127:0] op2_buffer; // @[Reg.scala 15:16]
   reg [127:0] cond_buffer; // @[Reg.scala 15:16]
-  reg  valid_buffer; // @[SE.scala 103:31]
-  reg  ready_for_input; // @[SE.scala 106:38]
-  wire  _T_4 = aes_invcipher_io_input_valid ? 1'h0 : valid_buffer; // @[SE.scala 109:68]
-  wire  _GEN_9 = _T_1 | ready_for_input; // @[SE.scala 112:49 113:33 106:38]
-  wire  _GEN_10 = _T ? 1'h0 : _GEN_9; // @[SE.scala 110:41 111:33]
+  reg  valid_buffer; // @[SE.scala 110:31]
+  reg  ready_for_input; // @[SE.scala 113:38]
+  wire  _T_4 = aes_invcipher_io_input_valid ? 1'h0 : valid_buffer; // @[SE.scala 116:68]
+  wire  _GEN_9 = _T_1 | ready_for_input; // @[SE.scala 119:49 120:33 113:38]
+  wire  _GEN_10 = _T ? 1'h0 : _GEN_9; // @[SE.scala 117:41 118:33]
   reg [7:0] mid_inst_buffer; // @[Reg.scala 15:16]
   reg [127:0] mid_op1_buffer; // @[Reg.scala 15:16]
-  wire [7:0] op1_reverse_1 = aes_invcipher_io_output_op1_14; // @[SE.scala 143:31 147:32]
-  wire [7:0] op1_reverse_0 = aes_invcipher_io_output_op1_15; // @[SE.scala 143:31 147:32]
-  wire [7:0] op1_reverse_3 = aes_invcipher_io_output_op1_12; // @[SE.scala 143:31 147:32]
-  wire [7:0] op1_reverse_2 = aes_invcipher_io_output_op1_13; // @[SE.scala 143:31 147:32]
-  wire [7:0] op1_reverse_5 = aes_invcipher_io_output_op1_10; // @[SE.scala 143:31 147:32]
-  wire [7:0] op1_reverse_4 = aes_invcipher_io_output_op1_11; // @[SE.scala 143:31 147:32]
-  wire [7:0] op1_reverse_7 = aes_invcipher_io_output_op1_8; // @[SE.scala 143:31 147:32]
-  wire [7:0] op1_reverse_6 = aes_invcipher_io_output_op1_9; // @[SE.scala 143:31 147:32]
+  wire [7:0] op1_reverse_1 = aes_invcipher_io_output_op1_14; // @[SE.scala 150:31 154:32]
+  wire [7:0] op1_reverse_0 = aes_invcipher_io_output_op1_15; // @[SE.scala 150:31 154:32]
+  wire [7:0] op1_reverse_3 = aes_invcipher_io_output_op1_12; // @[SE.scala 150:31 154:32]
+  wire [7:0] op1_reverse_2 = aes_invcipher_io_output_op1_13; // @[SE.scala 150:31 154:32]
+  wire [7:0] op1_reverse_5 = aes_invcipher_io_output_op1_10; // @[SE.scala 150:31 154:32]
+  wire [7:0] op1_reverse_4 = aes_invcipher_io_output_op1_11; // @[SE.scala 150:31 154:32]
+  wire [7:0] op1_reverse_7 = aes_invcipher_io_output_op1_8; // @[SE.scala 150:31 154:32]
+  wire [7:0] op1_reverse_6 = aes_invcipher_io_output_op1_9; // @[SE.scala 150:31 154:32]
   wire [63:0] lo = {op1_reverse_7,op1_reverse_6,op1_reverse_5,op1_reverse_4,op1_reverse_3,op1_reverse_2,op1_reverse_1,
-    op1_reverse_0}; // @[SE.scala 158:38]
-  wire [7:0] op1_reverse_9 = aes_invcipher_io_output_op1_6; // @[SE.scala 143:31 147:32]
-  wire [7:0] op1_reverse_8 = aes_invcipher_io_output_op1_7; // @[SE.scala 143:31 147:32]
-  wire [7:0] op1_reverse_11 = aes_invcipher_io_output_op1_4; // @[SE.scala 143:31 147:32]
-  wire [7:0] op1_reverse_10 = aes_invcipher_io_output_op1_5; // @[SE.scala 143:31 147:32]
-  wire [7:0] op1_reverse_13 = aes_invcipher_io_output_op1_2; // @[SE.scala 143:31 147:32]
-  wire [7:0] op1_reverse_12 = aes_invcipher_io_output_op1_3; // @[SE.scala 143:31 147:32]
-  wire [7:0] op1_reverse_15 = aes_invcipher_io_output_op1_0; // @[SE.scala 143:31 147:32]
-  wire [7:0] op1_reverse_14 = aes_invcipher_io_output_op1_1; // @[SE.scala 143:31 147:32]
+    op1_reverse_0}; // @[SE.scala 165:38]
+  wire [7:0] op1_reverse_9 = aes_invcipher_io_output_op1_6; // @[SE.scala 150:31 154:32]
+  wire [7:0] op1_reverse_8 = aes_invcipher_io_output_op1_7; // @[SE.scala 150:31 154:32]
+  wire [7:0] op1_reverse_11 = aes_invcipher_io_output_op1_4; // @[SE.scala 150:31 154:32]
+  wire [7:0] op1_reverse_10 = aes_invcipher_io_output_op1_5; // @[SE.scala 150:31 154:32]
+  wire [7:0] op1_reverse_13 = aes_invcipher_io_output_op1_2; // @[SE.scala 150:31 154:32]
+  wire [7:0] op1_reverse_12 = aes_invcipher_io_output_op1_3; // @[SE.scala 150:31 154:32]
+  wire [7:0] op1_reverse_15 = aes_invcipher_io_output_op1_0; // @[SE.scala 150:31 154:32]
+  wire [7:0] op1_reverse_14 = aes_invcipher_io_output_op1_1; // @[SE.scala 150:31 154:32]
   wire [127:0] op1_asUInt = {op1_reverse_15,op1_reverse_14,op1_reverse_13,op1_reverse_12,op1_reverse_11,op1_reverse_10,
-    op1_reverse_9,op1_reverse_8,lo}; // @[SE.scala 158:38]
-  wire [7:0] op2_reverse_1 = aes_invcipher_io_output_op2_14; // @[SE.scala 144:31 148:32]
-  wire [7:0] op2_reverse_0 = aes_invcipher_io_output_op2_15; // @[SE.scala 144:31 148:32]
-  wire [7:0] op2_reverse_3 = aes_invcipher_io_output_op2_12; // @[SE.scala 144:31 148:32]
-  wire [7:0] op2_reverse_2 = aes_invcipher_io_output_op2_13; // @[SE.scala 144:31 148:32]
-  wire [7:0] op2_reverse_5 = aes_invcipher_io_output_op2_10; // @[SE.scala 144:31 148:32]
-  wire [7:0] op2_reverse_4 = aes_invcipher_io_output_op2_11; // @[SE.scala 144:31 148:32]
-  wire [7:0] op2_reverse_7 = aes_invcipher_io_output_op2_8; // @[SE.scala 144:31 148:32]
-  wire [7:0] op2_reverse_6 = aes_invcipher_io_output_op2_9; // @[SE.scala 144:31 148:32]
+    op1_reverse_9,op1_reverse_8,lo}; // @[SE.scala 165:38]
+  wire [7:0] op2_reverse_1 = aes_invcipher_io_output_op2_14; // @[SE.scala 151:31 155:32]
+  wire [7:0] op2_reverse_0 = aes_invcipher_io_output_op2_15; // @[SE.scala 151:31 155:32]
+  wire [7:0] op2_reverse_3 = aes_invcipher_io_output_op2_12; // @[SE.scala 151:31 155:32]
+  wire [7:0] op2_reverse_2 = aes_invcipher_io_output_op2_13; // @[SE.scala 151:31 155:32]
+  wire [7:0] op2_reverse_5 = aes_invcipher_io_output_op2_10; // @[SE.scala 151:31 155:32]
+  wire [7:0] op2_reverse_4 = aes_invcipher_io_output_op2_11; // @[SE.scala 151:31 155:32]
+  wire [7:0] op2_reverse_7 = aes_invcipher_io_output_op2_8; // @[SE.scala 151:31 155:32]
+  wire [7:0] op2_reverse_6 = aes_invcipher_io_output_op2_9; // @[SE.scala 151:31 155:32]
   wire [63:0] lo_1 = {op2_reverse_7,op2_reverse_6,op2_reverse_5,op2_reverse_4,op2_reverse_3,op2_reverse_2,op2_reverse_1,
-    op2_reverse_0}; // @[SE.scala 159:38]
-  wire [7:0] op2_reverse_9 = aes_invcipher_io_output_op2_6; // @[SE.scala 144:31 148:32]
-  wire [7:0] op2_reverse_8 = aes_invcipher_io_output_op2_7; // @[SE.scala 144:31 148:32]
-  wire [7:0] op2_reverse_11 = aes_invcipher_io_output_op2_4; // @[SE.scala 144:31 148:32]
-  wire [7:0] op2_reverse_10 = aes_invcipher_io_output_op2_5; // @[SE.scala 144:31 148:32]
-  wire [7:0] op2_reverse_13 = aes_invcipher_io_output_op2_2; // @[SE.scala 144:31 148:32]
-  wire [7:0] op2_reverse_12 = aes_invcipher_io_output_op2_3; // @[SE.scala 144:31 148:32]
-  wire [7:0] op2_reverse_15 = aes_invcipher_io_output_op2_0; // @[SE.scala 144:31 148:32]
-  wire [7:0] op2_reverse_14 = aes_invcipher_io_output_op2_1; // @[SE.scala 144:31 148:32]
+    op2_reverse_0}; // @[SE.scala 166:38]
+  wire [7:0] op2_reverse_9 = aes_invcipher_io_output_op2_6; // @[SE.scala 151:31 155:32]
+  wire [7:0] op2_reverse_8 = aes_invcipher_io_output_op2_7; // @[SE.scala 151:31 155:32]
+  wire [7:0] op2_reverse_11 = aes_invcipher_io_output_op2_4; // @[SE.scala 151:31 155:32]
+  wire [7:0] op2_reverse_10 = aes_invcipher_io_output_op2_5; // @[SE.scala 151:31 155:32]
+  wire [7:0] op2_reverse_13 = aes_invcipher_io_output_op2_2; // @[SE.scala 151:31 155:32]
+  wire [7:0] op2_reverse_12 = aes_invcipher_io_output_op2_3; // @[SE.scala 151:31 155:32]
+  wire [7:0] op2_reverse_15 = aes_invcipher_io_output_op2_0; // @[SE.scala 151:31 155:32]
+  wire [7:0] op2_reverse_14 = aes_invcipher_io_output_op2_1; // @[SE.scala 151:31 155:32]
   wire [127:0] op2_asUInt = {op2_reverse_15,op2_reverse_14,op2_reverse_13,op2_reverse_12,op2_reverse_11,op2_reverse_10,
-    op2_reverse_9,op2_reverse_8,lo_1}; // @[SE.scala 159:38]
-  wire [7:0] cond_reverse_1 = aes_invcipher_io_output_cond_14; // @[SE.scala 145:32 149:33]
-  wire [7:0] cond_reverse_0 = aes_invcipher_io_output_cond_15; // @[SE.scala 145:32 149:33]
-  wire [7:0] cond_reverse_3 = aes_invcipher_io_output_cond_12; // @[SE.scala 145:32 149:33]
-  wire [7:0] cond_reverse_2 = aes_invcipher_io_output_cond_13; // @[SE.scala 145:32 149:33]
-  wire [7:0] cond_reverse_5 = aes_invcipher_io_output_cond_10; // @[SE.scala 145:32 149:33]
-  wire [7:0] cond_reverse_4 = aes_invcipher_io_output_cond_11; // @[SE.scala 145:32 149:33]
-  wire [7:0] cond_reverse_7 = aes_invcipher_io_output_cond_8; // @[SE.scala 145:32 149:33]
-  wire [7:0] cond_reverse_6 = aes_invcipher_io_output_cond_9; // @[SE.scala 145:32 149:33]
+    op2_reverse_9,op2_reverse_8,lo_1}; // @[SE.scala 166:38]
+  wire [7:0] cond_reverse_1 = aes_invcipher_io_output_cond_14; // @[SE.scala 152:32 156:33]
+  wire [7:0] cond_reverse_0 = aes_invcipher_io_output_cond_15; // @[SE.scala 152:32 156:33]
+  wire [7:0] cond_reverse_3 = aes_invcipher_io_output_cond_12; // @[SE.scala 152:32 156:33]
+  wire [7:0] cond_reverse_2 = aes_invcipher_io_output_cond_13; // @[SE.scala 152:32 156:33]
+  wire [7:0] cond_reverse_5 = aes_invcipher_io_output_cond_10; // @[SE.scala 152:32 156:33]
+  wire [7:0] cond_reverse_4 = aes_invcipher_io_output_cond_11; // @[SE.scala 152:32 156:33]
+  wire [7:0] cond_reverse_7 = aes_invcipher_io_output_cond_8; // @[SE.scala 152:32 156:33]
+  wire [7:0] cond_reverse_6 = aes_invcipher_io_output_cond_9; // @[SE.scala 152:32 156:33]
   wire [63:0] lo_2 = {cond_reverse_7,cond_reverse_6,cond_reverse_5,cond_reverse_4,cond_reverse_3,cond_reverse_2,
-    cond_reverse_1,cond_reverse_0}; // @[SE.scala 160:40]
-  wire [7:0] cond_reverse_9 = aes_invcipher_io_output_cond_6; // @[SE.scala 145:32 149:33]
-  wire [7:0] cond_reverse_8 = aes_invcipher_io_output_cond_7; // @[SE.scala 145:32 149:33]
-  wire [7:0] cond_reverse_11 = aes_invcipher_io_output_cond_4; // @[SE.scala 145:32 149:33]
-  wire [7:0] cond_reverse_10 = aes_invcipher_io_output_cond_5; // @[SE.scala 145:32 149:33]
-  wire [7:0] cond_reverse_13 = aes_invcipher_io_output_cond_2; // @[SE.scala 145:32 149:33]
-  wire [7:0] cond_reverse_12 = aes_invcipher_io_output_cond_3; // @[SE.scala 145:32 149:33]
-  wire [7:0] cond_reverse_15 = aes_invcipher_io_output_cond_0; // @[SE.scala 145:32 149:33]
-  wire [7:0] cond_reverse_14 = aes_invcipher_io_output_cond_1; // @[SE.scala 145:32 149:33]
+    cond_reverse_1,cond_reverse_0}; // @[SE.scala 167:40]
+  wire [7:0] cond_reverse_9 = aes_invcipher_io_output_cond_6; // @[SE.scala 152:32 156:33]
+  wire [7:0] cond_reverse_8 = aes_invcipher_io_output_cond_7; // @[SE.scala 152:32 156:33]
+  wire [7:0] cond_reverse_11 = aes_invcipher_io_output_cond_4; // @[SE.scala 152:32 156:33]
+  wire [7:0] cond_reverse_10 = aes_invcipher_io_output_cond_5; // @[SE.scala 152:32 156:33]
+  wire [7:0] cond_reverse_13 = aes_invcipher_io_output_cond_2; // @[SE.scala 152:32 156:33]
+  wire [7:0] cond_reverse_12 = aes_invcipher_io_output_cond_3; // @[SE.scala 152:32 156:33]
+  wire [7:0] cond_reverse_15 = aes_invcipher_io_output_cond_0; // @[SE.scala 152:32 156:33]
+  wire [7:0] cond_reverse_14 = aes_invcipher_io_output_cond_1; // @[SE.scala 152:32 156:33]
   wire [127:0] cond_asUInt = {cond_reverse_15,cond_reverse_14,cond_reverse_13,cond_reverse_12,cond_reverse_11,
-    cond_reverse_10,cond_reverse_9,cond_reverse_8,lo_2}; // @[SE.scala 160:40]
-  reg  result_valid_buffer; // @[SE.scala 177:42]
-  wire  _T_63 = aes_cipher_io_input_valid ? 1'h0 : result_valid_buffer; // @[SE.scala 178:80]
+    cond_reverse_10,cond_reverse_9,cond_reverse_8,lo_2}; // @[SE.scala 167:40]
+  reg  result_valid_buffer; // @[SE.scala 184:42]
+  wire  _T_63 = aes_cipher_io_input_valid ? 1'h0 : result_valid_buffer; // @[SE.scala 185:80]
   wire [7:0] lo_lo_lo_3 = {prng_io_out_7,prng_io_out_6,prng_io_out_5,prng_io_out_4,prng_io_out_3,prng_io_out_2,
     prng_io_out_1,prng_io_out_0}; // @[PRNG.scala 86:17]
   wire [15:0] lo_lo_3 = {prng_io_out_15,prng_io_out_14,prng_io_out_13,prng_io_out_12,prng_io_out_11,prng_io_out_10,
@@ -40456,24 +40466,27 @@ module SE(
     prng_io_out_57,prng_io_out_56,hi_hi_lo_3,hi_lo_3}; // @[PRNG.scala 86:17]
   wire [127:0] padded_result = {seoperation_io_result,hi_3,lo_3}; // @[Cat.scala 30:58]
   reg [127:0] result_buffer; // @[Reg.scala 15:16]
+  wire [7:0] _T_83 = zero_cntr + 8'h1; // @[SE.scala 208:40]
+  wire [7:0] _T_84 = seoperation_io_inst; // @[SE.scala 210:34]
+  wire [7:0] _T_87 = mult_cntr + 8'h1; // @[SE.scala 211:40]
   wire [63:0] lo_4 = {aes_cipher_io_output_text_7,aes_cipher_io_output_text_6,aes_cipher_io_output_text_5,
     aes_cipher_io_output_text_4,aes_cipher_io_output_text_3,aes_cipher_io_output_text_2,aes_cipher_io_output_text_1,
-    aes_cipher_io_output_text_0}; // @[SE.scala 202:65]
-  wire [127:0] _T_81 = {aes_cipher_io_output_text_15,aes_cipher_io_output_text_14,aes_cipher_io_output_text_13,
+    aes_cipher_io_output_text_0}; // @[SE.scala 215:65]
+  wire [127:0] _T_88 = {aes_cipher_io_output_text_15,aes_cipher_io_output_text_14,aes_cipher_io_output_text_13,
     aes_cipher_io_output_text_12,aes_cipher_io_output_text_11,aes_cipher_io_output_text_10,aes_cipher_io_output_text_9,
-    aes_cipher_io_output_text_8,lo_4}; // @[SE.scala 202:65]
+    aes_cipher_io_output_text_8,lo_4}; // @[SE.scala 215:65]
   reg [127:0] output_buffer; // @[Reg.scala 15:16]
-  reg  output_valid; // @[SE.scala 203:35]
-  wire  _GEN_15 = _T_1 ? 1'h0 : output_valid; // @[SE.scala 207:49 208:30 203:35]
-  wire  _GEN_16 = aes_cipher_io_output_valid | _GEN_15; // @[SE.scala 205:41 206:30]
-  SEOperation seoperation ( // @[SE.scala 76:33]
+  reg  output_valid; // @[SE.scala 216:35]
+  wire  _GEN_17 = _T_1 ? 1'h0 : output_valid; // @[SE.scala 220:49 221:30 216:35]
+  wire  _GEN_18 = aes_cipher_io_output_valid | _GEN_17; // @[SE.scala 218:41 219:30]
+  SEOperation seoperation ( // @[SE.scala 83:33]
     .io_inst(seoperation_io_inst),
     .io_op1_input(seoperation_io_op1_input),
     .io_op2_input(seoperation_io_op2_input),
     .io_cond_input(seoperation_io_cond_input),
     .io_result(seoperation_io_result)
   );
-  AESDecrypt aes_invcipher ( // @[SE.scala 77:35]
+  AESDecrypt aes_invcipher ( // @[SE.scala 84:35]
     .clock(aes_invcipher_clock),
     .io_input_valid(aes_invcipher_io_input_valid),
     .io_input_op1_0(aes_invcipher_io_input_op1_0),
@@ -40574,7 +40587,7 @@ module SE(
     .io_output_cond_15(aes_invcipher_io_output_cond_15),
     .io_output_valid(aes_invcipher_io_output_valid)
   );
-  AESEncrypt aes_cipher ( // @[SE.scala 78:32]
+  AESEncrypt aes_cipher ( // @[SE.scala 85:32]
     .clock(aes_cipher_clock),
     .io_input_valid(aes_cipher_io_input_valid),
     .io_input_text_0(aes_cipher_io_input_text_0),
@@ -40609,6 +40622,7 @@ module SE(
     .io_output_text_13(aes_cipher_io_output_text_13),
     .io_output_text_14(aes_cipher_io_output_text_14),
     .io_output_text_15(aes_cipher_io_output_text_15),
+    .io_output_intermediate(aes_cipher_io_output_intermediate),
     .io_output_valid(aes_cipher_io_output_valid)
   );
   MaxPeriodFibonacciLFSR prng ( // @[PRNG.scala 82:22]
@@ -40679,100 +40693,113 @@ module SE(
     .io_out_62(prng_io_out_62),
     .io_out_63(prng_io_out_63)
   );
-  assign io_in_ready = ready_for_input; // @[SE.scala 107:21]
-  assign io_out_result = output_buffer; // @[SE.scala 211:23]
-  assign io_out_valid = output_valid; // @[SE.scala 210:22]
-  assign io_out_cntr = {{1'd0}, value}; // @[SE.scala 71:21]
-  assign seoperation_io_inst = mid_inst_buffer; // @[SE.scala 156:29]
-  assign seoperation_io_op1_input = inst_buffer[7:5] == 3'h5 ? mid_op1_buffer[127:64] : op1_asUInt[127:64]; // @[SE.scala 172:40]
-  assign seoperation_io_op2_input = op2_asUInt[127:64]; // @[SE.scala 173:47]
-  assign seoperation_io_cond_input = cond_asUInt[127:64]; // @[SE.scala 174:49]
+  assign io_in_ready = ready_for_input; // @[SE.scala 114:21]
+  assign io_out_result = output_buffer; // @[SE.scala 224:23]
+  assign io_out_valid = output_valid; // @[SE.scala 223:22]
+  assign io_out_cntr = {{1'd0}, value}; // @[SE.scala 78:21]
+  assign io_out_zero_cntr = zero_cntr; // @[SE.scala 65:26]
+  assign io_out_mult_cntr = mult_cntr; // @[SE.scala 66:26]
+  assign io_out_intermediate = aes_cipher_io_output_intermediate; // @[SE.scala 213:29]
+  assign seoperation_io_inst = mid_inst_buffer; // @[SE.scala 163:29]
+  assign seoperation_io_op1_input = inst_buffer[7:5] == 3'h5 ? mid_op1_buffer[127:64] : op1_asUInt[127:64]; // @[SE.scala 179:40]
+  assign seoperation_io_op2_input = op2_asUInt[127:64]; // @[SE.scala 180:47]
+  assign seoperation_io_cond_input = cond_asUInt[127:64]; // @[SE.scala 181:49]
   assign aes_invcipher_clock = clock;
-  assign aes_invcipher_io_input_valid = valid_buffer; // @[SE.scala 139:38]
-  assign aes_invcipher_io_input_op1_0 = op1_buffer[7:0]; // @[SE.scala 135:58]
-  assign aes_invcipher_io_input_op1_1 = op1_buffer[15:8]; // @[SE.scala 135:58]
-  assign aes_invcipher_io_input_op1_2 = op1_buffer[23:16]; // @[SE.scala 135:58]
-  assign aes_invcipher_io_input_op1_3 = op1_buffer[31:24]; // @[SE.scala 135:58]
-  assign aes_invcipher_io_input_op1_4 = op1_buffer[39:32]; // @[SE.scala 135:58]
-  assign aes_invcipher_io_input_op1_5 = op1_buffer[47:40]; // @[SE.scala 135:58]
-  assign aes_invcipher_io_input_op1_6 = op1_buffer[55:48]; // @[SE.scala 135:58]
-  assign aes_invcipher_io_input_op1_7 = op1_buffer[63:56]; // @[SE.scala 135:58]
-  assign aes_invcipher_io_input_op1_8 = op1_buffer[71:64]; // @[SE.scala 135:58]
-  assign aes_invcipher_io_input_op1_9 = op1_buffer[79:72]; // @[SE.scala 135:58]
-  assign aes_invcipher_io_input_op1_10 = op1_buffer[87:80]; // @[SE.scala 135:58]
-  assign aes_invcipher_io_input_op1_11 = op1_buffer[95:88]; // @[SE.scala 135:58]
-  assign aes_invcipher_io_input_op1_12 = op1_buffer[103:96]; // @[SE.scala 135:58]
-  assign aes_invcipher_io_input_op1_13 = op1_buffer[111:104]; // @[SE.scala 135:58]
-  assign aes_invcipher_io_input_op1_14 = op1_buffer[119:112]; // @[SE.scala 135:58]
-  assign aes_invcipher_io_input_op1_15 = op1_buffer[127:120]; // @[SE.scala 135:58]
-  assign aes_invcipher_io_input_op2_0 = op2_buffer[7:0]; // @[SE.scala 136:58]
-  assign aes_invcipher_io_input_op2_1 = op2_buffer[15:8]; // @[SE.scala 136:58]
-  assign aes_invcipher_io_input_op2_2 = op2_buffer[23:16]; // @[SE.scala 136:58]
-  assign aes_invcipher_io_input_op2_3 = op2_buffer[31:24]; // @[SE.scala 136:58]
-  assign aes_invcipher_io_input_op2_4 = op2_buffer[39:32]; // @[SE.scala 136:58]
-  assign aes_invcipher_io_input_op2_5 = op2_buffer[47:40]; // @[SE.scala 136:58]
-  assign aes_invcipher_io_input_op2_6 = op2_buffer[55:48]; // @[SE.scala 136:58]
-  assign aes_invcipher_io_input_op2_7 = op2_buffer[63:56]; // @[SE.scala 136:58]
-  assign aes_invcipher_io_input_op2_8 = op2_buffer[71:64]; // @[SE.scala 136:58]
-  assign aes_invcipher_io_input_op2_9 = op2_buffer[79:72]; // @[SE.scala 136:58]
-  assign aes_invcipher_io_input_op2_10 = op2_buffer[87:80]; // @[SE.scala 136:58]
-  assign aes_invcipher_io_input_op2_11 = op2_buffer[95:88]; // @[SE.scala 136:58]
-  assign aes_invcipher_io_input_op2_12 = op2_buffer[103:96]; // @[SE.scala 136:58]
-  assign aes_invcipher_io_input_op2_13 = op2_buffer[111:104]; // @[SE.scala 136:58]
-  assign aes_invcipher_io_input_op2_14 = op2_buffer[119:112]; // @[SE.scala 136:58]
-  assign aes_invcipher_io_input_op2_15 = op2_buffer[127:120]; // @[SE.scala 136:58]
-  assign aes_invcipher_io_input_cond_0 = cond_buffer[7:0]; // @[SE.scala 137:60]
-  assign aes_invcipher_io_input_cond_1 = cond_buffer[15:8]; // @[SE.scala 137:60]
-  assign aes_invcipher_io_input_cond_2 = cond_buffer[23:16]; // @[SE.scala 137:60]
-  assign aes_invcipher_io_input_cond_3 = cond_buffer[31:24]; // @[SE.scala 137:60]
-  assign aes_invcipher_io_input_cond_4 = cond_buffer[39:32]; // @[SE.scala 137:60]
-  assign aes_invcipher_io_input_cond_5 = cond_buffer[47:40]; // @[SE.scala 137:60]
-  assign aes_invcipher_io_input_cond_6 = cond_buffer[55:48]; // @[SE.scala 137:60]
-  assign aes_invcipher_io_input_cond_7 = cond_buffer[63:56]; // @[SE.scala 137:60]
-  assign aes_invcipher_io_input_cond_8 = cond_buffer[71:64]; // @[SE.scala 137:60]
-  assign aes_invcipher_io_input_cond_9 = cond_buffer[79:72]; // @[SE.scala 137:60]
-  assign aes_invcipher_io_input_cond_10 = cond_buffer[87:80]; // @[SE.scala 137:60]
-  assign aes_invcipher_io_input_cond_11 = cond_buffer[95:88]; // @[SE.scala 137:60]
-  assign aes_invcipher_io_input_cond_12 = cond_buffer[103:96]; // @[SE.scala 137:60]
-  assign aes_invcipher_io_input_cond_13 = cond_buffer[111:104]; // @[SE.scala 137:60]
-  assign aes_invcipher_io_input_cond_14 = cond_buffer[119:112]; // @[SE.scala 137:60]
-  assign aes_invcipher_io_input_cond_15 = cond_buffer[127:120]; // @[SE.scala 137:60]
+  assign aes_invcipher_io_input_valid = valid_buffer; // @[SE.scala 146:38]
+  assign aes_invcipher_io_input_op1_0 = op1_buffer[7:0]; // @[SE.scala 142:58]
+  assign aes_invcipher_io_input_op1_1 = op1_buffer[15:8]; // @[SE.scala 142:58]
+  assign aes_invcipher_io_input_op1_2 = op1_buffer[23:16]; // @[SE.scala 142:58]
+  assign aes_invcipher_io_input_op1_3 = op1_buffer[31:24]; // @[SE.scala 142:58]
+  assign aes_invcipher_io_input_op1_4 = op1_buffer[39:32]; // @[SE.scala 142:58]
+  assign aes_invcipher_io_input_op1_5 = op1_buffer[47:40]; // @[SE.scala 142:58]
+  assign aes_invcipher_io_input_op1_6 = op1_buffer[55:48]; // @[SE.scala 142:58]
+  assign aes_invcipher_io_input_op1_7 = op1_buffer[63:56]; // @[SE.scala 142:58]
+  assign aes_invcipher_io_input_op1_8 = op1_buffer[71:64]; // @[SE.scala 142:58]
+  assign aes_invcipher_io_input_op1_9 = op1_buffer[79:72]; // @[SE.scala 142:58]
+  assign aes_invcipher_io_input_op1_10 = op1_buffer[87:80]; // @[SE.scala 142:58]
+  assign aes_invcipher_io_input_op1_11 = op1_buffer[95:88]; // @[SE.scala 142:58]
+  assign aes_invcipher_io_input_op1_12 = op1_buffer[103:96]; // @[SE.scala 142:58]
+  assign aes_invcipher_io_input_op1_13 = op1_buffer[111:104]; // @[SE.scala 142:58]
+  assign aes_invcipher_io_input_op1_14 = op1_buffer[119:112]; // @[SE.scala 142:58]
+  assign aes_invcipher_io_input_op1_15 = op1_buffer[127:120]; // @[SE.scala 142:58]
+  assign aes_invcipher_io_input_op2_0 = op2_buffer[7:0]; // @[SE.scala 143:58]
+  assign aes_invcipher_io_input_op2_1 = op2_buffer[15:8]; // @[SE.scala 143:58]
+  assign aes_invcipher_io_input_op2_2 = op2_buffer[23:16]; // @[SE.scala 143:58]
+  assign aes_invcipher_io_input_op2_3 = op2_buffer[31:24]; // @[SE.scala 143:58]
+  assign aes_invcipher_io_input_op2_4 = op2_buffer[39:32]; // @[SE.scala 143:58]
+  assign aes_invcipher_io_input_op2_5 = op2_buffer[47:40]; // @[SE.scala 143:58]
+  assign aes_invcipher_io_input_op2_6 = op2_buffer[55:48]; // @[SE.scala 143:58]
+  assign aes_invcipher_io_input_op2_7 = op2_buffer[63:56]; // @[SE.scala 143:58]
+  assign aes_invcipher_io_input_op2_8 = op2_buffer[71:64]; // @[SE.scala 143:58]
+  assign aes_invcipher_io_input_op2_9 = op2_buffer[79:72]; // @[SE.scala 143:58]
+  assign aes_invcipher_io_input_op2_10 = op2_buffer[87:80]; // @[SE.scala 143:58]
+  assign aes_invcipher_io_input_op2_11 = op2_buffer[95:88]; // @[SE.scala 143:58]
+  assign aes_invcipher_io_input_op2_12 = op2_buffer[103:96]; // @[SE.scala 143:58]
+  assign aes_invcipher_io_input_op2_13 = op2_buffer[111:104]; // @[SE.scala 143:58]
+  assign aes_invcipher_io_input_op2_14 = op2_buffer[119:112]; // @[SE.scala 143:58]
+  assign aes_invcipher_io_input_op2_15 = op2_buffer[127:120]; // @[SE.scala 143:58]
+  assign aes_invcipher_io_input_cond_0 = cond_buffer[7:0]; // @[SE.scala 144:60]
+  assign aes_invcipher_io_input_cond_1 = cond_buffer[15:8]; // @[SE.scala 144:60]
+  assign aes_invcipher_io_input_cond_2 = cond_buffer[23:16]; // @[SE.scala 144:60]
+  assign aes_invcipher_io_input_cond_3 = cond_buffer[31:24]; // @[SE.scala 144:60]
+  assign aes_invcipher_io_input_cond_4 = cond_buffer[39:32]; // @[SE.scala 144:60]
+  assign aes_invcipher_io_input_cond_5 = cond_buffer[47:40]; // @[SE.scala 144:60]
+  assign aes_invcipher_io_input_cond_6 = cond_buffer[55:48]; // @[SE.scala 144:60]
+  assign aes_invcipher_io_input_cond_7 = cond_buffer[63:56]; // @[SE.scala 144:60]
+  assign aes_invcipher_io_input_cond_8 = cond_buffer[71:64]; // @[SE.scala 144:60]
+  assign aes_invcipher_io_input_cond_9 = cond_buffer[79:72]; // @[SE.scala 144:60]
+  assign aes_invcipher_io_input_cond_10 = cond_buffer[87:80]; // @[SE.scala 144:60]
+  assign aes_invcipher_io_input_cond_11 = cond_buffer[95:88]; // @[SE.scala 144:60]
+  assign aes_invcipher_io_input_cond_12 = cond_buffer[103:96]; // @[SE.scala 144:60]
+  assign aes_invcipher_io_input_cond_13 = cond_buffer[111:104]; // @[SE.scala 144:60]
+  assign aes_invcipher_io_input_cond_14 = cond_buffer[119:112]; // @[SE.scala 144:60]
+  assign aes_invcipher_io_input_cond_15 = cond_buffer[127:120]; // @[SE.scala 144:60]
   assign aes_cipher_clock = clock;
-  assign aes_cipher_io_input_valid = result_valid_buffer; // @[SE.scala 198:35]
-  assign aes_cipher_io_input_text_0 = result_buffer[127:120]; // @[SE.scala 192:47]
-  assign aes_cipher_io_input_text_1 = result_buffer[119:112]; // @[SE.scala 192:47]
-  assign aes_cipher_io_input_text_2 = result_buffer[111:104]; // @[SE.scala 192:47]
-  assign aes_cipher_io_input_text_3 = result_buffer[103:96]; // @[SE.scala 192:47]
-  assign aes_cipher_io_input_text_4 = result_buffer[95:88]; // @[SE.scala 192:47]
-  assign aes_cipher_io_input_text_5 = result_buffer[87:80]; // @[SE.scala 192:47]
-  assign aes_cipher_io_input_text_6 = result_buffer[79:72]; // @[SE.scala 192:47]
-  assign aes_cipher_io_input_text_7 = result_buffer[71:64]; // @[SE.scala 192:47]
-  assign aes_cipher_io_input_text_8 = result_buffer[63:56]; // @[SE.scala 192:47]
-  assign aes_cipher_io_input_text_9 = result_buffer[55:48]; // @[SE.scala 192:47]
-  assign aes_cipher_io_input_text_10 = result_buffer[47:40]; // @[SE.scala 192:47]
-  assign aes_cipher_io_input_text_11 = result_buffer[39:32]; // @[SE.scala 192:47]
-  assign aes_cipher_io_input_text_12 = result_buffer[31:24]; // @[SE.scala 192:47]
-  assign aes_cipher_io_input_text_13 = result_buffer[23:16]; // @[SE.scala 192:47]
-  assign aes_cipher_io_input_text_14 = result_buffer[15:8]; // @[SE.scala 192:47]
-  assign aes_cipher_io_input_text_15 = result_buffer[7:0]; // @[SE.scala 192:47]
+  assign aes_cipher_io_input_valid = result_valid_buffer; // @[SE.scala 205:35]
+  assign aes_cipher_io_input_text_0 = result_buffer[127:120]; // @[SE.scala 199:47]
+  assign aes_cipher_io_input_text_1 = result_buffer[119:112]; // @[SE.scala 199:47]
+  assign aes_cipher_io_input_text_2 = result_buffer[111:104]; // @[SE.scala 199:47]
+  assign aes_cipher_io_input_text_3 = result_buffer[103:96]; // @[SE.scala 199:47]
+  assign aes_cipher_io_input_text_4 = result_buffer[95:88]; // @[SE.scala 199:47]
+  assign aes_cipher_io_input_text_5 = result_buffer[87:80]; // @[SE.scala 199:47]
+  assign aes_cipher_io_input_text_6 = result_buffer[79:72]; // @[SE.scala 199:47]
+  assign aes_cipher_io_input_text_7 = result_buffer[71:64]; // @[SE.scala 199:47]
+  assign aes_cipher_io_input_text_8 = result_buffer[63:56]; // @[SE.scala 199:47]
+  assign aes_cipher_io_input_text_9 = result_buffer[55:48]; // @[SE.scala 199:47]
+  assign aes_cipher_io_input_text_10 = result_buffer[47:40]; // @[SE.scala 199:47]
+  assign aes_cipher_io_input_text_11 = result_buffer[39:32]; // @[SE.scala 199:47]
+  assign aes_cipher_io_input_text_12 = result_buffer[31:24]; // @[SE.scala 199:47]
+  assign aes_cipher_io_input_text_13 = result_buffer[23:16]; // @[SE.scala 199:47]
+  assign aes_cipher_io_input_text_14 = result_buffer[15:8]; // @[SE.scala 199:47]
+  assign aes_cipher_io_input_text_15 = result_buffer[7:0]; // @[SE.scala 199:47]
   assign prng_clock = clock;
   assign prng_reset = reset;
   always @(posedge clock) begin
-    if (reset) begin // @[SE.scala 58:32]
-      counterOn <= 1'h0; // @[SE.scala 58:32]
+    if (reset) begin // @[SE.scala 61:32]
+      counterOn <= 1'h0; // @[SE.scala 61:32]
     end else begin
       counterOn <= _GEN_3;
     end
     if (reset) begin // @[Counter.scala 60:40]
       value <= 7'h0; // @[Counter.scala 60:40]
-    end else if (_T_1) begin // @[SE.scala 68:43]
+    end else if (_T_1) begin // @[SE.scala 75:43]
       value <= 7'h0; // @[Counter.scala 97:11]
-    end else if (counterOn) begin // @[SE.scala 60:24]
+    end else if (counterOn) begin // @[SE.scala 67:24]
       if (wrap) begin // @[Counter.scala 86:20]
         value <= 7'h0; // @[Counter.scala 86:28]
       end else begin
         value <= _value_T_1; // @[Counter.scala 76:15]
       end
+    end
+    if (reset) begin // @[SE.scala 63:32]
+      zero_cntr <= 8'h0; // @[SE.scala 63:32]
+    end else if (seoperation_io_result == 64'h0) begin // @[SE.scala 207:44]
+      zero_cntr <= _T_83; // @[SE.scala 208:27]
+    end
+    if (reset) begin // @[SE.scala 64:32]
+      mult_cntr <= 8'h0; // @[SE.scala 64:32]
+    end else if (8'h28 == _T_84) begin // @[SE.scala 210:56]
+      mult_cntr <= _T_87; // @[SE.scala 211:27]
     end
     if (io_in_valid) begin // @[Reg.scala 16:19]
       inst_buffer <= io_in_inst; // @[Reg.scala 16:23]
@@ -40786,25 +40813,25 @@ module SE(
     if (io_in_valid) begin // @[Reg.scala 16:19]
       cond_buffer <= io_in_cond; // @[Reg.scala 16:23]
     end
-    valid_buffer <= _T | _T_4; // @[SE.scala 109:28]
-    ready_for_input <= reset | _GEN_10; // @[SE.scala 106:{38,38}]
+    valid_buffer <= _T | _T_4; // @[SE.scala 116:28]
+    ready_for_input <= reset | _GEN_10; // @[SE.scala 113:{38,38}]
     if (aes_invcipher_io_input_valid) begin // @[Reg.scala 16:19]
       mid_inst_buffer <= inst_buffer; // @[Reg.scala 16:23]
     end
     if (aes_invcipher_io_input_valid) begin // @[Reg.scala 16:19]
       mid_op1_buffer <= op1_buffer; // @[Reg.scala 16:23]
     end
-    result_valid_buffer <= aes_invcipher_io_output_valid | _T_63; // @[SE.scala 178:37]
+    result_valid_buffer <= aes_invcipher_io_output_valid | _T_63; // @[SE.scala 185:37]
     if (aes_invcipher_io_output_valid) begin // @[Reg.scala 16:19]
       result_buffer <= padded_result; // @[Reg.scala 16:23]
     end
     if (aes_cipher_io_output_valid) begin // @[Reg.scala 16:19]
-      output_buffer <= _T_81; // @[Reg.scala 16:23]
+      output_buffer <= _T_88; // @[Reg.scala 16:23]
     end
-    if (reset) begin // @[SE.scala 203:35]
-      output_valid <= 1'h0; // @[SE.scala 203:35]
+    if (reset) begin // @[SE.scala 216:35]
+      output_valid <= 1'h0; // @[SE.scala 216:35]
     end else begin
-      output_valid <= _GEN_16;
+      output_valid <= _GEN_18;
     end
   end
 // Register and memory initialization
@@ -40848,29 +40875,33 @@ initial begin
   _RAND_1 = {1{`RANDOM}};
   value = _RAND_1[6:0];
   _RAND_2 = {1{`RANDOM}};
-  inst_buffer = _RAND_2[7:0];
-  _RAND_3 = {4{`RANDOM}};
-  op1_buffer = _RAND_3[127:0];
-  _RAND_4 = {4{`RANDOM}};
-  op2_buffer = _RAND_4[127:0];
+  zero_cntr = _RAND_2[7:0];
+  _RAND_3 = {1{`RANDOM}};
+  mult_cntr = _RAND_3[7:0];
+  _RAND_4 = {1{`RANDOM}};
+  inst_buffer = _RAND_4[7:0];
   _RAND_5 = {4{`RANDOM}};
-  cond_buffer = _RAND_5[127:0];
-  _RAND_6 = {1{`RANDOM}};
-  valid_buffer = _RAND_6[0:0];
-  _RAND_7 = {1{`RANDOM}};
-  ready_for_input = _RAND_7[0:0];
+  op1_buffer = _RAND_5[127:0];
+  _RAND_6 = {4{`RANDOM}};
+  op2_buffer = _RAND_6[127:0];
+  _RAND_7 = {4{`RANDOM}};
+  cond_buffer = _RAND_7[127:0];
   _RAND_8 = {1{`RANDOM}};
-  mid_inst_buffer = _RAND_8[7:0];
-  _RAND_9 = {4{`RANDOM}};
-  mid_op1_buffer = _RAND_9[127:0];
+  valid_buffer = _RAND_8[0:0];
+  _RAND_9 = {1{`RANDOM}};
+  ready_for_input = _RAND_9[0:0];
   _RAND_10 = {1{`RANDOM}};
-  result_valid_buffer = _RAND_10[0:0];
+  mid_inst_buffer = _RAND_10[7:0];
   _RAND_11 = {4{`RANDOM}};
-  result_buffer = _RAND_11[127:0];
-  _RAND_12 = {4{`RANDOM}};
-  output_buffer = _RAND_12[127:0];
-  _RAND_13 = {1{`RANDOM}};
-  output_valid = _RAND_13[0:0];
+  mid_op1_buffer = _RAND_11[127:0];
+  _RAND_12 = {1{`RANDOM}};
+  result_valid_buffer = _RAND_12[0:0];
+  _RAND_13 = {4{`RANDOM}};
+  result_buffer = _RAND_13[127:0];
+  _RAND_14 = {4{`RANDOM}};
+  output_buffer = _RAND_14[127:0];
+  _RAND_15 = {1{`RANDOM}};
+  output_valid = _RAND_15[0:0];
 `endif // RANDOMIZE_REG_INIT
   `endif // RANDOMIZE
 end // initial

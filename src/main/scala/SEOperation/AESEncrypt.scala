@@ -8,7 +8,7 @@ class EncryptIO extends Bundle{
 	val input_text= Input(Vec(Params.StateLength, UInt(8.W))) // plaintext, ciphertext, roundKey
   val input_roundKeys = Input(Vec(11,Vec(Params.StateLength, UInt(8.W))))
 	val output_text = Output(Vec(Params.StateLength, UInt(8.W))) // ciphertext or plaintext
-
+  val output_intermediate = Output(UInt(8.W))
 	val output_valid = Output(Bool())
 }
 // implements wrapper for AES cipher and inverse cipher
@@ -49,7 +49,7 @@ class AESEncrypt extends Module {
   CipherRoundNMC.io.input_valid := CipherRounds(Nr - 1 - 1).io.output_valid
   CipherRoundNMC.io.state_in := CipherRounds(Nr - 1 - 1).io.state_out
   CipherRoundNMC.io.roundKey := io.input_roundKeys(Nr)
-
+  io.output_intermediate := CipherRounds(3).io.state_out(2)
   io.output_valid := CipherRoundNMC.io.output_valid
   io.output_text := CipherRoundNMC.io.state_out
   // when(io.input_valid){

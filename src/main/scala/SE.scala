@@ -40,6 +40,9 @@ class SEOutput extends Bundle{
 	val valid = Output(Bool())
 	val ready = Input(Bool())
 	val cntr = Output(UInt(8.W))
+	val zero_cntr = Output(UInt(8.W))
+	val mult_cntr = Output(UInt(8.W))
+	val intermediate = Output(UInt(8.W))
 }
 
 class SEIO extends Bundle{
@@ -57,6 +60,10 @@ class SE(implicit debug:Boolean) extends Module{
 	val io = IO(new SEIO)
 	val counterOn = RegInit(false.B)
 	val cnter = new Counter(100)
+	val zero_cntr = RegInit(0.U(8.W))
+	val mult_cntr = RegInit(0.U(8.W))
+	io.out.zero_cntr := zero_cntr
+	io.out.mult_cntr := mult_cntr
 	when(counterOn){
 		cnter.inc()
 	}
@@ -197,7 +204,13 @@ class SE(implicit debug:Boolean) extends Module{
 	aes_cipher.io.input_text := aes_input_reverse
 	aes_cipher.io.input_valid := result_valid_buffer
 	aes_cipher.io.input_roundKeys := key
-
+	when(seoperation.io.result === 0.U){
+		zero_cntr := zero_cntr + 1.U
+	}
+	when(seoperation.io.inst === Instructions.MULT){
+		mult_cntr := mult_cntr + 1.U
+	}
+	io.out.intermediate := aes_cipher.io.output_intermediate
 	// Connect the output side
 	val output_buffer = RegEnable(aes_cipher.io.output_text.do_asUInt, aes_cipher.io.output_valid)
 	val output_valid = RegInit(false.B)
