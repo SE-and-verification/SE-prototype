@@ -80,7 +80,7 @@ class SE(implicit debug:Boolean) extends Module{
 
 	val ciphers = Reg(Vec(32, UInt(128.W)))
 	val plaintexts = Reg(Vec(32, UInt(64.W)))
-	val ptr = Reg(UInt(5.W))
+	val ptr = RegInit(0.U(8.W))
 	val expandedKey128 =VecInit(
     VecInit(0x00.U(8.W), 0x01.U(8.W), 0x02.U(8.W), 0x03.U(8.W), 0x04.U(8.W), 0x05.U(8.W), 0x06.U(8.W), 0x07.U(8.W), 0x08.U(8.W), 0x09.U(8.W), 0x0a.U(8.W), 0x0b.U(8.W), 0x0c.U(8.W), 0x0d.U(8.W), 0x0e.U(8.W), 0x0f.U(8.W)),
     VecInit(0xd6.U(8.W), 0xaa.U(8.W), 0x74.U(8.W), 0xfd.U(8.W), 0xd2.U(8.W), 0xaf.U(8.W), 0x72.U(8.W), 0xfa.U(8.W), 0xda.U(8.W), 0xa6.U(8.W), 0x78.U(8.W), 0xf1.U(8.W), 0xd6.U(8.W), 0xab.U(8.W), 0x76.U(8.W), 0xfe.U(8.W)),
@@ -188,19 +188,19 @@ class SE(implicit debug:Boolean) extends Module{
 	// printf("cond_found: %d\n",cond_found)
 	// printf("seOpValid: %d\n",seOpValid)
 	// printf("all_match: %d\n",all_match)
-	printf("aes_invcipher.io.output_valid: %d\n",aes_invcipher.io.output_valid)
-	printf("aes_invcipher.io.input_valid: %d\n",aes_invcipher.io.input_valid)
+	// printf("aes_invcipher.io.output_valid: %d\n",aes_invcipher.io.output_valid)
+	// printf("aes_invcipher.io.input_valid: %d\n",aes_invcipher.io.input_valid)
 
-	when(seOpValid ){
-		printf("\n-----mid----\n")
-		printf("op1_asUInt:%x\n",seoperation.io.op1_input)
-		printf("op2_asUInt:%x\n",seoperation.io.op2_input)
-		printf("cond_asUInt:%x\n",seoperation.io.cond_input)
-		printf("op1_asUInt:%x\n",Mux(mid_inst_buffer(7,5) === 5.U(3.W), mid_op1_buffer(127,64),op1_asUInt(127,64)))
-		printf("op2_asUInt:%x\n",op2_asUInt(127,64))
-		printf("cond_asUInt:%x\n",cond_asUInt(127,64))
-		printf("inst:%b\n",mid_inst_buffer)
-	}
+	// when(seOpValid ){
+	// 	printf("\n-----mid----\n")
+	// 	printf("op1_asUInt:%x\n",seoperation.io.op1_input)
+	// 	printf("op2_asUInt:%x\n",seoperation.io.op2_input)
+	// 	printf("cond_asUInt:%x\n",seoperation.io.cond_input)
+	// 	printf("op1_asUInt:%x\n",Mux(mid_inst_buffer(7,5) === 5.U(3.W), mid_op1_buffer(127,64),op1_asUInt(127,64)))
+	// 	printf("op2_asUInt:%x\n",op2_asUInt(127,64))
+	// 	printf("cond_asUInt:%x\n",cond_asUInt(127,64))
+	// 	printf("inst:%b\n",mid_inst_buffer)
+	// }
 
 	seoperation.io.op1_input := Mux(all_match&& valid_buffer, op1_val ,Mux(mid_inst_buffer(7,5) === 5.U(3.W), mid_op1_buffer(127,64),op1_asUInt(127,64)))
 	seoperation.io.op2_input := Mux(all_match&& valid_buffer, op2_val, op2_asUInt(127,64))
@@ -221,7 +221,7 @@ class SE(implicit debug:Boolean) extends Module{
 			printf("seoperation.io.result:%x\n",seoperation.io.result)
 		}
 	}
-	val result_plaintext_buffer = Reg(UInt(64.W))
+	val result_plaintext_buffer = RegInit(0.U(64.W))
 	when(seOpValid){
 		result_plaintext_buffer := seoperation.io.result
 	}
@@ -247,11 +247,27 @@ class SE(implicit debug:Boolean) extends Module{
 	io.out.valid := output_valid
 	io.out.result := output_buffer
 
-	// when(output_valid){
-	// 	ptr := Mux(ptr === 31.U, 0.U, ptr + 1.U)
-	// 	ciphers(ptr) := output_buffer
-	// 	plaintexts(ptr) := result_plaintext_buffer
-	// }
+	when(output_valid){
+		printf("ptr:%x\n",ptr)
+		when(ptr === 31.U){
+			ptr := 0.U
+		}.otherwise{
+			ptr := ptr + 1.U
+		}
+	}
+	when(reset.asBool){
+		key := expandedKey128
+		for(i <- 0 until 32){
+			ciphers(i) := 0.U
+			plaintexts(i) := 0.U
+		}
+	}.otherwise{	
+		when(io.out.valid ){
+			ciphers(ptr) := output_buffer
+			plaintexts(ptr) := result_plaintext_buffer
+		}
+	}
+
 	InfoAnnotator.info(io.in.op1, "SensitiveInput")
 	InfoAnnotator.info(io.in.op2, "SensitiveInput")
 	InfoAnnotator.info(io.in.cond, "SensitiveInput")

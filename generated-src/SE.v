@@ -157,6 +157,22 @@ module AddRoundKey(
   input  [7:0] io_state_in_13,
   input  [7:0] io_state_in_14,
   input  [7:0] io_state_in_15,
+  input  [7:0] io_roundKey_0,
+  input  [7:0] io_roundKey_1,
+  input  [7:0] io_roundKey_2,
+  input  [7:0] io_roundKey_3,
+  input  [7:0] io_roundKey_4,
+  input  [7:0] io_roundKey_5,
+  input  [7:0] io_roundKey_6,
+  input  [7:0] io_roundKey_7,
+  input  [7:0] io_roundKey_8,
+  input  [7:0] io_roundKey_9,
+  input  [7:0] io_roundKey_10,
+  input  [7:0] io_roundKey_11,
+  input  [7:0] io_roundKey_12,
+  input  [7:0] io_roundKey_13,
+  input  [7:0] io_roundKey_14,
+  input  [7:0] io_roundKey_15,
   output [7:0] io_state_out_0,
   output [7:0] io_state_out_1,
   output [7:0] io_state_out_2,
@@ -174,22 +190,22 @@ module AddRoundKey(
   output [7:0] io_state_out_14,
   output [7:0] io_state_out_15
 );
-  assign io_state_out_0 = io_state_in_0; // @[AddRoundKey.scala 19:41]
-  assign io_state_out_1 = io_state_in_1; // @[AddRoundKey.scala 19:41]
-  assign io_state_out_2 = io_state_in_2; // @[AddRoundKey.scala 19:41]
-  assign io_state_out_3 = io_state_in_3; // @[AddRoundKey.scala 19:41]
-  assign io_state_out_4 = io_state_in_4; // @[AddRoundKey.scala 19:41]
-  assign io_state_out_5 = io_state_in_5; // @[AddRoundKey.scala 19:41]
-  assign io_state_out_6 = io_state_in_6; // @[AddRoundKey.scala 19:41]
-  assign io_state_out_7 = io_state_in_7; // @[AddRoundKey.scala 19:41]
-  assign io_state_out_8 = io_state_in_8; // @[AddRoundKey.scala 19:41]
-  assign io_state_out_9 = io_state_in_9; // @[AddRoundKey.scala 19:41]
-  assign io_state_out_10 = io_state_in_10; // @[AddRoundKey.scala 19:41]
-  assign io_state_out_11 = io_state_in_11; // @[AddRoundKey.scala 19:41]
-  assign io_state_out_12 = io_state_in_12; // @[AddRoundKey.scala 19:41]
-  assign io_state_out_13 = io_state_in_13; // @[AddRoundKey.scala 19:41]
-  assign io_state_out_14 = io_state_in_14; // @[AddRoundKey.scala 19:41]
-  assign io_state_out_15 = io_state_in_15; // @[AddRoundKey.scala 19:41]
+  assign io_state_out_0 = io_state_in_0 ^ io_roundKey_0; // @[AddRoundKey.scala 19:41]
+  assign io_state_out_1 = io_state_in_1 ^ io_roundKey_1; // @[AddRoundKey.scala 19:41]
+  assign io_state_out_2 = io_state_in_2 ^ io_roundKey_2; // @[AddRoundKey.scala 19:41]
+  assign io_state_out_3 = io_state_in_3 ^ io_roundKey_3; // @[AddRoundKey.scala 19:41]
+  assign io_state_out_4 = io_state_in_4 ^ io_roundKey_4; // @[AddRoundKey.scala 19:41]
+  assign io_state_out_5 = io_state_in_5 ^ io_roundKey_5; // @[AddRoundKey.scala 19:41]
+  assign io_state_out_6 = io_state_in_6 ^ io_roundKey_6; // @[AddRoundKey.scala 19:41]
+  assign io_state_out_7 = io_state_in_7 ^ io_roundKey_7; // @[AddRoundKey.scala 19:41]
+  assign io_state_out_8 = io_state_in_8 ^ io_roundKey_8; // @[AddRoundKey.scala 19:41]
+  assign io_state_out_9 = io_state_in_9 ^ io_roundKey_9; // @[AddRoundKey.scala 19:41]
+  assign io_state_out_10 = io_state_in_10 ^ io_roundKey_10; // @[AddRoundKey.scala 19:41]
+  assign io_state_out_11 = io_state_in_11 ^ io_roundKey_11; // @[AddRoundKey.scala 19:41]
+  assign io_state_out_12 = io_state_in_12 ^ io_roundKey_12; // @[AddRoundKey.scala 19:41]
+  assign io_state_out_13 = io_state_in_13 ^ io_roundKey_13; // @[AddRoundKey.scala 19:41]
+  assign io_state_out_14 = io_state_in_14 ^ io_roundKey_14; // @[AddRoundKey.scala 19:41]
+  assign io_state_out_15 = io_state_in_15 ^ io_roundKey_15; // @[AddRoundKey.scala 19:41]
 endmodule
 module InvCipherRound(
   input        clock,
@@ -210,6 +226,22 @@ module InvCipherRound(
   input  [7:0] io_state_in_13,
   input  [7:0] io_state_in_14,
   input  [7:0] io_state_in_15,
+  input  [7:0] io_roundKey_0,
+  input  [7:0] io_roundKey_1,
+  input  [7:0] io_roundKey_2,
+  input  [7:0] io_roundKey_3,
+  input  [7:0] io_roundKey_4,
+  input  [7:0] io_roundKey_5,
+  input  [7:0] io_roundKey_6,
+  input  [7:0] io_roundKey_7,
+  input  [7:0] io_roundKey_8,
+  input  [7:0] io_roundKey_9,
+  input  [7:0] io_roundKey_10,
+  input  [7:0] io_roundKey_11,
+  input  [7:0] io_roundKey_12,
+  input  [7:0] io_roundKey_13,
+  input  [7:0] io_roundKey_14,
+  input  [7:0] io_roundKey_15,
   output [7:0] io_state_out_0,
   output [7:0] io_state_out_1,
   output [7:0] io_state_out_2,
@@ -263,6 +295,22 @@ module InvCipherRound(
   wire [7:0] AddRoundKey_io_state_in_13; // @[AddRoundKey.scala 25:62]
   wire [7:0] AddRoundKey_io_state_in_14; // @[AddRoundKey.scala 25:62]
   wire [7:0] AddRoundKey_io_state_in_15; // @[AddRoundKey.scala 25:62]
+  wire [7:0] AddRoundKey_io_roundKey_0; // @[AddRoundKey.scala 25:62]
+  wire [7:0] AddRoundKey_io_roundKey_1; // @[AddRoundKey.scala 25:62]
+  wire [7:0] AddRoundKey_io_roundKey_2; // @[AddRoundKey.scala 25:62]
+  wire [7:0] AddRoundKey_io_roundKey_3; // @[AddRoundKey.scala 25:62]
+  wire [7:0] AddRoundKey_io_roundKey_4; // @[AddRoundKey.scala 25:62]
+  wire [7:0] AddRoundKey_io_roundKey_5; // @[AddRoundKey.scala 25:62]
+  wire [7:0] AddRoundKey_io_roundKey_6; // @[AddRoundKey.scala 25:62]
+  wire [7:0] AddRoundKey_io_roundKey_7; // @[AddRoundKey.scala 25:62]
+  wire [7:0] AddRoundKey_io_roundKey_8; // @[AddRoundKey.scala 25:62]
+  wire [7:0] AddRoundKey_io_roundKey_9; // @[AddRoundKey.scala 25:62]
+  wire [7:0] AddRoundKey_io_roundKey_10; // @[AddRoundKey.scala 25:62]
+  wire [7:0] AddRoundKey_io_roundKey_11; // @[AddRoundKey.scala 25:62]
+  wire [7:0] AddRoundKey_io_roundKey_12; // @[AddRoundKey.scala 25:62]
+  wire [7:0] AddRoundKey_io_roundKey_13; // @[AddRoundKey.scala 25:62]
+  wire [7:0] AddRoundKey_io_roundKey_14; // @[AddRoundKey.scala 25:62]
+  wire [7:0] AddRoundKey_io_roundKey_15; // @[AddRoundKey.scala 25:62]
   wire [7:0] AddRoundKey_io_state_out_0; // @[AddRoundKey.scala 25:62]
   wire [7:0] AddRoundKey_io_state_out_1; // @[AddRoundKey.scala 25:62]
   wire [7:0] AddRoundKey_io_state_out_2; // @[AddRoundKey.scala 25:62]
@@ -313,6 +361,22 @@ module InvCipherRound(
     .io_state_in_13(AddRoundKey_io_state_in_13),
     .io_state_in_14(AddRoundKey_io_state_in_14),
     .io_state_in_15(AddRoundKey_io_state_in_15),
+    .io_roundKey_0(AddRoundKey_io_roundKey_0),
+    .io_roundKey_1(AddRoundKey_io_roundKey_1),
+    .io_roundKey_2(AddRoundKey_io_roundKey_2),
+    .io_roundKey_3(AddRoundKey_io_roundKey_3),
+    .io_roundKey_4(AddRoundKey_io_roundKey_4),
+    .io_roundKey_5(AddRoundKey_io_roundKey_5),
+    .io_roundKey_6(AddRoundKey_io_roundKey_6),
+    .io_roundKey_7(AddRoundKey_io_roundKey_7),
+    .io_roundKey_8(AddRoundKey_io_roundKey_8),
+    .io_roundKey_9(AddRoundKey_io_roundKey_9),
+    .io_roundKey_10(AddRoundKey_io_roundKey_10),
+    .io_roundKey_11(AddRoundKey_io_roundKey_11),
+    .io_roundKey_12(AddRoundKey_io_roundKey_12),
+    .io_roundKey_13(AddRoundKey_io_roundKey_13),
+    .io_roundKey_14(AddRoundKey_io_roundKey_14),
+    .io_roundKey_15(AddRoundKey_io_roundKey_15),
     .io_state_out_0(AddRoundKey_io_state_out_0),
     .io_state_out_1(AddRoundKey_io_state_out_1),
     .io_state_out_2(AddRoundKey_io_state_out_2),
@@ -363,6 +427,22 @@ module InvCipherRound(
   assign AddRoundKey_io_state_in_13 = io_input_valid ? io_state_in_13 : 8'h0; // @[InvCipherRound.scala 28:26 29:37 32:37]
   assign AddRoundKey_io_state_in_14 = io_input_valid ? io_state_in_14 : 8'h0; // @[InvCipherRound.scala 28:26 29:37 32:37]
   assign AddRoundKey_io_state_in_15 = io_input_valid ? io_state_in_15 : 8'h0; // @[InvCipherRound.scala 28:26 29:37 32:37]
+  assign AddRoundKey_io_roundKey_0 = io_input_valid ? io_roundKey_0 : 8'h0; // @[InvCipherRound.scala 28:26 30:37 33:37]
+  assign AddRoundKey_io_roundKey_1 = io_input_valid ? io_roundKey_1 : 8'h0; // @[InvCipherRound.scala 28:26 30:37 33:37]
+  assign AddRoundKey_io_roundKey_2 = io_input_valid ? io_roundKey_2 : 8'h0; // @[InvCipherRound.scala 28:26 30:37 33:37]
+  assign AddRoundKey_io_roundKey_3 = io_input_valid ? io_roundKey_3 : 8'h0; // @[InvCipherRound.scala 28:26 30:37 33:37]
+  assign AddRoundKey_io_roundKey_4 = io_input_valid ? io_roundKey_4 : 8'h0; // @[InvCipherRound.scala 28:26 30:37 33:37]
+  assign AddRoundKey_io_roundKey_5 = io_input_valid ? io_roundKey_5 : 8'h0; // @[InvCipherRound.scala 28:26 30:37 33:37]
+  assign AddRoundKey_io_roundKey_6 = io_input_valid ? io_roundKey_6 : 8'h0; // @[InvCipherRound.scala 28:26 30:37 33:37]
+  assign AddRoundKey_io_roundKey_7 = io_input_valid ? io_roundKey_7 : 8'h0; // @[InvCipherRound.scala 28:26 30:37 33:37]
+  assign AddRoundKey_io_roundKey_8 = io_input_valid ? io_roundKey_8 : 8'h0; // @[InvCipherRound.scala 28:26 30:37 33:37]
+  assign AddRoundKey_io_roundKey_9 = io_input_valid ? io_roundKey_9 : 8'h0; // @[InvCipherRound.scala 28:26 30:37 33:37]
+  assign AddRoundKey_io_roundKey_10 = io_input_valid ? io_roundKey_10 : 8'h0; // @[InvCipherRound.scala 28:26 30:37 33:37]
+  assign AddRoundKey_io_roundKey_11 = io_input_valid ? io_roundKey_11 : 8'h0; // @[InvCipherRound.scala 28:26 30:37 33:37]
+  assign AddRoundKey_io_roundKey_12 = io_input_valid ? io_roundKey_12 : 8'h0; // @[InvCipherRound.scala 28:26 30:37 33:37]
+  assign AddRoundKey_io_roundKey_13 = io_input_valid ? io_roundKey_13 : 8'h0; // @[InvCipherRound.scala 28:26 30:37 33:37]
+  assign AddRoundKey_io_roundKey_14 = io_input_valid ? io_roundKey_14 : 8'h0; // @[InvCipherRound.scala 28:26 30:37 33:37]
+  assign AddRoundKey_io_roundKey_15 = io_input_valid ? io_roundKey_15 : 8'h0; // @[InvCipherRound.scala 28:26 30:37 33:37]
   always @(posedge clock) begin
     r__0 <= AddRoundKey_io_state_out_0; // @[Reg.scala 15:16 16:{19,23}]
     r__1 <= AddRoundKey_io_state_out_1; // @[Reg.scala 15:16 16:{19,23}]
@@ -21048,6 +21128,22 @@ module InvCipherRound_3(
   input  [7:0] io_state_in_13,
   input  [7:0] io_state_in_14,
   input  [7:0] io_state_in_15,
+  input  [7:0] io_roundKey_0,
+  input  [7:0] io_roundKey_1,
+  input  [7:0] io_roundKey_2,
+  input  [7:0] io_roundKey_3,
+  input  [7:0] io_roundKey_4,
+  input  [7:0] io_roundKey_5,
+  input  [7:0] io_roundKey_6,
+  input  [7:0] io_roundKey_7,
+  input  [7:0] io_roundKey_8,
+  input  [7:0] io_roundKey_9,
+  input  [7:0] io_roundKey_10,
+  input  [7:0] io_roundKey_11,
+  input  [7:0] io_roundKey_12,
+  input  [7:0] io_roundKey_13,
+  input  [7:0] io_roundKey_14,
+  input  [7:0] io_roundKey_15,
   output [7:0] io_state_out_0,
   output [7:0] io_state_out_1,
   output [7:0] io_state_out_2,
@@ -21101,6 +21197,22 @@ module InvCipherRound_3(
   wire [7:0] AddRoundKey_io_state_in_13; // @[AddRoundKey.scala 25:62]
   wire [7:0] AddRoundKey_io_state_in_14; // @[AddRoundKey.scala 25:62]
   wire [7:0] AddRoundKey_io_state_in_15; // @[AddRoundKey.scala 25:62]
+  wire [7:0] AddRoundKey_io_roundKey_0; // @[AddRoundKey.scala 25:62]
+  wire [7:0] AddRoundKey_io_roundKey_1; // @[AddRoundKey.scala 25:62]
+  wire [7:0] AddRoundKey_io_roundKey_2; // @[AddRoundKey.scala 25:62]
+  wire [7:0] AddRoundKey_io_roundKey_3; // @[AddRoundKey.scala 25:62]
+  wire [7:0] AddRoundKey_io_roundKey_4; // @[AddRoundKey.scala 25:62]
+  wire [7:0] AddRoundKey_io_roundKey_5; // @[AddRoundKey.scala 25:62]
+  wire [7:0] AddRoundKey_io_roundKey_6; // @[AddRoundKey.scala 25:62]
+  wire [7:0] AddRoundKey_io_roundKey_7; // @[AddRoundKey.scala 25:62]
+  wire [7:0] AddRoundKey_io_roundKey_8; // @[AddRoundKey.scala 25:62]
+  wire [7:0] AddRoundKey_io_roundKey_9; // @[AddRoundKey.scala 25:62]
+  wire [7:0] AddRoundKey_io_roundKey_10; // @[AddRoundKey.scala 25:62]
+  wire [7:0] AddRoundKey_io_roundKey_11; // @[AddRoundKey.scala 25:62]
+  wire [7:0] AddRoundKey_io_roundKey_12; // @[AddRoundKey.scala 25:62]
+  wire [7:0] AddRoundKey_io_roundKey_13; // @[AddRoundKey.scala 25:62]
+  wire [7:0] AddRoundKey_io_roundKey_14; // @[AddRoundKey.scala 25:62]
+  wire [7:0] AddRoundKey_io_roundKey_15; // @[AddRoundKey.scala 25:62]
   wire [7:0] AddRoundKey_io_state_out_0; // @[AddRoundKey.scala 25:62]
   wire [7:0] AddRoundKey_io_state_out_1; // @[AddRoundKey.scala 25:62]
   wire [7:0] AddRoundKey_io_state_out_2; // @[AddRoundKey.scala 25:62]
@@ -21247,6 +21359,22 @@ module InvCipherRound_3(
     .io_state_in_13(AddRoundKey_io_state_in_13),
     .io_state_in_14(AddRoundKey_io_state_in_14),
     .io_state_in_15(AddRoundKey_io_state_in_15),
+    .io_roundKey_0(AddRoundKey_io_roundKey_0),
+    .io_roundKey_1(AddRoundKey_io_roundKey_1),
+    .io_roundKey_2(AddRoundKey_io_roundKey_2),
+    .io_roundKey_3(AddRoundKey_io_roundKey_3),
+    .io_roundKey_4(AddRoundKey_io_roundKey_4),
+    .io_roundKey_5(AddRoundKey_io_roundKey_5),
+    .io_roundKey_6(AddRoundKey_io_roundKey_6),
+    .io_roundKey_7(AddRoundKey_io_roundKey_7),
+    .io_roundKey_8(AddRoundKey_io_roundKey_8),
+    .io_roundKey_9(AddRoundKey_io_roundKey_9),
+    .io_roundKey_10(AddRoundKey_io_roundKey_10),
+    .io_roundKey_11(AddRoundKey_io_roundKey_11),
+    .io_roundKey_12(AddRoundKey_io_roundKey_12),
+    .io_roundKey_13(AddRoundKey_io_roundKey_13),
+    .io_roundKey_14(AddRoundKey_io_roundKey_14),
+    .io_roundKey_15(AddRoundKey_io_roundKey_15),
     .io_state_out_0(AddRoundKey_io_state_out_0),
     .io_state_out_1(AddRoundKey_io_state_out_1),
     .io_state_out_2(AddRoundKey_io_state_out_2),
@@ -21399,6 +21527,22 @@ module InvCipherRound_3(
   assign AddRoundKey_io_state_in_13 = InvSubBytes_io_state_out_13; // @[InvCipherRound.scala 83:35]
   assign AddRoundKey_io_state_in_14 = InvSubBytes_io_state_out_14; // @[InvCipherRound.scala 83:35]
   assign AddRoundKey_io_state_in_15 = InvSubBytes_io_state_out_15; // @[InvCipherRound.scala 83:35]
+  assign AddRoundKey_io_roundKey_0 = io_input_valid ? io_roundKey_0 : 8'h0; // @[InvCipherRound.scala 73:26 75:37 78:37]
+  assign AddRoundKey_io_roundKey_1 = io_input_valid ? io_roundKey_1 : 8'h0; // @[InvCipherRound.scala 73:26 75:37 78:37]
+  assign AddRoundKey_io_roundKey_2 = io_input_valid ? io_roundKey_2 : 8'h0; // @[InvCipherRound.scala 73:26 75:37 78:37]
+  assign AddRoundKey_io_roundKey_3 = io_input_valid ? io_roundKey_3 : 8'h0; // @[InvCipherRound.scala 73:26 75:37 78:37]
+  assign AddRoundKey_io_roundKey_4 = io_input_valid ? io_roundKey_4 : 8'h0; // @[InvCipherRound.scala 73:26 75:37 78:37]
+  assign AddRoundKey_io_roundKey_5 = io_input_valid ? io_roundKey_5 : 8'h0; // @[InvCipherRound.scala 73:26 75:37 78:37]
+  assign AddRoundKey_io_roundKey_6 = io_input_valid ? io_roundKey_6 : 8'h0; // @[InvCipherRound.scala 73:26 75:37 78:37]
+  assign AddRoundKey_io_roundKey_7 = io_input_valid ? io_roundKey_7 : 8'h0; // @[InvCipherRound.scala 73:26 75:37 78:37]
+  assign AddRoundKey_io_roundKey_8 = io_input_valid ? io_roundKey_8 : 8'h0; // @[InvCipherRound.scala 73:26 75:37 78:37]
+  assign AddRoundKey_io_roundKey_9 = io_input_valid ? io_roundKey_9 : 8'h0; // @[InvCipherRound.scala 73:26 75:37 78:37]
+  assign AddRoundKey_io_roundKey_10 = io_input_valid ? io_roundKey_10 : 8'h0; // @[InvCipherRound.scala 73:26 75:37 78:37]
+  assign AddRoundKey_io_roundKey_11 = io_input_valid ? io_roundKey_11 : 8'h0; // @[InvCipherRound.scala 73:26 75:37 78:37]
+  assign AddRoundKey_io_roundKey_12 = io_input_valid ? io_roundKey_12 : 8'h0; // @[InvCipherRound.scala 73:26 75:37 78:37]
+  assign AddRoundKey_io_roundKey_13 = io_input_valid ? io_roundKey_13 : 8'h0; // @[InvCipherRound.scala 73:26 75:37 78:37]
+  assign AddRoundKey_io_roundKey_14 = io_input_valid ? io_roundKey_14 : 8'h0; // @[InvCipherRound.scala 73:26 75:37 78:37]
+  assign AddRoundKey_io_roundKey_15 = io_input_valid ? io_roundKey_15 : 8'h0; // @[InvCipherRound.scala 73:26 75:37 78:37]
   assign InvSubBytes_io_state_in_0 = InvShiftRows_io_state_out_0; // @[InvCipherRound.scala 81:35]
   assign InvSubBytes_io_state_in_1 = InvShiftRows_io_state_out_1; // @[InvCipherRound.scala 81:35]
   assign InvSubBytes_io_state_in_2 = InvShiftRows_io_state_out_2; // @[InvCipherRound.scala 81:35]
@@ -21616,6 +21760,22 @@ module InvCipherRound_30(
   wire [7:0] AddRoundKey_io_state_in_13; // @[AddRoundKey.scala 25:62]
   wire [7:0] AddRoundKey_io_state_in_14; // @[AddRoundKey.scala 25:62]
   wire [7:0] AddRoundKey_io_state_in_15; // @[AddRoundKey.scala 25:62]
+  wire [7:0] AddRoundKey_io_roundKey_0; // @[AddRoundKey.scala 25:62]
+  wire [7:0] AddRoundKey_io_roundKey_1; // @[AddRoundKey.scala 25:62]
+  wire [7:0] AddRoundKey_io_roundKey_2; // @[AddRoundKey.scala 25:62]
+  wire [7:0] AddRoundKey_io_roundKey_3; // @[AddRoundKey.scala 25:62]
+  wire [7:0] AddRoundKey_io_roundKey_4; // @[AddRoundKey.scala 25:62]
+  wire [7:0] AddRoundKey_io_roundKey_5; // @[AddRoundKey.scala 25:62]
+  wire [7:0] AddRoundKey_io_roundKey_6; // @[AddRoundKey.scala 25:62]
+  wire [7:0] AddRoundKey_io_roundKey_7; // @[AddRoundKey.scala 25:62]
+  wire [7:0] AddRoundKey_io_roundKey_8; // @[AddRoundKey.scala 25:62]
+  wire [7:0] AddRoundKey_io_roundKey_9; // @[AddRoundKey.scala 25:62]
+  wire [7:0] AddRoundKey_io_roundKey_10; // @[AddRoundKey.scala 25:62]
+  wire [7:0] AddRoundKey_io_roundKey_11; // @[AddRoundKey.scala 25:62]
+  wire [7:0] AddRoundKey_io_roundKey_12; // @[AddRoundKey.scala 25:62]
+  wire [7:0] AddRoundKey_io_roundKey_13; // @[AddRoundKey.scala 25:62]
+  wire [7:0] AddRoundKey_io_roundKey_14; // @[AddRoundKey.scala 25:62]
+  wire [7:0] AddRoundKey_io_roundKey_15; // @[AddRoundKey.scala 25:62]
   wire [7:0] AddRoundKey_io_state_out_0; // @[AddRoundKey.scala 25:62]
   wire [7:0] AddRoundKey_io_state_out_1; // @[AddRoundKey.scala 25:62]
   wire [7:0] AddRoundKey_io_state_out_2; // @[AddRoundKey.scala 25:62]
@@ -21730,6 +21890,22 @@ module InvCipherRound_30(
     .io_state_in_13(AddRoundKey_io_state_in_13),
     .io_state_in_14(AddRoundKey_io_state_in_14),
     .io_state_in_15(AddRoundKey_io_state_in_15),
+    .io_roundKey_0(AddRoundKey_io_roundKey_0),
+    .io_roundKey_1(AddRoundKey_io_roundKey_1),
+    .io_roundKey_2(AddRoundKey_io_roundKey_2),
+    .io_roundKey_3(AddRoundKey_io_roundKey_3),
+    .io_roundKey_4(AddRoundKey_io_roundKey_4),
+    .io_roundKey_5(AddRoundKey_io_roundKey_5),
+    .io_roundKey_6(AddRoundKey_io_roundKey_6),
+    .io_roundKey_7(AddRoundKey_io_roundKey_7),
+    .io_roundKey_8(AddRoundKey_io_roundKey_8),
+    .io_roundKey_9(AddRoundKey_io_roundKey_9),
+    .io_roundKey_10(AddRoundKey_io_roundKey_10),
+    .io_roundKey_11(AddRoundKey_io_roundKey_11),
+    .io_roundKey_12(AddRoundKey_io_roundKey_12),
+    .io_roundKey_13(AddRoundKey_io_roundKey_13),
+    .io_roundKey_14(AddRoundKey_io_roundKey_14),
+    .io_roundKey_15(AddRoundKey_io_roundKey_15),
     .io_state_out_0(AddRoundKey_io_state_out_0),
     .io_state_out_1(AddRoundKey_io_state_out_1),
     .io_state_out_2(AddRoundKey_io_state_out_2),
@@ -21848,6 +22024,22 @@ module InvCipherRound_30(
   assign AddRoundKey_io_state_in_13 = InvSubBytes_io_state_out_13; // @[InvCipherRound.scala 58:35]
   assign AddRoundKey_io_state_in_14 = InvSubBytes_io_state_out_14; // @[InvCipherRound.scala 58:35]
   assign AddRoundKey_io_state_in_15 = InvSubBytes_io_state_out_15; // @[InvCipherRound.scala 58:35]
+  assign AddRoundKey_io_roundKey_0 = 8'h0; // @[InvCipherRound.scala 48:26 50:37 53:37]
+  assign AddRoundKey_io_roundKey_1 = io_input_valid ? 8'h1 : 8'h0; // @[InvCipherRound.scala 48:26 50:37 53:37]
+  assign AddRoundKey_io_roundKey_2 = io_input_valid ? 8'h2 : 8'h0; // @[InvCipherRound.scala 48:26 50:37 53:37]
+  assign AddRoundKey_io_roundKey_3 = io_input_valid ? 8'h3 : 8'h0; // @[InvCipherRound.scala 48:26 50:37 53:37]
+  assign AddRoundKey_io_roundKey_4 = io_input_valid ? 8'h4 : 8'h0; // @[InvCipherRound.scala 48:26 50:37 53:37]
+  assign AddRoundKey_io_roundKey_5 = io_input_valid ? 8'h5 : 8'h0; // @[InvCipherRound.scala 48:26 50:37 53:37]
+  assign AddRoundKey_io_roundKey_6 = io_input_valid ? 8'h6 : 8'h0; // @[InvCipherRound.scala 48:26 50:37 53:37]
+  assign AddRoundKey_io_roundKey_7 = io_input_valid ? 8'h7 : 8'h0; // @[InvCipherRound.scala 48:26 50:37 53:37]
+  assign AddRoundKey_io_roundKey_8 = io_input_valid ? 8'h8 : 8'h0; // @[InvCipherRound.scala 48:26 50:37 53:37]
+  assign AddRoundKey_io_roundKey_9 = io_input_valid ? 8'h9 : 8'h0; // @[InvCipherRound.scala 48:26 50:37 53:37]
+  assign AddRoundKey_io_roundKey_10 = io_input_valid ? 8'ha : 8'h0; // @[InvCipherRound.scala 48:26 50:37 53:37]
+  assign AddRoundKey_io_roundKey_11 = io_input_valid ? 8'hb : 8'h0; // @[InvCipherRound.scala 48:26 50:37 53:37]
+  assign AddRoundKey_io_roundKey_12 = io_input_valid ? 8'hc : 8'h0; // @[InvCipherRound.scala 48:26 50:37 53:37]
+  assign AddRoundKey_io_roundKey_13 = io_input_valid ? 8'hd : 8'h0; // @[InvCipherRound.scala 48:26 50:37 53:37]
+  assign AddRoundKey_io_roundKey_14 = io_input_valid ? 8'he : 8'h0; // @[InvCipherRound.scala 48:26 50:37 53:37]
+  assign AddRoundKey_io_roundKey_15 = io_input_valid ? 8'hf : 8'h0; // @[InvCipherRound.scala 48:26 50:37 53:37]
   assign InvSubBytes_io_state_in_0 = InvShiftRows_io_state_out_0; // @[InvCipherRound.scala 56:35]
   assign InvSubBytes_io_state_in_1 = InvShiftRows_io_state_out_1; // @[InvCipherRound.scala 56:35]
   assign InvSubBytes_io_state_in_2 = InvShiftRows_io_state_out_2; // @[InvCipherRound.scala 56:35]
@@ -22096,6 +22288,22 @@ module AESDecrypt(
   wire [7:0] InvCipherRound_io_state_in_13; // @[InvCipherRound.scala 96:79]
   wire [7:0] InvCipherRound_io_state_in_14; // @[InvCipherRound.scala 96:79]
   wire [7:0] InvCipherRound_io_state_in_15; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_io_roundKey_0; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_io_roundKey_1; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_io_roundKey_2; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_io_roundKey_3; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_io_roundKey_4; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_io_roundKey_5; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_io_roundKey_6; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_io_roundKey_7; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_io_roundKey_8; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_io_roundKey_9; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_io_roundKey_10; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_io_roundKey_11; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_io_roundKey_12; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_io_roundKey_13; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_io_roundKey_14; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_io_roundKey_15; // @[InvCipherRound.scala 96:79]
   wire [7:0] InvCipherRound_io_state_out_0; // @[InvCipherRound.scala 96:79]
   wire [7:0] InvCipherRound_io_state_out_1; // @[InvCipherRound.scala 96:79]
   wire [7:0] InvCipherRound_io_state_out_2; // @[InvCipherRound.scala 96:79]
@@ -22131,6 +22339,22 @@ module AESDecrypt(
   wire [7:0] InvCipherRound_1_io_state_in_13; // @[InvCipherRound.scala 96:79]
   wire [7:0] InvCipherRound_1_io_state_in_14; // @[InvCipherRound.scala 96:79]
   wire [7:0] InvCipherRound_1_io_state_in_15; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_1_io_roundKey_0; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_1_io_roundKey_1; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_1_io_roundKey_2; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_1_io_roundKey_3; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_1_io_roundKey_4; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_1_io_roundKey_5; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_1_io_roundKey_6; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_1_io_roundKey_7; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_1_io_roundKey_8; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_1_io_roundKey_9; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_1_io_roundKey_10; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_1_io_roundKey_11; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_1_io_roundKey_12; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_1_io_roundKey_13; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_1_io_roundKey_14; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_1_io_roundKey_15; // @[InvCipherRound.scala 96:79]
   wire [7:0] InvCipherRound_1_io_state_out_0; // @[InvCipherRound.scala 96:79]
   wire [7:0] InvCipherRound_1_io_state_out_1; // @[InvCipherRound.scala 96:79]
   wire [7:0] InvCipherRound_1_io_state_out_2; // @[InvCipherRound.scala 96:79]
@@ -22166,6 +22390,22 @@ module AESDecrypt(
   wire [7:0] InvCipherRound_2_io_state_in_13; // @[InvCipherRound.scala 96:79]
   wire [7:0] InvCipherRound_2_io_state_in_14; // @[InvCipherRound.scala 96:79]
   wire [7:0] InvCipherRound_2_io_state_in_15; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_2_io_roundKey_0; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_2_io_roundKey_1; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_2_io_roundKey_2; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_2_io_roundKey_3; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_2_io_roundKey_4; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_2_io_roundKey_5; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_2_io_roundKey_6; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_2_io_roundKey_7; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_2_io_roundKey_8; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_2_io_roundKey_9; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_2_io_roundKey_10; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_2_io_roundKey_11; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_2_io_roundKey_12; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_2_io_roundKey_13; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_2_io_roundKey_14; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_2_io_roundKey_15; // @[InvCipherRound.scala 96:79]
   wire [7:0] InvCipherRound_2_io_state_out_0; // @[InvCipherRound.scala 96:79]
   wire [7:0] InvCipherRound_2_io_state_out_1; // @[InvCipherRound.scala 96:79]
   wire [7:0] InvCipherRound_2_io_state_out_2; // @[InvCipherRound.scala 96:79]
@@ -22201,6 +22441,22 @@ module AESDecrypt(
   wire [7:0] InvCipherRound_3_io_state_in_13; // @[InvCipherRound.scala 96:79]
   wire [7:0] InvCipherRound_3_io_state_in_14; // @[InvCipherRound.scala 96:79]
   wire [7:0] InvCipherRound_3_io_state_in_15; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_3_io_roundKey_0; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_3_io_roundKey_1; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_3_io_roundKey_2; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_3_io_roundKey_3; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_3_io_roundKey_4; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_3_io_roundKey_5; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_3_io_roundKey_6; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_3_io_roundKey_7; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_3_io_roundKey_8; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_3_io_roundKey_9; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_3_io_roundKey_10; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_3_io_roundKey_11; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_3_io_roundKey_12; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_3_io_roundKey_13; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_3_io_roundKey_14; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_3_io_roundKey_15; // @[InvCipherRound.scala 96:79]
   wire [7:0] InvCipherRound_3_io_state_out_0; // @[InvCipherRound.scala 96:79]
   wire [7:0] InvCipherRound_3_io_state_out_1; // @[InvCipherRound.scala 96:79]
   wire [7:0] InvCipherRound_3_io_state_out_2; // @[InvCipherRound.scala 96:79]
@@ -22236,6 +22492,22 @@ module AESDecrypt(
   wire [7:0] InvCipherRound_4_io_state_in_13; // @[InvCipherRound.scala 96:79]
   wire [7:0] InvCipherRound_4_io_state_in_14; // @[InvCipherRound.scala 96:79]
   wire [7:0] InvCipherRound_4_io_state_in_15; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_4_io_roundKey_0; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_4_io_roundKey_1; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_4_io_roundKey_2; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_4_io_roundKey_3; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_4_io_roundKey_4; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_4_io_roundKey_5; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_4_io_roundKey_6; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_4_io_roundKey_7; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_4_io_roundKey_8; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_4_io_roundKey_9; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_4_io_roundKey_10; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_4_io_roundKey_11; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_4_io_roundKey_12; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_4_io_roundKey_13; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_4_io_roundKey_14; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_4_io_roundKey_15; // @[InvCipherRound.scala 96:79]
   wire [7:0] InvCipherRound_4_io_state_out_0; // @[InvCipherRound.scala 96:79]
   wire [7:0] InvCipherRound_4_io_state_out_1; // @[InvCipherRound.scala 96:79]
   wire [7:0] InvCipherRound_4_io_state_out_2; // @[InvCipherRound.scala 96:79]
@@ -22271,6 +22543,22 @@ module AESDecrypt(
   wire [7:0] InvCipherRound_5_io_state_in_13; // @[InvCipherRound.scala 96:79]
   wire [7:0] InvCipherRound_5_io_state_in_14; // @[InvCipherRound.scala 96:79]
   wire [7:0] InvCipherRound_5_io_state_in_15; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_5_io_roundKey_0; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_5_io_roundKey_1; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_5_io_roundKey_2; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_5_io_roundKey_3; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_5_io_roundKey_4; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_5_io_roundKey_5; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_5_io_roundKey_6; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_5_io_roundKey_7; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_5_io_roundKey_8; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_5_io_roundKey_9; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_5_io_roundKey_10; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_5_io_roundKey_11; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_5_io_roundKey_12; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_5_io_roundKey_13; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_5_io_roundKey_14; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_5_io_roundKey_15; // @[InvCipherRound.scala 96:79]
   wire [7:0] InvCipherRound_5_io_state_out_0; // @[InvCipherRound.scala 96:79]
   wire [7:0] InvCipherRound_5_io_state_out_1; // @[InvCipherRound.scala 96:79]
   wire [7:0] InvCipherRound_5_io_state_out_2; // @[InvCipherRound.scala 96:79]
@@ -22306,6 +22594,22 @@ module AESDecrypt(
   wire [7:0] InvCipherRound_6_io_state_in_13; // @[InvCipherRound.scala 96:79]
   wire [7:0] InvCipherRound_6_io_state_in_14; // @[InvCipherRound.scala 96:79]
   wire [7:0] InvCipherRound_6_io_state_in_15; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_6_io_roundKey_0; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_6_io_roundKey_1; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_6_io_roundKey_2; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_6_io_roundKey_3; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_6_io_roundKey_4; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_6_io_roundKey_5; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_6_io_roundKey_6; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_6_io_roundKey_7; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_6_io_roundKey_8; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_6_io_roundKey_9; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_6_io_roundKey_10; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_6_io_roundKey_11; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_6_io_roundKey_12; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_6_io_roundKey_13; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_6_io_roundKey_14; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_6_io_roundKey_15; // @[InvCipherRound.scala 96:79]
   wire [7:0] InvCipherRound_6_io_state_out_0; // @[InvCipherRound.scala 96:79]
   wire [7:0] InvCipherRound_6_io_state_out_1; // @[InvCipherRound.scala 96:79]
   wire [7:0] InvCipherRound_6_io_state_out_2; // @[InvCipherRound.scala 96:79]
@@ -22341,6 +22645,22 @@ module AESDecrypt(
   wire [7:0] InvCipherRound_7_io_state_in_13; // @[InvCipherRound.scala 96:79]
   wire [7:0] InvCipherRound_7_io_state_in_14; // @[InvCipherRound.scala 96:79]
   wire [7:0] InvCipherRound_7_io_state_in_15; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_7_io_roundKey_0; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_7_io_roundKey_1; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_7_io_roundKey_2; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_7_io_roundKey_3; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_7_io_roundKey_4; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_7_io_roundKey_5; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_7_io_roundKey_6; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_7_io_roundKey_7; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_7_io_roundKey_8; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_7_io_roundKey_9; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_7_io_roundKey_10; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_7_io_roundKey_11; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_7_io_roundKey_12; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_7_io_roundKey_13; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_7_io_roundKey_14; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_7_io_roundKey_15; // @[InvCipherRound.scala 96:79]
   wire [7:0] InvCipherRound_7_io_state_out_0; // @[InvCipherRound.scala 96:79]
   wire [7:0] InvCipherRound_7_io_state_out_1; // @[InvCipherRound.scala 96:79]
   wire [7:0] InvCipherRound_7_io_state_out_2; // @[InvCipherRound.scala 96:79]
@@ -22376,6 +22696,22 @@ module AESDecrypt(
   wire [7:0] InvCipherRound_8_io_state_in_13; // @[InvCipherRound.scala 96:79]
   wire [7:0] InvCipherRound_8_io_state_in_14; // @[InvCipherRound.scala 96:79]
   wire [7:0] InvCipherRound_8_io_state_in_15; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_8_io_roundKey_0; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_8_io_roundKey_1; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_8_io_roundKey_2; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_8_io_roundKey_3; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_8_io_roundKey_4; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_8_io_roundKey_5; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_8_io_roundKey_6; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_8_io_roundKey_7; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_8_io_roundKey_8; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_8_io_roundKey_9; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_8_io_roundKey_10; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_8_io_roundKey_11; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_8_io_roundKey_12; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_8_io_roundKey_13; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_8_io_roundKey_14; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_8_io_roundKey_15; // @[InvCipherRound.scala 96:79]
   wire [7:0] InvCipherRound_8_io_state_out_0; // @[InvCipherRound.scala 96:79]
   wire [7:0] InvCipherRound_8_io_state_out_1; // @[InvCipherRound.scala 96:79]
   wire [7:0] InvCipherRound_8_io_state_out_2; // @[InvCipherRound.scala 96:79]
@@ -22411,6 +22747,22 @@ module AESDecrypt(
   wire [7:0] InvCipherRound_9_io_state_in_13; // @[InvCipherRound.scala 96:79]
   wire [7:0] InvCipherRound_9_io_state_in_14; // @[InvCipherRound.scala 96:79]
   wire [7:0] InvCipherRound_9_io_state_in_15; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_9_io_roundKey_0; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_9_io_roundKey_1; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_9_io_roundKey_2; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_9_io_roundKey_3; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_9_io_roundKey_4; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_9_io_roundKey_5; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_9_io_roundKey_6; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_9_io_roundKey_7; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_9_io_roundKey_8; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_9_io_roundKey_9; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_9_io_roundKey_10; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_9_io_roundKey_11; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_9_io_roundKey_12; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_9_io_roundKey_13; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_9_io_roundKey_14; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_9_io_roundKey_15; // @[InvCipherRound.scala 96:79]
   wire [7:0] InvCipherRound_9_io_state_out_0; // @[InvCipherRound.scala 96:79]
   wire [7:0] InvCipherRound_9_io_state_out_1; // @[InvCipherRound.scala 96:79]
   wire [7:0] InvCipherRound_9_io_state_out_2; // @[InvCipherRound.scala 96:79]
@@ -22446,6 +22798,22 @@ module AESDecrypt(
   wire [7:0] InvCipherRound_10_io_state_in_13; // @[InvCipherRound.scala 96:79]
   wire [7:0] InvCipherRound_10_io_state_in_14; // @[InvCipherRound.scala 96:79]
   wire [7:0] InvCipherRound_10_io_state_in_15; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_10_io_roundKey_0; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_10_io_roundKey_1; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_10_io_roundKey_2; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_10_io_roundKey_3; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_10_io_roundKey_4; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_10_io_roundKey_5; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_10_io_roundKey_6; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_10_io_roundKey_7; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_10_io_roundKey_8; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_10_io_roundKey_9; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_10_io_roundKey_10; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_10_io_roundKey_11; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_10_io_roundKey_12; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_10_io_roundKey_13; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_10_io_roundKey_14; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_10_io_roundKey_15; // @[InvCipherRound.scala 96:79]
   wire [7:0] InvCipherRound_10_io_state_out_0; // @[InvCipherRound.scala 96:79]
   wire [7:0] InvCipherRound_10_io_state_out_1; // @[InvCipherRound.scala 96:79]
   wire [7:0] InvCipherRound_10_io_state_out_2; // @[InvCipherRound.scala 96:79]
@@ -22481,6 +22849,22 @@ module AESDecrypt(
   wire [7:0] InvCipherRound_11_io_state_in_13; // @[InvCipherRound.scala 96:79]
   wire [7:0] InvCipherRound_11_io_state_in_14; // @[InvCipherRound.scala 96:79]
   wire [7:0] InvCipherRound_11_io_state_in_15; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_11_io_roundKey_0; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_11_io_roundKey_1; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_11_io_roundKey_2; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_11_io_roundKey_3; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_11_io_roundKey_4; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_11_io_roundKey_5; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_11_io_roundKey_6; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_11_io_roundKey_7; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_11_io_roundKey_8; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_11_io_roundKey_9; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_11_io_roundKey_10; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_11_io_roundKey_11; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_11_io_roundKey_12; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_11_io_roundKey_13; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_11_io_roundKey_14; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_11_io_roundKey_15; // @[InvCipherRound.scala 96:79]
   wire [7:0] InvCipherRound_11_io_state_out_0; // @[InvCipherRound.scala 96:79]
   wire [7:0] InvCipherRound_11_io_state_out_1; // @[InvCipherRound.scala 96:79]
   wire [7:0] InvCipherRound_11_io_state_out_2; // @[InvCipherRound.scala 96:79]
@@ -22516,6 +22900,22 @@ module AESDecrypt(
   wire [7:0] InvCipherRound_12_io_state_in_13; // @[InvCipherRound.scala 96:79]
   wire [7:0] InvCipherRound_12_io_state_in_14; // @[InvCipherRound.scala 96:79]
   wire [7:0] InvCipherRound_12_io_state_in_15; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_12_io_roundKey_0; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_12_io_roundKey_1; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_12_io_roundKey_2; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_12_io_roundKey_3; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_12_io_roundKey_4; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_12_io_roundKey_5; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_12_io_roundKey_6; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_12_io_roundKey_7; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_12_io_roundKey_8; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_12_io_roundKey_9; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_12_io_roundKey_10; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_12_io_roundKey_11; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_12_io_roundKey_12; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_12_io_roundKey_13; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_12_io_roundKey_14; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_12_io_roundKey_15; // @[InvCipherRound.scala 96:79]
   wire [7:0] InvCipherRound_12_io_state_out_0; // @[InvCipherRound.scala 96:79]
   wire [7:0] InvCipherRound_12_io_state_out_1; // @[InvCipherRound.scala 96:79]
   wire [7:0] InvCipherRound_12_io_state_out_2; // @[InvCipherRound.scala 96:79]
@@ -22551,6 +22951,22 @@ module AESDecrypt(
   wire [7:0] InvCipherRound_13_io_state_in_13; // @[InvCipherRound.scala 96:79]
   wire [7:0] InvCipherRound_13_io_state_in_14; // @[InvCipherRound.scala 96:79]
   wire [7:0] InvCipherRound_13_io_state_in_15; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_13_io_roundKey_0; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_13_io_roundKey_1; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_13_io_roundKey_2; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_13_io_roundKey_3; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_13_io_roundKey_4; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_13_io_roundKey_5; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_13_io_roundKey_6; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_13_io_roundKey_7; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_13_io_roundKey_8; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_13_io_roundKey_9; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_13_io_roundKey_10; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_13_io_roundKey_11; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_13_io_roundKey_12; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_13_io_roundKey_13; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_13_io_roundKey_14; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_13_io_roundKey_15; // @[InvCipherRound.scala 96:79]
   wire [7:0] InvCipherRound_13_io_state_out_0; // @[InvCipherRound.scala 96:79]
   wire [7:0] InvCipherRound_13_io_state_out_1; // @[InvCipherRound.scala 96:79]
   wire [7:0] InvCipherRound_13_io_state_out_2; // @[InvCipherRound.scala 96:79]
@@ -22586,6 +23002,22 @@ module AESDecrypt(
   wire [7:0] InvCipherRound_14_io_state_in_13; // @[InvCipherRound.scala 96:79]
   wire [7:0] InvCipherRound_14_io_state_in_14; // @[InvCipherRound.scala 96:79]
   wire [7:0] InvCipherRound_14_io_state_in_15; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_14_io_roundKey_0; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_14_io_roundKey_1; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_14_io_roundKey_2; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_14_io_roundKey_3; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_14_io_roundKey_4; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_14_io_roundKey_5; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_14_io_roundKey_6; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_14_io_roundKey_7; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_14_io_roundKey_8; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_14_io_roundKey_9; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_14_io_roundKey_10; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_14_io_roundKey_11; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_14_io_roundKey_12; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_14_io_roundKey_13; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_14_io_roundKey_14; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_14_io_roundKey_15; // @[InvCipherRound.scala 96:79]
   wire [7:0] InvCipherRound_14_io_state_out_0; // @[InvCipherRound.scala 96:79]
   wire [7:0] InvCipherRound_14_io_state_out_1; // @[InvCipherRound.scala 96:79]
   wire [7:0] InvCipherRound_14_io_state_out_2; // @[InvCipherRound.scala 96:79]
@@ -22621,6 +23053,22 @@ module AESDecrypt(
   wire [7:0] InvCipherRound_15_io_state_in_13; // @[InvCipherRound.scala 96:79]
   wire [7:0] InvCipherRound_15_io_state_in_14; // @[InvCipherRound.scala 96:79]
   wire [7:0] InvCipherRound_15_io_state_in_15; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_15_io_roundKey_0; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_15_io_roundKey_1; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_15_io_roundKey_2; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_15_io_roundKey_3; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_15_io_roundKey_4; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_15_io_roundKey_5; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_15_io_roundKey_6; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_15_io_roundKey_7; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_15_io_roundKey_8; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_15_io_roundKey_9; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_15_io_roundKey_10; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_15_io_roundKey_11; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_15_io_roundKey_12; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_15_io_roundKey_13; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_15_io_roundKey_14; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_15_io_roundKey_15; // @[InvCipherRound.scala 96:79]
   wire [7:0] InvCipherRound_15_io_state_out_0; // @[InvCipherRound.scala 96:79]
   wire [7:0] InvCipherRound_15_io_state_out_1; // @[InvCipherRound.scala 96:79]
   wire [7:0] InvCipherRound_15_io_state_out_2; // @[InvCipherRound.scala 96:79]
@@ -22656,6 +23104,22 @@ module AESDecrypt(
   wire [7:0] InvCipherRound_16_io_state_in_13; // @[InvCipherRound.scala 96:79]
   wire [7:0] InvCipherRound_16_io_state_in_14; // @[InvCipherRound.scala 96:79]
   wire [7:0] InvCipherRound_16_io_state_in_15; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_16_io_roundKey_0; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_16_io_roundKey_1; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_16_io_roundKey_2; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_16_io_roundKey_3; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_16_io_roundKey_4; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_16_io_roundKey_5; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_16_io_roundKey_6; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_16_io_roundKey_7; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_16_io_roundKey_8; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_16_io_roundKey_9; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_16_io_roundKey_10; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_16_io_roundKey_11; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_16_io_roundKey_12; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_16_io_roundKey_13; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_16_io_roundKey_14; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_16_io_roundKey_15; // @[InvCipherRound.scala 96:79]
   wire [7:0] InvCipherRound_16_io_state_out_0; // @[InvCipherRound.scala 96:79]
   wire [7:0] InvCipherRound_16_io_state_out_1; // @[InvCipherRound.scala 96:79]
   wire [7:0] InvCipherRound_16_io_state_out_2; // @[InvCipherRound.scala 96:79]
@@ -22691,6 +23155,22 @@ module AESDecrypt(
   wire [7:0] InvCipherRound_17_io_state_in_13; // @[InvCipherRound.scala 96:79]
   wire [7:0] InvCipherRound_17_io_state_in_14; // @[InvCipherRound.scala 96:79]
   wire [7:0] InvCipherRound_17_io_state_in_15; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_17_io_roundKey_0; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_17_io_roundKey_1; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_17_io_roundKey_2; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_17_io_roundKey_3; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_17_io_roundKey_4; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_17_io_roundKey_5; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_17_io_roundKey_6; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_17_io_roundKey_7; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_17_io_roundKey_8; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_17_io_roundKey_9; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_17_io_roundKey_10; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_17_io_roundKey_11; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_17_io_roundKey_12; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_17_io_roundKey_13; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_17_io_roundKey_14; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_17_io_roundKey_15; // @[InvCipherRound.scala 96:79]
   wire [7:0] InvCipherRound_17_io_state_out_0; // @[InvCipherRound.scala 96:79]
   wire [7:0] InvCipherRound_17_io_state_out_1; // @[InvCipherRound.scala 96:79]
   wire [7:0] InvCipherRound_17_io_state_out_2; // @[InvCipherRound.scala 96:79]
@@ -22726,6 +23206,22 @@ module AESDecrypt(
   wire [7:0] InvCipherRound_18_io_state_in_13; // @[InvCipherRound.scala 96:79]
   wire [7:0] InvCipherRound_18_io_state_in_14; // @[InvCipherRound.scala 96:79]
   wire [7:0] InvCipherRound_18_io_state_in_15; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_18_io_roundKey_0; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_18_io_roundKey_1; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_18_io_roundKey_2; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_18_io_roundKey_3; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_18_io_roundKey_4; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_18_io_roundKey_5; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_18_io_roundKey_6; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_18_io_roundKey_7; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_18_io_roundKey_8; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_18_io_roundKey_9; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_18_io_roundKey_10; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_18_io_roundKey_11; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_18_io_roundKey_12; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_18_io_roundKey_13; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_18_io_roundKey_14; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_18_io_roundKey_15; // @[InvCipherRound.scala 96:79]
   wire [7:0] InvCipherRound_18_io_state_out_0; // @[InvCipherRound.scala 96:79]
   wire [7:0] InvCipherRound_18_io_state_out_1; // @[InvCipherRound.scala 96:79]
   wire [7:0] InvCipherRound_18_io_state_out_2; // @[InvCipherRound.scala 96:79]
@@ -22761,6 +23257,22 @@ module AESDecrypt(
   wire [7:0] InvCipherRound_19_io_state_in_13; // @[InvCipherRound.scala 96:79]
   wire [7:0] InvCipherRound_19_io_state_in_14; // @[InvCipherRound.scala 96:79]
   wire [7:0] InvCipherRound_19_io_state_in_15; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_19_io_roundKey_0; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_19_io_roundKey_1; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_19_io_roundKey_2; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_19_io_roundKey_3; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_19_io_roundKey_4; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_19_io_roundKey_5; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_19_io_roundKey_6; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_19_io_roundKey_7; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_19_io_roundKey_8; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_19_io_roundKey_9; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_19_io_roundKey_10; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_19_io_roundKey_11; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_19_io_roundKey_12; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_19_io_roundKey_13; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_19_io_roundKey_14; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_19_io_roundKey_15; // @[InvCipherRound.scala 96:79]
   wire [7:0] InvCipherRound_19_io_state_out_0; // @[InvCipherRound.scala 96:79]
   wire [7:0] InvCipherRound_19_io_state_out_1; // @[InvCipherRound.scala 96:79]
   wire [7:0] InvCipherRound_19_io_state_out_2; // @[InvCipherRound.scala 96:79]
@@ -22796,6 +23308,22 @@ module AESDecrypt(
   wire [7:0] InvCipherRound_20_io_state_in_13; // @[InvCipherRound.scala 96:79]
   wire [7:0] InvCipherRound_20_io_state_in_14; // @[InvCipherRound.scala 96:79]
   wire [7:0] InvCipherRound_20_io_state_in_15; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_20_io_roundKey_0; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_20_io_roundKey_1; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_20_io_roundKey_2; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_20_io_roundKey_3; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_20_io_roundKey_4; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_20_io_roundKey_5; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_20_io_roundKey_6; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_20_io_roundKey_7; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_20_io_roundKey_8; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_20_io_roundKey_9; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_20_io_roundKey_10; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_20_io_roundKey_11; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_20_io_roundKey_12; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_20_io_roundKey_13; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_20_io_roundKey_14; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_20_io_roundKey_15; // @[InvCipherRound.scala 96:79]
   wire [7:0] InvCipherRound_20_io_state_out_0; // @[InvCipherRound.scala 96:79]
   wire [7:0] InvCipherRound_20_io_state_out_1; // @[InvCipherRound.scala 96:79]
   wire [7:0] InvCipherRound_20_io_state_out_2; // @[InvCipherRound.scala 96:79]
@@ -22831,6 +23359,22 @@ module AESDecrypt(
   wire [7:0] InvCipherRound_21_io_state_in_13; // @[InvCipherRound.scala 96:79]
   wire [7:0] InvCipherRound_21_io_state_in_14; // @[InvCipherRound.scala 96:79]
   wire [7:0] InvCipherRound_21_io_state_in_15; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_21_io_roundKey_0; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_21_io_roundKey_1; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_21_io_roundKey_2; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_21_io_roundKey_3; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_21_io_roundKey_4; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_21_io_roundKey_5; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_21_io_roundKey_6; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_21_io_roundKey_7; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_21_io_roundKey_8; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_21_io_roundKey_9; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_21_io_roundKey_10; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_21_io_roundKey_11; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_21_io_roundKey_12; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_21_io_roundKey_13; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_21_io_roundKey_14; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_21_io_roundKey_15; // @[InvCipherRound.scala 96:79]
   wire [7:0] InvCipherRound_21_io_state_out_0; // @[InvCipherRound.scala 96:79]
   wire [7:0] InvCipherRound_21_io_state_out_1; // @[InvCipherRound.scala 96:79]
   wire [7:0] InvCipherRound_21_io_state_out_2; // @[InvCipherRound.scala 96:79]
@@ -22866,6 +23410,22 @@ module AESDecrypt(
   wire [7:0] InvCipherRound_22_io_state_in_13; // @[InvCipherRound.scala 96:79]
   wire [7:0] InvCipherRound_22_io_state_in_14; // @[InvCipherRound.scala 96:79]
   wire [7:0] InvCipherRound_22_io_state_in_15; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_22_io_roundKey_0; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_22_io_roundKey_1; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_22_io_roundKey_2; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_22_io_roundKey_3; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_22_io_roundKey_4; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_22_io_roundKey_5; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_22_io_roundKey_6; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_22_io_roundKey_7; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_22_io_roundKey_8; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_22_io_roundKey_9; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_22_io_roundKey_10; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_22_io_roundKey_11; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_22_io_roundKey_12; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_22_io_roundKey_13; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_22_io_roundKey_14; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_22_io_roundKey_15; // @[InvCipherRound.scala 96:79]
   wire [7:0] InvCipherRound_22_io_state_out_0; // @[InvCipherRound.scala 96:79]
   wire [7:0] InvCipherRound_22_io_state_out_1; // @[InvCipherRound.scala 96:79]
   wire [7:0] InvCipherRound_22_io_state_out_2; // @[InvCipherRound.scala 96:79]
@@ -22901,6 +23461,22 @@ module AESDecrypt(
   wire [7:0] InvCipherRound_23_io_state_in_13; // @[InvCipherRound.scala 96:79]
   wire [7:0] InvCipherRound_23_io_state_in_14; // @[InvCipherRound.scala 96:79]
   wire [7:0] InvCipherRound_23_io_state_in_15; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_23_io_roundKey_0; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_23_io_roundKey_1; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_23_io_roundKey_2; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_23_io_roundKey_3; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_23_io_roundKey_4; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_23_io_roundKey_5; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_23_io_roundKey_6; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_23_io_roundKey_7; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_23_io_roundKey_8; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_23_io_roundKey_9; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_23_io_roundKey_10; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_23_io_roundKey_11; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_23_io_roundKey_12; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_23_io_roundKey_13; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_23_io_roundKey_14; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_23_io_roundKey_15; // @[InvCipherRound.scala 96:79]
   wire [7:0] InvCipherRound_23_io_state_out_0; // @[InvCipherRound.scala 96:79]
   wire [7:0] InvCipherRound_23_io_state_out_1; // @[InvCipherRound.scala 96:79]
   wire [7:0] InvCipherRound_23_io_state_out_2; // @[InvCipherRound.scala 96:79]
@@ -22936,6 +23512,22 @@ module AESDecrypt(
   wire [7:0] InvCipherRound_24_io_state_in_13; // @[InvCipherRound.scala 96:79]
   wire [7:0] InvCipherRound_24_io_state_in_14; // @[InvCipherRound.scala 96:79]
   wire [7:0] InvCipherRound_24_io_state_in_15; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_24_io_roundKey_0; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_24_io_roundKey_1; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_24_io_roundKey_2; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_24_io_roundKey_3; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_24_io_roundKey_4; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_24_io_roundKey_5; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_24_io_roundKey_6; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_24_io_roundKey_7; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_24_io_roundKey_8; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_24_io_roundKey_9; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_24_io_roundKey_10; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_24_io_roundKey_11; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_24_io_roundKey_12; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_24_io_roundKey_13; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_24_io_roundKey_14; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_24_io_roundKey_15; // @[InvCipherRound.scala 96:79]
   wire [7:0] InvCipherRound_24_io_state_out_0; // @[InvCipherRound.scala 96:79]
   wire [7:0] InvCipherRound_24_io_state_out_1; // @[InvCipherRound.scala 96:79]
   wire [7:0] InvCipherRound_24_io_state_out_2; // @[InvCipherRound.scala 96:79]
@@ -22971,6 +23563,22 @@ module AESDecrypt(
   wire [7:0] InvCipherRound_25_io_state_in_13; // @[InvCipherRound.scala 96:79]
   wire [7:0] InvCipherRound_25_io_state_in_14; // @[InvCipherRound.scala 96:79]
   wire [7:0] InvCipherRound_25_io_state_in_15; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_25_io_roundKey_0; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_25_io_roundKey_1; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_25_io_roundKey_2; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_25_io_roundKey_3; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_25_io_roundKey_4; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_25_io_roundKey_5; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_25_io_roundKey_6; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_25_io_roundKey_7; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_25_io_roundKey_8; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_25_io_roundKey_9; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_25_io_roundKey_10; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_25_io_roundKey_11; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_25_io_roundKey_12; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_25_io_roundKey_13; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_25_io_roundKey_14; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_25_io_roundKey_15; // @[InvCipherRound.scala 96:79]
   wire [7:0] InvCipherRound_25_io_state_out_0; // @[InvCipherRound.scala 96:79]
   wire [7:0] InvCipherRound_25_io_state_out_1; // @[InvCipherRound.scala 96:79]
   wire [7:0] InvCipherRound_25_io_state_out_2; // @[InvCipherRound.scala 96:79]
@@ -23006,6 +23614,22 @@ module AESDecrypt(
   wire [7:0] InvCipherRound_26_io_state_in_13; // @[InvCipherRound.scala 96:79]
   wire [7:0] InvCipherRound_26_io_state_in_14; // @[InvCipherRound.scala 96:79]
   wire [7:0] InvCipherRound_26_io_state_in_15; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_26_io_roundKey_0; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_26_io_roundKey_1; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_26_io_roundKey_2; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_26_io_roundKey_3; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_26_io_roundKey_4; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_26_io_roundKey_5; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_26_io_roundKey_6; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_26_io_roundKey_7; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_26_io_roundKey_8; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_26_io_roundKey_9; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_26_io_roundKey_10; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_26_io_roundKey_11; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_26_io_roundKey_12; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_26_io_roundKey_13; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_26_io_roundKey_14; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_26_io_roundKey_15; // @[InvCipherRound.scala 96:79]
   wire [7:0] InvCipherRound_26_io_state_out_0; // @[InvCipherRound.scala 96:79]
   wire [7:0] InvCipherRound_26_io_state_out_1; // @[InvCipherRound.scala 96:79]
   wire [7:0] InvCipherRound_26_io_state_out_2; // @[InvCipherRound.scala 96:79]
@@ -23041,6 +23665,22 @@ module AESDecrypt(
   wire [7:0] InvCipherRound_27_io_state_in_13; // @[InvCipherRound.scala 96:79]
   wire [7:0] InvCipherRound_27_io_state_in_14; // @[InvCipherRound.scala 96:79]
   wire [7:0] InvCipherRound_27_io_state_in_15; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_27_io_roundKey_0; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_27_io_roundKey_1; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_27_io_roundKey_2; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_27_io_roundKey_3; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_27_io_roundKey_4; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_27_io_roundKey_5; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_27_io_roundKey_6; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_27_io_roundKey_7; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_27_io_roundKey_8; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_27_io_roundKey_9; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_27_io_roundKey_10; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_27_io_roundKey_11; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_27_io_roundKey_12; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_27_io_roundKey_13; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_27_io_roundKey_14; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_27_io_roundKey_15; // @[InvCipherRound.scala 96:79]
   wire [7:0] InvCipherRound_27_io_state_out_0; // @[InvCipherRound.scala 96:79]
   wire [7:0] InvCipherRound_27_io_state_out_1; // @[InvCipherRound.scala 96:79]
   wire [7:0] InvCipherRound_27_io_state_out_2; // @[InvCipherRound.scala 96:79]
@@ -23076,6 +23716,22 @@ module AESDecrypt(
   wire [7:0] InvCipherRound_28_io_state_in_13; // @[InvCipherRound.scala 96:79]
   wire [7:0] InvCipherRound_28_io_state_in_14; // @[InvCipherRound.scala 96:79]
   wire [7:0] InvCipherRound_28_io_state_in_15; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_28_io_roundKey_0; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_28_io_roundKey_1; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_28_io_roundKey_2; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_28_io_roundKey_3; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_28_io_roundKey_4; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_28_io_roundKey_5; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_28_io_roundKey_6; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_28_io_roundKey_7; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_28_io_roundKey_8; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_28_io_roundKey_9; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_28_io_roundKey_10; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_28_io_roundKey_11; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_28_io_roundKey_12; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_28_io_roundKey_13; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_28_io_roundKey_14; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_28_io_roundKey_15; // @[InvCipherRound.scala 96:79]
   wire [7:0] InvCipherRound_28_io_state_out_0; // @[InvCipherRound.scala 96:79]
   wire [7:0] InvCipherRound_28_io_state_out_1; // @[InvCipherRound.scala 96:79]
   wire [7:0] InvCipherRound_28_io_state_out_2; // @[InvCipherRound.scala 96:79]
@@ -23111,6 +23767,22 @@ module AESDecrypt(
   wire [7:0] InvCipherRound_29_io_state_in_13; // @[InvCipherRound.scala 96:79]
   wire [7:0] InvCipherRound_29_io_state_in_14; // @[InvCipherRound.scala 96:79]
   wire [7:0] InvCipherRound_29_io_state_in_15; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_29_io_roundKey_0; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_29_io_roundKey_1; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_29_io_roundKey_2; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_29_io_roundKey_3; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_29_io_roundKey_4; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_29_io_roundKey_5; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_29_io_roundKey_6; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_29_io_roundKey_7; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_29_io_roundKey_8; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_29_io_roundKey_9; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_29_io_roundKey_10; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_29_io_roundKey_11; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_29_io_roundKey_12; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_29_io_roundKey_13; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_29_io_roundKey_14; // @[InvCipherRound.scala 96:79]
+  wire [7:0] InvCipherRound_29_io_roundKey_15; // @[InvCipherRound.scala 96:79]
   wire [7:0] InvCipherRound_29_io_state_out_0; // @[InvCipherRound.scala 96:79]
   wire [7:0] InvCipherRound_29_io_state_out_1; // @[InvCipherRound.scala 96:79]
   wire [7:0] InvCipherRound_29_io_state_out_2; // @[InvCipherRound.scala 96:79]
@@ -23252,6 +23924,22 @@ module AESDecrypt(
     .io_state_in_13(InvCipherRound_io_state_in_13),
     .io_state_in_14(InvCipherRound_io_state_in_14),
     .io_state_in_15(InvCipherRound_io_state_in_15),
+    .io_roundKey_0(InvCipherRound_io_roundKey_0),
+    .io_roundKey_1(InvCipherRound_io_roundKey_1),
+    .io_roundKey_2(InvCipherRound_io_roundKey_2),
+    .io_roundKey_3(InvCipherRound_io_roundKey_3),
+    .io_roundKey_4(InvCipherRound_io_roundKey_4),
+    .io_roundKey_5(InvCipherRound_io_roundKey_5),
+    .io_roundKey_6(InvCipherRound_io_roundKey_6),
+    .io_roundKey_7(InvCipherRound_io_roundKey_7),
+    .io_roundKey_8(InvCipherRound_io_roundKey_8),
+    .io_roundKey_9(InvCipherRound_io_roundKey_9),
+    .io_roundKey_10(InvCipherRound_io_roundKey_10),
+    .io_roundKey_11(InvCipherRound_io_roundKey_11),
+    .io_roundKey_12(InvCipherRound_io_roundKey_12),
+    .io_roundKey_13(InvCipherRound_io_roundKey_13),
+    .io_roundKey_14(InvCipherRound_io_roundKey_14),
+    .io_roundKey_15(InvCipherRound_io_roundKey_15),
     .io_state_out_0(InvCipherRound_io_state_out_0),
     .io_state_out_1(InvCipherRound_io_state_out_1),
     .io_state_out_2(InvCipherRound_io_state_out_2),
@@ -23289,6 +23977,22 @@ module AESDecrypt(
     .io_state_in_13(InvCipherRound_1_io_state_in_13),
     .io_state_in_14(InvCipherRound_1_io_state_in_14),
     .io_state_in_15(InvCipherRound_1_io_state_in_15),
+    .io_roundKey_0(InvCipherRound_1_io_roundKey_0),
+    .io_roundKey_1(InvCipherRound_1_io_roundKey_1),
+    .io_roundKey_2(InvCipherRound_1_io_roundKey_2),
+    .io_roundKey_3(InvCipherRound_1_io_roundKey_3),
+    .io_roundKey_4(InvCipherRound_1_io_roundKey_4),
+    .io_roundKey_5(InvCipherRound_1_io_roundKey_5),
+    .io_roundKey_6(InvCipherRound_1_io_roundKey_6),
+    .io_roundKey_7(InvCipherRound_1_io_roundKey_7),
+    .io_roundKey_8(InvCipherRound_1_io_roundKey_8),
+    .io_roundKey_9(InvCipherRound_1_io_roundKey_9),
+    .io_roundKey_10(InvCipherRound_1_io_roundKey_10),
+    .io_roundKey_11(InvCipherRound_1_io_roundKey_11),
+    .io_roundKey_12(InvCipherRound_1_io_roundKey_12),
+    .io_roundKey_13(InvCipherRound_1_io_roundKey_13),
+    .io_roundKey_14(InvCipherRound_1_io_roundKey_14),
+    .io_roundKey_15(InvCipherRound_1_io_roundKey_15),
     .io_state_out_0(InvCipherRound_1_io_state_out_0),
     .io_state_out_1(InvCipherRound_1_io_state_out_1),
     .io_state_out_2(InvCipherRound_1_io_state_out_2),
@@ -23326,6 +24030,22 @@ module AESDecrypt(
     .io_state_in_13(InvCipherRound_2_io_state_in_13),
     .io_state_in_14(InvCipherRound_2_io_state_in_14),
     .io_state_in_15(InvCipherRound_2_io_state_in_15),
+    .io_roundKey_0(InvCipherRound_2_io_roundKey_0),
+    .io_roundKey_1(InvCipherRound_2_io_roundKey_1),
+    .io_roundKey_2(InvCipherRound_2_io_roundKey_2),
+    .io_roundKey_3(InvCipherRound_2_io_roundKey_3),
+    .io_roundKey_4(InvCipherRound_2_io_roundKey_4),
+    .io_roundKey_5(InvCipherRound_2_io_roundKey_5),
+    .io_roundKey_6(InvCipherRound_2_io_roundKey_6),
+    .io_roundKey_7(InvCipherRound_2_io_roundKey_7),
+    .io_roundKey_8(InvCipherRound_2_io_roundKey_8),
+    .io_roundKey_9(InvCipherRound_2_io_roundKey_9),
+    .io_roundKey_10(InvCipherRound_2_io_roundKey_10),
+    .io_roundKey_11(InvCipherRound_2_io_roundKey_11),
+    .io_roundKey_12(InvCipherRound_2_io_roundKey_12),
+    .io_roundKey_13(InvCipherRound_2_io_roundKey_13),
+    .io_roundKey_14(InvCipherRound_2_io_roundKey_14),
+    .io_roundKey_15(InvCipherRound_2_io_roundKey_15),
     .io_state_out_0(InvCipherRound_2_io_state_out_0),
     .io_state_out_1(InvCipherRound_2_io_state_out_1),
     .io_state_out_2(InvCipherRound_2_io_state_out_2),
@@ -23363,6 +24083,22 @@ module AESDecrypt(
     .io_state_in_13(InvCipherRound_3_io_state_in_13),
     .io_state_in_14(InvCipherRound_3_io_state_in_14),
     .io_state_in_15(InvCipherRound_3_io_state_in_15),
+    .io_roundKey_0(InvCipherRound_3_io_roundKey_0),
+    .io_roundKey_1(InvCipherRound_3_io_roundKey_1),
+    .io_roundKey_2(InvCipherRound_3_io_roundKey_2),
+    .io_roundKey_3(InvCipherRound_3_io_roundKey_3),
+    .io_roundKey_4(InvCipherRound_3_io_roundKey_4),
+    .io_roundKey_5(InvCipherRound_3_io_roundKey_5),
+    .io_roundKey_6(InvCipherRound_3_io_roundKey_6),
+    .io_roundKey_7(InvCipherRound_3_io_roundKey_7),
+    .io_roundKey_8(InvCipherRound_3_io_roundKey_8),
+    .io_roundKey_9(InvCipherRound_3_io_roundKey_9),
+    .io_roundKey_10(InvCipherRound_3_io_roundKey_10),
+    .io_roundKey_11(InvCipherRound_3_io_roundKey_11),
+    .io_roundKey_12(InvCipherRound_3_io_roundKey_12),
+    .io_roundKey_13(InvCipherRound_3_io_roundKey_13),
+    .io_roundKey_14(InvCipherRound_3_io_roundKey_14),
+    .io_roundKey_15(InvCipherRound_3_io_roundKey_15),
     .io_state_out_0(InvCipherRound_3_io_state_out_0),
     .io_state_out_1(InvCipherRound_3_io_state_out_1),
     .io_state_out_2(InvCipherRound_3_io_state_out_2),
@@ -23400,6 +24136,22 @@ module AESDecrypt(
     .io_state_in_13(InvCipherRound_4_io_state_in_13),
     .io_state_in_14(InvCipherRound_4_io_state_in_14),
     .io_state_in_15(InvCipherRound_4_io_state_in_15),
+    .io_roundKey_0(InvCipherRound_4_io_roundKey_0),
+    .io_roundKey_1(InvCipherRound_4_io_roundKey_1),
+    .io_roundKey_2(InvCipherRound_4_io_roundKey_2),
+    .io_roundKey_3(InvCipherRound_4_io_roundKey_3),
+    .io_roundKey_4(InvCipherRound_4_io_roundKey_4),
+    .io_roundKey_5(InvCipherRound_4_io_roundKey_5),
+    .io_roundKey_6(InvCipherRound_4_io_roundKey_6),
+    .io_roundKey_7(InvCipherRound_4_io_roundKey_7),
+    .io_roundKey_8(InvCipherRound_4_io_roundKey_8),
+    .io_roundKey_9(InvCipherRound_4_io_roundKey_9),
+    .io_roundKey_10(InvCipherRound_4_io_roundKey_10),
+    .io_roundKey_11(InvCipherRound_4_io_roundKey_11),
+    .io_roundKey_12(InvCipherRound_4_io_roundKey_12),
+    .io_roundKey_13(InvCipherRound_4_io_roundKey_13),
+    .io_roundKey_14(InvCipherRound_4_io_roundKey_14),
+    .io_roundKey_15(InvCipherRound_4_io_roundKey_15),
     .io_state_out_0(InvCipherRound_4_io_state_out_0),
     .io_state_out_1(InvCipherRound_4_io_state_out_1),
     .io_state_out_2(InvCipherRound_4_io_state_out_2),
@@ -23437,6 +24189,22 @@ module AESDecrypt(
     .io_state_in_13(InvCipherRound_5_io_state_in_13),
     .io_state_in_14(InvCipherRound_5_io_state_in_14),
     .io_state_in_15(InvCipherRound_5_io_state_in_15),
+    .io_roundKey_0(InvCipherRound_5_io_roundKey_0),
+    .io_roundKey_1(InvCipherRound_5_io_roundKey_1),
+    .io_roundKey_2(InvCipherRound_5_io_roundKey_2),
+    .io_roundKey_3(InvCipherRound_5_io_roundKey_3),
+    .io_roundKey_4(InvCipherRound_5_io_roundKey_4),
+    .io_roundKey_5(InvCipherRound_5_io_roundKey_5),
+    .io_roundKey_6(InvCipherRound_5_io_roundKey_6),
+    .io_roundKey_7(InvCipherRound_5_io_roundKey_7),
+    .io_roundKey_8(InvCipherRound_5_io_roundKey_8),
+    .io_roundKey_9(InvCipherRound_5_io_roundKey_9),
+    .io_roundKey_10(InvCipherRound_5_io_roundKey_10),
+    .io_roundKey_11(InvCipherRound_5_io_roundKey_11),
+    .io_roundKey_12(InvCipherRound_5_io_roundKey_12),
+    .io_roundKey_13(InvCipherRound_5_io_roundKey_13),
+    .io_roundKey_14(InvCipherRound_5_io_roundKey_14),
+    .io_roundKey_15(InvCipherRound_5_io_roundKey_15),
     .io_state_out_0(InvCipherRound_5_io_state_out_0),
     .io_state_out_1(InvCipherRound_5_io_state_out_1),
     .io_state_out_2(InvCipherRound_5_io_state_out_2),
@@ -23474,6 +24242,22 @@ module AESDecrypt(
     .io_state_in_13(InvCipherRound_6_io_state_in_13),
     .io_state_in_14(InvCipherRound_6_io_state_in_14),
     .io_state_in_15(InvCipherRound_6_io_state_in_15),
+    .io_roundKey_0(InvCipherRound_6_io_roundKey_0),
+    .io_roundKey_1(InvCipherRound_6_io_roundKey_1),
+    .io_roundKey_2(InvCipherRound_6_io_roundKey_2),
+    .io_roundKey_3(InvCipherRound_6_io_roundKey_3),
+    .io_roundKey_4(InvCipherRound_6_io_roundKey_4),
+    .io_roundKey_5(InvCipherRound_6_io_roundKey_5),
+    .io_roundKey_6(InvCipherRound_6_io_roundKey_6),
+    .io_roundKey_7(InvCipherRound_6_io_roundKey_7),
+    .io_roundKey_8(InvCipherRound_6_io_roundKey_8),
+    .io_roundKey_9(InvCipherRound_6_io_roundKey_9),
+    .io_roundKey_10(InvCipherRound_6_io_roundKey_10),
+    .io_roundKey_11(InvCipherRound_6_io_roundKey_11),
+    .io_roundKey_12(InvCipherRound_6_io_roundKey_12),
+    .io_roundKey_13(InvCipherRound_6_io_roundKey_13),
+    .io_roundKey_14(InvCipherRound_6_io_roundKey_14),
+    .io_roundKey_15(InvCipherRound_6_io_roundKey_15),
     .io_state_out_0(InvCipherRound_6_io_state_out_0),
     .io_state_out_1(InvCipherRound_6_io_state_out_1),
     .io_state_out_2(InvCipherRound_6_io_state_out_2),
@@ -23511,6 +24295,22 @@ module AESDecrypt(
     .io_state_in_13(InvCipherRound_7_io_state_in_13),
     .io_state_in_14(InvCipherRound_7_io_state_in_14),
     .io_state_in_15(InvCipherRound_7_io_state_in_15),
+    .io_roundKey_0(InvCipherRound_7_io_roundKey_0),
+    .io_roundKey_1(InvCipherRound_7_io_roundKey_1),
+    .io_roundKey_2(InvCipherRound_7_io_roundKey_2),
+    .io_roundKey_3(InvCipherRound_7_io_roundKey_3),
+    .io_roundKey_4(InvCipherRound_7_io_roundKey_4),
+    .io_roundKey_5(InvCipherRound_7_io_roundKey_5),
+    .io_roundKey_6(InvCipherRound_7_io_roundKey_6),
+    .io_roundKey_7(InvCipherRound_7_io_roundKey_7),
+    .io_roundKey_8(InvCipherRound_7_io_roundKey_8),
+    .io_roundKey_9(InvCipherRound_7_io_roundKey_9),
+    .io_roundKey_10(InvCipherRound_7_io_roundKey_10),
+    .io_roundKey_11(InvCipherRound_7_io_roundKey_11),
+    .io_roundKey_12(InvCipherRound_7_io_roundKey_12),
+    .io_roundKey_13(InvCipherRound_7_io_roundKey_13),
+    .io_roundKey_14(InvCipherRound_7_io_roundKey_14),
+    .io_roundKey_15(InvCipherRound_7_io_roundKey_15),
     .io_state_out_0(InvCipherRound_7_io_state_out_0),
     .io_state_out_1(InvCipherRound_7_io_state_out_1),
     .io_state_out_2(InvCipherRound_7_io_state_out_2),
@@ -23548,6 +24348,22 @@ module AESDecrypt(
     .io_state_in_13(InvCipherRound_8_io_state_in_13),
     .io_state_in_14(InvCipherRound_8_io_state_in_14),
     .io_state_in_15(InvCipherRound_8_io_state_in_15),
+    .io_roundKey_0(InvCipherRound_8_io_roundKey_0),
+    .io_roundKey_1(InvCipherRound_8_io_roundKey_1),
+    .io_roundKey_2(InvCipherRound_8_io_roundKey_2),
+    .io_roundKey_3(InvCipherRound_8_io_roundKey_3),
+    .io_roundKey_4(InvCipherRound_8_io_roundKey_4),
+    .io_roundKey_5(InvCipherRound_8_io_roundKey_5),
+    .io_roundKey_6(InvCipherRound_8_io_roundKey_6),
+    .io_roundKey_7(InvCipherRound_8_io_roundKey_7),
+    .io_roundKey_8(InvCipherRound_8_io_roundKey_8),
+    .io_roundKey_9(InvCipherRound_8_io_roundKey_9),
+    .io_roundKey_10(InvCipherRound_8_io_roundKey_10),
+    .io_roundKey_11(InvCipherRound_8_io_roundKey_11),
+    .io_roundKey_12(InvCipherRound_8_io_roundKey_12),
+    .io_roundKey_13(InvCipherRound_8_io_roundKey_13),
+    .io_roundKey_14(InvCipherRound_8_io_roundKey_14),
+    .io_roundKey_15(InvCipherRound_8_io_roundKey_15),
     .io_state_out_0(InvCipherRound_8_io_state_out_0),
     .io_state_out_1(InvCipherRound_8_io_state_out_1),
     .io_state_out_2(InvCipherRound_8_io_state_out_2),
@@ -23585,6 +24401,22 @@ module AESDecrypt(
     .io_state_in_13(InvCipherRound_9_io_state_in_13),
     .io_state_in_14(InvCipherRound_9_io_state_in_14),
     .io_state_in_15(InvCipherRound_9_io_state_in_15),
+    .io_roundKey_0(InvCipherRound_9_io_roundKey_0),
+    .io_roundKey_1(InvCipherRound_9_io_roundKey_1),
+    .io_roundKey_2(InvCipherRound_9_io_roundKey_2),
+    .io_roundKey_3(InvCipherRound_9_io_roundKey_3),
+    .io_roundKey_4(InvCipherRound_9_io_roundKey_4),
+    .io_roundKey_5(InvCipherRound_9_io_roundKey_5),
+    .io_roundKey_6(InvCipherRound_9_io_roundKey_6),
+    .io_roundKey_7(InvCipherRound_9_io_roundKey_7),
+    .io_roundKey_8(InvCipherRound_9_io_roundKey_8),
+    .io_roundKey_9(InvCipherRound_9_io_roundKey_9),
+    .io_roundKey_10(InvCipherRound_9_io_roundKey_10),
+    .io_roundKey_11(InvCipherRound_9_io_roundKey_11),
+    .io_roundKey_12(InvCipherRound_9_io_roundKey_12),
+    .io_roundKey_13(InvCipherRound_9_io_roundKey_13),
+    .io_roundKey_14(InvCipherRound_9_io_roundKey_14),
+    .io_roundKey_15(InvCipherRound_9_io_roundKey_15),
     .io_state_out_0(InvCipherRound_9_io_state_out_0),
     .io_state_out_1(InvCipherRound_9_io_state_out_1),
     .io_state_out_2(InvCipherRound_9_io_state_out_2),
@@ -23622,6 +24454,22 @@ module AESDecrypt(
     .io_state_in_13(InvCipherRound_10_io_state_in_13),
     .io_state_in_14(InvCipherRound_10_io_state_in_14),
     .io_state_in_15(InvCipherRound_10_io_state_in_15),
+    .io_roundKey_0(InvCipherRound_10_io_roundKey_0),
+    .io_roundKey_1(InvCipherRound_10_io_roundKey_1),
+    .io_roundKey_2(InvCipherRound_10_io_roundKey_2),
+    .io_roundKey_3(InvCipherRound_10_io_roundKey_3),
+    .io_roundKey_4(InvCipherRound_10_io_roundKey_4),
+    .io_roundKey_5(InvCipherRound_10_io_roundKey_5),
+    .io_roundKey_6(InvCipherRound_10_io_roundKey_6),
+    .io_roundKey_7(InvCipherRound_10_io_roundKey_7),
+    .io_roundKey_8(InvCipherRound_10_io_roundKey_8),
+    .io_roundKey_9(InvCipherRound_10_io_roundKey_9),
+    .io_roundKey_10(InvCipherRound_10_io_roundKey_10),
+    .io_roundKey_11(InvCipherRound_10_io_roundKey_11),
+    .io_roundKey_12(InvCipherRound_10_io_roundKey_12),
+    .io_roundKey_13(InvCipherRound_10_io_roundKey_13),
+    .io_roundKey_14(InvCipherRound_10_io_roundKey_14),
+    .io_roundKey_15(InvCipherRound_10_io_roundKey_15),
     .io_state_out_0(InvCipherRound_10_io_state_out_0),
     .io_state_out_1(InvCipherRound_10_io_state_out_1),
     .io_state_out_2(InvCipherRound_10_io_state_out_2),
@@ -23659,6 +24507,22 @@ module AESDecrypt(
     .io_state_in_13(InvCipherRound_11_io_state_in_13),
     .io_state_in_14(InvCipherRound_11_io_state_in_14),
     .io_state_in_15(InvCipherRound_11_io_state_in_15),
+    .io_roundKey_0(InvCipherRound_11_io_roundKey_0),
+    .io_roundKey_1(InvCipherRound_11_io_roundKey_1),
+    .io_roundKey_2(InvCipherRound_11_io_roundKey_2),
+    .io_roundKey_3(InvCipherRound_11_io_roundKey_3),
+    .io_roundKey_4(InvCipherRound_11_io_roundKey_4),
+    .io_roundKey_5(InvCipherRound_11_io_roundKey_5),
+    .io_roundKey_6(InvCipherRound_11_io_roundKey_6),
+    .io_roundKey_7(InvCipherRound_11_io_roundKey_7),
+    .io_roundKey_8(InvCipherRound_11_io_roundKey_8),
+    .io_roundKey_9(InvCipherRound_11_io_roundKey_9),
+    .io_roundKey_10(InvCipherRound_11_io_roundKey_10),
+    .io_roundKey_11(InvCipherRound_11_io_roundKey_11),
+    .io_roundKey_12(InvCipherRound_11_io_roundKey_12),
+    .io_roundKey_13(InvCipherRound_11_io_roundKey_13),
+    .io_roundKey_14(InvCipherRound_11_io_roundKey_14),
+    .io_roundKey_15(InvCipherRound_11_io_roundKey_15),
     .io_state_out_0(InvCipherRound_11_io_state_out_0),
     .io_state_out_1(InvCipherRound_11_io_state_out_1),
     .io_state_out_2(InvCipherRound_11_io_state_out_2),
@@ -23696,6 +24560,22 @@ module AESDecrypt(
     .io_state_in_13(InvCipherRound_12_io_state_in_13),
     .io_state_in_14(InvCipherRound_12_io_state_in_14),
     .io_state_in_15(InvCipherRound_12_io_state_in_15),
+    .io_roundKey_0(InvCipherRound_12_io_roundKey_0),
+    .io_roundKey_1(InvCipherRound_12_io_roundKey_1),
+    .io_roundKey_2(InvCipherRound_12_io_roundKey_2),
+    .io_roundKey_3(InvCipherRound_12_io_roundKey_3),
+    .io_roundKey_4(InvCipherRound_12_io_roundKey_4),
+    .io_roundKey_5(InvCipherRound_12_io_roundKey_5),
+    .io_roundKey_6(InvCipherRound_12_io_roundKey_6),
+    .io_roundKey_7(InvCipherRound_12_io_roundKey_7),
+    .io_roundKey_8(InvCipherRound_12_io_roundKey_8),
+    .io_roundKey_9(InvCipherRound_12_io_roundKey_9),
+    .io_roundKey_10(InvCipherRound_12_io_roundKey_10),
+    .io_roundKey_11(InvCipherRound_12_io_roundKey_11),
+    .io_roundKey_12(InvCipherRound_12_io_roundKey_12),
+    .io_roundKey_13(InvCipherRound_12_io_roundKey_13),
+    .io_roundKey_14(InvCipherRound_12_io_roundKey_14),
+    .io_roundKey_15(InvCipherRound_12_io_roundKey_15),
     .io_state_out_0(InvCipherRound_12_io_state_out_0),
     .io_state_out_1(InvCipherRound_12_io_state_out_1),
     .io_state_out_2(InvCipherRound_12_io_state_out_2),
@@ -23733,6 +24613,22 @@ module AESDecrypt(
     .io_state_in_13(InvCipherRound_13_io_state_in_13),
     .io_state_in_14(InvCipherRound_13_io_state_in_14),
     .io_state_in_15(InvCipherRound_13_io_state_in_15),
+    .io_roundKey_0(InvCipherRound_13_io_roundKey_0),
+    .io_roundKey_1(InvCipherRound_13_io_roundKey_1),
+    .io_roundKey_2(InvCipherRound_13_io_roundKey_2),
+    .io_roundKey_3(InvCipherRound_13_io_roundKey_3),
+    .io_roundKey_4(InvCipherRound_13_io_roundKey_4),
+    .io_roundKey_5(InvCipherRound_13_io_roundKey_5),
+    .io_roundKey_6(InvCipherRound_13_io_roundKey_6),
+    .io_roundKey_7(InvCipherRound_13_io_roundKey_7),
+    .io_roundKey_8(InvCipherRound_13_io_roundKey_8),
+    .io_roundKey_9(InvCipherRound_13_io_roundKey_9),
+    .io_roundKey_10(InvCipherRound_13_io_roundKey_10),
+    .io_roundKey_11(InvCipherRound_13_io_roundKey_11),
+    .io_roundKey_12(InvCipherRound_13_io_roundKey_12),
+    .io_roundKey_13(InvCipherRound_13_io_roundKey_13),
+    .io_roundKey_14(InvCipherRound_13_io_roundKey_14),
+    .io_roundKey_15(InvCipherRound_13_io_roundKey_15),
     .io_state_out_0(InvCipherRound_13_io_state_out_0),
     .io_state_out_1(InvCipherRound_13_io_state_out_1),
     .io_state_out_2(InvCipherRound_13_io_state_out_2),
@@ -23770,6 +24666,22 @@ module AESDecrypt(
     .io_state_in_13(InvCipherRound_14_io_state_in_13),
     .io_state_in_14(InvCipherRound_14_io_state_in_14),
     .io_state_in_15(InvCipherRound_14_io_state_in_15),
+    .io_roundKey_0(InvCipherRound_14_io_roundKey_0),
+    .io_roundKey_1(InvCipherRound_14_io_roundKey_1),
+    .io_roundKey_2(InvCipherRound_14_io_roundKey_2),
+    .io_roundKey_3(InvCipherRound_14_io_roundKey_3),
+    .io_roundKey_4(InvCipherRound_14_io_roundKey_4),
+    .io_roundKey_5(InvCipherRound_14_io_roundKey_5),
+    .io_roundKey_6(InvCipherRound_14_io_roundKey_6),
+    .io_roundKey_7(InvCipherRound_14_io_roundKey_7),
+    .io_roundKey_8(InvCipherRound_14_io_roundKey_8),
+    .io_roundKey_9(InvCipherRound_14_io_roundKey_9),
+    .io_roundKey_10(InvCipherRound_14_io_roundKey_10),
+    .io_roundKey_11(InvCipherRound_14_io_roundKey_11),
+    .io_roundKey_12(InvCipherRound_14_io_roundKey_12),
+    .io_roundKey_13(InvCipherRound_14_io_roundKey_13),
+    .io_roundKey_14(InvCipherRound_14_io_roundKey_14),
+    .io_roundKey_15(InvCipherRound_14_io_roundKey_15),
     .io_state_out_0(InvCipherRound_14_io_state_out_0),
     .io_state_out_1(InvCipherRound_14_io_state_out_1),
     .io_state_out_2(InvCipherRound_14_io_state_out_2),
@@ -23807,6 +24719,22 @@ module AESDecrypt(
     .io_state_in_13(InvCipherRound_15_io_state_in_13),
     .io_state_in_14(InvCipherRound_15_io_state_in_14),
     .io_state_in_15(InvCipherRound_15_io_state_in_15),
+    .io_roundKey_0(InvCipherRound_15_io_roundKey_0),
+    .io_roundKey_1(InvCipherRound_15_io_roundKey_1),
+    .io_roundKey_2(InvCipherRound_15_io_roundKey_2),
+    .io_roundKey_3(InvCipherRound_15_io_roundKey_3),
+    .io_roundKey_4(InvCipherRound_15_io_roundKey_4),
+    .io_roundKey_5(InvCipherRound_15_io_roundKey_5),
+    .io_roundKey_6(InvCipherRound_15_io_roundKey_6),
+    .io_roundKey_7(InvCipherRound_15_io_roundKey_7),
+    .io_roundKey_8(InvCipherRound_15_io_roundKey_8),
+    .io_roundKey_9(InvCipherRound_15_io_roundKey_9),
+    .io_roundKey_10(InvCipherRound_15_io_roundKey_10),
+    .io_roundKey_11(InvCipherRound_15_io_roundKey_11),
+    .io_roundKey_12(InvCipherRound_15_io_roundKey_12),
+    .io_roundKey_13(InvCipherRound_15_io_roundKey_13),
+    .io_roundKey_14(InvCipherRound_15_io_roundKey_14),
+    .io_roundKey_15(InvCipherRound_15_io_roundKey_15),
     .io_state_out_0(InvCipherRound_15_io_state_out_0),
     .io_state_out_1(InvCipherRound_15_io_state_out_1),
     .io_state_out_2(InvCipherRound_15_io_state_out_2),
@@ -23844,6 +24772,22 @@ module AESDecrypt(
     .io_state_in_13(InvCipherRound_16_io_state_in_13),
     .io_state_in_14(InvCipherRound_16_io_state_in_14),
     .io_state_in_15(InvCipherRound_16_io_state_in_15),
+    .io_roundKey_0(InvCipherRound_16_io_roundKey_0),
+    .io_roundKey_1(InvCipherRound_16_io_roundKey_1),
+    .io_roundKey_2(InvCipherRound_16_io_roundKey_2),
+    .io_roundKey_3(InvCipherRound_16_io_roundKey_3),
+    .io_roundKey_4(InvCipherRound_16_io_roundKey_4),
+    .io_roundKey_5(InvCipherRound_16_io_roundKey_5),
+    .io_roundKey_6(InvCipherRound_16_io_roundKey_6),
+    .io_roundKey_7(InvCipherRound_16_io_roundKey_7),
+    .io_roundKey_8(InvCipherRound_16_io_roundKey_8),
+    .io_roundKey_9(InvCipherRound_16_io_roundKey_9),
+    .io_roundKey_10(InvCipherRound_16_io_roundKey_10),
+    .io_roundKey_11(InvCipherRound_16_io_roundKey_11),
+    .io_roundKey_12(InvCipherRound_16_io_roundKey_12),
+    .io_roundKey_13(InvCipherRound_16_io_roundKey_13),
+    .io_roundKey_14(InvCipherRound_16_io_roundKey_14),
+    .io_roundKey_15(InvCipherRound_16_io_roundKey_15),
     .io_state_out_0(InvCipherRound_16_io_state_out_0),
     .io_state_out_1(InvCipherRound_16_io_state_out_1),
     .io_state_out_2(InvCipherRound_16_io_state_out_2),
@@ -23881,6 +24825,22 @@ module AESDecrypt(
     .io_state_in_13(InvCipherRound_17_io_state_in_13),
     .io_state_in_14(InvCipherRound_17_io_state_in_14),
     .io_state_in_15(InvCipherRound_17_io_state_in_15),
+    .io_roundKey_0(InvCipherRound_17_io_roundKey_0),
+    .io_roundKey_1(InvCipherRound_17_io_roundKey_1),
+    .io_roundKey_2(InvCipherRound_17_io_roundKey_2),
+    .io_roundKey_3(InvCipherRound_17_io_roundKey_3),
+    .io_roundKey_4(InvCipherRound_17_io_roundKey_4),
+    .io_roundKey_5(InvCipherRound_17_io_roundKey_5),
+    .io_roundKey_6(InvCipherRound_17_io_roundKey_6),
+    .io_roundKey_7(InvCipherRound_17_io_roundKey_7),
+    .io_roundKey_8(InvCipherRound_17_io_roundKey_8),
+    .io_roundKey_9(InvCipherRound_17_io_roundKey_9),
+    .io_roundKey_10(InvCipherRound_17_io_roundKey_10),
+    .io_roundKey_11(InvCipherRound_17_io_roundKey_11),
+    .io_roundKey_12(InvCipherRound_17_io_roundKey_12),
+    .io_roundKey_13(InvCipherRound_17_io_roundKey_13),
+    .io_roundKey_14(InvCipherRound_17_io_roundKey_14),
+    .io_roundKey_15(InvCipherRound_17_io_roundKey_15),
     .io_state_out_0(InvCipherRound_17_io_state_out_0),
     .io_state_out_1(InvCipherRound_17_io_state_out_1),
     .io_state_out_2(InvCipherRound_17_io_state_out_2),
@@ -23918,6 +24878,22 @@ module AESDecrypt(
     .io_state_in_13(InvCipherRound_18_io_state_in_13),
     .io_state_in_14(InvCipherRound_18_io_state_in_14),
     .io_state_in_15(InvCipherRound_18_io_state_in_15),
+    .io_roundKey_0(InvCipherRound_18_io_roundKey_0),
+    .io_roundKey_1(InvCipherRound_18_io_roundKey_1),
+    .io_roundKey_2(InvCipherRound_18_io_roundKey_2),
+    .io_roundKey_3(InvCipherRound_18_io_roundKey_3),
+    .io_roundKey_4(InvCipherRound_18_io_roundKey_4),
+    .io_roundKey_5(InvCipherRound_18_io_roundKey_5),
+    .io_roundKey_6(InvCipherRound_18_io_roundKey_6),
+    .io_roundKey_7(InvCipherRound_18_io_roundKey_7),
+    .io_roundKey_8(InvCipherRound_18_io_roundKey_8),
+    .io_roundKey_9(InvCipherRound_18_io_roundKey_9),
+    .io_roundKey_10(InvCipherRound_18_io_roundKey_10),
+    .io_roundKey_11(InvCipherRound_18_io_roundKey_11),
+    .io_roundKey_12(InvCipherRound_18_io_roundKey_12),
+    .io_roundKey_13(InvCipherRound_18_io_roundKey_13),
+    .io_roundKey_14(InvCipherRound_18_io_roundKey_14),
+    .io_roundKey_15(InvCipherRound_18_io_roundKey_15),
     .io_state_out_0(InvCipherRound_18_io_state_out_0),
     .io_state_out_1(InvCipherRound_18_io_state_out_1),
     .io_state_out_2(InvCipherRound_18_io_state_out_2),
@@ -23955,6 +24931,22 @@ module AESDecrypt(
     .io_state_in_13(InvCipherRound_19_io_state_in_13),
     .io_state_in_14(InvCipherRound_19_io_state_in_14),
     .io_state_in_15(InvCipherRound_19_io_state_in_15),
+    .io_roundKey_0(InvCipherRound_19_io_roundKey_0),
+    .io_roundKey_1(InvCipherRound_19_io_roundKey_1),
+    .io_roundKey_2(InvCipherRound_19_io_roundKey_2),
+    .io_roundKey_3(InvCipherRound_19_io_roundKey_3),
+    .io_roundKey_4(InvCipherRound_19_io_roundKey_4),
+    .io_roundKey_5(InvCipherRound_19_io_roundKey_5),
+    .io_roundKey_6(InvCipherRound_19_io_roundKey_6),
+    .io_roundKey_7(InvCipherRound_19_io_roundKey_7),
+    .io_roundKey_8(InvCipherRound_19_io_roundKey_8),
+    .io_roundKey_9(InvCipherRound_19_io_roundKey_9),
+    .io_roundKey_10(InvCipherRound_19_io_roundKey_10),
+    .io_roundKey_11(InvCipherRound_19_io_roundKey_11),
+    .io_roundKey_12(InvCipherRound_19_io_roundKey_12),
+    .io_roundKey_13(InvCipherRound_19_io_roundKey_13),
+    .io_roundKey_14(InvCipherRound_19_io_roundKey_14),
+    .io_roundKey_15(InvCipherRound_19_io_roundKey_15),
     .io_state_out_0(InvCipherRound_19_io_state_out_0),
     .io_state_out_1(InvCipherRound_19_io_state_out_1),
     .io_state_out_2(InvCipherRound_19_io_state_out_2),
@@ -23992,6 +24984,22 @@ module AESDecrypt(
     .io_state_in_13(InvCipherRound_20_io_state_in_13),
     .io_state_in_14(InvCipherRound_20_io_state_in_14),
     .io_state_in_15(InvCipherRound_20_io_state_in_15),
+    .io_roundKey_0(InvCipherRound_20_io_roundKey_0),
+    .io_roundKey_1(InvCipherRound_20_io_roundKey_1),
+    .io_roundKey_2(InvCipherRound_20_io_roundKey_2),
+    .io_roundKey_3(InvCipherRound_20_io_roundKey_3),
+    .io_roundKey_4(InvCipherRound_20_io_roundKey_4),
+    .io_roundKey_5(InvCipherRound_20_io_roundKey_5),
+    .io_roundKey_6(InvCipherRound_20_io_roundKey_6),
+    .io_roundKey_7(InvCipherRound_20_io_roundKey_7),
+    .io_roundKey_8(InvCipherRound_20_io_roundKey_8),
+    .io_roundKey_9(InvCipherRound_20_io_roundKey_9),
+    .io_roundKey_10(InvCipherRound_20_io_roundKey_10),
+    .io_roundKey_11(InvCipherRound_20_io_roundKey_11),
+    .io_roundKey_12(InvCipherRound_20_io_roundKey_12),
+    .io_roundKey_13(InvCipherRound_20_io_roundKey_13),
+    .io_roundKey_14(InvCipherRound_20_io_roundKey_14),
+    .io_roundKey_15(InvCipherRound_20_io_roundKey_15),
     .io_state_out_0(InvCipherRound_20_io_state_out_0),
     .io_state_out_1(InvCipherRound_20_io_state_out_1),
     .io_state_out_2(InvCipherRound_20_io_state_out_2),
@@ -24029,6 +25037,22 @@ module AESDecrypt(
     .io_state_in_13(InvCipherRound_21_io_state_in_13),
     .io_state_in_14(InvCipherRound_21_io_state_in_14),
     .io_state_in_15(InvCipherRound_21_io_state_in_15),
+    .io_roundKey_0(InvCipherRound_21_io_roundKey_0),
+    .io_roundKey_1(InvCipherRound_21_io_roundKey_1),
+    .io_roundKey_2(InvCipherRound_21_io_roundKey_2),
+    .io_roundKey_3(InvCipherRound_21_io_roundKey_3),
+    .io_roundKey_4(InvCipherRound_21_io_roundKey_4),
+    .io_roundKey_5(InvCipherRound_21_io_roundKey_5),
+    .io_roundKey_6(InvCipherRound_21_io_roundKey_6),
+    .io_roundKey_7(InvCipherRound_21_io_roundKey_7),
+    .io_roundKey_8(InvCipherRound_21_io_roundKey_8),
+    .io_roundKey_9(InvCipherRound_21_io_roundKey_9),
+    .io_roundKey_10(InvCipherRound_21_io_roundKey_10),
+    .io_roundKey_11(InvCipherRound_21_io_roundKey_11),
+    .io_roundKey_12(InvCipherRound_21_io_roundKey_12),
+    .io_roundKey_13(InvCipherRound_21_io_roundKey_13),
+    .io_roundKey_14(InvCipherRound_21_io_roundKey_14),
+    .io_roundKey_15(InvCipherRound_21_io_roundKey_15),
     .io_state_out_0(InvCipherRound_21_io_state_out_0),
     .io_state_out_1(InvCipherRound_21_io_state_out_1),
     .io_state_out_2(InvCipherRound_21_io_state_out_2),
@@ -24066,6 +25090,22 @@ module AESDecrypt(
     .io_state_in_13(InvCipherRound_22_io_state_in_13),
     .io_state_in_14(InvCipherRound_22_io_state_in_14),
     .io_state_in_15(InvCipherRound_22_io_state_in_15),
+    .io_roundKey_0(InvCipherRound_22_io_roundKey_0),
+    .io_roundKey_1(InvCipherRound_22_io_roundKey_1),
+    .io_roundKey_2(InvCipherRound_22_io_roundKey_2),
+    .io_roundKey_3(InvCipherRound_22_io_roundKey_3),
+    .io_roundKey_4(InvCipherRound_22_io_roundKey_4),
+    .io_roundKey_5(InvCipherRound_22_io_roundKey_5),
+    .io_roundKey_6(InvCipherRound_22_io_roundKey_6),
+    .io_roundKey_7(InvCipherRound_22_io_roundKey_7),
+    .io_roundKey_8(InvCipherRound_22_io_roundKey_8),
+    .io_roundKey_9(InvCipherRound_22_io_roundKey_9),
+    .io_roundKey_10(InvCipherRound_22_io_roundKey_10),
+    .io_roundKey_11(InvCipherRound_22_io_roundKey_11),
+    .io_roundKey_12(InvCipherRound_22_io_roundKey_12),
+    .io_roundKey_13(InvCipherRound_22_io_roundKey_13),
+    .io_roundKey_14(InvCipherRound_22_io_roundKey_14),
+    .io_roundKey_15(InvCipherRound_22_io_roundKey_15),
     .io_state_out_0(InvCipherRound_22_io_state_out_0),
     .io_state_out_1(InvCipherRound_22_io_state_out_1),
     .io_state_out_2(InvCipherRound_22_io_state_out_2),
@@ -24103,6 +25143,22 @@ module AESDecrypt(
     .io_state_in_13(InvCipherRound_23_io_state_in_13),
     .io_state_in_14(InvCipherRound_23_io_state_in_14),
     .io_state_in_15(InvCipherRound_23_io_state_in_15),
+    .io_roundKey_0(InvCipherRound_23_io_roundKey_0),
+    .io_roundKey_1(InvCipherRound_23_io_roundKey_1),
+    .io_roundKey_2(InvCipherRound_23_io_roundKey_2),
+    .io_roundKey_3(InvCipherRound_23_io_roundKey_3),
+    .io_roundKey_4(InvCipherRound_23_io_roundKey_4),
+    .io_roundKey_5(InvCipherRound_23_io_roundKey_5),
+    .io_roundKey_6(InvCipherRound_23_io_roundKey_6),
+    .io_roundKey_7(InvCipherRound_23_io_roundKey_7),
+    .io_roundKey_8(InvCipherRound_23_io_roundKey_8),
+    .io_roundKey_9(InvCipherRound_23_io_roundKey_9),
+    .io_roundKey_10(InvCipherRound_23_io_roundKey_10),
+    .io_roundKey_11(InvCipherRound_23_io_roundKey_11),
+    .io_roundKey_12(InvCipherRound_23_io_roundKey_12),
+    .io_roundKey_13(InvCipherRound_23_io_roundKey_13),
+    .io_roundKey_14(InvCipherRound_23_io_roundKey_14),
+    .io_roundKey_15(InvCipherRound_23_io_roundKey_15),
     .io_state_out_0(InvCipherRound_23_io_state_out_0),
     .io_state_out_1(InvCipherRound_23_io_state_out_1),
     .io_state_out_2(InvCipherRound_23_io_state_out_2),
@@ -24140,6 +25196,22 @@ module AESDecrypt(
     .io_state_in_13(InvCipherRound_24_io_state_in_13),
     .io_state_in_14(InvCipherRound_24_io_state_in_14),
     .io_state_in_15(InvCipherRound_24_io_state_in_15),
+    .io_roundKey_0(InvCipherRound_24_io_roundKey_0),
+    .io_roundKey_1(InvCipherRound_24_io_roundKey_1),
+    .io_roundKey_2(InvCipherRound_24_io_roundKey_2),
+    .io_roundKey_3(InvCipherRound_24_io_roundKey_3),
+    .io_roundKey_4(InvCipherRound_24_io_roundKey_4),
+    .io_roundKey_5(InvCipherRound_24_io_roundKey_5),
+    .io_roundKey_6(InvCipherRound_24_io_roundKey_6),
+    .io_roundKey_7(InvCipherRound_24_io_roundKey_7),
+    .io_roundKey_8(InvCipherRound_24_io_roundKey_8),
+    .io_roundKey_9(InvCipherRound_24_io_roundKey_9),
+    .io_roundKey_10(InvCipherRound_24_io_roundKey_10),
+    .io_roundKey_11(InvCipherRound_24_io_roundKey_11),
+    .io_roundKey_12(InvCipherRound_24_io_roundKey_12),
+    .io_roundKey_13(InvCipherRound_24_io_roundKey_13),
+    .io_roundKey_14(InvCipherRound_24_io_roundKey_14),
+    .io_roundKey_15(InvCipherRound_24_io_roundKey_15),
     .io_state_out_0(InvCipherRound_24_io_state_out_0),
     .io_state_out_1(InvCipherRound_24_io_state_out_1),
     .io_state_out_2(InvCipherRound_24_io_state_out_2),
@@ -24177,6 +25249,22 @@ module AESDecrypt(
     .io_state_in_13(InvCipherRound_25_io_state_in_13),
     .io_state_in_14(InvCipherRound_25_io_state_in_14),
     .io_state_in_15(InvCipherRound_25_io_state_in_15),
+    .io_roundKey_0(InvCipherRound_25_io_roundKey_0),
+    .io_roundKey_1(InvCipherRound_25_io_roundKey_1),
+    .io_roundKey_2(InvCipherRound_25_io_roundKey_2),
+    .io_roundKey_3(InvCipherRound_25_io_roundKey_3),
+    .io_roundKey_4(InvCipherRound_25_io_roundKey_4),
+    .io_roundKey_5(InvCipherRound_25_io_roundKey_5),
+    .io_roundKey_6(InvCipherRound_25_io_roundKey_6),
+    .io_roundKey_7(InvCipherRound_25_io_roundKey_7),
+    .io_roundKey_8(InvCipherRound_25_io_roundKey_8),
+    .io_roundKey_9(InvCipherRound_25_io_roundKey_9),
+    .io_roundKey_10(InvCipherRound_25_io_roundKey_10),
+    .io_roundKey_11(InvCipherRound_25_io_roundKey_11),
+    .io_roundKey_12(InvCipherRound_25_io_roundKey_12),
+    .io_roundKey_13(InvCipherRound_25_io_roundKey_13),
+    .io_roundKey_14(InvCipherRound_25_io_roundKey_14),
+    .io_roundKey_15(InvCipherRound_25_io_roundKey_15),
     .io_state_out_0(InvCipherRound_25_io_state_out_0),
     .io_state_out_1(InvCipherRound_25_io_state_out_1),
     .io_state_out_2(InvCipherRound_25_io_state_out_2),
@@ -24214,6 +25302,22 @@ module AESDecrypt(
     .io_state_in_13(InvCipherRound_26_io_state_in_13),
     .io_state_in_14(InvCipherRound_26_io_state_in_14),
     .io_state_in_15(InvCipherRound_26_io_state_in_15),
+    .io_roundKey_0(InvCipherRound_26_io_roundKey_0),
+    .io_roundKey_1(InvCipherRound_26_io_roundKey_1),
+    .io_roundKey_2(InvCipherRound_26_io_roundKey_2),
+    .io_roundKey_3(InvCipherRound_26_io_roundKey_3),
+    .io_roundKey_4(InvCipherRound_26_io_roundKey_4),
+    .io_roundKey_5(InvCipherRound_26_io_roundKey_5),
+    .io_roundKey_6(InvCipherRound_26_io_roundKey_6),
+    .io_roundKey_7(InvCipherRound_26_io_roundKey_7),
+    .io_roundKey_8(InvCipherRound_26_io_roundKey_8),
+    .io_roundKey_9(InvCipherRound_26_io_roundKey_9),
+    .io_roundKey_10(InvCipherRound_26_io_roundKey_10),
+    .io_roundKey_11(InvCipherRound_26_io_roundKey_11),
+    .io_roundKey_12(InvCipherRound_26_io_roundKey_12),
+    .io_roundKey_13(InvCipherRound_26_io_roundKey_13),
+    .io_roundKey_14(InvCipherRound_26_io_roundKey_14),
+    .io_roundKey_15(InvCipherRound_26_io_roundKey_15),
     .io_state_out_0(InvCipherRound_26_io_state_out_0),
     .io_state_out_1(InvCipherRound_26_io_state_out_1),
     .io_state_out_2(InvCipherRound_26_io_state_out_2),
@@ -24251,6 +25355,22 @@ module AESDecrypt(
     .io_state_in_13(InvCipherRound_27_io_state_in_13),
     .io_state_in_14(InvCipherRound_27_io_state_in_14),
     .io_state_in_15(InvCipherRound_27_io_state_in_15),
+    .io_roundKey_0(InvCipherRound_27_io_roundKey_0),
+    .io_roundKey_1(InvCipherRound_27_io_roundKey_1),
+    .io_roundKey_2(InvCipherRound_27_io_roundKey_2),
+    .io_roundKey_3(InvCipherRound_27_io_roundKey_3),
+    .io_roundKey_4(InvCipherRound_27_io_roundKey_4),
+    .io_roundKey_5(InvCipherRound_27_io_roundKey_5),
+    .io_roundKey_6(InvCipherRound_27_io_roundKey_6),
+    .io_roundKey_7(InvCipherRound_27_io_roundKey_7),
+    .io_roundKey_8(InvCipherRound_27_io_roundKey_8),
+    .io_roundKey_9(InvCipherRound_27_io_roundKey_9),
+    .io_roundKey_10(InvCipherRound_27_io_roundKey_10),
+    .io_roundKey_11(InvCipherRound_27_io_roundKey_11),
+    .io_roundKey_12(InvCipherRound_27_io_roundKey_12),
+    .io_roundKey_13(InvCipherRound_27_io_roundKey_13),
+    .io_roundKey_14(InvCipherRound_27_io_roundKey_14),
+    .io_roundKey_15(InvCipherRound_27_io_roundKey_15),
     .io_state_out_0(InvCipherRound_27_io_state_out_0),
     .io_state_out_1(InvCipherRound_27_io_state_out_1),
     .io_state_out_2(InvCipherRound_27_io_state_out_2),
@@ -24288,6 +25408,22 @@ module AESDecrypt(
     .io_state_in_13(InvCipherRound_28_io_state_in_13),
     .io_state_in_14(InvCipherRound_28_io_state_in_14),
     .io_state_in_15(InvCipherRound_28_io_state_in_15),
+    .io_roundKey_0(InvCipherRound_28_io_roundKey_0),
+    .io_roundKey_1(InvCipherRound_28_io_roundKey_1),
+    .io_roundKey_2(InvCipherRound_28_io_roundKey_2),
+    .io_roundKey_3(InvCipherRound_28_io_roundKey_3),
+    .io_roundKey_4(InvCipherRound_28_io_roundKey_4),
+    .io_roundKey_5(InvCipherRound_28_io_roundKey_5),
+    .io_roundKey_6(InvCipherRound_28_io_roundKey_6),
+    .io_roundKey_7(InvCipherRound_28_io_roundKey_7),
+    .io_roundKey_8(InvCipherRound_28_io_roundKey_8),
+    .io_roundKey_9(InvCipherRound_28_io_roundKey_9),
+    .io_roundKey_10(InvCipherRound_28_io_roundKey_10),
+    .io_roundKey_11(InvCipherRound_28_io_roundKey_11),
+    .io_roundKey_12(InvCipherRound_28_io_roundKey_12),
+    .io_roundKey_13(InvCipherRound_28_io_roundKey_13),
+    .io_roundKey_14(InvCipherRound_28_io_roundKey_14),
+    .io_roundKey_15(InvCipherRound_28_io_roundKey_15),
     .io_state_out_0(InvCipherRound_28_io_state_out_0),
     .io_state_out_1(InvCipherRound_28_io_state_out_1),
     .io_state_out_2(InvCipherRound_28_io_state_out_2),
@@ -24325,6 +25461,22 @@ module AESDecrypt(
     .io_state_in_13(InvCipherRound_29_io_state_in_13),
     .io_state_in_14(InvCipherRound_29_io_state_in_14),
     .io_state_in_15(InvCipherRound_29_io_state_in_15),
+    .io_roundKey_0(InvCipherRound_29_io_roundKey_0),
+    .io_roundKey_1(InvCipherRound_29_io_roundKey_1),
+    .io_roundKey_2(InvCipherRound_29_io_roundKey_2),
+    .io_roundKey_3(InvCipherRound_29_io_roundKey_3),
+    .io_roundKey_4(InvCipherRound_29_io_roundKey_4),
+    .io_roundKey_5(InvCipherRound_29_io_roundKey_5),
+    .io_roundKey_6(InvCipherRound_29_io_roundKey_6),
+    .io_roundKey_7(InvCipherRound_29_io_roundKey_7),
+    .io_roundKey_8(InvCipherRound_29_io_roundKey_8),
+    .io_roundKey_9(InvCipherRound_29_io_roundKey_9),
+    .io_roundKey_10(InvCipherRound_29_io_roundKey_10),
+    .io_roundKey_11(InvCipherRound_29_io_roundKey_11),
+    .io_roundKey_12(InvCipherRound_29_io_roundKey_12),
+    .io_roundKey_13(InvCipherRound_29_io_roundKey_13),
+    .io_roundKey_14(InvCipherRound_29_io_roundKey_14),
+    .io_roundKey_15(InvCipherRound_29_io_roundKey_15),
     .io_state_out_0(InvCipherRound_29_io_state_out_0),
     .io_state_out_1(InvCipherRound_29_io_state_out_1),
     .io_state_out_2(InvCipherRound_29_io_state_out_2),
@@ -24522,6 +25674,22 @@ module AESDecrypt(
   assign InvCipherRound_io_state_in_13 = io_input_op1_13; // @[AESDecrypt.scala 43:36]
   assign InvCipherRound_io_state_in_14 = io_input_op1_14; // @[AESDecrypt.scala 43:36]
   assign InvCipherRound_io_state_in_15 = io_input_op1_15; // @[AESDecrypt.scala 43:36]
+  assign InvCipherRound_io_roundKey_0 = 8'h13; // @[AESDecrypt.scala 44:36]
+  assign InvCipherRound_io_roundKey_1 = 8'h11; // @[AESDecrypt.scala 44:36]
+  assign InvCipherRound_io_roundKey_2 = 8'h1d; // @[AESDecrypt.scala 44:36]
+  assign InvCipherRound_io_roundKey_3 = 8'h7f; // @[AESDecrypt.scala 44:36]
+  assign InvCipherRound_io_roundKey_4 = 8'he3; // @[AESDecrypt.scala 44:36]
+  assign InvCipherRound_io_roundKey_5 = 8'h94; // @[AESDecrypt.scala 44:36]
+  assign InvCipherRound_io_roundKey_6 = 8'h4a; // @[AESDecrypt.scala 44:36]
+  assign InvCipherRound_io_roundKey_7 = 8'h17; // @[AESDecrypt.scala 44:36]
+  assign InvCipherRound_io_roundKey_8 = 8'hf3; // @[AESDecrypt.scala 44:36]
+  assign InvCipherRound_io_roundKey_9 = 8'h7; // @[AESDecrypt.scala 44:36]
+  assign InvCipherRound_io_roundKey_10 = 8'ha7; // @[AESDecrypt.scala 44:36]
+  assign InvCipherRound_io_roundKey_11 = 8'h8b; // @[AESDecrypt.scala 44:36]
+  assign InvCipherRound_io_roundKey_12 = 8'h4d; // @[AESDecrypt.scala 44:36]
+  assign InvCipherRound_io_roundKey_13 = 8'h2b; // @[AESDecrypt.scala 44:36]
+  assign InvCipherRound_io_roundKey_14 = 8'h30; // @[AESDecrypt.scala 44:36]
+  assign InvCipherRound_io_roundKey_15 = 8'hc5; // @[AESDecrypt.scala 44:36]
   assign InvCipherRound_1_clock = clock;
   assign InvCipherRound_1_io_input_valid = io_input_valid; // @[AESDecrypt.scala 46:39]
   assign InvCipherRound_1_io_state_in_0 = io_input_op2_0; // @[AESDecrypt.scala 47:36]
@@ -24540,6 +25708,22 @@ module AESDecrypt(
   assign InvCipherRound_1_io_state_in_13 = io_input_op2_13; // @[AESDecrypt.scala 47:36]
   assign InvCipherRound_1_io_state_in_14 = io_input_op2_14; // @[AESDecrypt.scala 47:36]
   assign InvCipherRound_1_io_state_in_15 = io_input_op2_15; // @[AESDecrypt.scala 47:36]
+  assign InvCipherRound_1_io_roundKey_0 = 8'h13; // @[AESDecrypt.scala 48:36]
+  assign InvCipherRound_1_io_roundKey_1 = 8'h11; // @[AESDecrypt.scala 48:36]
+  assign InvCipherRound_1_io_roundKey_2 = 8'h1d; // @[AESDecrypt.scala 48:36]
+  assign InvCipherRound_1_io_roundKey_3 = 8'h7f; // @[AESDecrypt.scala 48:36]
+  assign InvCipherRound_1_io_roundKey_4 = 8'he3; // @[AESDecrypt.scala 48:36]
+  assign InvCipherRound_1_io_roundKey_5 = 8'h94; // @[AESDecrypt.scala 48:36]
+  assign InvCipherRound_1_io_roundKey_6 = 8'h4a; // @[AESDecrypt.scala 48:36]
+  assign InvCipherRound_1_io_roundKey_7 = 8'h17; // @[AESDecrypt.scala 48:36]
+  assign InvCipherRound_1_io_roundKey_8 = 8'hf3; // @[AESDecrypt.scala 48:36]
+  assign InvCipherRound_1_io_roundKey_9 = 8'h7; // @[AESDecrypt.scala 48:36]
+  assign InvCipherRound_1_io_roundKey_10 = 8'ha7; // @[AESDecrypt.scala 48:36]
+  assign InvCipherRound_1_io_roundKey_11 = 8'h8b; // @[AESDecrypt.scala 48:36]
+  assign InvCipherRound_1_io_roundKey_12 = 8'h4d; // @[AESDecrypt.scala 48:36]
+  assign InvCipherRound_1_io_roundKey_13 = 8'h2b; // @[AESDecrypt.scala 48:36]
+  assign InvCipherRound_1_io_roundKey_14 = 8'h30; // @[AESDecrypt.scala 48:36]
+  assign InvCipherRound_1_io_roundKey_15 = 8'hc5; // @[AESDecrypt.scala 48:36]
   assign InvCipherRound_2_clock = clock;
   assign InvCipherRound_2_io_input_valid = io_input_valid; // @[AESDecrypt.scala 50:39]
   assign InvCipherRound_2_io_state_in_0 = io_input_cond_0; // @[AESDecrypt.scala 51:36]
@@ -24558,6 +25742,22 @@ module AESDecrypt(
   assign InvCipherRound_2_io_state_in_13 = io_input_cond_13; // @[AESDecrypt.scala 51:36]
   assign InvCipherRound_2_io_state_in_14 = io_input_cond_14; // @[AESDecrypt.scala 51:36]
   assign InvCipherRound_2_io_state_in_15 = io_input_cond_15; // @[AESDecrypt.scala 51:36]
+  assign InvCipherRound_2_io_roundKey_0 = 8'h13; // @[AESDecrypt.scala 52:36]
+  assign InvCipherRound_2_io_roundKey_1 = 8'h11; // @[AESDecrypt.scala 52:36]
+  assign InvCipherRound_2_io_roundKey_2 = 8'h1d; // @[AESDecrypt.scala 52:36]
+  assign InvCipherRound_2_io_roundKey_3 = 8'h7f; // @[AESDecrypt.scala 52:36]
+  assign InvCipherRound_2_io_roundKey_4 = 8'he3; // @[AESDecrypt.scala 52:36]
+  assign InvCipherRound_2_io_roundKey_5 = 8'h94; // @[AESDecrypt.scala 52:36]
+  assign InvCipherRound_2_io_roundKey_6 = 8'h4a; // @[AESDecrypt.scala 52:36]
+  assign InvCipherRound_2_io_roundKey_7 = 8'h17; // @[AESDecrypt.scala 52:36]
+  assign InvCipherRound_2_io_roundKey_8 = 8'hf3; // @[AESDecrypt.scala 52:36]
+  assign InvCipherRound_2_io_roundKey_9 = 8'h7; // @[AESDecrypt.scala 52:36]
+  assign InvCipherRound_2_io_roundKey_10 = 8'ha7; // @[AESDecrypt.scala 52:36]
+  assign InvCipherRound_2_io_roundKey_11 = 8'h8b; // @[AESDecrypt.scala 52:36]
+  assign InvCipherRound_2_io_roundKey_12 = 8'h4d; // @[AESDecrypt.scala 52:36]
+  assign InvCipherRound_2_io_roundKey_13 = 8'h2b; // @[AESDecrypt.scala 52:36]
+  assign InvCipherRound_2_io_roundKey_14 = 8'h30; // @[AESDecrypt.scala 52:36]
+  assign InvCipherRound_2_io_roundKey_15 = 8'hc5; // @[AESDecrypt.scala 52:36]
   assign InvCipherRound_3_clock = clock;
   assign InvCipherRound_3_io_input_valid = InvCipherRound_io_output_valid; // @[AESDecrypt.scala 57:46]
   assign InvCipherRound_3_io_state_in_0 = InvCipherRound_io_state_out_0; // @[AESDecrypt.scala 58:43]
@@ -24576,6 +25776,22 @@ module AESDecrypt(
   assign InvCipherRound_3_io_state_in_13 = InvCipherRound_io_state_out_13; // @[AESDecrypt.scala 58:43]
   assign InvCipherRound_3_io_state_in_14 = InvCipherRound_io_state_out_14; // @[AESDecrypt.scala 58:43]
   assign InvCipherRound_3_io_state_in_15 = InvCipherRound_io_state_out_15; // @[AESDecrypt.scala 58:43]
+  assign InvCipherRound_3_io_roundKey_0 = 8'h54; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_3_io_roundKey_1 = 8'h99; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_3_io_roundKey_2 = 8'h32; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_3_io_roundKey_3 = 8'hd1; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_3_io_roundKey_4 = 8'hf0; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_3_io_roundKey_5 = 8'h85; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_3_io_roundKey_6 = 8'h57; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_3_io_roundKey_7 = 8'h68; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_3_io_roundKey_8 = 8'h10; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_3_io_roundKey_9 = 8'h93; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_3_io_roundKey_10 = 8'hed; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_3_io_roundKey_11 = 8'h9c; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_3_io_roundKey_12 = 8'hbe; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_3_io_roundKey_13 = 8'h2c; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_3_io_roundKey_14 = 8'h97; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_3_io_roundKey_15 = 8'h4e; // @[AESDecrypt.scala 64:41]
   assign InvCipherRound_4_clock = clock;
   assign InvCipherRound_4_io_input_valid = InvCipherRound_3_io_output_valid; // @[AESDecrypt.scala 61:46]
   assign InvCipherRound_4_io_state_in_0 = InvCipherRound_3_io_state_out_0; // @[AESDecrypt.scala 62:43]
@@ -24594,6 +25810,22 @@ module AESDecrypt(
   assign InvCipherRound_4_io_state_in_13 = InvCipherRound_3_io_state_out_13; // @[AESDecrypt.scala 62:43]
   assign InvCipherRound_4_io_state_in_14 = InvCipherRound_3_io_state_out_14; // @[AESDecrypt.scala 62:43]
   assign InvCipherRound_4_io_state_in_15 = InvCipherRound_3_io_state_out_15; // @[AESDecrypt.scala 62:43]
+  assign InvCipherRound_4_io_roundKey_0 = 8'h47; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_4_io_roundKey_1 = 8'h43; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_4_io_roundKey_2 = 8'h87; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_4_io_roundKey_3 = 8'h35; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_4_io_roundKey_4 = 8'ha4; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_4_io_roundKey_5 = 8'h1c; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_4_io_roundKey_6 = 8'h65; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_4_io_roundKey_7 = 8'hb9; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_4_io_roundKey_8 = 8'he0; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_4_io_roundKey_9 = 8'h16; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_4_io_roundKey_10 = 8'hba; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_4_io_roundKey_11 = 8'hf4; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_4_io_roundKey_12 = 8'hae; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_4_io_roundKey_13 = 8'hbf; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_4_io_roundKey_14 = 8'h7a; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_4_io_roundKey_15 = 8'hd2; // @[AESDecrypt.scala 64:41]
   assign InvCipherRound_5_clock = clock;
   assign InvCipherRound_5_io_input_valid = InvCipherRound_4_io_output_valid; // @[AESDecrypt.scala 61:46]
   assign InvCipherRound_5_io_state_in_0 = InvCipherRound_4_io_state_out_0; // @[AESDecrypt.scala 62:43]
@@ -24612,6 +25844,22 @@ module AESDecrypt(
   assign InvCipherRound_5_io_state_in_13 = InvCipherRound_4_io_state_out_13; // @[AESDecrypt.scala 62:43]
   assign InvCipherRound_5_io_state_in_14 = InvCipherRound_4_io_state_out_14; // @[AESDecrypt.scala 62:43]
   assign InvCipherRound_5_io_state_in_15 = InvCipherRound_4_io_state_out_15; // @[AESDecrypt.scala 62:43]
+  assign InvCipherRound_5_io_roundKey_0 = 8'h14; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_5_io_roundKey_1 = 8'hf9; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_5_io_roundKey_2 = 8'h70; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_5_io_roundKey_3 = 8'h1a; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_5_io_roundKey_4 = 8'he3; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_5_io_roundKey_5 = 8'h5f; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_5_io_roundKey_6 = 8'he2; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_5_io_roundKey_7 = 8'h8c; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_5_io_roundKey_8 = 8'h44; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_5_io_roundKey_9 = 8'ha; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_5_io_roundKey_10 = 8'hdf; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_5_io_roundKey_11 = 8'h4d; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_5_io_roundKey_12 = 8'h4e; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_5_io_roundKey_13 = 8'ha9; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_5_io_roundKey_14 = 8'hc0; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_5_io_roundKey_15 = 8'h26; // @[AESDecrypt.scala 64:41]
   assign InvCipherRound_6_clock = clock;
   assign InvCipherRound_6_io_input_valid = InvCipherRound_5_io_output_valid; // @[AESDecrypt.scala 61:46]
   assign InvCipherRound_6_io_state_in_0 = InvCipherRound_5_io_state_out_0; // @[AESDecrypt.scala 62:43]
@@ -24630,6 +25878,22 @@ module AESDecrypt(
   assign InvCipherRound_6_io_state_in_13 = InvCipherRound_5_io_state_out_13; // @[AESDecrypt.scala 62:43]
   assign InvCipherRound_6_io_state_in_14 = InvCipherRound_5_io_state_out_14; // @[AESDecrypt.scala 62:43]
   assign InvCipherRound_6_io_state_in_15 = InvCipherRound_5_io_state_out_15; // @[AESDecrypt.scala 62:43]
+  assign InvCipherRound_6_io_roundKey_0 = 8'h5e; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_6_io_roundKey_1 = 8'h39; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_6_io_roundKey_2 = 8'hf; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_6_io_roundKey_3 = 8'h7d; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_6_io_roundKey_4 = 8'hf7; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_6_io_roundKey_5 = 8'ha6; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_6_io_roundKey_6 = 8'h92; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_6_io_roundKey_7 = 8'h96; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_6_io_roundKey_8 = 8'ha7; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_6_io_roundKey_9 = 8'h55; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_6_io_roundKey_10 = 8'h3d; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_6_io_roundKey_11 = 8'hc1; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_6_io_roundKey_12 = 8'ha; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_6_io_roundKey_13 = 8'ha3; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_6_io_roundKey_14 = 8'h1f; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_6_io_roundKey_15 = 8'h6b; // @[AESDecrypt.scala 64:41]
   assign InvCipherRound_7_clock = clock;
   assign InvCipherRound_7_io_input_valid = InvCipherRound_6_io_output_valid; // @[AESDecrypt.scala 61:46]
   assign InvCipherRound_7_io_state_in_0 = InvCipherRound_6_io_state_out_0; // @[AESDecrypt.scala 62:43]
@@ -24648,6 +25912,22 @@ module AESDecrypt(
   assign InvCipherRound_7_io_state_in_13 = InvCipherRound_6_io_state_out_13; // @[AESDecrypt.scala 62:43]
   assign InvCipherRound_7_io_state_in_14 = InvCipherRound_6_io_state_out_14; // @[AESDecrypt.scala 62:43]
   assign InvCipherRound_7_io_state_in_15 = InvCipherRound_6_io_state_out_15; // @[AESDecrypt.scala 62:43]
+  assign InvCipherRound_7_io_roundKey_0 = 8'h3c; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_7_io_roundKey_1 = 8'haa; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_7_io_roundKey_2 = 8'ha3; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_7_io_roundKey_3 = 8'he8; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_7_io_roundKey_4 = 8'ha9; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_7_io_roundKey_5 = 8'h9f; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_7_io_roundKey_6 = 8'h9d; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_7_io_roundKey_7 = 8'heb; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_7_io_roundKey_8 = 8'h50; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_7_io_roundKey_9 = 8'hf3; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_7_io_roundKey_10 = 8'haf; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_7_io_roundKey_11 = 8'h57; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_7_io_roundKey_12 = 8'had; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_7_io_roundKey_13 = 8'hf6; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_7_io_roundKey_14 = 8'h22; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_7_io_roundKey_15 = 8'haa; // @[AESDecrypt.scala 64:41]
   assign InvCipherRound_8_clock = clock;
   assign InvCipherRound_8_io_input_valid = InvCipherRound_7_io_output_valid; // @[AESDecrypt.scala 61:46]
   assign InvCipherRound_8_io_state_in_0 = InvCipherRound_7_io_state_out_0; // @[AESDecrypt.scala 62:43]
@@ -24666,6 +25946,22 @@ module AESDecrypt(
   assign InvCipherRound_8_io_state_in_13 = InvCipherRound_7_io_state_out_13; // @[AESDecrypt.scala 62:43]
   assign InvCipherRound_8_io_state_in_14 = InvCipherRound_7_io_state_out_14; // @[AESDecrypt.scala 62:43]
   assign InvCipherRound_8_io_state_in_15 = InvCipherRound_7_io_state_out_15; // @[AESDecrypt.scala 62:43]
+  assign InvCipherRound_8_io_roundKey_0 = 8'h47; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_8_io_roundKey_1 = 8'hf7; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_8_io_roundKey_2 = 8'hf7; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_8_io_roundKey_3 = 8'hbc; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_8_io_roundKey_4 = 8'h95; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_8_io_roundKey_5 = 8'h35; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_8_io_roundKey_6 = 8'h3e; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_8_io_roundKey_7 = 8'h3; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_8_io_roundKey_8 = 8'hf9; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_8_io_roundKey_9 = 8'h6c; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_8_io_roundKey_10 = 8'h32; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_8_io_roundKey_11 = 8'hbc; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_8_io_roundKey_12 = 8'hfd; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_8_io_roundKey_13 = 8'h5; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_8_io_roundKey_14 = 8'h8d; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_8_io_roundKey_15 = 8'hfd; // @[AESDecrypt.scala 64:41]
   assign InvCipherRound_9_clock = clock;
   assign InvCipherRound_9_io_input_valid = InvCipherRound_8_io_output_valid; // @[AESDecrypt.scala 61:46]
   assign InvCipherRound_9_io_state_in_0 = InvCipherRound_8_io_state_out_0; // @[AESDecrypt.scala 62:43]
@@ -24684,6 +25980,22 @@ module AESDecrypt(
   assign InvCipherRound_9_io_state_in_13 = InvCipherRound_8_io_state_out_13; // @[AESDecrypt.scala 62:43]
   assign InvCipherRound_9_io_state_in_14 = InvCipherRound_8_io_state_out_14; // @[AESDecrypt.scala 62:43]
   assign InvCipherRound_9_io_state_in_15 = InvCipherRound_8_io_state_out_15; // @[AESDecrypt.scala 62:43]
+  assign InvCipherRound_9_io_roundKey_0 = 8'hb6; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_9_io_roundKey_1 = 8'hff; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_9_io_roundKey_2 = 8'h74; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_9_io_roundKey_3 = 8'h4e; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_9_io_roundKey_4 = 8'hd2; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_9_io_roundKey_5 = 8'hc2; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_9_io_roundKey_6 = 8'hc9; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_9_io_roundKey_7 = 8'hbf; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_9_io_roundKey_8 = 8'h6c; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_9_io_roundKey_9 = 8'h59; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_9_io_roundKey_10 = 8'hc; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_9_io_roundKey_11 = 8'hbf; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_9_io_roundKey_12 = 8'h4; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_9_io_roundKey_13 = 8'h69; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_9_io_roundKey_14 = 8'hbf; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_9_io_roundKey_15 = 8'h41; // @[AESDecrypt.scala 64:41]
   assign InvCipherRound_10_clock = clock;
   assign InvCipherRound_10_io_input_valid = InvCipherRound_9_io_output_valid; // @[AESDecrypt.scala 61:46]
   assign InvCipherRound_10_io_state_in_0 = InvCipherRound_9_io_state_out_0; // @[AESDecrypt.scala 62:43]
@@ -24702,6 +26014,22 @@ module AESDecrypt(
   assign InvCipherRound_10_io_state_in_13 = InvCipherRound_9_io_state_out_13; // @[AESDecrypt.scala 62:43]
   assign InvCipherRound_10_io_state_in_14 = InvCipherRound_9_io_state_out_14; // @[AESDecrypt.scala 62:43]
   assign InvCipherRound_10_io_state_in_15 = InvCipherRound_9_io_state_out_15; // @[AESDecrypt.scala 62:43]
+  assign InvCipherRound_10_io_roundKey_0 = 8'hb6; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_10_io_roundKey_1 = 8'h92; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_10_io_roundKey_2 = 8'hcf; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_10_io_roundKey_3 = 8'hb; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_10_io_roundKey_4 = 8'h64; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_10_io_roundKey_5 = 8'h3d; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_10_io_roundKey_6 = 8'hbd; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_10_io_roundKey_7 = 8'hf1; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_10_io_roundKey_8 = 8'hbe; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_10_io_roundKey_9 = 8'h9b; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_10_io_roundKey_10 = 8'hc5; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_10_io_roundKey_11 = 8'h0; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_10_io_roundKey_12 = 8'h68; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_10_io_roundKey_13 = 8'h30; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_10_io_roundKey_14 = 8'hb3; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_10_io_roundKey_15 = 8'hfe; // @[AESDecrypt.scala 64:41]
   assign InvCipherRound_11_clock = clock;
   assign InvCipherRound_11_io_input_valid = InvCipherRound_10_io_output_valid; // @[AESDecrypt.scala 61:46]
   assign InvCipherRound_11_io_state_in_0 = InvCipherRound_10_io_state_out_0; // @[AESDecrypt.scala 62:43]
@@ -24720,6 +26048,22 @@ module AESDecrypt(
   assign InvCipherRound_11_io_state_in_13 = InvCipherRound_10_io_state_out_13; // @[AESDecrypt.scala 62:43]
   assign InvCipherRound_11_io_state_in_14 = InvCipherRound_10_io_state_out_14; // @[AESDecrypt.scala 62:43]
   assign InvCipherRound_11_io_state_in_15 = InvCipherRound_10_io_state_out_15; // @[AESDecrypt.scala 62:43]
+  assign InvCipherRound_11_io_roundKey_0 = 8'hd6; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_11_io_roundKey_1 = 8'haa; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_11_io_roundKey_2 = 8'h74; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_11_io_roundKey_3 = 8'hfd; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_11_io_roundKey_4 = 8'hd2; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_11_io_roundKey_5 = 8'haf; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_11_io_roundKey_6 = 8'h72; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_11_io_roundKey_7 = 8'hfa; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_11_io_roundKey_8 = 8'hda; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_11_io_roundKey_9 = 8'ha6; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_11_io_roundKey_10 = 8'h78; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_11_io_roundKey_11 = 8'hf1; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_11_io_roundKey_12 = 8'hd6; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_11_io_roundKey_13 = 8'hab; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_11_io_roundKey_14 = 8'h76; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_11_io_roundKey_15 = 8'hfe; // @[AESDecrypt.scala 64:41]
   assign InvCipherRound_12_clock = clock;
   assign InvCipherRound_12_io_input_valid = InvCipherRound_1_io_output_valid; // @[AESDecrypt.scala 57:46]
   assign InvCipherRound_12_io_state_in_0 = InvCipherRound_1_io_state_out_0; // @[AESDecrypt.scala 58:43]
@@ -24738,6 +26082,22 @@ module AESDecrypt(
   assign InvCipherRound_12_io_state_in_13 = InvCipherRound_1_io_state_out_13; // @[AESDecrypt.scala 58:43]
   assign InvCipherRound_12_io_state_in_14 = InvCipherRound_1_io_state_out_14; // @[AESDecrypt.scala 58:43]
   assign InvCipherRound_12_io_state_in_15 = InvCipherRound_1_io_state_out_15; // @[AESDecrypt.scala 58:43]
+  assign InvCipherRound_12_io_roundKey_0 = 8'h54; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_12_io_roundKey_1 = 8'h99; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_12_io_roundKey_2 = 8'h32; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_12_io_roundKey_3 = 8'hd1; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_12_io_roundKey_4 = 8'hf0; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_12_io_roundKey_5 = 8'h85; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_12_io_roundKey_6 = 8'h57; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_12_io_roundKey_7 = 8'h68; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_12_io_roundKey_8 = 8'h10; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_12_io_roundKey_9 = 8'h93; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_12_io_roundKey_10 = 8'hed; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_12_io_roundKey_11 = 8'h9c; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_12_io_roundKey_12 = 8'hbe; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_12_io_roundKey_13 = 8'h2c; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_12_io_roundKey_14 = 8'h97; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_12_io_roundKey_15 = 8'h4e; // @[AESDecrypt.scala 64:41]
   assign InvCipherRound_13_clock = clock;
   assign InvCipherRound_13_io_input_valid = InvCipherRound_12_io_output_valid; // @[AESDecrypt.scala 61:46]
   assign InvCipherRound_13_io_state_in_0 = InvCipherRound_12_io_state_out_0; // @[AESDecrypt.scala 62:43]
@@ -24756,6 +26116,22 @@ module AESDecrypt(
   assign InvCipherRound_13_io_state_in_13 = InvCipherRound_12_io_state_out_13; // @[AESDecrypt.scala 62:43]
   assign InvCipherRound_13_io_state_in_14 = InvCipherRound_12_io_state_out_14; // @[AESDecrypt.scala 62:43]
   assign InvCipherRound_13_io_state_in_15 = InvCipherRound_12_io_state_out_15; // @[AESDecrypt.scala 62:43]
+  assign InvCipherRound_13_io_roundKey_0 = 8'h47; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_13_io_roundKey_1 = 8'h43; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_13_io_roundKey_2 = 8'h87; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_13_io_roundKey_3 = 8'h35; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_13_io_roundKey_4 = 8'ha4; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_13_io_roundKey_5 = 8'h1c; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_13_io_roundKey_6 = 8'h65; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_13_io_roundKey_7 = 8'hb9; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_13_io_roundKey_8 = 8'he0; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_13_io_roundKey_9 = 8'h16; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_13_io_roundKey_10 = 8'hba; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_13_io_roundKey_11 = 8'hf4; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_13_io_roundKey_12 = 8'hae; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_13_io_roundKey_13 = 8'hbf; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_13_io_roundKey_14 = 8'h7a; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_13_io_roundKey_15 = 8'hd2; // @[AESDecrypt.scala 64:41]
   assign InvCipherRound_14_clock = clock;
   assign InvCipherRound_14_io_input_valid = InvCipherRound_13_io_output_valid; // @[AESDecrypt.scala 61:46]
   assign InvCipherRound_14_io_state_in_0 = InvCipherRound_13_io_state_out_0; // @[AESDecrypt.scala 62:43]
@@ -24774,6 +26150,22 @@ module AESDecrypt(
   assign InvCipherRound_14_io_state_in_13 = InvCipherRound_13_io_state_out_13; // @[AESDecrypt.scala 62:43]
   assign InvCipherRound_14_io_state_in_14 = InvCipherRound_13_io_state_out_14; // @[AESDecrypt.scala 62:43]
   assign InvCipherRound_14_io_state_in_15 = InvCipherRound_13_io_state_out_15; // @[AESDecrypt.scala 62:43]
+  assign InvCipherRound_14_io_roundKey_0 = 8'h14; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_14_io_roundKey_1 = 8'hf9; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_14_io_roundKey_2 = 8'h70; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_14_io_roundKey_3 = 8'h1a; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_14_io_roundKey_4 = 8'he3; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_14_io_roundKey_5 = 8'h5f; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_14_io_roundKey_6 = 8'he2; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_14_io_roundKey_7 = 8'h8c; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_14_io_roundKey_8 = 8'h44; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_14_io_roundKey_9 = 8'ha; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_14_io_roundKey_10 = 8'hdf; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_14_io_roundKey_11 = 8'h4d; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_14_io_roundKey_12 = 8'h4e; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_14_io_roundKey_13 = 8'ha9; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_14_io_roundKey_14 = 8'hc0; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_14_io_roundKey_15 = 8'h26; // @[AESDecrypt.scala 64:41]
   assign InvCipherRound_15_clock = clock;
   assign InvCipherRound_15_io_input_valid = InvCipherRound_14_io_output_valid; // @[AESDecrypt.scala 61:46]
   assign InvCipherRound_15_io_state_in_0 = InvCipherRound_14_io_state_out_0; // @[AESDecrypt.scala 62:43]
@@ -24792,6 +26184,22 @@ module AESDecrypt(
   assign InvCipherRound_15_io_state_in_13 = InvCipherRound_14_io_state_out_13; // @[AESDecrypt.scala 62:43]
   assign InvCipherRound_15_io_state_in_14 = InvCipherRound_14_io_state_out_14; // @[AESDecrypt.scala 62:43]
   assign InvCipherRound_15_io_state_in_15 = InvCipherRound_14_io_state_out_15; // @[AESDecrypt.scala 62:43]
+  assign InvCipherRound_15_io_roundKey_0 = 8'h5e; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_15_io_roundKey_1 = 8'h39; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_15_io_roundKey_2 = 8'hf; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_15_io_roundKey_3 = 8'h7d; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_15_io_roundKey_4 = 8'hf7; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_15_io_roundKey_5 = 8'ha6; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_15_io_roundKey_6 = 8'h92; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_15_io_roundKey_7 = 8'h96; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_15_io_roundKey_8 = 8'ha7; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_15_io_roundKey_9 = 8'h55; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_15_io_roundKey_10 = 8'h3d; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_15_io_roundKey_11 = 8'hc1; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_15_io_roundKey_12 = 8'ha; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_15_io_roundKey_13 = 8'ha3; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_15_io_roundKey_14 = 8'h1f; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_15_io_roundKey_15 = 8'h6b; // @[AESDecrypt.scala 64:41]
   assign InvCipherRound_16_clock = clock;
   assign InvCipherRound_16_io_input_valid = InvCipherRound_15_io_output_valid; // @[AESDecrypt.scala 61:46]
   assign InvCipherRound_16_io_state_in_0 = InvCipherRound_15_io_state_out_0; // @[AESDecrypt.scala 62:43]
@@ -24810,6 +26218,22 @@ module AESDecrypt(
   assign InvCipherRound_16_io_state_in_13 = InvCipherRound_15_io_state_out_13; // @[AESDecrypt.scala 62:43]
   assign InvCipherRound_16_io_state_in_14 = InvCipherRound_15_io_state_out_14; // @[AESDecrypt.scala 62:43]
   assign InvCipherRound_16_io_state_in_15 = InvCipherRound_15_io_state_out_15; // @[AESDecrypt.scala 62:43]
+  assign InvCipherRound_16_io_roundKey_0 = 8'h3c; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_16_io_roundKey_1 = 8'haa; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_16_io_roundKey_2 = 8'ha3; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_16_io_roundKey_3 = 8'he8; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_16_io_roundKey_4 = 8'ha9; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_16_io_roundKey_5 = 8'h9f; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_16_io_roundKey_6 = 8'h9d; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_16_io_roundKey_7 = 8'heb; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_16_io_roundKey_8 = 8'h50; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_16_io_roundKey_9 = 8'hf3; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_16_io_roundKey_10 = 8'haf; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_16_io_roundKey_11 = 8'h57; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_16_io_roundKey_12 = 8'had; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_16_io_roundKey_13 = 8'hf6; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_16_io_roundKey_14 = 8'h22; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_16_io_roundKey_15 = 8'haa; // @[AESDecrypt.scala 64:41]
   assign InvCipherRound_17_clock = clock;
   assign InvCipherRound_17_io_input_valid = InvCipherRound_16_io_output_valid; // @[AESDecrypt.scala 61:46]
   assign InvCipherRound_17_io_state_in_0 = InvCipherRound_16_io_state_out_0; // @[AESDecrypt.scala 62:43]
@@ -24828,6 +26252,22 @@ module AESDecrypt(
   assign InvCipherRound_17_io_state_in_13 = InvCipherRound_16_io_state_out_13; // @[AESDecrypt.scala 62:43]
   assign InvCipherRound_17_io_state_in_14 = InvCipherRound_16_io_state_out_14; // @[AESDecrypt.scala 62:43]
   assign InvCipherRound_17_io_state_in_15 = InvCipherRound_16_io_state_out_15; // @[AESDecrypt.scala 62:43]
+  assign InvCipherRound_17_io_roundKey_0 = 8'h47; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_17_io_roundKey_1 = 8'hf7; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_17_io_roundKey_2 = 8'hf7; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_17_io_roundKey_3 = 8'hbc; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_17_io_roundKey_4 = 8'h95; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_17_io_roundKey_5 = 8'h35; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_17_io_roundKey_6 = 8'h3e; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_17_io_roundKey_7 = 8'h3; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_17_io_roundKey_8 = 8'hf9; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_17_io_roundKey_9 = 8'h6c; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_17_io_roundKey_10 = 8'h32; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_17_io_roundKey_11 = 8'hbc; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_17_io_roundKey_12 = 8'hfd; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_17_io_roundKey_13 = 8'h5; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_17_io_roundKey_14 = 8'h8d; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_17_io_roundKey_15 = 8'hfd; // @[AESDecrypt.scala 64:41]
   assign InvCipherRound_18_clock = clock;
   assign InvCipherRound_18_io_input_valid = InvCipherRound_17_io_output_valid; // @[AESDecrypt.scala 61:46]
   assign InvCipherRound_18_io_state_in_0 = InvCipherRound_17_io_state_out_0; // @[AESDecrypt.scala 62:43]
@@ -24846,6 +26286,22 @@ module AESDecrypt(
   assign InvCipherRound_18_io_state_in_13 = InvCipherRound_17_io_state_out_13; // @[AESDecrypt.scala 62:43]
   assign InvCipherRound_18_io_state_in_14 = InvCipherRound_17_io_state_out_14; // @[AESDecrypt.scala 62:43]
   assign InvCipherRound_18_io_state_in_15 = InvCipherRound_17_io_state_out_15; // @[AESDecrypt.scala 62:43]
+  assign InvCipherRound_18_io_roundKey_0 = 8'hb6; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_18_io_roundKey_1 = 8'hff; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_18_io_roundKey_2 = 8'h74; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_18_io_roundKey_3 = 8'h4e; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_18_io_roundKey_4 = 8'hd2; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_18_io_roundKey_5 = 8'hc2; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_18_io_roundKey_6 = 8'hc9; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_18_io_roundKey_7 = 8'hbf; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_18_io_roundKey_8 = 8'h6c; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_18_io_roundKey_9 = 8'h59; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_18_io_roundKey_10 = 8'hc; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_18_io_roundKey_11 = 8'hbf; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_18_io_roundKey_12 = 8'h4; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_18_io_roundKey_13 = 8'h69; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_18_io_roundKey_14 = 8'hbf; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_18_io_roundKey_15 = 8'h41; // @[AESDecrypt.scala 64:41]
   assign InvCipherRound_19_clock = clock;
   assign InvCipherRound_19_io_input_valid = InvCipherRound_18_io_output_valid; // @[AESDecrypt.scala 61:46]
   assign InvCipherRound_19_io_state_in_0 = InvCipherRound_18_io_state_out_0; // @[AESDecrypt.scala 62:43]
@@ -24864,6 +26320,22 @@ module AESDecrypt(
   assign InvCipherRound_19_io_state_in_13 = InvCipherRound_18_io_state_out_13; // @[AESDecrypt.scala 62:43]
   assign InvCipherRound_19_io_state_in_14 = InvCipherRound_18_io_state_out_14; // @[AESDecrypt.scala 62:43]
   assign InvCipherRound_19_io_state_in_15 = InvCipherRound_18_io_state_out_15; // @[AESDecrypt.scala 62:43]
+  assign InvCipherRound_19_io_roundKey_0 = 8'hb6; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_19_io_roundKey_1 = 8'h92; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_19_io_roundKey_2 = 8'hcf; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_19_io_roundKey_3 = 8'hb; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_19_io_roundKey_4 = 8'h64; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_19_io_roundKey_5 = 8'h3d; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_19_io_roundKey_6 = 8'hbd; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_19_io_roundKey_7 = 8'hf1; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_19_io_roundKey_8 = 8'hbe; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_19_io_roundKey_9 = 8'h9b; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_19_io_roundKey_10 = 8'hc5; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_19_io_roundKey_11 = 8'h0; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_19_io_roundKey_12 = 8'h68; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_19_io_roundKey_13 = 8'h30; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_19_io_roundKey_14 = 8'hb3; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_19_io_roundKey_15 = 8'hfe; // @[AESDecrypt.scala 64:41]
   assign InvCipherRound_20_clock = clock;
   assign InvCipherRound_20_io_input_valid = InvCipherRound_19_io_output_valid; // @[AESDecrypt.scala 61:46]
   assign InvCipherRound_20_io_state_in_0 = InvCipherRound_19_io_state_out_0; // @[AESDecrypt.scala 62:43]
@@ -24882,6 +26354,22 @@ module AESDecrypt(
   assign InvCipherRound_20_io_state_in_13 = InvCipherRound_19_io_state_out_13; // @[AESDecrypt.scala 62:43]
   assign InvCipherRound_20_io_state_in_14 = InvCipherRound_19_io_state_out_14; // @[AESDecrypt.scala 62:43]
   assign InvCipherRound_20_io_state_in_15 = InvCipherRound_19_io_state_out_15; // @[AESDecrypt.scala 62:43]
+  assign InvCipherRound_20_io_roundKey_0 = 8'hd6; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_20_io_roundKey_1 = 8'haa; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_20_io_roundKey_2 = 8'h74; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_20_io_roundKey_3 = 8'hfd; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_20_io_roundKey_4 = 8'hd2; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_20_io_roundKey_5 = 8'haf; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_20_io_roundKey_6 = 8'h72; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_20_io_roundKey_7 = 8'hfa; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_20_io_roundKey_8 = 8'hda; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_20_io_roundKey_9 = 8'ha6; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_20_io_roundKey_10 = 8'h78; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_20_io_roundKey_11 = 8'hf1; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_20_io_roundKey_12 = 8'hd6; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_20_io_roundKey_13 = 8'hab; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_20_io_roundKey_14 = 8'h76; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_20_io_roundKey_15 = 8'hfe; // @[AESDecrypt.scala 64:41]
   assign InvCipherRound_21_clock = clock;
   assign InvCipherRound_21_io_input_valid = InvCipherRound_2_io_output_valid; // @[AESDecrypt.scala 57:46]
   assign InvCipherRound_21_io_state_in_0 = InvCipherRound_2_io_state_out_0; // @[AESDecrypt.scala 58:43]
@@ -24900,6 +26388,22 @@ module AESDecrypt(
   assign InvCipherRound_21_io_state_in_13 = InvCipherRound_2_io_state_out_13; // @[AESDecrypt.scala 58:43]
   assign InvCipherRound_21_io_state_in_14 = InvCipherRound_2_io_state_out_14; // @[AESDecrypt.scala 58:43]
   assign InvCipherRound_21_io_state_in_15 = InvCipherRound_2_io_state_out_15; // @[AESDecrypt.scala 58:43]
+  assign InvCipherRound_21_io_roundKey_0 = 8'h54; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_21_io_roundKey_1 = 8'h99; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_21_io_roundKey_2 = 8'h32; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_21_io_roundKey_3 = 8'hd1; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_21_io_roundKey_4 = 8'hf0; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_21_io_roundKey_5 = 8'h85; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_21_io_roundKey_6 = 8'h57; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_21_io_roundKey_7 = 8'h68; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_21_io_roundKey_8 = 8'h10; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_21_io_roundKey_9 = 8'h93; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_21_io_roundKey_10 = 8'hed; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_21_io_roundKey_11 = 8'h9c; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_21_io_roundKey_12 = 8'hbe; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_21_io_roundKey_13 = 8'h2c; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_21_io_roundKey_14 = 8'h97; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_21_io_roundKey_15 = 8'h4e; // @[AESDecrypt.scala 64:41]
   assign InvCipherRound_22_clock = clock;
   assign InvCipherRound_22_io_input_valid = InvCipherRound_21_io_output_valid; // @[AESDecrypt.scala 61:46]
   assign InvCipherRound_22_io_state_in_0 = InvCipherRound_21_io_state_out_0; // @[AESDecrypt.scala 62:43]
@@ -24918,6 +26422,22 @@ module AESDecrypt(
   assign InvCipherRound_22_io_state_in_13 = InvCipherRound_21_io_state_out_13; // @[AESDecrypt.scala 62:43]
   assign InvCipherRound_22_io_state_in_14 = InvCipherRound_21_io_state_out_14; // @[AESDecrypt.scala 62:43]
   assign InvCipherRound_22_io_state_in_15 = InvCipherRound_21_io_state_out_15; // @[AESDecrypt.scala 62:43]
+  assign InvCipherRound_22_io_roundKey_0 = 8'h47; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_22_io_roundKey_1 = 8'h43; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_22_io_roundKey_2 = 8'h87; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_22_io_roundKey_3 = 8'h35; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_22_io_roundKey_4 = 8'ha4; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_22_io_roundKey_5 = 8'h1c; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_22_io_roundKey_6 = 8'h65; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_22_io_roundKey_7 = 8'hb9; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_22_io_roundKey_8 = 8'he0; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_22_io_roundKey_9 = 8'h16; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_22_io_roundKey_10 = 8'hba; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_22_io_roundKey_11 = 8'hf4; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_22_io_roundKey_12 = 8'hae; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_22_io_roundKey_13 = 8'hbf; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_22_io_roundKey_14 = 8'h7a; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_22_io_roundKey_15 = 8'hd2; // @[AESDecrypt.scala 64:41]
   assign InvCipherRound_23_clock = clock;
   assign InvCipherRound_23_io_input_valid = InvCipherRound_22_io_output_valid; // @[AESDecrypt.scala 61:46]
   assign InvCipherRound_23_io_state_in_0 = InvCipherRound_22_io_state_out_0; // @[AESDecrypt.scala 62:43]
@@ -24936,6 +26456,22 @@ module AESDecrypt(
   assign InvCipherRound_23_io_state_in_13 = InvCipherRound_22_io_state_out_13; // @[AESDecrypt.scala 62:43]
   assign InvCipherRound_23_io_state_in_14 = InvCipherRound_22_io_state_out_14; // @[AESDecrypt.scala 62:43]
   assign InvCipherRound_23_io_state_in_15 = InvCipherRound_22_io_state_out_15; // @[AESDecrypt.scala 62:43]
+  assign InvCipherRound_23_io_roundKey_0 = 8'h14; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_23_io_roundKey_1 = 8'hf9; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_23_io_roundKey_2 = 8'h70; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_23_io_roundKey_3 = 8'h1a; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_23_io_roundKey_4 = 8'he3; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_23_io_roundKey_5 = 8'h5f; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_23_io_roundKey_6 = 8'he2; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_23_io_roundKey_7 = 8'h8c; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_23_io_roundKey_8 = 8'h44; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_23_io_roundKey_9 = 8'ha; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_23_io_roundKey_10 = 8'hdf; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_23_io_roundKey_11 = 8'h4d; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_23_io_roundKey_12 = 8'h4e; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_23_io_roundKey_13 = 8'ha9; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_23_io_roundKey_14 = 8'hc0; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_23_io_roundKey_15 = 8'h26; // @[AESDecrypt.scala 64:41]
   assign InvCipherRound_24_clock = clock;
   assign InvCipherRound_24_io_input_valid = InvCipherRound_23_io_output_valid; // @[AESDecrypt.scala 61:46]
   assign InvCipherRound_24_io_state_in_0 = InvCipherRound_23_io_state_out_0; // @[AESDecrypt.scala 62:43]
@@ -24954,6 +26490,22 @@ module AESDecrypt(
   assign InvCipherRound_24_io_state_in_13 = InvCipherRound_23_io_state_out_13; // @[AESDecrypt.scala 62:43]
   assign InvCipherRound_24_io_state_in_14 = InvCipherRound_23_io_state_out_14; // @[AESDecrypt.scala 62:43]
   assign InvCipherRound_24_io_state_in_15 = InvCipherRound_23_io_state_out_15; // @[AESDecrypt.scala 62:43]
+  assign InvCipherRound_24_io_roundKey_0 = 8'h5e; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_24_io_roundKey_1 = 8'h39; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_24_io_roundKey_2 = 8'hf; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_24_io_roundKey_3 = 8'h7d; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_24_io_roundKey_4 = 8'hf7; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_24_io_roundKey_5 = 8'ha6; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_24_io_roundKey_6 = 8'h92; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_24_io_roundKey_7 = 8'h96; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_24_io_roundKey_8 = 8'ha7; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_24_io_roundKey_9 = 8'h55; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_24_io_roundKey_10 = 8'h3d; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_24_io_roundKey_11 = 8'hc1; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_24_io_roundKey_12 = 8'ha; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_24_io_roundKey_13 = 8'ha3; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_24_io_roundKey_14 = 8'h1f; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_24_io_roundKey_15 = 8'h6b; // @[AESDecrypt.scala 64:41]
   assign InvCipherRound_25_clock = clock;
   assign InvCipherRound_25_io_input_valid = InvCipherRound_24_io_output_valid; // @[AESDecrypt.scala 61:46]
   assign InvCipherRound_25_io_state_in_0 = InvCipherRound_24_io_state_out_0; // @[AESDecrypt.scala 62:43]
@@ -24972,6 +26524,22 @@ module AESDecrypt(
   assign InvCipherRound_25_io_state_in_13 = InvCipherRound_24_io_state_out_13; // @[AESDecrypt.scala 62:43]
   assign InvCipherRound_25_io_state_in_14 = InvCipherRound_24_io_state_out_14; // @[AESDecrypt.scala 62:43]
   assign InvCipherRound_25_io_state_in_15 = InvCipherRound_24_io_state_out_15; // @[AESDecrypt.scala 62:43]
+  assign InvCipherRound_25_io_roundKey_0 = 8'h3c; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_25_io_roundKey_1 = 8'haa; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_25_io_roundKey_2 = 8'ha3; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_25_io_roundKey_3 = 8'he8; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_25_io_roundKey_4 = 8'ha9; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_25_io_roundKey_5 = 8'h9f; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_25_io_roundKey_6 = 8'h9d; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_25_io_roundKey_7 = 8'heb; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_25_io_roundKey_8 = 8'h50; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_25_io_roundKey_9 = 8'hf3; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_25_io_roundKey_10 = 8'haf; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_25_io_roundKey_11 = 8'h57; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_25_io_roundKey_12 = 8'had; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_25_io_roundKey_13 = 8'hf6; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_25_io_roundKey_14 = 8'h22; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_25_io_roundKey_15 = 8'haa; // @[AESDecrypt.scala 64:41]
   assign InvCipherRound_26_clock = clock;
   assign InvCipherRound_26_io_input_valid = InvCipherRound_25_io_output_valid; // @[AESDecrypt.scala 61:46]
   assign InvCipherRound_26_io_state_in_0 = InvCipherRound_25_io_state_out_0; // @[AESDecrypt.scala 62:43]
@@ -24990,6 +26558,22 @@ module AESDecrypt(
   assign InvCipherRound_26_io_state_in_13 = InvCipherRound_25_io_state_out_13; // @[AESDecrypt.scala 62:43]
   assign InvCipherRound_26_io_state_in_14 = InvCipherRound_25_io_state_out_14; // @[AESDecrypt.scala 62:43]
   assign InvCipherRound_26_io_state_in_15 = InvCipherRound_25_io_state_out_15; // @[AESDecrypt.scala 62:43]
+  assign InvCipherRound_26_io_roundKey_0 = 8'h47; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_26_io_roundKey_1 = 8'hf7; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_26_io_roundKey_2 = 8'hf7; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_26_io_roundKey_3 = 8'hbc; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_26_io_roundKey_4 = 8'h95; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_26_io_roundKey_5 = 8'h35; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_26_io_roundKey_6 = 8'h3e; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_26_io_roundKey_7 = 8'h3; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_26_io_roundKey_8 = 8'hf9; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_26_io_roundKey_9 = 8'h6c; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_26_io_roundKey_10 = 8'h32; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_26_io_roundKey_11 = 8'hbc; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_26_io_roundKey_12 = 8'hfd; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_26_io_roundKey_13 = 8'h5; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_26_io_roundKey_14 = 8'h8d; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_26_io_roundKey_15 = 8'hfd; // @[AESDecrypt.scala 64:41]
   assign InvCipherRound_27_clock = clock;
   assign InvCipherRound_27_io_input_valid = InvCipherRound_26_io_output_valid; // @[AESDecrypt.scala 61:46]
   assign InvCipherRound_27_io_state_in_0 = InvCipherRound_26_io_state_out_0; // @[AESDecrypt.scala 62:43]
@@ -25008,6 +26592,22 @@ module AESDecrypt(
   assign InvCipherRound_27_io_state_in_13 = InvCipherRound_26_io_state_out_13; // @[AESDecrypt.scala 62:43]
   assign InvCipherRound_27_io_state_in_14 = InvCipherRound_26_io_state_out_14; // @[AESDecrypt.scala 62:43]
   assign InvCipherRound_27_io_state_in_15 = InvCipherRound_26_io_state_out_15; // @[AESDecrypt.scala 62:43]
+  assign InvCipherRound_27_io_roundKey_0 = 8'hb6; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_27_io_roundKey_1 = 8'hff; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_27_io_roundKey_2 = 8'h74; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_27_io_roundKey_3 = 8'h4e; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_27_io_roundKey_4 = 8'hd2; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_27_io_roundKey_5 = 8'hc2; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_27_io_roundKey_6 = 8'hc9; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_27_io_roundKey_7 = 8'hbf; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_27_io_roundKey_8 = 8'h6c; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_27_io_roundKey_9 = 8'h59; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_27_io_roundKey_10 = 8'hc; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_27_io_roundKey_11 = 8'hbf; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_27_io_roundKey_12 = 8'h4; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_27_io_roundKey_13 = 8'h69; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_27_io_roundKey_14 = 8'hbf; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_27_io_roundKey_15 = 8'h41; // @[AESDecrypt.scala 64:41]
   assign InvCipherRound_28_clock = clock;
   assign InvCipherRound_28_io_input_valid = InvCipherRound_27_io_output_valid; // @[AESDecrypt.scala 61:46]
   assign InvCipherRound_28_io_state_in_0 = InvCipherRound_27_io_state_out_0; // @[AESDecrypt.scala 62:43]
@@ -25026,6 +26626,22 @@ module AESDecrypt(
   assign InvCipherRound_28_io_state_in_13 = InvCipherRound_27_io_state_out_13; // @[AESDecrypt.scala 62:43]
   assign InvCipherRound_28_io_state_in_14 = InvCipherRound_27_io_state_out_14; // @[AESDecrypt.scala 62:43]
   assign InvCipherRound_28_io_state_in_15 = InvCipherRound_27_io_state_out_15; // @[AESDecrypt.scala 62:43]
+  assign InvCipherRound_28_io_roundKey_0 = 8'hb6; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_28_io_roundKey_1 = 8'h92; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_28_io_roundKey_2 = 8'hcf; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_28_io_roundKey_3 = 8'hb; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_28_io_roundKey_4 = 8'h64; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_28_io_roundKey_5 = 8'h3d; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_28_io_roundKey_6 = 8'hbd; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_28_io_roundKey_7 = 8'hf1; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_28_io_roundKey_8 = 8'hbe; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_28_io_roundKey_9 = 8'h9b; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_28_io_roundKey_10 = 8'hc5; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_28_io_roundKey_11 = 8'h0; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_28_io_roundKey_12 = 8'h68; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_28_io_roundKey_13 = 8'h30; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_28_io_roundKey_14 = 8'hb3; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_28_io_roundKey_15 = 8'hfe; // @[AESDecrypt.scala 64:41]
   assign InvCipherRound_29_clock = clock;
   assign InvCipherRound_29_io_input_valid = InvCipherRound_28_io_output_valid; // @[AESDecrypt.scala 61:46]
   assign InvCipherRound_29_io_state_in_0 = InvCipherRound_28_io_state_out_0; // @[AESDecrypt.scala 62:43]
@@ -25044,6 +26660,22 @@ module AESDecrypt(
   assign InvCipherRound_29_io_state_in_13 = InvCipherRound_28_io_state_out_13; // @[AESDecrypt.scala 62:43]
   assign InvCipherRound_29_io_state_in_14 = InvCipherRound_28_io_state_out_14; // @[AESDecrypt.scala 62:43]
   assign InvCipherRound_29_io_state_in_15 = InvCipherRound_28_io_state_out_15; // @[AESDecrypt.scala 62:43]
+  assign InvCipherRound_29_io_roundKey_0 = 8'hd6; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_29_io_roundKey_1 = 8'haa; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_29_io_roundKey_2 = 8'h74; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_29_io_roundKey_3 = 8'hfd; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_29_io_roundKey_4 = 8'hd2; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_29_io_roundKey_5 = 8'haf; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_29_io_roundKey_6 = 8'h72; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_29_io_roundKey_7 = 8'hfa; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_29_io_roundKey_8 = 8'hda; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_29_io_roundKey_9 = 8'ha6; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_29_io_roundKey_10 = 8'h78; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_29_io_roundKey_11 = 8'hf1; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_29_io_roundKey_12 = 8'hd6; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_29_io_roundKey_13 = 8'hab; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_29_io_roundKey_14 = 8'h76; // @[AESDecrypt.scala 64:41]
+  assign InvCipherRound_29_io_roundKey_15 = 8'hfe; // @[AESDecrypt.scala 64:41]
   assign InvCipherRound_30_clock = clock;
   assign InvCipherRound_30_io_input_valid = InvCipherRound_11_io_output_valid; // @[AESDecrypt.scala 69:41]
   assign InvCipherRound_30_io_state_in_0 = InvCipherRound_11_io_state_out_0; // @[AESDecrypt.scala 70:38]
@@ -37527,6 +39159,22 @@ module CipherRound_1(
   input  [7:0] io_state_in_13,
   input  [7:0] io_state_in_14,
   input  [7:0] io_state_in_15,
+  input  [7:0] io_roundKey_0,
+  input  [7:0] io_roundKey_1,
+  input  [7:0] io_roundKey_2,
+  input  [7:0] io_roundKey_3,
+  input  [7:0] io_roundKey_4,
+  input  [7:0] io_roundKey_5,
+  input  [7:0] io_roundKey_6,
+  input  [7:0] io_roundKey_7,
+  input  [7:0] io_roundKey_8,
+  input  [7:0] io_roundKey_9,
+  input  [7:0] io_roundKey_10,
+  input  [7:0] io_roundKey_11,
+  input  [7:0] io_roundKey_12,
+  input  [7:0] io_roundKey_13,
+  input  [7:0] io_roundKey_14,
+  input  [7:0] io_roundKey_15,
   output [7:0] io_state_out_0,
   output [7:0] io_state_out_1,
   output [7:0] io_state_out_2,
@@ -37580,6 +39228,22 @@ module CipherRound_1(
   wire [7:0] AddRoundKey_io_state_in_13; // @[AddRoundKey.scala 25:62]
   wire [7:0] AddRoundKey_io_state_in_14; // @[AddRoundKey.scala 25:62]
   wire [7:0] AddRoundKey_io_state_in_15; // @[AddRoundKey.scala 25:62]
+  wire [7:0] AddRoundKey_io_roundKey_0; // @[AddRoundKey.scala 25:62]
+  wire [7:0] AddRoundKey_io_roundKey_1; // @[AddRoundKey.scala 25:62]
+  wire [7:0] AddRoundKey_io_roundKey_2; // @[AddRoundKey.scala 25:62]
+  wire [7:0] AddRoundKey_io_roundKey_3; // @[AddRoundKey.scala 25:62]
+  wire [7:0] AddRoundKey_io_roundKey_4; // @[AddRoundKey.scala 25:62]
+  wire [7:0] AddRoundKey_io_roundKey_5; // @[AddRoundKey.scala 25:62]
+  wire [7:0] AddRoundKey_io_roundKey_6; // @[AddRoundKey.scala 25:62]
+  wire [7:0] AddRoundKey_io_roundKey_7; // @[AddRoundKey.scala 25:62]
+  wire [7:0] AddRoundKey_io_roundKey_8; // @[AddRoundKey.scala 25:62]
+  wire [7:0] AddRoundKey_io_roundKey_9; // @[AddRoundKey.scala 25:62]
+  wire [7:0] AddRoundKey_io_roundKey_10; // @[AddRoundKey.scala 25:62]
+  wire [7:0] AddRoundKey_io_roundKey_11; // @[AddRoundKey.scala 25:62]
+  wire [7:0] AddRoundKey_io_roundKey_12; // @[AddRoundKey.scala 25:62]
+  wire [7:0] AddRoundKey_io_roundKey_13; // @[AddRoundKey.scala 25:62]
+  wire [7:0] AddRoundKey_io_roundKey_14; // @[AddRoundKey.scala 25:62]
+  wire [7:0] AddRoundKey_io_roundKey_15; // @[AddRoundKey.scala 25:62]
   wire [7:0] AddRoundKey_io_state_out_0; // @[AddRoundKey.scala 25:62]
   wire [7:0] AddRoundKey_io_state_out_1; // @[AddRoundKey.scala 25:62]
   wire [7:0] AddRoundKey_io_state_out_2; // @[AddRoundKey.scala 25:62]
@@ -37726,6 +39390,22 @@ module CipherRound_1(
     .io_state_in_13(AddRoundKey_io_state_in_13),
     .io_state_in_14(AddRoundKey_io_state_in_14),
     .io_state_in_15(AddRoundKey_io_state_in_15),
+    .io_roundKey_0(AddRoundKey_io_roundKey_0),
+    .io_roundKey_1(AddRoundKey_io_roundKey_1),
+    .io_roundKey_2(AddRoundKey_io_roundKey_2),
+    .io_roundKey_3(AddRoundKey_io_roundKey_3),
+    .io_roundKey_4(AddRoundKey_io_roundKey_4),
+    .io_roundKey_5(AddRoundKey_io_roundKey_5),
+    .io_roundKey_6(AddRoundKey_io_roundKey_6),
+    .io_roundKey_7(AddRoundKey_io_roundKey_7),
+    .io_roundKey_8(AddRoundKey_io_roundKey_8),
+    .io_roundKey_9(AddRoundKey_io_roundKey_9),
+    .io_roundKey_10(AddRoundKey_io_roundKey_10),
+    .io_roundKey_11(AddRoundKey_io_roundKey_11),
+    .io_roundKey_12(AddRoundKey_io_roundKey_12),
+    .io_roundKey_13(AddRoundKey_io_roundKey_13),
+    .io_roundKey_14(AddRoundKey_io_roundKey_14),
+    .io_roundKey_15(AddRoundKey_io_roundKey_15),
     .io_state_out_0(AddRoundKey_io_state_out_0),
     .io_state_out_1(AddRoundKey_io_state_out_1),
     .io_state_out_2(AddRoundKey_io_state_out_2),
@@ -37878,6 +39558,22 @@ module CipherRound_1(
   assign AddRoundKey_io_state_in_13 = MixColumns_io_state_out_13; // @[CipherRound.scala 85:35]
   assign AddRoundKey_io_state_in_14 = MixColumns_io_state_out_14; // @[CipherRound.scala 85:35]
   assign AddRoundKey_io_state_in_15 = MixColumns_io_state_out_15; // @[CipherRound.scala 85:35]
+  assign AddRoundKey_io_roundKey_0 = io_input_valid ? io_roundKey_0 : 8'h0; // @[CipherRound.scala 73:26 75:37 78:37]
+  assign AddRoundKey_io_roundKey_1 = io_input_valid ? io_roundKey_1 : 8'h0; // @[CipherRound.scala 73:26 75:37 78:37]
+  assign AddRoundKey_io_roundKey_2 = io_input_valid ? io_roundKey_2 : 8'h0; // @[CipherRound.scala 73:26 75:37 78:37]
+  assign AddRoundKey_io_roundKey_3 = io_input_valid ? io_roundKey_3 : 8'h0; // @[CipherRound.scala 73:26 75:37 78:37]
+  assign AddRoundKey_io_roundKey_4 = io_input_valid ? io_roundKey_4 : 8'h0; // @[CipherRound.scala 73:26 75:37 78:37]
+  assign AddRoundKey_io_roundKey_5 = io_input_valid ? io_roundKey_5 : 8'h0; // @[CipherRound.scala 73:26 75:37 78:37]
+  assign AddRoundKey_io_roundKey_6 = io_input_valid ? io_roundKey_6 : 8'h0; // @[CipherRound.scala 73:26 75:37 78:37]
+  assign AddRoundKey_io_roundKey_7 = io_input_valid ? io_roundKey_7 : 8'h0; // @[CipherRound.scala 73:26 75:37 78:37]
+  assign AddRoundKey_io_roundKey_8 = io_input_valid ? io_roundKey_8 : 8'h0; // @[CipherRound.scala 73:26 75:37 78:37]
+  assign AddRoundKey_io_roundKey_9 = io_input_valid ? io_roundKey_9 : 8'h0; // @[CipherRound.scala 73:26 75:37 78:37]
+  assign AddRoundKey_io_roundKey_10 = io_input_valid ? io_roundKey_10 : 8'h0; // @[CipherRound.scala 73:26 75:37 78:37]
+  assign AddRoundKey_io_roundKey_11 = io_input_valid ? io_roundKey_11 : 8'h0; // @[CipherRound.scala 73:26 75:37 78:37]
+  assign AddRoundKey_io_roundKey_12 = io_input_valid ? io_roundKey_12 : 8'h0; // @[CipherRound.scala 73:26 75:37 78:37]
+  assign AddRoundKey_io_roundKey_13 = io_input_valid ? io_roundKey_13 : 8'h0; // @[CipherRound.scala 73:26 75:37 78:37]
+  assign AddRoundKey_io_roundKey_14 = io_input_valid ? io_roundKey_14 : 8'h0; // @[CipherRound.scala 73:26 75:37 78:37]
+  assign AddRoundKey_io_roundKey_15 = io_input_valid ? io_roundKey_15 : 8'h0; // @[CipherRound.scala 73:26 75:37 78:37]
   assign SubBytes_io_state_in_0 = io_input_valid ? io_state_in_0 : 8'h0; // @[CipherRound.scala 73:26 74:34 77:34]
   assign SubBytes_io_state_in_1 = io_input_valid ? io_state_in_1 : 8'h0; // @[CipherRound.scala 73:26 74:34 77:34]
   assign SubBytes_io_state_in_2 = io_input_valid ? io_state_in_2 : 8'h0; // @[CipherRound.scala 73:26 74:34 77:34]
@@ -38095,6 +39791,22 @@ module CipherRound_10(
   wire [7:0] AddRoundKey_io_state_in_13; // @[AddRoundKey.scala 25:62]
   wire [7:0] AddRoundKey_io_state_in_14; // @[AddRoundKey.scala 25:62]
   wire [7:0] AddRoundKey_io_state_in_15; // @[AddRoundKey.scala 25:62]
+  wire [7:0] AddRoundKey_io_roundKey_0; // @[AddRoundKey.scala 25:62]
+  wire [7:0] AddRoundKey_io_roundKey_1; // @[AddRoundKey.scala 25:62]
+  wire [7:0] AddRoundKey_io_roundKey_2; // @[AddRoundKey.scala 25:62]
+  wire [7:0] AddRoundKey_io_roundKey_3; // @[AddRoundKey.scala 25:62]
+  wire [7:0] AddRoundKey_io_roundKey_4; // @[AddRoundKey.scala 25:62]
+  wire [7:0] AddRoundKey_io_roundKey_5; // @[AddRoundKey.scala 25:62]
+  wire [7:0] AddRoundKey_io_roundKey_6; // @[AddRoundKey.scala 25:62]
+  wire [7:0] AddRoundKey_io_roundKey_7; // @[AddRoundKey.scala 25:62]
+  wire [7:0] AddRoundKey_io_roundKey_8; // @[AddRoundKey.scala 25:62]
+  wire [7:0] AddRoundKey_io_roundKey_9; // @[AddRoundKey.scala 25:62]
+  wire [7:0] AddRoundKey_io_roundKey_10; // @[AddRoundKey.scala 25:62]
+  wire [7:0] AddRoundKey_io_roundKey_11; // @[AddRoundKey.scala 25:62]
+  wire [7:0] AddRoundKey_io_roundKey_12; // @[AddRoundKey.scala 25:62]
+  wire [7:0] AddRoundKey_io_roundKey_13; // @[AddRoundKey.scala 25:62]
+  wire [7:0] AddRoundKey_io_roundKey_14; // @[AddRoundKey.scala 25:62]
+  wire [7:0] AddRoundKey_io_roundKey_15; // @[AddRoundKey.scala 25:62]
   wire [7:0] AddRoundKey_io_state_out_0; // @[AddRoundKey.scala 25:62]
   wire [7:0] AddRoundKey_io_state_out_1; // @[AddRoundKey.scala 25:62]
   wire [7:0] AddRoundKey_io_state_out_2; // @[AddRoundKey.scala 25:62]
@@ -38209,6 +39921,22 @@ module CipherRound_10(
     .io_state_in_13(AddRoundKey_io_state_in_13),
     .io_state_in_14(AddRoundKey_io_state_in_14),
     .io_state_in_15(AddRoundKey_io_state_in_15),
+    .io_roundKey_0(AddRoundKey_io_roundKey_0),
+    .io_roundKey_1(AddRoundKey_io_roundKey_1),
+    .io_roundKey_2(AddRoundKey_io_roundKey_2),
+    .io_roundKey_3(AddRoundKey_io_roundKey_3),
+    .io_roundKey_4(AddRoundKey_io_roundKey_4),
+    .io_roundKey_5(AddRoundKey_io_roundKey_5),
+    .io_roundKey_6(AddRoundKey_io_roundKey_6),
+    .io_roundKey_7(AddRoundKey_io_roundKey_7),
+    .io_roundKey_8(AddRoundKey_io_roundKey_8),
+    .io_roundKey_9(AddRoundKey_io_roundKey_9),
+    .io_roundKey_10(AddRoundKey_io_roundKey_10),
+    .io_roundKey_11(AddRoundKey_io_roundKey_11),
+    .io_roundKey_12(AddRoundKey_io_roundKey_12),
+    .io_roundKey_13(AddRoundKey_io_roundKey_13),
+    .io_roundKey_14(AddRoundKey_io_roundKey_14),
+    .io_roundKey_15(AddRoundKey_io_roundKey_15),
     .io_state_out_0(AddRoundKey_io_state_out_0),
     .io_state_out_1(AddRoundKey_io_state_out_1),
     .io_state_out_2(AddRoundKey_io_state_out_2),
@@ -38327,6 +40055,22 @@ module CipherRound_10(
   assign AddRoundKey_io_state_in_13 = ShiftRows_io_state_out_13; // @[CipherRound.scala 58:35]
   assign AddRoundKey_io_state_in_14 = ShiftRows_io_state_out_14; // @[CipherRound.scala 58:35]
   assign AddRoundKey_io_state_in_15 = ShiftRows_io_state_out_15; // @[CipherRound.scala 58:35]
+  assign AddRoundKey_io_roundKey_0 = io_input_valid ? 8'h13 : 8'h0; // @[CipherRound.scala 48:26 50:37 53:37]
+  assign AddRoundKey_io_roundKey_1 = io_input_valid ? 8'h11 : 8'h0; // @[CipherRound.scala 48:26 50:37 53:37]
+  assign AddRoundKey_io_roundKey_2 = io_input_valid ? 8'h1d : 8'h0; // @[CipherRound.scala 48:26 50:37 53:37]
+  assign AddRoundKey_io_roundKey_3 = io_input_valid ? 8'h7f : 8'h0; // @[CipherRound.scala 48:26 50:37 53:37]
+  assign AddRoundKey_io_roundKey_4 = io_input_valid ? 8'he3 : 8'h0; // @[CipherRound.scala 48:26 50:37 53:37]
+  assign AddRoundKey_io_roundKey_5 = io_input_valid ? 8'h94 : 8'h0; // @[CipherRound.scala 48:26 50:37 53:37]
+  assign AddRoundKey_io_roundKey_6 = io_input_valid ? 8'h4a : 8'h0; // @[CipherRound.scala 48:26 50:37 53:37]
+  assign AddRoundKey_io_roundKey_7 = io_input_valid ? 8'h17 : 8'h0; // @[CipherRound.scala 48:26 50:37 53:37]
+  assign AddRoundKey_io_roundKey_8 = io_input_valid ? 8'hf3 : 8'h0; // @[CipherRound.scala 48:26 50:37 53:37]
+  assign AddRoundKey_io_roundKey_9 = io_input_valid ? 8'h7 : 8'h0; // @[CipherRound.scala 48:26 50:37 53:37]
+  assign AddRoundKey_io_roundKey_10 = io_input_valid ? 8'ha7 : 8'h0; // @[CipherRound.scala 48:26 50:37 53:37]
+  assign AddRoundKey_io_roundKey_11 = io_input_valid ? 8'h8b : 8'h0; // @[CipherRound.scala 48:26 50:37 53:37]
+  assign AddRoundKey_io_roundKey_12 = io_input_valid ? 8'h4d : 8'h0; // @[CipherRound.scala 48:26 50:37 53:37]
+  assign AddRoundKey_io_roundKey_13 = io_input_valid ? 8'h2b : 8'h0; // @[CipherRound.scala 48:26 50:37 53:37]
+  assign AddRoundKey_io_roundKey_14 = io_input_valid ? 8'h30 : 8'h0; // @[CipherRound.scala 48:26 50:37 53:37]
+  assign AddRoundKey_io_roundKey_15 = io_input_valid ? 8'hc5 : 8'h0; // @[CipherRound.scala 48:26 50:37 53:37]
   assign SubBytes_io_state_in_0 = io_input_valid ? io_state_in_0 : 8'h0; // @[CipherRound.scala 48:26 49:34 52:34]
   assign SubBytes_io_state_in_1 = io_input_valid ? io_state_in_1 : 8'h0; // @[CipherRound.scala 48:26 49:34 52:34]
   assign SubBytes_io_state_in_2 = io_input_valid ? io_state_in_2 : 8'h0; // @[CipherRound.scala 48:26 49:34 52:34]
@@ -38511,6 +40255,22 @@ module AESEncrypt(
   wire [7:0] CipherRoundARK_io_state_in_13; // @[CipherRound.scala 95:84]
   wire [7:0] CipherRoundARK_io_state_in_14; // @[CipherRound.scala 95:84]
   wire [7:0] CipherRoundARK_io_state_in_15; // @[CipherRound.scala 95:84]
+  wire [7:0] CipherRoundARK_io_roundKey_0; // @[CipherRound.scala 95:84]
+  wire [7:0] CipherRoundARK_io_roundKey_1; // @[CipherRound.scala 95:84]
+  wire [7:0] CipherRoundARK_io_roundKey_2; // @[CipherRound.scala 95:84]
+  wire [7:0] CipherRoundARK_io_roundKey_3; // @[CipherRound.scala 95:84]
+  wire [7:0] CipherRoundARK_io_roundKey_4; // @[CipherRound.scala 95:84]
+  wire [7:0] CipherRoundARK_io_roundKey_5; // @[CipherRound.scala 95:84]
+  wire [7:0] CipherRoundARK_io_roundKey_6; // @[CipherRound.scala 95:84]
+  wire [7:0] CipherRoundARK_io_roundKey_7; // @[CipherRound.scala 95:84]
+  wire [7:0] CipherRoundARK_io_roundKey_8; // @[CipherRound.scala 95:84]
+  wire [7:0] CipherRoundARK_io_roundKey_9; // @[CipherRound.scala 95:84]
+  wire [7:0] CipherRoundARK_io_roundKey_10; // @[CipherRound.scala 95:84]
+  wire [7:0] CipherRoundARK_io_roundKey_11; // @[CipherRound.scala 95:84]
+  wire [7:0] CipherRoundARK_io_roundKey_12; // @[CipherRound.scala 95:84]
+  wire [7:0] CipherRoundARK_io_roundKey_13; // @[CipherRound.scala 95:84]
+  wire [7:0] CipherRoundARK_io_roundKey_14; // @[CipherRound.scala 95:84]
+  wire [7:0] CipherRoundARK_io_roundKey_15; // @[CipherRound.scala 95:84]
   wire [7:0] CipherRoundARK_io_state_out_0; // @[CipherRound.scala 95:84]
   wire [7:0] CipherRoundARK_io_state_out_1; // @[CipherRound.scala 95:84]
   wire [7:0] CipherRoundARK_io_state_out_2; // @[CipherRound.scala 95:84]
@@ -38546,6 +40306,22 @@ module AESEncrypt(
   wire [7:0] CipherRound_io_state_in_13; // @[CipherRound.scala 95:84]
   wire [7:0] CipherRound_io_state_in_14; // @[CipherRound.scala 95:84]
   wire [7:0] CipherRound_io_state_in_15; // @[CipherRound.scala 95:84]
+  wire [7:0] CipherRound_io_roundKey_0; // @[CipherRound.scala 95:84]
+  wire [7:0] CipherRound_io_roundKey_1; // @[CipherRound.scala 95:84]
+  wire [7:0] CipherRound_io_roundKey_2; // @[CipherRound.scala 95:84]
+  wire [7:0] CipherRound_io_roundKey_3; // @[CipherRound.scala 95:84]
+  wire [7:0] CipherRound_io_roundKey_4; // @[CipherRound.scala 95:84]
+  wire [7:0] CipherRound_io_roundKey_5; // @[CipherRound.scala 95:84]
+  wire [7:0] CipherRound_io_roundKey_6; // @[CipherRound.scala 95:84]
+  wire [7:0] CipherRound_io_roundKey_7; // @[CipherRound.scala 95:84]
+  wire [7:0] CipherRound_io_roundKey_8; // @[CipherRound.scala 95:84]
+  wire [7:0] CipherRound_io_roundKey_9; // @[CipherRound.scala 95:84]
+  wire [7:0] CipherRound_io_roundKey_10; // @[CipherRound.scala 95:84]
+  wire [7:0] CipherRound_io_roundKey_11; // @[CipherRound.scala 95:84]
+  wire [7:0] CipherRound_io_roundKey_12; // @[CipherRound.scala 95:84]
+  wire [7:0] CipherRound_io_roundKey_13; // @[CipherRound.scala 95:84]
+  wire [7:0] CipherRound_io_roundKey_14; // @[CipherRound.scala 95:84]
+  wire [7:0] CipherRound_io_roundKey_15; // @[CipherRound.scala 95:84]
   wire [7:0] CipherRound_io_state_out_0; // @[CipherRound.scala 95:84]
   wire [7:0] CipherRound_io_state_out_1; // @[CipherRound.scala 95:84]
   wire [7:0] CipherRound_io_state_out_2; // @[CipherRound.scala 95:84]
@@ -38581,6 +40357,22 @@ module AESEncrypt(
   wire [7:0] CipherRound_1_io_state_in_13; // @[CipherRound.scala 95:84]
   wire [7:0] CipherRound_1_io_state_in_14; // @[CipherRound.scala 95:84]
   wire [7:0] CipherRound_1_io_state_in_15; // @[CipherRound.scala 95:84]
+  wire [7:0] CipherRound_1_io_roundKey_0; // @[CipherRound.scala 95:84]
+  wire [7:0] CipherRound_1_io_roundKey_1; // @[CipherRound.scala 95:84]
+  wire [7:0] CipherRound_1_io_roundKey_2; // @[CipherRound.scala 95:84]
+  wire [7:0] CipherRound_1_io_roundKey_3; // @[CipherRound.scala 95:84]
+  wire [7:0] CipherRound_1_io_roundKey_4; // @[CipherRound.scala 95:84]
+  wire [7:0] CipherRound_1_io_roundKey_5; // @[CipherRound.scala 95:84]
+  wire [7:0] CipherRound_1_io_roundKey_6; // @[CipherRound.scala 95:84]
+  wire [7:0] CipherRound_1_io_roundKey_7; // @[CipherRound.scala 95:84]
+  wire [7:0] CipherRound_1_io_roundKey_8; // @[CipherRound.scala 95:84]
+  wire [7:0] CipherRound_1_io_roundKey_9; // @[CipherRound.scala 95:84]
+  wire [7:0] CipherRound_1_io_roundKey_10; // @[CipherRound.scala 95:84]
+  wire [7:0] CipherRound_1_io_roundKey_11; // @[CipherRound.scala 95:84]
+  wire [7:0] CipherRound_1_io_roundKey_12; // @[CipherRound.scala 95:84]
+  wire [7:0] CipherRound_1_io_roundKey_13; // @[CipherRound.scala 95:84]
+  wire [7:0] CipherRound_1_io_roundKey_14; // @[CipherRound.scala 95:84]
+  wire [7:0] CipherRound_1_io_roundKey_15; // @[CipherRound.scala 95:84]
   wire [7:0] CipherRound_1_io_state_out_0; // @[CipherRound.scala 95:84]
   wire [7:0] CipherRound_1_io_state_out_1; // @[CipherRound.scala 95:84]
   wire [7:0] CipherRound_1_io_state_out_2; // @[CipherRound.scala 95:84]
@@ -38616,6 +40408,22 @@ module AESEncrypt(
   wire [7:0] CipherRound_2_io_state_in_13; // @[CipherRound.scala 95:84]
   wire [7:0] CipherRound_2_io_state_in_14; // @[CipherRound.scala 95:84]
   wire [7:0] CipherRound_2_io_state_in_15; // @[CipherRound.scala 95:84]
+  wire [7:0] CipherRound_2_io_roundKey_0; // @[CipherRound.scala 95:84]
+  wire [7:0] CipherRound_2_io_roundKey_1; // @[CipherRound.scala 95:84]
+  wire [7:0] CipherRound_2_io_roundKey_2; // @[CipherRound.scala 95:84]
+  wire [7:0] CipherRound_2_io_roundKey_3; // @[CipherRound.scala 95:84]
+  wire [7:0] CipherRound_2_io_roundKey_4; // @[CipherRound.scala 95:84]
+  wire [7:0] CipherRound_2_io_roundKey_5; // @[CipherRound.scala 95:84]
+  wire [7:0] CipherRound_2_io_roundKey_6; // @[CipherRound.scala 95:84]
+  wire [7:0] CipherRound_2_io_roundKey_7; // @[CipherRound.scala 95:84]
+  wire [7:0] CipherRound_2_io_roundKey_8; // @[CipherRound.scala 95:84]
+  wire [7:0] CipherRound_2_io_roundKey_9; // @[CipherRound.scala 95:84]
+  wire [7:0] CipherRound_2_io_roundKey_10; // @[CipherRound.scala 95:84]
+  wire [7:0] CipherRound_2_io_roundKey_11; // @[CipherRound.scala 95:84]
+  wire [7:0] CipherRound_2_io_roundKey_12; // @[CipherRound.scala 95:84]
+  wire [7:0] CipherRound_2_io_roundKey_13; // @[CipherRound.scala 95:84]
+  wire [7:0] CipherRound_2_io_roundKey_14; // @[CipherRound.scala 95:84]
+  wire [7:0] CipherRound_2_io_roundKey_15; // @[CipherRound.scala 95:84]
   wire [7:0] CipherRound_2_io_state_out_0; // @[CipherRound.scala 95:84]
   wire [7:0] CipherRound_2_io_state_out_1; // @[CipherRound.scala 95:84]
   wire [7:0] CipherRound_2_io_state_out_2; // @[CipherRound.scala 95:84]
@@ -38651,6 +40459,22 @@ module AESEncrypt(
   wire [7:0] CipherRound_3_io_state_in_13; // @[CipherRound.scala 95:84]
   wire [7:0] CipherRound_3_io_state_in_14; // @[CipherRound.scala 95:84]
   wire [7:0] CipherRound_3_io_state_in_15; // @[CipherRound.scala 95:84]
+  wire [7:0] CipherRound_3_io_roundKey_0; // @[CipherRound.scala 95:84]
+  wire [7:0] CipherRound_3_io_roundKey_1; // @[CipherRound.scala 95:84]
+  wire [7:0] CipherRound_3_io_roundKey_2; // @[CipherRound.scala 95:84]
+  wire [7:0] CipherRound_3_io_roundKey_3; // @[CipherRound.scala 95:84]
+  wire [7:0] CipherRound_3_io_roundKey_4; // @[CipherRound.scala 95:84]
+  wire [7:0] CipherRound_3_io_roundKey_5; // @[CipherRound.scala 95:84]
+  wire [7:0] CipherRound_3_io_roundKey_6; // @[CipherRound.scala 95:84]
+  wire [7:0] CipherRound_3_io_roundKey_7; // @[CipherRound.scala 95:84]
+  wire [7:0] CipherRound_3_io_roundKey_8; // @[CipherRound.scala 95:84]
+  wire [7:0] CipherRound_3_io_roundKey_9; // @[CipherRound.scala 95:84]
+  wire [7:0] CipherRound_3_io_roundKey_10; // @[CipherRound.scala 95:84]
+  wire [7:0] CipherRound_3_io_roundKey_11; // @[CipherRound.scala 95:84]
+  wire [7:0] CipherRound_3_io_roundKey_12; // @[CipherRound.scala 95:84]
+  wire [7:0] CipherRound_3_io_roundKey_13; // @[CipherRound.scala 95:84]
+  wire [7:0] CipherRound_3_io_roundKey_14; // @[CipherRound.scala 95:84]
+  wire [7:0] CipherRound_3_io_roundKey_15; // @[CipherRound.scala 95:84]
   wire [7:0] CipherRound_3_io_state_out_0; // @[CipherRound.scala 95:84]
   wire [7:0] CipherRound_3_io_state_out_1; // @[CipherRound.scala 95:84]
   wire [7:0] CipherRound_3_io_state_out_2; // @[CipherRound.scala 95:84]
@@ -38686,6 +40510,22 @@ module AESEncrypt(
   wire [7:0] CipherRound_4_io_state_in_13; // @[CipherRound.scala 95:84]
   wire [7:0] CipherRound_4_io_state_in_14; // @[CipherRound.scala 95:84]
   wire [7:0] CipherRound_4_io_state_in_15; // @[CipherRound.scala 95:84]
+  wire [7:0] CipherRound_4_io_roundKey_0; // @[CipherRound.scala 95:84]
+  wire [7:0] CipherRound_4_io_roundKey_1; // @[CipherRound.scala 95:84]
+  wire [7:0] CipherRound_4_io_roundKey_2; // @[CipherRound.scala 95:84]
+  wire [7:0] CipherRound_4_io_roundKey_3; // @[CipherRound.scala 95:84]
+  wire [7:0] CipherRound_4_io_roundKey_4; // @[CipherRound.scala 95:84]
+  wire [7:0] CipherRound_4_io_roundKey_5; // @[CipherRound.scala 95:84]
+  wire [7:0] CipherRound_4_io_roundKey_6; // @[CipherRound.scala 95:84]
+  wire [7:0] CipherRound_4_io_roundKey_7; // @[CipherRound.scala 95:84]
+  wire [7:0] CipherRound_4_io_roundKey_8; // @[CipherRound.scala 95:84]
+  wire [7:0] CipherRound_4_io_roundKey_9; // @[CipherRound.scala 95:84]
+  wire [7:0] CipherRound_4_io_roundKey_10; // @[CipherRound.scala 95:84]
+  wire [7:0] CipherRound_4_io_roundKey_11; // @[CipherRound.scala 95:84]
+  wire [7:0] CipherRound_4_io_roundKey_12; // @[CipherRound.scala 95:84]
+  wire [7:0] CipherRound_4_io_roundKey_13; // @[CipherRound.scala 95:84]
+  wire [7:0] CipherRound_4_io_roundKey_14; // @[CipherRound.scala 95:84]
+  wire [7:0] CipherRound_4_io_roundKey_15; // @[CipherRound.scala 95:84]
   wire [7:0] CipherRound_4_io_state_out_0; // @[CipherRound.scala 95:84]
   wire [7:0] CipherRound_4_io_state_out_1; // @[CipherRound.scala 95:84]
   wire [7:0] CipherRound_4_io_state_out_2; // @[CipherRound.scala 95:84]
@@ -38721,6 +40561,22 @@ module AESEncrypt(
   wire [7:0] CipherRound_5_io_state_in_13; // @[CipherRound.scala 95:84]
   wire [7:0] CipherRound_5_io_state_in_14; // @[CipherRound.scala 95:84]
   wire [7:0] CipherRound_5_io_state_in_15; // @[CipherRound.scala 95:84]
+  wire [7:0] CipherRound_5_io_roundKey_0; // @[CipherRound.scala 95:84]
+  wire [7:0] CipherRound_5_io_roundKey_1; // @[CipherRound.scala 95:84]
+  wire [7:0] CipherRound_5_io_roundKey_2; // @[CipherRound.scala 95:84]
+  wire [7:0] CipherRound_5_io_roundKey_3; // @[CipherRound.scala 95:84]
+  wire [7:0] CipherRound_5_io_roundKey_4; // @[CipherRound.scala 95:84]
+  wire [7:0] CipherRound_5_io_roundKey_5; // @[CipherRound.scala 95:84]
+  wire [7:0] CipherRound_5_io_roundKey_6; // @[CipherRound.scala 95:84]
+  wire [7:0] CipherRound_5_io_roundKey_7; // @[CipherRound.scala 95:84]
+  wire [7:0] CipherRound_5_io_roundKey_8; // @[CipherRound.scala 95:84]
+  wire [7:0] CipherRound_5_io_roundKey_9; // @[CipherRound.scala 95:84]
+  wire [7:0] CipherRound_5_io_roundKey_10; // @[CipherRound.scala 95:84]
+  wire [7:0] CipherRound_5_io_roundKey_11; // @[CipherRound.scala 95:84]
+  wire [7:0] CipherRound_5_io_roundKey_12; // @[CipherRound.scala 95:84]
+  wire [7:0] CipherRound_5_io_roundKey_13; // @[CipherRound.scala 95:84]
+  wire [7:0] CipherRound_5_io_roundKey_14; // @[CipherRound.scala 95:84]
+  wire [7:0] CipherRound_5_io_roundKey_15; // @[CipherRound.scala 95:84]
   wire [7:0] CipherRound_5_io_state_out_0; // @[CipherRound.scala 95:84]
   wire [7:0] CipherRound_5_io_state_out_1; // @[CipherRound.scala 95:84]
   wire [7:0] CipherRound_5_io_state_out_2; // @[CipherRound.scala 95:84]
@@ -38756,6 +40612,22 @@ module AESEncrypt(
   wire [7:0] CipherRound_6_io_state_in_13; // @[CipherRound.scala 95:84]
   wire [7:0] CipherRound_6_io_state_in_14; // @[CipherRound.scala 95:84]
   wire [7:0] CipherRound_6_io_state_in_15; // @[CipherRound.scala 95:84]
+  wire [7:0] CipherRound_6_io_roundKey_0; // @[CipherRound.scala 95:84]
+  wire [7:0] CipherRound_6_io_roundKey_1; // @[CipherRound.scala 95:84]
+  wire [7:0] CipherRound_6_io_roundKey_2; // @[CipherRound.scala 95:84]
+  wire [7:0] CipherRound_6_io_roundKey_3; // @[CipherRound.scala 95:84]
+  wire [7:0] CipherRound_6_io_roundKey_4; // @[CipherRound.scala 95:84]
+  wire [7:0] CipherRound_6_io_roundKey_5; // @[CipherRound.scala 95:84]
+  wire [7:0] CipherRound_6_io_roundKey_6; // @[CipherRound.scala 95:84]
+  wire [7:0] CipherRound_6_io_roundKey_7; // @[CipherRound.scala 95:84]
+  wire [7:0] CipherRound_6_io_roundKey_8; // @[CipherRound.scala 95:84]
+  wire [7:0] CipherRound_6_io_roundKey_9; // @[CipherRound.scala 95:84]
+  wire [7:0] CipherRound_6_io_roundKey_10; // @[CipherRound.scala 95:84]
+  wire [7:0] CipherRound_6_io_roundKey_11; // @[CipherRound.scala 95:84]
+  wire [7:0] CipherRound_6_io_roundKey_12; // @[CipherRound.scala 95:84]
+  wire [7:0] CipherRound_6_io_roundKey_13; // @[CipherRound.scala 95:84]
+  wire [7:0] CipherRound_6_io_roundKey_14; // @[CipherRound.scala 95:84]
+  wire [7:0] CipherRound_6_io_roundKey_15; // @[CipherRound.scala 95:84]
   wire [7:0] CipherRound_6_io_state_out_0; // @[CipherRound.scala 95:84]
   wire [7:0] CipherRound_6_io_state_out_1; // @[CipherRound.scala 95:84]
   wire [7:0] CipherRound_6_io_state_out_2; // @[CipherRound.scala 95:84]
@@ -38791,6 +40663,22 @@ module AESEncrypt(
   wire [7:0] CipherRound_7_io_state_in_13; // @[CipherRound.scala 95:84]
   wire [7:0] CipherRound_7_io_state_in_14; // @[CipherRound.scala 95:84]
   wire [7:0] CipherRound_7_io_state_in_15; // @[CipherRound.scala 95:84]
+  wire [7:0] CipherRound_7_io_roundKey_0; // @[CipherRound.scala 95:84]
+  wire [7:0] CipherRound_7_io_roundKey_1; // @[CipherRound.scala 95:84]
+  wire [7:0] CipherRound_7_io_roundKey_2; // @[CipherRound.scala 95:84]
+  wire [7:0] CipherRound_7_io_roundKey_3; // @[CipherRound.scala 95:84]
+  wire [7:0] CipherRound_7_io_roundKey_4; // @[CipherRound.scala 95:84]
+  wire [7:0] CipherRound_7_io_roundKey_5; // @[CipherRound.scala 95:84]
+  wire [7:0] CipherRound_7_io_roundKey_6; // @[CipherRound.scala 95:84]
+  wire [7:0] CipherRound_7_io_roundKey_7; // @[CipherRound.scala 95:84]
+  wire [7:0] CipherRound_7_io_roundKey_8; // @[CipherRound.scala 95:84]
+  wire [7:0] CipherRound_7_io_roundKey_9; // @[CipherRound.scala 95:84]
+  wire [7:0] CipherRound_7_io_roundKey_10; // @[CipherRound.scala 95:84]
+  wire [7:0] CipherRound_7_io_roundKey_11; // @[CipherRound.scala 95:84]
+  wire [7:0] CipherRound_7_io_roundKey_12; // @[CipherRound.scala 95:84]
+  wire [7:0] CipherRound_7_io_roundKey_13; // @[CipherRound.scala 95:84]
+  wire [7:0] CipherRound_7_io_roundKey_14; // @[CipherRound.scala 95:84]
+  wire [7:0] CipherRound_7_io_roundKey_15; // @[CipherRound.scala 95:84]
   wire [7:0] CipherRound_7_io_state_out_0; // @[CipherRound.scala 95:84]
   wire [7:0] CipherRound_7_io_state_out_1; // @[CipherRound.scala 95:84]
   wire [7:0] CipherRound_7_io_state_out_2; // @[CipherRound.scala 95:84]
@@ -38826,6 +40714,22 @@ module AESEncrypt(
   wire [7:0] CipherRound_8_io_state_in_13; // @[CipherRound.scala 95:84]
   wire [7:0] CipherRound_8_io_state_in_14; // @[CipherRound.scala 95:84]
   wire [7:0] CipherRound_8_io_state_in_15; // @[CipherRound.scala 95:84]
+  wire [7:0] CipherRound_8_io_roundKey_0; // @[CipherRound.scala 95:84]
+  wire [7:0] CipherRound_8_io_roundKey_1; // @[CipherRound.scala 95:84]
+  wire [7:0] CipherRound_8_io_roundKey_2; // @[CipherRound.scala 95:84]
+  wire [7:0] CipherRound_8_io_roundKey_3; // @[CipherRound.scala 95:84]
+  wire [7:0] CipherRound_8_io_roundKey_4; // @[CipherRound.scala 95:84]
+  wire [7:0] CipherRound_8_io_roundKey_5; // @[CipherRound.scala 95:84]
+  wire [7:0] CipherRound_8_io_roundKey_6; // @[CipherRound.scala 95:84]
+  wire [7:0] CipherRound_8_io_roundKey_7; // @[CipherRound.scala 95:84]
+  wire [7:0] CipherRound_8_io_roundKey_8; // @[CipherRound.scala 95:84]
+  wire [7:0] CipherRound_8_io_roundKey_9; // @[CipherRound.scala 95:84]
+  wire [7:0] CipherRound_8_io_roundKey_10; // @[CipherRound.scala 95:84]
+  wire [7:0] CipherRound_8_io_roundKey_11; // @[CipherRound.scala 95:84]
+  wire [7:0] CipherRound_8_io_roundKey_12; // @[CipherRound.scala 95:84]
+  wire [7:0] CipherRound_8_io_roundKey_13; // @[CipherRound.scala 95:84]
+  wire [7:0] CipherRound_8_io_roundKey_14; // @[CipherRound.scala 95:84]
+  wire [7:0] CipherRound_8_io_roundKey_15; // @[CipherRound.scala 95:84]
   wire [7:0] CipherRound_8_io_state_out_0; // @[CipherRound.scala 95:84]
   wire [7:0] CipherRound_8_io_state_out_1; // @[CipherRound.scala 95:84]
   wire [7:0] CipherRound_8_io_state_out_2; // @[CipherRound.scala 95:84]
@@ -38897,6 +40801,22 @@ module AESEncrypt(
     .io_state_in_13(CipherRoundARK_io_state_in_13),
     .io_state_in_14(CipherRoundARK_io_state_in_14),
     .io_state_in_15(CipherRoundARK_io_state_in_15),
+    .io_roundKey_0(CipherRoundARK_io_roundKey_0),
+    .io_roundKey_1(CipherRoundARK_io_roundKey_1),
+    .io_roundKey_2(CipherRoundARK_io_roundKey_2),
+    .io_roundKey_3(CipherRoundARK_io_roundKey_3),
+    .io_roundKey_4(CipherRoundARK_io_roundKey_4),
+    .io_roundKey_5(CipherRoundARK_io_roundKey_5),
+    .io_roundKey_6(CipherRoundARK_io_roundKey_6),
+    .io_roundKey_7(CipherRoundARK_io_roundKey_7),
+    .io_roundKey_8(CipherRoundARK_io_roundKey_8),
+    .io_roundKey_9(CipherRoundARK_io_roundKey_9),
+    .io_roundKey_10(CipherRoundARK_io_roundKey_10),
+    .io_roundKey_11(CipherRoundARK_io_roundKey_11),
+    .io_roundKey_12(CipherRoundARK_io_roundKey_12),
+    .io_roundKey_13(CipherRoundARK_io_roundKey_13),
+    .io_roundKey_14(CipherRoundARK_io_roundKey_14),
+    .io_roundKey_15(CipherRoundARK_io_roundKey_15),
     .io_state_out_0(CipherRoundARK_io_state_out_0),
     .io_state_out_1(CipherRoundARK_io_state_out_1),
     .io_state_out_2(CipherRoundARK_io_state_out_2),
@@ -38934,6 +40854,22 @@ module AESEncrypt(
     .io_state_in_13(CipherRound_io_state_in_13),
     .io_state_in_14(CipherRound_io_state_in_14),
     .io_state_in_15(CipherRound_io_state_in_15),
+    .io_roundKey_0(CipherRound_io_roundKey_0),
+    .io_roundKey_1(CipherRound_io_roundKey_1),
+    .io_roundKey_2(CipherRound_io_roundKey_2),
+    .io_roundKey_3(CipherRound_io_roundKey_3),
+    .io_roundKey_4(CipherRound_io_roundKey_4),
+    .io_roundKey_5(CipherRound_io_roundKey_5),
+    .io_roundKey_6(CipherRound_io_roundKey_6),
+    .io_roundKey_7(CipherRound_io_roundKey_7),
+    .io_roundKey_8(CipherRound_io_roundKey_8),
+    .io_roundKey_9(CipherRound_io_roundKey_9),
+    .io_roundKey_10(CipherRound_io_roundKey_10),
+    .io_roundKey_11(CipherRound_io_roundKey_11),
+    .io_roundKey_12(CipherRound_io_roundKey_12),
+    .io_roundKey_13(CipherRound_io_roundKey_13),
+    .io_roundKey_14(CipherRound_io_roundKey_14),
+    .io_roundKey_15(CipherRound_io_roundKey_15),
     .io_state_out_0(CipherRound_io_state_out_0),
     .io_state_out_1(CipherRound_io_state_out_1),
     .io_state_out_2(CipherRound_io_state_out_2),
@@ -38971,6 +40907,22 @@ module AESEncrypt(
     .io_state_in_13(CipherRound_1_io_state_in_13),
     .io_state_in_14(CipherRound_1_io_state_in_14),
     .io_state_in_15(CipherRound_1_io_state_in_15),
+    .io_roundKey_0(CipherRound_1_io_roundKey_0),
+    .io_roundKey_1(CipherRound_1_io_roundKey_1),
+    .io_roundKey_2(CipherRound_1_io_roundKey_2),
+    .io_roundKey_3(CipherRound_1_io_roundKey_3),
+    .io_roundKey_4(CipherRound_1_io_roundKey_4),
+    .io_roundKey_5(CipherRound_1_io_roundKey_5),
+    .io_roundKey_6(CipherRound_1_io_roundKey_6),
+    .io_roundKey_7(CipherRound_1_io_roundKey_7),
+    .io_roundKey_8(CipherRound_1_io_roundKey_8),
+    .io_roundKey_9(CipherRound_1_io_roundKey_9),
+    .io_roundKey_10(CipherRound_1_io_roundKey_10),
+    .io_roundKey_11(CipherRound_1_io_roundKey_11),
+    .io_roundKey_12(CipherRound_1_io_roundKey_12),
+    .io_roundKey_13(CipherRound_1_io_roundKey_13),
+    .io_roundKey_14(CipherRound_1_io_roundKey_14),
+    .io_roundKey_15(CipherRound_1_io_roundKey_15),
     .io_state_out_0(CipherRound_1_io_state_out_0),
     .io_state_out_1(CipherRound_1_io_state_out_1),
     .io_state_out_2(CipherRound_1_io_state_out_2),
@@ -39008,6 +40960,22 @@ module AESEncrypt(
     .io_state_in_13(CipherRound_2_io_state_in_13),
     .io_state_in_14(CipherRound_2_io_state_in_14),
     .io_state_in_15(CipherRound_2_io_state_in_15),
+    .io_roundKey_0(CipherRound_2_io_roundKey_0),
+    .io_roundKey_1(CipherRound_2_io_roundKey_1),
+    .io_roundKey_2(CipherRound_2_io_roundKey_2),
+    .io_roundKey_3(CipherRound_2_io_roundKey_3),
+    .io_roundKey_4(CipherRound_2_io_roundKey_4),
+    .io_roundKey_5(CipherRound_2_io_roundKey_5),
+    .io_roundKey_6(CipherRound_2_io_roundKey_6),
+    .io_roundKey_7(CipherRound_2_io_roundKey_7),
+    .io_roundKey_8(CipherRound_2_io_roundKey_8),
+    .io_roundKey_9(CipherRound_2_io_roundKey_9),
+    .io_roundKey_10(CipherRound_2_io_roundKey_10),
+    .io_roundKey_11(CipherRound_2_io_roundKey_11),
+    .io_roundKey_12(CipherRound_2_io_roundKey_12),
+    .io_roundKey_13(CipherRound_2_io_roundKey_13),
+    .io_roundKey_14(CipherRound_2_io_roundKey_14),
+    .io_roundKey_15(CipherRound_2_io_roundKey_15),
     .io_state_out_0(CipherRound_2_io_state_out_0),
     .io_state_out_1(CipherRound_2_io_state_out_1),
     .io_state_out_2(CipherRound_2_io_state_out_2),
@@ -39045,6 +41013,22 @@ module AESEncrypt(
     .io_state_in_13(CipherRound_3_io_state_in_13),
     .io_state_in_14(CipherRound_3_io_state_in_14),
     .io_state_in_15(CipherRound_3_io_state_in_15),
+    .io_roundKey_0(CipherRound_3_io_roundKey_0),
+    .io_roundKey_1(CipherRound_3_io_roundKey_1),
+    .io_roundKey_2(CipherRound_3_io_roundKey_2),
+    .io_roundKey_3(CipherRound_3_io_roundKey_3),
+    .io_roundKey_4(CipherRound_3_io_roundKey_4),
+    .io_roundKey_5(CipherRound_3_io_roundKey_5),
+    .io_roundKey_6(CipherRound_3_io_roundKey_6),
+    .io_roundKey_7(CipherRound_3_io_roundKey_7),
+    .io_roundKey_8(CipherRound_3_io_roundKey_8),
+    .io_roundKey_9(CipherRound_3_io_roundKey_9),
+    .io_roundKey_10(CipherRound_3_io_roundKey_10),
+    .io_roundKey_11(CipherRound_3_io_roundKey_11),
+    .io_roundKey_12(CipherRound_3_io_roundKey_12),
+    .io_roundKey_13(CipherRound_3_io_roundKey_13),
+    .io_roundKey_14(CipherRound_3_io_roundKey_14),
+    .io_roundKey_15(CipherRound_3_io_roundKey_15),
     .io_state_out_0(CipherRound_3_io_state_out_0),
     .io_state_out_1(CipherRound_3_io_state_out_1),
     .io_state_out_2(CipherRound_3_io_state_out_2),
@@ -39082,6 +41066,22 @@ module AESEncrypt(
     .io_state_in_13(CipherRound_4_io_state_in_13),
     .io_state_in_14(CipherRound_4_io_state_in_14),
     .io_state_in_15(CipherRound_4_io_state_in_15),
+    .io_roundKey_0(CipherRound_4_io_roundKey_0),
+    .io_roundKey_1(CipherRound_4_io_roundKey_1),
+    .io_roundKey_2(CipherRound_4_io_roundKey_2),
+    .io_roundKey_3(CipherRound_4_io_roundKey_3),
+    .io_roundKey_4(CipherRound_4_io_roundKey_4),
+    .io_roundKey_5(CipherRound_4_io_roundKey_5),
+    .io_roundKey_6(CipherRound_4_io_roundKey_6),
+    .io_roundKey_7(CipherRound_4_io_roundKey_7),
+    .io_roundKey_8(CipherRound_4_io_roundKey_8),
+    .io_roundKey_9(CipherRound_4_io_roundKey_9),
+    .io_roundKey_10(CipherRound_4_io_roundKey_10),
+    .io_roundKey_11(CipherRound_4_io_roundKey_11),
+    .io_roundKey_12(CipherRound_4_io_roundKey_12),
+    .io_roundKey_13(CipherRound_4_io_roundKey_13),
+    .io_roundKey_14(CipherRound_4_io_roundKey_14),
+    .io_roundKey_15(CipherRound_4_io_roundKey_15),
     .io_state_out_0(CipherRound_4_io_state_out_0),
     .io_state_out_1(CipherRound_4_io_state_out_1),
     .io_state_out_2(CipherRound_4_io_state_out_2),
@@ -39119,6 +41119,22 @@ module AESEncrypt(
     .io_state_in_13(CipherRound_5_io_state_in_13),
     .io_state_in_14(CipherRound_5_io_state_in_14),
     .io_state_in_15(CipherRound_5_io_state_in_15),
+    .io_roundKey_0(CipherRound_5_io_roundKey_0),
+    .io_roundKey_1(CipherRound_5_io_roundKey_1),
+    .io_roundKey_2(CipherRound_5_io_roundKey_2),
+    .io_roundKey_3(CipherRound_5_io_roundKey_3),
+    .io_roundKey_4(CipherRound_5_io_roundKey_4),
+    .io_roundKey_5(CipherRound_5_io_roundKey_5),
+    .io_roundKey_6(CipherRound_5_io_roundKey_6),
+    .io_roundKey_7(CipherRound_5_io_roundKey_7),
+    .io_roundKey_8(CipherRound_5_io_roundKey_8),
+    .io_roundKey_9(CipherRound_5_io_roundKey_9),
+    .io_roundKey_10(CipherRound_5_io_roundKey_10),
+    .io_roundKey_11(CipherRound_5_io_roundKey_11),
+    .io_roundKey_12(CipherRound_5_io_roundKey_12),
+    .io_roundKey_13(CipherRound_5_io_roundKey_13),
+    .io_roundKey_14(CipherRound_5_io_roundKey_14),
+    .io_roundKey_15(CipherRound_5_io_roundKey_15),
     .io_state_out_0(CipherRound_5_io_state_out_0),
     .io_state_out_1(CipherRound_5_io_state_out_1),
     .io_state_out_2(CipherRound_5_io_state_out_2),
@@ -39156,6 +41172,22 @@ module AESEncrypt(
     .io_state_in_13(CipherRound_6_io_state_in_13),
     .io_state_in_14(CipherRound_6_io_state_in_14),
     .io_state_in_15(CipherRound_6_io_state_in_15),
+    .io_roundKey_0(CipherRound_6_io_roundKey_0),
+    .io_roundKey_1(CipherRound_6_io_roundKey_1),
+    .io_roundKey_2(CipherRound_6_io_roundKey_2),
+    .io_roundKey_3(CipherRound_6_io_roundKey_3),
+    .io_roundKey_4(CipherRound_6_io_roundKey_4),
+    .io_roundKey_5(CipherRound_6_io_roundKey_5),
+    .io_roundKey_6(CipherRound_6_io_roundKey_6),
+    .io_roundKey_7(CipherRound_6_io_roundKey_7),
+    .io_roundKey_8(CipherRound_6_io_roundKey_8),
+    .io_roundKey_9(CipherRound_6_io_roundKey_9),
+    .io_roundKey_10(CipherRound_6_io_roundKey_10),
+    .io_roundKey_11(CipherRound_6_io_roundKey_11),
+    .io_roundKey_12(CipherRound_6_io_roundKey_12),
+    .io_roundKey_13(CipherRound_6_io_roundKey_13),
+    .io_roundKey_14(CipherRound_6_io_roundKey_14),
+    .io_roundKey_15(CipherRound_6_io_roundKey_15),
     .io_state_out_0(CipherRound_6_io_state_out_0),
     .io_state_out_1(CipherRound_6_io_state_out_1),
     .io_state_out_2(CipherRound_6_io_state_out_2),
@@ -39193,6 +41225,22 @@ module AESEncrypt(
     .io_state_in_13(CipherRound_7_io_state_in_13),
     .io_state_in_14(CipherRound_7_io_state_in_14),
     .io_state_in_15(CipherRound_7_io_state_in_15),
+    .io_roundKey_0(CipherRound_7_io_roundKey_0),
+    .io_roundKey_1(CipherRound_7_io_roundKey_1),
+    .io_roundKey_2(CipherRound_7_io_roundKey_2),
+    .io_roundKey_3(CipherRound_7_io_roundKey_3),
+    .io_roundKey_4(CipherRound_7_io_roundKey_4),
+    .io_roundKey_5(CipherRound_7_io_roundKey_5),
+    .io_roundKey_6(CipherRound_7_io_roundKey_6),
+    .io_roundKey_7(CipherRound_7_io_roundKey_7),
+    .io_roundKey_8(CipherRound_7_io_roundKey_8),
+    .io_roundKey_9(CipherRound_7_io_roundKey_9),
+    .io_roundKey_10(CipherRound_7_io_roundKey_10),
+    .io_roundKey_11(CipherRound_7_io_roundKey_11),
+    .io_roundKey_12(CipherRound_7_io_roundKey_12),
+    .io_roundKey_13(CipherRound_7_io_roundKey_13),
+    .io_roundKey_14(CipherRound_7_io_roundKey_14),
+    .io_roundKey_15(CipherRound_7_io_roundKey_15),
     .io_state_out_0(CipherRound_7_io_state_out_0),
     .io_state_out_1(CipherRound_7_io_state_out_1),
     .io_state_out_2(CipherRound_7_io_state_out_2),
@@ -39230,6 +41278,22 @@ module AESEncrypt(
     .io_state_in_13(CipherRound_8_io_state_in_13),
     .io_state_in_14(CipherRound_8_io_state_in_14),
     .io_state_in_15(CipherRound_8_io_state_in_15),
+    .io_roundKey_0(CipherRound_8_io_roundKey_0),
+    .io_roundKey_1(CipherRound_8_io_roundKey_1),
+    .io_roundKey_2(CipherRound_8_io_roundKey_2),
+    .io_roundKey_3(CipherRound_8_io_roundKey_3),
+    .io_roundKey_4(CipherRound_8_io_roundKey_4),
+    .io_roundKey_5(CipherRound_8_io_roundKey_5),
+    .io_roundKey_6(CipherRound_8_io_roundKey_6),
+    .io_roundKey_7(CipherRound_8_io_roundKey_7),
+    .io_roundKey_8(CipherRound_8_io_roundKey_8),
+    .io_roundKey_9(CipherRound_8_io_roundKey_9),
+    .io_roundKey_10(CipherRound_8_io_roundKey_10),
+    .io_roundKey_11(CipherRound_8_io_roundKey_11),
+    .io_roundKey_12(CipherRound_8_io_roundKey_12),
+    .io_roundKey_13(CipherRound_8_io_roundKey_13),
+    .io_roundKey_14(CipherRound_8_io_roundKey_14),
+    .io_roundKey_15(CipherRound_8_io_roundKey_15),
     .io_state_out_0(CipherRound_8_io_state_out_0),
     .io_state_out_1(CipherRound_8_io_state_out_1),
     .io_state_out_2(CipherRound_8_io_state_out_2),
@@ -39320,6 +41384,22 @@ module AESEncrypt(
   assign CipherRoundARK_io_state_in_13 = io_input_text_13; // @[AESEncrypt.scala 32:30]
   assign CipherRoundARK_io_state_in_14 = io_input_text_14; // @[AESEncrypt.scala 32:30]
   assign CipherRoundARK_io_state_in_15 = io_input_text_15; // @[AESEncrypt.scala 32:30]
+  assign CipherRoundARK_io_roundKey_0 = 8'h0; // @[AESEncrypt.scala 33:30]
+  assign CipherRoundARK_io_roundKey_1 = 8'h1; // @[AESEncrypt.scala 33:30]
+  assign CipherRoundARK_io_roundKey_2 = 8'h2; // @[AESEncrypt.scala 33:30]
+  assign CipherRoundARK_io_roundKey_3 = 8'h3; // @[AESEncrypt.scala 33:30]
+  assign CipherRoundARK_io_roundKey_4 = 8'h4; // @[AESEncrypt.scala 33:30]
+  assign CipherRoundARK_io_roundKey_5 = 8'h5; // @[AESEncrypt.scala 33:30]
+  assign CipherRoundARK_io_roundKey_6 = 8'h6; // @[AESEncrypt.scala 33:30]
+  assign CipherRoundARK_io_roundKey_7 = 8'h7; // @[AESEncrypt.scala 33:30]
+  assign CipherRoundARK_io_roundKey_8 = 8'h8; // @[AESEncrypt.scala 33:30]
+  assign CipherRoundARK_io_roundKey_9 = 8'h9; // @[AESEncrypt.scala 33:30]
+  assign CipherRoundARK_io_roundKey_10 = 8'ha; // @[AESEncrypt.scala 33:30]
+  assign CipherRoundARK_io_roundKey_11 = 8'hb; // @[AESEncrypt.scala 33:30]
+  assign CipherRoundARK_io_roundKey_12 = 8'hc; // @[AESEncrypt.scala 33:30]
+  assign CipherRoundARK_io_roundKey_13 = 8'hd; // @[AESEncrypt.scala 33:30]
+  assign CipherRoundARK_io_roundKey_14 = 8'he; // @[AESEncrypt.scala 33:30]
+  assign CipherRoundARK_io_roundKey_15 = 8'hf; // @[AESEncrypt.scala 33:30]
   assign CipherRound_clock = clock;
   assign CipherRound_io_input_valid = CipherRoundARK_io_output_valid; // @[AESEncrypt.scala 38:38]
   assign CipherRound_io_state_in_0 = CipherRoundARK_io_state_out_0; // @[AESEncrypt.scala 39:35]
@@ -39338,6 +41418,22 @@ module AESEncrypt(
   assign CipherRound_io_state_in_13 = CipherRoundARK_io_state_out_13; // @[AESEncrypt.scala 39:35]
   assign CipherRound_io_state_in_14 = CipherRoundARK_io_state_out_14; // @[AESEncrypt.scala 39:35]
   assign CipherRound_io_state_in_15 = CipherRoundARK_io_state_out_15; // @[AESEncrypt.scala 39:35]
+  assign CipherRound_io_roundKey_0 = 8'hd6; // @[AESEncrypt.scala 45:33]
+  assign CipherRound_io_roundKey_1 = 8'haa; // @[AESEncrypt.scala 45:33]
+  assign CipherRound_io_roundKey_2 = 8'h74; // @[AESEncrypt.scala 45:33]
+  assign CipherRound_io_roundKey_3 = 8'hfd; // @[AESEncrypt.scala 45:33]
+  assign CipherRound_io_roundKey_4 = 8'hd2; // @[AESEncrypt.scala 45:33]
+  assign CipherRound_io_roundKey_5 = 8'haf; // @[AESEncrypt.scala 45:33]
+  assign CipherRound_io_roundKey_6 = 8'h72; // @[AESEncrypt.scala 45:33]
+  assign CipherRound_io_roundKey_7 = 8'hfa; // @[AESEncrypt.scala 45:33]
+  assign CipherRound_io_roundKey_8 = 8'hda; // @[AESEncrypt.scala 45:33]
+  assign CipherRound_io_roundKey_9 = 8'ha6; // @[AESEncrypt.scala 45:33]
+  assign CipherRound_io_roundKey_10 = 8'h78; // @[AESEncrypt.scala 45:33]
+  assign CipherRound_io_roundKey_11 = 8'hf1; // @[AESEncrypt.scala 45:33]
+  assign CipherRound_io_roundKey_12 = 8'hd6; // @[AESEncrypt.scala 45:33]
+  assign CipherRound_io_roundKey_13 = 8'hab; // @[AESEncrypt.scala 45:33]
+  assign CipherRound_io_roundKey_14 = 8'h76; // @[AESEncrypt.scala 45:33]
+  assign CipherRound_io_roundKey_15 = 8'hfe; // @[AESEncrypt.scala 45:33]
   assign CipherRound_1_clock = clock;
   assign CipherRound_1_io_input_valid = CipherRound_io_output_valid; // @[AESEncrypt.scala 42:38]
   assign CipherRound_1_io_state_in_0 = CipherRound_io_state_out_0; // @[AESEncrypt.scala 43:35]
@@ -39356,6 +41452,22 @@ module AESEncrypt(
   assign CipherRound_1_io_state_in_13 = CipherRound_io_state_out_13; // @[AESEncrypt.scala 43:35]
   assign CipherRound_1_io_state_in_14 = CipherRound_io_state_out_14; // @[AESEncrypt.scala 43:35]
   assign CipherRound_1_io_state_in_15 = CipherRound_io_state_out_15; // @[AESEncrypt.scala 43:35]
+  assign CipherRound_1_io_roundKey_0 = 8'hb6; // @[AESEncrypt.scala 45:33]
+  assign CipherRound_1_io_roundKey_1 = 8'h92; // @[AESEncrypt.scala 45:33]
+  assign CipherRound_1_io_roundKey_2 = 8'hcf; // @[AESEncrypt.scala 45:33]
+  assign CipherRound_1_io_roundKey_3 = 8'hb; // @[AESEncrypt.scala 45:33]
+  assign CipherRound_1_io_roundKey_4 = 8'h64; // @[AESEncrypt.scala 45:33]
+  assign CipherRound_1_io_roundKey_5 = 8'h3d; // @[AESEncrypt.scala 45:33]
+  assign CipherRound_1_io_roundKey_6 = 8'hbd; // @[AESEncrypt.scala 45:33]
+  assign CipherRound_1_io_roundKey_7 = 8'hf1; // @[AESEncrypt.scala 45:33]
+  assign CipherRound_1_io_roundKey_8 = 8'hbe; // @[AESEncrypt.scala 45:33]
+  assign CipherRound_1_io_roundKey_9 = 8'h9b; // @[AESEncrypt.scala 45:33]
+  assign CipherRound_1_io_roundKey_10 = 8'hc5; // @[AESEncrypt.scala 45:33]
+  assign CipherRound_1_io_roundKey_11 = 8'h0; // @[AESEncrypt.scala 45:33]
+  assign CipherRound_1_io_roundKey_12 = 8'h68; // @[AESEncrypt.scala 45:33]
+  assign CipherRound_1_io_roundKey_13 = 8'h30; // @[AESEncrypt.scala 45:33]
+  assign CipherRound_1_io_roundKey_14 = 8'hb3; // @[AESEncrypt.scala 45:33]
+  assign CipherRound_1_io_roundKey_15 = 8'hfe; // @[AESEncrypt.scala 45:33]
   assign CipherRound_2_clock = clock;
   assign CipherRound_2_io_input_valid = CipherRound_1_io_output_valid; // @[AESEncrypt.scala 42:38]
   assign CipherRound_2_io_state_in_0 = CipherRound_1_io_state_out_0; // @[AESEncrypt.scala 43:35]
@@ -39374,6 +41486,22 @@ module AESEncrypt(
   assign CipherRound_2_io_state_in_13 = CipherRound_1_io_state_out_13; // @[AESEncrypt.scala 43:35]
   assign CipherRound_2_io_state_in_14 = CipherRound_1_io_state_out_14; // @[AESEncrypt.scala 43:35]
   assign CipherRound_2_io_state_in_15 = CipherRound_1_io_state_out_15; // @[AESEncrypt.scala 43:35]
+  assign CipherRound_2_io_roundKey_0 = 8'hb6; // @[AESEncrypt.scala 45:33]
+  assign CipherRound_2_io_roundKey_1 = 8'hff; // @[AESEncrypt.scala 45:33]
+  assign CipherRound_2_io_roundKey_2 = 8'h74; // @[AESEncrypt.scala 45:33]
+  assign CipherRound_2_io_roundKey_3 = 8'h4e; // @[AESEncrypt.scala 45:33]
+  assign CipherRound_2_io_roundKey_4 = 8'hd2; // @[AESEncrypt.scala 45:33]
+  assign CipherRound_2_io_roundKey_5 = 8'hc2; // @[AESEncrypt.scala 45:33]
+  assign CipherRound_2_io_roundKey_6 = 8'hc9; // @[AESEncrypt.scala 45:33]
+  assign CipherRound_2_io_roundKey_7 = 8'hbf; // @[AESEncrypt.scala 45:33]
+  assign CipherRound_2_io_roundKey_8 = 8'h6c; // @[AESEncrypt.scala 45:33]
+  assign CipherRound_2_io_roundKey_9 = 8'h59; // @[AESEncrypt.scala 45:33]
+  assign CipherRound_2_io_roundKey_10 = 8'hc; // @[AESEncrypt.scala 45:33]
+  assign CipherRound_2_io_roundKey_11 = 8'hbf; // @[AESEncrypt.scala 45:33]
+  assign CipherRound_2_io_roundKey_12 = 8'h4; // @[AESEncrypt.scala 45:33]
+  assign CipherRound_2_io_roundKey_13 = 8'h69; // @[AESEncrypt.scala 45:33]
+  assign CipherRound_2_io_roundKey_14 = 8'hbf; // @[AESEncrypt.scala 45:33]
+  assign CipherRound_2_io_roundKey_15 = 8'h41; // @[AESEncrypt.scala 45:33]
   assign CipherRound_3_clock = clock;
   assign CipherRound_3_io_input_valid = CipherRound_2_io_output_valid; // @[AESEncrypt.scala 42:38]
   assign CipherRound_3_io_state_in_0 = CipherRound_2_io_state_out_0; // @[AESEncrypt.scala 43:35]
@@ -39392,6 +41520,22 @@ module AESEncrypt(
   assign CipherRound_3_io_state_in_13 = CipherRound_2_io_state_out_13; // @[AESEncrypt.scala 43:35]
   assign CipherRound_3_io_state_in_14 = CipherRound_2_io_state_out_14; // @[AESEncrypt.scala 43:35]
   assign CipherRound_3_io_state_in_15 = CipherRound_2_io_state_out_15; // @[AESEncrypt.scala 43:35]
+  assign CipherRound_3_io_roundKey_0 = 8'h47; // @[AESEncrypt.scala 45:33]
+  assign CipherRound_3_io_roundKey_1 = 8'hf7; // @[AESEncrypt.scala 45:33]
+  assign CipherRound_3_io_roundKey_2 = 8'hf7; // @[AESEncrypt.scala 45:33]
+  assign CipherRound_3_io_roundKey_3 = 8'hbc; // @[AESEncrypt.scala 45:33]
+  assign CipherRound_3_io_roundKey_4 = 8'h95; // @[AESEncrypt.scala 45:33]
+  assign CipherRound_3_io_roundKey_5 = 8'h35; // @[AESEncrypt.scala 45:33]
+  assign CipherRound_3_io_roundKey_6 = 8'h3e; // @[AESEncrypt.scala 45:33]
+  assign CipherRound_3_io_roundKey_7 = 8'h3; // @[AESEncrypt.scala 45:33]
+  assign CipherRound_3_io_roundKey_8 = 8'hf9; // @[AESEncrypt.scala 45:33]
+  assign CipherRound_3_io_roundKey_9 = 8'h6c; // @[AESEncrypt.scala 45:33]
+  assign CipherRound_3_io_roundKey_10 = 8'h32; // @[AESEncrypt.scala 45:33]
+  assign CipherRound_3_io_roundKey_11 = 8'hbc; // @[AESEncrypt.scala 45:33]
+  assign CipherRound_3_io_roundKey_12 = 8'hfd; // @[AESEncrypt.scala 45:33]
+  assign CipherRound_3_io_roundKey_13 = 8'h5; // @[AESEncrypt.scala 45:33]
+  assign CipherRound_3_io_roundKey_14 = 8'h8d; // @[AESEncrypt.scala 45:33]
+  assign CipherRound_3_io_roundKey_15 = 8'hfd; // @[AESEncrypt.scala 45:33]
   assign CipherRound_4_clock = clock;
   assign CipherRound_4_io_input_valid = CipherRound_3_io_output_valid; // @[AESEncrypt.scala 42:38]
   assign CipherRound_4_io_state_in_0 = CipherRound_3_io_state_out_0; // @[AESEncrypt.scala 43:35]
@@ -39410,6 +41554,22 @@ module AESEncrypt(
   assign CipherRound_4_io_state_in_13 = CipherRound_3_io_state_out_13; // @[AESEncrypt.scala 43:35]
   assign CipherRound_4_io_state_in_14 = CipherRound_3_io_state_out_14; // @[AESEncrypt.scala 43:35]
   assign CipherRound_4_io_state_in_15 = CipherRound_3_io_state_out_15; // @[AESEncrypt.scala 43:35]
+  assign CipherRound_4_io_roundKey_0 = 8'h3c; // @[AESEncrypt.scala 45:33]
+  assign CipherRound_4_io_roundKey_1 = 8'haa; // @[AESEncrypt.scala 45:33]
+  assign CipherRound_4_io_roundKey_2 = 8'ha3; // @[AESEncrypt.scala 45:33]
+  assign CipherRound_4_io_roundKey_3 = 8'he8; // @[AESEncrypt.scala 45:33]
+  assign CipherRound_4_io_roundKey_4 = 8'ha9; // @[AESEncrypt.scala 45:33]
+  assign CipherRound_4_io_roundKey_5 = 8'h9f; // @[AESEncrypt.scala 45:33]
+  assign CipherRound_4_io_roundKey_6 = 8'h9d; // @[AESEncrypt.scala 45:33]
+  assign CipherRound_4_io_roundKey_7 = 8'heb; // @[AESEncrypt.scala 45:33]
+  assign CipherRound_4_io_roundKey_8 = 8'h50; // @[AESEncrypt.scala 45:33]
+  assign CipherRound_4_io_roundKey_9 = 8'hf3; // @[AESEncrypt.scala 45:33]
+  assign CipherRound_4_io_roundKey_10 = 8'haf; // @[AESEncrypt.scala 45:33]
+  assign CipherRound_4_io_roundKey_11 = 8'h57; // @[AESEncrypt.scala 45:33]
+  assign CipherRound_4_io_roundKey_12 = 8'had; // @[AESEncrypt.scala 45:33]
+  assign CipherRound_4_io_roundKey_13 = 8'hf6; // @[AESEncrypt.scala 45:33]
+  assign CipherRound_4_io_roundKey_14 = 8'h22; // @[AESEncrypt.scala 45:33]
+  assign CipherRound_4_io_roundKey_15 = 8'haa; // @[AESEncrypt.scala 45:33]
   assign CipherRound_5_clock = clock;
   assign CipherRound_5_io_input_valid = CipherRound_4_io_output_valid; // @[AESEncrypt.scala 42:38]
   assign CipherRound_5_io_state_in_0 = CipherRound_4_io_state_out_0; // @[AESEncrypt.scala 43:35]
@@ -39428,6 +41588,22 @@ module AESEncrypt(
   assign CipherRound_5_io_state_in_13 = CipherRound_4_io_state_out_13; // @[AESEncrypt.scala 43:35]
   assign CipherRound_5_io_state_in_14 = CipherRound_4_io_state_out_14; // @[AESEncrypt.scala 43:35]
   assign CipherRound_5_io_state_in_15 = CipherRound_4_io_state_out_15; // @[AESEncrypt.scala 43:35]
+  assign CipherRound_5_io_roundKey_0 = 8'h5e; // @[AESEncrypt.scala 45:33]
+  assign CipherRound_5_io_roundKey_1 = 8'h39; // @[AESEncrypt.scala 45:33]
+  assign CipherRound_5_io_roundKey_2 = 8'hf; // @[AESEncrypt.scala 45:33]
+  assign CipherRound_5_io_roundKey_3 = 8'h7d; // @[AESEncrypt.scala 45:33]
+  assign CipherRound_5_io_roundKey_4 = 8'hf7; // @[AESEncrypt.scala 45:33]
+  assign CipherRound_5_io_roundKey_5 = 8'ha6; // @[AESEncrypt.scala 45:33]
+  assign CipherRound_5_io_roundKey_6 = 8'h92; // @[AESEncrypt.scala 45:33]
+  assign CipherRound_5_io_roundKey_7 = 8'h96; // @[AESEncrypt.scala 45:33]
+  assign CipherRound_5_io_roundKey_8 = 8'ha7; // @[AESEncrypt.scala 45:33]
+  assign CipherRound_5_io_roundKey_9 = 8'h55; // @[AESEncrypt.scala 45:33]
+  assign CipherRound_5_io_roundKey_10 = 8'h3d; // @[AESEncrypt.scala 45:33]
+  assign CipherRound_5_io_roundKey_11 = 8'hc1; // @[AESEncrypt.scala 45:33]
+  assign CipherRound_5_io_roundKey_12 = 8'ha; // @[AESEncrypt.scala 45:33]
+  assign CipherRound_5_io_roundKey_13 = 8'ha3; // @[AESEncrypt.scala 45:33]
+  assign CipherRound_5_io_roundKey_14 = 8'h1f; // @[AESEncrypt.scala 45:33]
+  assign CipherRound_5_io_roundKey_15 = 8'h6b; // @[AESEncrypt.scala 45:33]
   assign CipherRound_6_clock = clock;
   assign CipherRound_6_io_input_valid = CipherRound_5_io_output_valid; // @[AESEncrypt.scala 42:38]
   assign CipherRound_6_io_state_in_0 = CipherRound_5_io_state_out_0; // @[AESEncrypt.scala 43:35]
@@ -39446,6 +41622,22 @@ module AESEncrypt(
   assign CipherRound_6_io_state_in_13 = CipherRound_5_io_state_out_13; // @[AESEncrypt.scala 43:35]
   assign CipherRound_6_io_state_in_14 = CipherRound_5_io_state_out_14; // @[AESEncrypt.scala 43:35]
   assign CipherRound_6_io_state_in_15 = CipherRound_5_io_state_out_15; // @[AESEncrypt.scala 43:35]
+  assign CipherRound_6_io_roundKey_0 = 8'h14; // @[AESEncrypt.scala 45:33]
+  assign CipherRound_6_io_roundKey_1 = 8'hf9; // @[AESEncrypt.scala 45:33]
+  assign CipherRound_6_io_roundKey_2 = 8'h70; // @[AESEncrypt.scala 45:33]
+  assign CipherRound_6_io_roundKey_3 = 8'h1a; // @[AESEncrypt.scala 45:33]
+  assign CipherRound_6_io_roundKey_4 = 8'he3; // @[AESEncrypt.scala 45:33]
+  assign CipherRound_6_io_roundKey_5 = 8'h5f; // @[AESEncrypt.scala 45:33]
+  assign CipherRound_6_io_roundKey_6 = 8'he2; // @[AESEncrypt.scala 45:33]
+  assign CipherRound_6_io_roundKey_7 = 8'h8c; // @[AESEncrypt.scala 45:33]
+  assign CipherRound_6_io_roundKey_8 = 8'h44; // @[AESEncrypt.scala 45:33]
+  assign CipherRound_6_io_roundKey_9 = 8'ha; // @[AESEncrypt.scala 45:33]
+  assign CipherRound_6_io_roundKey_10 = 8'hdf; // @[AESEncrypt.scala 45:33]
+  assign CipherRound_6_io_roundKey_11 = 8'h4d; // @[AESEncrypt.scala 45:33]
+  assign CipherRound_6_io_roundKey_12 = 8'h4e; // @[AESEncrypt.scala 45:33]
+  assign CipherRound_6_io_roundKey_13 = 8'ha9; // @[AESEncrypt.scala 45:33]
+  assign CipherRound_6_io_roundKey_14 = 8'hc0; // @[AESEncrypt.scala 45:33]
+  assign CipherRound_6_io_roundKey_15 = 8'h26; // @[AESEncrypt.scala 45:33]
   assign CipherRound_7_clock = clock;
   assign CipherRound_7_io_input_valid = CipherRound_6_io_output_valid; // @[AESEncrypt.scala 42:38]
   assign CipherRound_7_io_state_in_0 = CipherRound_6_io_state_out_0; // @[AESEncrypt.scala 43:35]
@@ -39464,6 +41656,22 @@ module AESEncrypt(
   assign CipherRound_7_io_state_in_13 = CipherRound_6_io_state_out_13; // @[AESEncrypt.scala 43:35]
   assign CipherRound_7_io_state_in_14 = CipherRound_6_io_state_out_14; // @[AESEncrypt.scala 43:35]
   assign CipherRound_7_io_state_in_15 = CipherRound_6_io_state_out_15; // @[AESEncrypt.scala 43:35]
+  assign CipherRound_7_io_roundKey_0 = 8'h47; // @[AESEncrypt.scala 45:33]
+  assign CipherRound_7_io_roundKey_1 = 8'h43; // @[AESEncrypt.scala 45:33]
+  assign CipherRound_7_io_roundKey_2 = 8'h87; // @[AESEncrypt.scala 45:33]
+  assign CipherRound_7_io_roundKey_3 = 8'h35; // @[AESEncrypt.scala 45:33]
+  assign CipherRound_7_io_roundKey_4 = 8'ha4; // @[AESEncrypt.scala 45:33]
+  assign CipherRound_7_io_roundKey_5 = 8'h1c; // @[AESEncrypt.scala 45:33]
+  assign CipherRound_7_io_roundKey_6 = 8'h65; // @[AESEncrypt.scala 45:33]
+  assign CipherRound_7_io_roundKey_7 = 8'hb9; // @[AESEncrypt.scala 45:33]
+  assign CipherRound_7_io_roundKey_8 = 8'he0; // @[AESEncrypt.scala 45:33]
+  assign CipherRound_7_io_roundKey_9 = 8'h16; // @[AESEncrypt.scala 45:33]
+  assign CipherRound_7_io_roundKey_10 = 8'hba; // @[AESEncrypt.scala 45:33]
+  assign CipherRound_7_io_roundKey_11 = 8'hf4; // @[AESEncrypt.scala 45:33]
+  assign CipherRound_7_io_roundKey_12 = 8'hae; // @[AESEncrypt.scala 45:33]
+  assign CipherRound_7_io_roundKey_13 = 8'hbf; // @[AESEncrypt.scala 45:33]
+  assign CipherRound_7_io_roundKey_14 = 8'h7a; // @[AESEncrypt.scala 45:33]
+  assign CipherRound_7_io_roundKey_15 = 8'hd2; // @[AESEncrypt.scala 45:33]
   assign CipherRound_8_clock = clock;
   assign CipherRound_8_io_input_valid = CipherRound_7_io_output_valid; // @[AESEncrypt.scala 42:38]
   assign CipherRound_8_io_state_in_0 = CipherRound_7_io_state_out_0; // @[AESEncrypt.scala 43:35]
@@ -39482,6 +41690,22 @@ module AESEncrypt(
   assign CipherRound_8_io_state_in_13 = CipherRound_7_io_state_out_13; // @[AESEncrypt.scala 43:35]
   assign CipherRound_8_io_state_in_14 = CipherRound_7_io_state_out_14; // @[AESEncrypt.scala 43:35]
   assign CipherRound_8_io_state_in_15 = CipherRound_7_io_state_out_15; // @[AESEncrypt.scala 43:35]
+  assign CipherRound_8_io_roundKey_0 = 8'h54; // @[AESEncrypt.scala 45:33]
+  assign CipherRound_8_io_roundKey_1 = 8'h99; // @[AESEncrypt.scala 45:33]
+  assign CipherRound_8_io_roundKey_2 = 8'h32; // @[AESEncrypt.scala 45:33]
+  assign CipherRound_8_io_roundKey_3 = 8'hd1; // @[AESEncrypt.scala 45:33]
+  assign CipherRound_8_io_roundKey_4 = 8'hf0; // @[AESEncrypt.scala 45:33]
+  assign CipherRound_8_io_roundKey_5 = 8'h85; // @[AESEncrypt.scala 45:33]
+  assign CipherRound_8_io_roundKey_6 = 8'h57; // @[AESEncrypt.scala 45:33]
+  assign CipherRound_8_io_roundKey_7 = 8'h68; // @[AESEncrypt.scala 45:33]
+  assign CipherRound_8_io_roundKey_8 = 8'h10; // @[AESEncrypt.scala 45:33]
+  assign CipherRound_8_io_roundKey_9 = 8'h93; // @[AESEncrypt.scala 45:33]
+  assign CipherRound_8_io_roundKey_10 = 8'hed; // @[AESEncrypt.scala 45:33]
+  assign CipherRound_8_io_roundKey_11 = 8'h9c; // @[AESEncrypt.scala 45:33]
+  assign CipherRound_8_io_roundKey_12 = 8'hbe; // @[AESEncrypt.scala 45:33]
+  assign CipherRound_8_io_roundKey_13 = 8'h2c; // @[AESEncrypt.scala 45:33]
+  assign CipherRound_8_io_roundKey_14 = 8'h97; // @[AESEncrypt.scala 45:33]
+  assign CipherRound_8_io_roundKey_15 = 8'h4e; // @[AESEncrypt.scala 45:33]
   assign CipherRoundNMC_clock = clock;
   assign CipherRoundNMC_io_input_valid = CipherRound_8_io_output_valid; // @[AESEncrypt.scala 49:33]
   assign CipherRoundNMC_io_state_in_0 = CipherRound_8_io_state_out_0; // @[AESEncrypt.scala 50:30]
@@ -39765,52 +41989,56 @@ module MaxPeriodFibonacciLFSR(
   assign io_out_62 = state_62; // @[PRNG.scala 69:10]
   assign io_out_63 = state_63; // @[PRNG.scala 69:10]
   always @(posedge clock) begin
-    state_0 <= reset | _T_2; // @[PRNG.scala 47:{50,50}]
-    state_1 <= reset | state_0; // @[PRNG.scala 47:{50,50}]
-    state_2 <= reset | state_1; // @[PRNG.scala 47:{50,50}]
-    state_3 <= reset | state_2; // @[PRNG.scala 47:{50,50}]
-    state_4 <= reset | state_3; // @[PRNG.scala 47:{50,50}]
-    state_5 <= reset | state_4; // @[PRNG.scala 47:{50,50}]
     if (reset) begin // @[PRNG.scala 47:50]
-      state_6 <= 1'h0; // @[PRNG.scala 47:50]
+      state_0 <= 1'h0; // @[PRNG.scala 47:50]
     end else begin
-      state_6 <= state_5;
+      state_0 <= _T_2;
     end
+    state_1 <= reset | state_0; // @[PRNG.scala 47:{50,50}]
+    if (reset) begin // @[PRNG.scala 47:50]
+      state_2 <= 1'h0; // @[PRNG.scala 47:50]
+    end else begin
+      state_2 <= state_1;
+    end
+    state_3 <= reset | state_2; // @[PRNG.scala 47:{50,50}]
+    if (reset) begin // @[PRNG.scala 47:50]
+      state_4 <= 1'h0; // @[PRNG.scala 47:50]
+    end else begin
+      state_4 <= state_3;
+    end
+    state_5 <= reset | state_4; // @[PRNG.scala 47:{50,50}]
+    state_6 <= reset | state_5; // @[PRNG.scala 47:{50,50}]
     if (reset) begin // @[PRNG.scala 47:50]
       state_7 <= 1'h0; // @[PRNG.scala 47:50]
     end else begin
       state_7 <= state_6;
     end
-    state_8 <= reset | state_7; // @[PRNG.scala 47:{50,50}]
+    if (reset) begin // @[PRNG.scala 47:50]
+      state_8 <= 1'h0; // @[PRNG.scala 47:50]
+    end else begin
+      state_8 <= state_7;
+    end
     state_9 <= reset | state_8; // @[PRNG.scala 47:{50,50}]
+    state_10 <= reset | state_9; // @[PRNG.scala 47:{50,50}]
     if (reset) begin // @[PRNG.scala 47:50]
-      state_10 <= 1'h0; // @[PRNG.scala 47:50]
+      state_11 <= 1'h0; // @[PRNG.scala 47:50]
     end else begin
-      state_10 <= state_9;
+      state_11 <= state_10;
     end
-    state_11 <= reset | state_10; // @[PRNG.scala 47:{50,50}]
-    if (reset) begin // @[PRNG.scala 47:50]
-      state_12 <= 1'h0; // @[PRNG.scala 47:50]
-    end else begin
-      state_12 <= state_11;
-    end
+    state_12 <= reset | state_11; // @[PRNG.scala 47:{50,50}]
     if (reset) begin // @[PRNG.scala 47:50]
       state_13 <= 1'h0; // @[PRNG.scala 47:50]
     end else begin
       state_13 <= state_12;
     end
     state_14 <= reset | state_13; // @[PRNG.scala 47:{50,50}]
+    state_15 <= reset | state_14; // @[PRNG.scala 47:{50,50}]
     if (reset) begin // @[PRNG.scala 47:50]
-      state_15 <= 1'h0; // @[PRNG.scala 47:50]
+      state_16 <= 1'h0; // @[PRNG.scala 47:50]
     end else begin
-      state_15 <= state_14;
+      state_16 <= state_15;
     end
-    state_16 <= reset | state_15; // @[PRNG.scala 47:{50,50}]
-    if (reset) begin // @[PRNG.scala 47:50]
-      state_17 <= 1'h0; // @[PRNG.scala 47:50]
-    end else begin
-      state_17 <= state_16;
-    end
+    state_17 <= reset | state_16; // @[PRNG.scala 47:{50,50}]
     if (reset) begin // @[PRNG.scala 47:50]
       state_18 <= 1'h0; // @[PRNG.scala 47:50]
     end else begin
@@ -39823,35 +42051,55 @@ module MaxPeriodFibonacciLFSR(
     end else begin
       state_21 <= state_20;
     end
-    state_22 <= reset | state_21; // @[PRNG.scala 47:{50,50}]
-    state_23 <= reset | state_22; // @[PRNG.scala 47:{50,50}]
     if (reset) begin // @[PRNG.scala 47:50]
-      state_24 <= 1'h0; // @[PRNG.scala 47:50]
+      state_22 <= 1'h0; // @[PRNG.scala 47:50]
     end else begin
-      state_24 <= state_23;
+      state_22 <= state_21;
     end
+    if (reset) begin // @[PRNG.scala 47:50]
+      state_23 <= 1'h0; // @[PRNG.scala 47:50]
+    end else begin
+      state_23 <= state_22;
+    end
+    state_24 <= reset | state_23; // @[PRNG.scala 47:{50,50}]
     if (reset) begin // @[PRNG.scala 47:50]
       state_25 <= 1'h0; // @[PRNG.scala 47:50]
     end else begin
       state_25 <= state_24;
     end
+    state_26 <= reset | state_25; // @[PRNG.scala 47:{50,50}]
     if (reset) begin // @[PRNG.scala 47:50]
-      state_26 <= 1'h0; // @[PRNG.scala 47:50]
+      state_27 <= 1'h0; // @[PRNG.scala 47:50]
     end else begin
-      state_26 <= state_25;
+      state_27 <= state_26;
     end
-    state_27 <= reset | state_26; // @[PRNG.scala 47:{50,50}]
     state_28 <= reset | state_27; // @[PRNG.scala 47:{50,50}]
-    state_29 <= reset | state_28; // @[PRNG.scala 47:{50,50}]
-    state_30 <= reset | state_29; // @[PRNG.scala 47:{50,50}]
-    state_31 <= reset | state_30; // @[PRNG.scala 47:{50,50}]
+    if (reset) begin // @[PRNG.scala 47:50]
+      state_29 <= 1'h0; // @[PRNG.scala 47:50]
+    end else begin
+      state_29 <= state_28;
+    end
+    if (reset) begin // @[PRNG.scala 47:50]
+      state_30 <= 1'h0; // @[PRNG.scala 47:50]
+    end else begin
+      state_30 <= state_29;
+    end
+    if (reset) begin // @[PRNG.scala 47:50]
+      state_31 <= 1'h0; // @[PRNG.scala 47:50]
+    end else begin
+      state_31 <= state_30;
+    end
     if (reset) begin // @[PRNG.scala 47:50]
       state_32 <= 1'h0; // @[PRNG.scala 47:50]
     end else begin
       state_32 <= state_31;
     end
     state_33 <= reset | state_32; // @[PRNG.scala 47:{50,50}]
-    state_34 <= reset | state_33; // @[PRNG.scala 47:{50,50}]
+    if (reset) begin // @[PRNG.scala 47:50]
+      state_34 <= 1'h0; // @[PRNG.scala 47:50]
+    end else begin
+      state_34 <= state_33;
+    end
     if (reset) begin // @[PRNG.scala 47:50]
       state_35 <= 1'h0; // @[PRNG.scala 47:50]
     end else begin
@@ -39862,27 +42110,15 @@ module MaxPeriodFibonacciLFSR(
     end else begin
       state_36 <= state_35;
     end
+    state_37 <= reset | state_36; // @[PRNG.scala 47:{50,50}]
+    state_38 <= reset | state_37; // @[PRNG.scala 47:{50,50}]
     if (reset) begin // @[PRNG.scala 47:50]
-      state_37 <= 1'h0; // @[PRNG.scala 47:50]
+      state_39 <= 1'h0; // @[PRNG.scala 47:50]
     end else begin
-      state_37 <= state_36;
+      state_39 <= state_38;
     end
-    if (reset) begin // @[PRNG.scala 47:50]
-      state_38 <= 1'h0; // @[PRNG.scala 47:50]
-    end else begin
-      state_38 <= state_37;
-    end
-    state_39 <= reset | state_38; // @[PRNG.scala 47:{50,50}]
-    if (reset) begin // @[PRNG.scala 47:50]
-      state_40 <= 1'h0; // @[PRNG.scala 47:50]
-    end else begin
-      state_40 <= state_39;
-    end
-    if (reset) begin // @[PRNG.scala 47:50]
-      state_41 <= 1'h0; // @[PRNG.scala 47:50]
-    end else begin
-      state_41 <= state_40;
-    end
+    state_40 <= reset | state_39; // @[PRNG.scala 47:{50,50}]
+    state_41 <= reset | state_40; // @[PRNG.scala 47:{50,50}]
     state_42 <= reset | state_41; // @[PRNG.scala 47:{50,50}]
     if (reset) begin // @[PRNG.scala 47:50]
       state_43 <= 1'h0; // @[PRNG.scala 47:50]
@@ -39894,26 +42130,26 @@ module MaxPeriodFibonacciLFSR(
     end else begin
       state_44 <= state_43;
     end
-    state_45 <= reset | state_44; // @[PRNG.scala 47:{50,50}]
     if (reset) begin // @[PRNG.scala 47:50]
-      state_46 <= 1'h0; // @[PRNG.scala 47:50]
+      state_45 <= 1'h0; // @[PRNG.scala 47:50]
     end else begin
-      state_46 <= state_45;
+      state_45 <= state_44;
     end
-    state_47 <= reset | state_46; // @[PRNG.scala 47:{50,50}]
+    state_46 <= reset | state_45; // @[PRNG.scala 47:{50,50}]
+    if (reset) begin // @[PRNG.scala 47:50]
+      state_47 <= 1'h0; // @[PRNG.scala 47:50]
+    end else begin
+      state_47 <= state_46;
+    end
     state_48 <= reset | state_47; // @[PRNG.scala 47:{50,50}]
-    if (reset) begin // @[PRNG.scala 47:50]
-      state_49 <= 1'h0; // @[PRNG.scala 47:50]
-    end else begin
-      state_49 <= state_48;
-    end
-    if (reset) begin // @[PRNG.scala 47:50]
-      state_50 <= 1'h0; // @[PRNG.scala 47:50]
-    end else begin
-      state_50 <= state_49;
-    end
+    state_49 <= reset | state_48; // @[PRNG.scala 47:{50,50}]
+    state_50 <= reset | state_49; // @[PRNG.scala 47:{50,50}]
     state_51 <= reset | state_50; // @[PRNG.scala 47:{50,50}]
-    state_52 <= reset | state_51; // @[PRNG.scala 47:{50,50}]
+    if (reset) begin // @[PRNG.scala 47:50]
+      state_52 <= 1'h0; // @[PRNG.scala 47:50]
+    end else begin
+      state_52 <= state_51;
+    end
     state_53 <= reset | state_52; // @[PRNG.scala 47:{50,50}]
     if (reset) begin // @[PRNG.scala 47:50]
       state_54 <= 1'h0; // @[PRNG.scala 47:50]
@@ -39936,18 +42172,22 @@ module MaxPeriodFibonacciLFSR(
     end else begin
       state_58 <= state_57;
     end
-    if (reset) begin // @[PRNG.scala 47:50]
-      state_59 <= 1'h0; // @[PRNG.scala 47:50]
-    end else begin
-      state_59 <= state_58;
-    end
+    state_59 <= reset | state_58; // @[PRNG.scala 47:{50,50}]
     if (reset) begin // @[PRNG.scala 47:50]
       state_60 <= 1'h0; // @[PRNG.scala 47:50]
     end else begin
       state_60 <= state_59;
     end
-    state_61 <= reset | state_60; // @[PRNG.scala 47:{50,50}]
-    state_62 <= reset | state_61; // @[PRNG.scala 47:{50,50}]
+    if (reset) begin // @[PRNG.scala 47:50]
+      state_61 <= 1'h0; // @[PRNG.scala 47:50]
+    end else begin
+      state_61 <= state_60;
+    end
+    if (reset) begin // @[PRNG.scala 47:50]
+      state_62 <= 1'h0; // @[PRNG.scala 47:50]
+    end else begin
+      state_62 <= state_61;
+    end
     state_63 <= reset | state_62; // @[PRNG.scala 47:{50,50}]
   end
 // Register and memory initialization
@@ -40139,18 +42379,84 @@ module SE(
 `ifdef RANDOMIZE_REG_INIT
   reg [31:0] _RAND_0;
   reg [31:0] _RAND_1;
-  reg [31:0] _RAND_2;
+  reg [127:0] _RAND_2;
   reg [127:0] _RAND_3;
   reg [127:0] _RAND_4;
   reg [127:0] _RAND_5;
-  reg [31:0] _RAND_6;
-  reg [31:0] _RAND_7;
-  reg [31:0] _RAND_8;
+  reg [127:0] _RAND_6;
+  reg [127:0] _RAND_7;
+  reg [127:0] _RAND_8;
   reg [127:0] _RAND_9;
-  reg [31:0] _RAND_10;
+  reg [127:0] _RAND_10;
   reg [127:0] _RAND_11;
   reg [127:0] _RAND_12;
-  reg [31:0] _RAND_13;
+  reg [127:0] _RAND_13;
+  reg [127:0] _RAND_14;
+  reg [127:0] _RAND_15;
+  reg [127:0] _RAND_16;
+  reg [127:0] _RAND_17;
+  reg [127:0] _RAND_18;
+  reg [127:0] _RAND_19;
+  reg [127:0] _RAND_20;
+  reg [127:0] _RAND_21;
+  reg [127:0] _RAND_22;
+  reg [127:0] _RAND_23;
+  reg [127:0] _RAND_24;
+  reg [127:0] _RAND_25;
+  reg [127:0] _RAND_26;
+  reg [127:0] _RAND_27;
+  reg [127:0] _RAND_28;
+  reg [127:0] _RAND_29;
+  reg [127:0] _RAND_30;
+  reg [127:0] _RAND_31;
+  reg [127:0] _RAND_32;
+  reg [127:0] _RAND_33;
+  reg [63:0] _RAND_34;
+  reg [63:0] _RAND_35;
+  reg [63:0] _RAND_36;
+  reg [63:0] _RAND_37;
+  reg [63:0] _RAND_38;
+  reg [63:0] _RAND_39;
+  reg [63:0] _RAND_40;
+  reg [63:0] _RAND_41;
+  reg [63:0] _RAND_42;
+  reg [63:0] _RAND_43;
+  reg [63:0] _RAND_44;
+  reg [63:0] _RAND_45;
+  reg [63:0] _RAND_46;
+  reg [63:0] _RAND_47;
+  reg [63:0] _RAND_48;
+  reg [63:0] _RAND_49;
+  reg [63:0] _RAND_50;
+  reg [63:0] _RAND_51;
+  reg [63:0] _RAND_52;
+  reg [63:0] _RAND_53;
+  reg [63:0] _RAND_54;
+  reg [63:0] _RAND_55;
+  reg [63:0] _RAND_56;
+  reg [63:0] _RAND_57;
+  reg [63:0] _RAND_58;
+  reg [63:0] _RAND_59;
+  reg [63:0] _RAND_60;
+  reg [63:0] _RAND_61;
+  reg [63:0] _RAND_62;
+  reg [63:0] _RAND_63;
+  reg [63:0] _RAND_64;
+  reg [63:0] _RAND_65;
+  reg [31:0] _RAND_66;
+  reg [31:0] _RAND_67;
+  reg [127:0] _RAND_68;
+  reg [127:0] _RAND_69;
+  reg [127:0] _RAND_70;
+  reg [31:0] _RAND_71;
+  reg [31:0] _RAND_72;
+  reg [31:0] _RAND_73;
+  reg [127:0] _RAND_74;
+  reg [31:0] _RAND_75;
+  reg [127:0] _RAND_76;
+  reg [63:0] _RAND_77;
+  reg [127:0] _RAND_78;
+  reg [31:0] _RAND_79;
 `endif // RANDOMIZE_REG_INIT
   wire [7:0] seoperation_io_inst; // @[SE.scala 76:33]
   wire [63:0] seoperation_io_op1_input; // @[SE.scala 76:33]
@@ -40365,48 +42671,296 @@ module SE(
   wire  _T_1 = io_out_valid & io_out_ready; // @[SE.scala 65:33]
   wire  _GEN_2 = io_out_valid & io_out_ready ? 1'h0 : counterOn; // @[SE.scala 65:49 66:27 58:32]
   wire  _GEN_3 = io_in_valid & io_in_ready | _GEN_2; // @[SE.scala 63:41 64:27]
+  reg [127:0] ciphers_0; // @[SE.scala 81:26]
+  reg [127:0] ciphers_1; // @[SE.scala 81:26]
+  reg [127:0] ciphers_2; // @[SE.scala 81:26]
+  reg [127:0] ciphers_3; // @[SE.scala 81:26]
+  reg [127:0] ciphers_4; // @[SE.scala 81:26]
+  reg [127:0] ciphers_5; // @[SE.scala 81:26]
+  reg [127:0] ciphers_6; // @[SE.scala 81:26]
+  reg [127:0] ciphers_7; // @[SE.scala 81:26]
+  reg [127:0] ciphers_8; // @[SE.scala 81:26]
+  reg [127:0] ciphers_9; // @[SE.scala 81:26]
+  reg [127:0] ciphers_10; // @[SE.scala 81:26]
+  reg [127:0] ciphers_11; // @[SE.scala 81:26]
+  reg [127:0] ciphers_12; // @[SE.scala 81:26]
+  reg [127:0] ciphers_13; // @[SE.scala 81:26]
+  reg [127:0] ciphers_14; // @[SE.scala 81:26]
+  reg [127:0] ciphers_15; // @[SE.scala 81:26]
+  reg [127:0] ciphers_16; // @[SE.scala 81:26]
+  reg [127:0] ciphers_17; // @[SE.scala 81:26]
+  reg [127:0] ciphers_18; // @[SE.scala 81:26]
+  reg [127:0] ciphers_19; // @[SE.scala 81:26]
+  reg [127:0] ciphers_20; // @[SE.scala 81:26]
+  reg [127:0] ciphers_21; // @[SE.scala 81:26]
+  reg [127:0] ciphers_22; // @[SE.scala 81:26]
+  reg [127:0] ciphers_23; // @[SE.scala 81:26]
+  reg [127:0] ciphers_24; // @[SE.scala 81:26]
+  reg [127:0] ciphers_25; // @[SE.scala 81:26]
+  reg [127:0] ciphers_26; // @[SE.scala 81:26]
+  reg [127:0] ciphers_27; // @[SE.scala 81:26]
+  reg [127:0] ciphers_28; // @[SE.scala 81:26]
+  reg [127:0] ciphers_29; // @[SE.scala 81:26]
+  reg [127:0] ciphers_30; // @[SE.scala 81:26]
+  reg [127:0] ciphers_31; // @[SE.scala 81:26]
+  reg [63:0] plaintexts_0; // @[SE.scala 82:29]
+  reg [63:0] plaintexts_1; // @[SE.scala 82:29]
+  reg [63:0] plaintexts_2; // @[SE.scala 82:29]
+  reg [63:0] plaintexts_3; // @[SE.scala 82:29]
+  reg [63:0] plaintexts_4; // @[SE.scala 82:29]
+  reg [63:0] plaintexts_5; // @[SE.scala 82:29]
+  reg [63:0] plaintexts_6; // @[SE.scala 82:29]
+  reg [63:0] plaintexts_7; // @[SE.scala 82:29]
+  reg [63:0] plaintexts_8; // @[SE.scala 82:29]
+  reg [63:0] plaintexts_9; // @[SE.scala 82:29]
+  reg [63:0] plaintexts_10; // @[SE.scala 82:29]
+  reg [63:0] plaintexts_11; // @[SE.scala 82:29]
+  reg [63:0] plaintexts_12; // @[SE.scala 82:29]
+  reg [63:0] plaintexts_13; // @[SE.scala 82:29]
+  reg [63:0] plaintexts_14; // @[SE.scala 82:29]
+  reg [63:0] plaintexts_15; // @[SE.scala 82:29]
+  reg [63:0] plaintexts_16; // @[SE.scala 82:29]
+  reg [63:0] plaintexts_17; // @[SE.scala 82:29]
+  reg [63:0] plaintexts_18; // @[SE.scala 82:29]
+  reg [63:0] plaintexts_19; // @[SE.scala 82:29]
+  reg [63:0] plaintexts_20; // @[SE.scala 82:29]
+  reg [63:0] plaintexts_21; // @[SE.scala 82:29]
+  reg [63:0] plaintexts_22; // @[SE.scala 82:29]
+  reg [63:0] plaintexts_23; // @[SE.scala 82:29]
+  reg [63:0] plaintexts_24; // @[SE.scala 82:29]
+  reg [63:0] plaintexts_25; // @[SE.scala 82:29]
+  reg [63:0] plaintexts_26; // @[SE.scala 82:29]
+  reg [63:0] plaintexts_27; // @[SE.scala 82:29]
+  reg [63:0] plaintexts_28; // @[SE.scala 82:29]
+  reg [63:0] plaintexts_29; // @[SE.scala 82:29]
+  reg [63:0] plaintexts_30; // @[SE.scala 82:29]
+  reg [63:0] plaintexts_31; // @[SE.scala 82:29]
+  reg [7:0] ptr; // @[SE.scala 83:26]
   reg [7:0] inst_buffer; // @[Reg.scala 15:16]
   reg [127:0] op1_buffer; // @[Reg.scala 15:16]
   reg [127:0] op2_buffer; // @[Reg.scala 15:16]
   reg [127:0] cond_buffer; // @[Reg.scala 15:16]
   reg  valid_buffer; // @[SE.scala 106:31]
   reg  ready_for_input; // @[SE.scala 109:38]
-  wire  _T_8 = 128'h0 == op1_buffer; // @[SE.scala 140:41]
-  wire  _T_55 = 128'h0 == op1_buffer | 128'h0 == op1_buffer | 128'h0 == op1_buffer | 128'h0 == op1_buffer | 128'h0 ==
-    op1_buffer | 128'h0 == op1_buffer | 128'h0 == op1_buffer | 128'h0 == op1_buffer | 128'h0 == op1_buffer | 128'h0 ==
-    op1_buffer | 128'h0 == op1_buffer | 128'h0 == op1_buffer | 128'h0 == op1_buffer | 128'h0 == op1_buffer | 128'h0 ==
-    op1_buffer | _T_8; // @[SE.scala 140:41]
-  wire  _T_70 = _T_55 | 128'h0 == op1_buffer | 128'h0 == op1_buffer | 128'h0 == op1_buffer | 128'h0 == op1_buffer | 128'h0
-     == op1_buffer | 128'h0 == op1_buffer | 128'h0 == op1_buffer | 128'h0 == op1_buffer | 128'h0 == op1_buffer | 128'h0
-     == op1_buffer | 128'h0 == op1_buffer | 128'h0 == op1_buffer | 128'h0 == op1_buffer | 128'h0 == op1_buffer | 128'h0
-     == op1_buffer; // @[SE.scala 140:41]
-  wire  op1_found = _T_70 | 128'h0 == op1_buffer; // @[SE.scala 140:41]
-  wire  _T_71 = 128'h0 == op2_buffer; // @[SE.scala 141:41]
-  wire  _T_118 = 128'h0 == op2_buffer | 128'h0 == op2_buffer | 128'h0 == op2_buffer | 128'h0 == op2_buffer | 128'h0 ==
-    op2_buffer | 128'h0 == op2_buffer | 128'h0 == op2_buffer | 128'h0 == op2_buffer | 128'h0 == op2_buffer | 128'h0 ==
-    op2_buffer | 128'h0 == op2_buffer | 128'h0 == op2_buffer | 128'h0 == op2_buffer | 128'h0 == op2_buffer | 128'h0 ==
-    op2_buffer | _T_71; // @[SE.scala 141:41]
-  wire  _T_133 = _T_118 | 128'h0 == op2_buffer | 128'h0 == op2_buffer | 128'h0 == op2_buffer | 128'h0 == op2_buffer | 128'h0
-     == op2_buffer | 128'h0 == op2_buffer | 128'h0 == op2_buffer | 128'h0 == op2_buffer | 128'h0 == op2_buffer | 128'h0
-     == op2_buffer | 128'h0 == op2_buffer | 128'h0 == op2_buffer | 128'h0 == op2_buffer | 128'h0 == op2_buffer | 128'h0
-     == op2_buffer; // @[SE.scala 141:41]
-  wire  op2_found = _T_133 | 128'h0 == op2_buffer; // @[SE.scala 141:41]
+  wire  _T_8 = ciphers_0 == op1_buffer; // @[SE.scala 140:41]
+  wire  _T_9 = ciphers_1 == op1_buffer; // @[SE.scala 140:41]
+  wire  _T_10 = ciphers_2 == op1_buffer; // @[SE.scala 140:41]
+  wire  _T_11 = ciphers_3 == op1_buffer; // @[SE.scala 140:41]
+  wire  _T_12 = ciphers_4 == op1_buffer; // @[SE.scala 140:41]
+  wire  _T_13 = ciphers_5 == op1_buffer; // @[SE.scala 140:41]
+  wire  _T_14 = ciphers_6 == op1_buffer; // @[SE.scala 140:41]
+  wire  _T_15 = ciphers_7 == op1_buffer; // @[SE.scala 140:41]
+  wire  _T_16 = ciphers_8 == op1_buffer; // @[SE.scala 140:41]
+  wire  _T_17 = ciphers_9 == op1_buffer; // @[SE.scala 140:41]
+  wire  _T_18 = ciphers_10 == op1_buffer; // @[SE.scala 140:41]
+  wire  _T_19 = ciphers_11 == op1_buffer; // @[SE.scala 140:41]
+  wire  _T_20 = ciphers_12 == op1_buffer; // @[SE.scala 140:41]
+  wire  _T_21 = ciphers_13 == op1_buffer; // @[SE.scala 140:41]
+  wire  _T_22 = ciphers_14 == op1_buffer; // @[SE.scala 140:41]
+  wire  _T_23 = ciphers_15 == op1_buffer; // @[SE.scala 140:41]
+  wire  _T_55 = ciphers_0 == op1_buffer | ciphers_1 == op1_buffer | ciphers_2 == op1_buffer | ciphers_3 == op1_buffer |
+    ciphers_4 == op1_buffer | ciphers_5 == op1_buffer | ciphers_6 == op1_buffer | ciphers_7 == op1_buffer | ciphers_8
+     == op1_buffer | ciphers_9 == op1_buffer | ciphers_10 == op1_buffer | ciphers_11 == op1_buffer | ciphers_12 ==
+    op1_buffer | ciphers_13 == op1_buffer | ciphers_14 == op1_buffer | _T_23; // @[SE.scala 140:41]
+  wire  _T_24 = ciphers_16 == op1_buffer; // @[SE.scala 140:41]
+  wire  _T_25 = ciphers_17 == op1_buffer; // @[SE.scala 140:41]
+  wire  _T_26 = ciphers_18 == op1_buffer; // @[SE.scala 140:41]
+  wire  _T_27 = ciphers_19 == op1_buffer; // @[SE.scala 140:41]
+  wire  _T_28 = ciphers_20 == op1_buffer; // @[SE.scala 140:41]
+  wire  _T_29 = ciphers_21 == op1_buffer; // @[SE.scala 140:41]
+  wire  _T_30 = ciphers_22 == op1_buffer; // @[SE.scala 140:41]
+  wire  _T_31 = ciphers_23 == op1_buffer; // @[SE.scala 140:41]
+  wire  _T_32 = ciphers_24 == op1_buffer; // @[SE.scala 140:41]
+  wire  _T_33 = ciphers_25 == op1_buffer; // @[SE.scala 140:41]
+  wire  _T_34 = ciphers_26 == op1_buffer; // @[SE.scala 140:41]
+  wire  _T_35 = ciphers_27 == op1_buffer; // @[SE.scala 140:41]
+  wire  _T_36 = ciphers_28 == op1_buffer; // @[SE.scala 140:41]
+  wire  _T_37 = ciphers_29 == op1_buffer; // @[SE.scala 140:41]
+  wire  _T_38 = ciphers_30 == op1_buffer; // @[SE.scala 140:41]
+  wire  _T_70 = _T_55 | ciphers_16 == op1_buffer | ciphers_17 == op1_buffer | ciphers_18 == op1_buffer | ciphers_19 ==
+    op1_buffer | ciphers_20 == op1_buffer | ciphers_21 == op1_buffer | ciphers_22 == op1_buffer | ciphers_23 ==
+    op1_buffer | ciphers_24 == op1_buffer | ciphers_25 == op1_buffer | ciphers_26 == op1_buffer | ciphers_27 ==
+    op1_buffer | ciphers_28 == op1_buffer | ciphers_29 == op1_buffer | ciphers_30 == op1_buffer; // @[SE.scala 140:41]
+  wire  op1_found = _T_70 | ciphers_31 == op1_buffer; // @[SE.scala 140:41]
+  wire  _T_71 = ciphers_0 == op2_buffer; // @[SE.scala 141:41]
+  wire  _T_72 = ciphers_1 == op2_buffer; // @[SE.scala 141:41]
+  wire  _T_73 = ciphers_2 == op2_buffer; // @[SE.scala 141:41]
+  wire  _T_74 = ciphers_3 == op2_buffer; // @[SE.scala 141:41]
+  wire  _T_75 = ciphers_4 == op2_buffer; // @[SE.scala 141:41]
+  wire  _T_76 = ciphers_5 == op2_buffer; // @[SE.scala 141:41]
+  wire  _T_77 = ciphers_6 == op2_buffer; // @[SE.scala 141:41]
+  wire  _T_78 = ciphers_7 == op2_buffer; // @[SE.scala 141:41]
+  wire  _T_79 = ciphers_8 == op2_buffer; // @[SE.scala 141:41]
+  wire  _T_80 = ciphers_9 == op2_buffer; // @[SE.scala 141:41]
+  wire  _T_81 = ciphers_10 == op2_buffer; // @[SE.scala 141:41]
+  wire  _T_82 = ciphers_11 == op2_buffer; // @[SE.scala 141:41]
+  wire  _T_83 = ciphers_12 == op2_buffer; // @[SE.scala 141:41]
+  wire  _T_84 = ciphers_13 == op2_buffer; // @[SE.scala 141:41]
+  wire  _T_85 = ciphers_14 == op2_buffer; // @[SE.scala 141:41]
+  wire  _T_86 = ciphers_15 == op2_buffer; // @[SE.scala 141:41]
+  wire  _T_118 = ciphers_0 == op2_buffer | ciphers_1 == op2_buffer | ciphers_2 == op2_buffer | ciphers_3 == op2_buffer
+     | ciphers_4 == op2_buffer | ciphers_5 == op2_buffer | ciphers_6 == op2_buffer | ciphers_7 == op2_buffer | ciphers_8
+     == op2_buffer | ciphers_9 == op2_buffer | ciphers_10 == op2_buffer | ciphers_11 == op2_buffer | ciphers_12 ==
+    op2_buffer | ciphers_13 == op2_buffer | ciphers_14 == op2_buffer | _T_86; // @[SE.scala 141:41]
+  wire  _T_87 = ciphers_16 == op2_buffer; // @[SE.scala 141:41]
+  wire  _T_88 = ciphers_17 == op2_buffer; // @[SE.scala 141:41]
+  wire  _T_89 = ciphers_18 == op2_buffer; // @[SE.scala 141:41]
+  wire  _T_90 = ciphers_19 == op2_buffer; // @[SE.scala 141:41]
+  wire  _T_91 = ciphers_20 == op2_buffer; // @[SE.scala 141:41]
+  wire  _T_92 = ciphers_21 == op2_buffer; // @[SE.scala 141:41]
+  wire  _T_93 = ciphers_22 == op2_buffer; // @[SE.scala 141:41]
+  wire  _T_94 = ciphers_23 == op2_buffer; // @[SE.scala 141:41]
+  wire  _T_95 = ciphers_24 == op2_buffer; // @[SE.scala 141:41]
+  wire  _T_96 = ciphers_25 == op2_buffer; // @[SE.scala 141:41]
+  wire  _T_97 = ciphers_26 == op2_buffer; // @[SE.scala 141:41]
+  wire  _T_98 = ciphers_27 == op2_buffer; // @[SE.scala 141:41]
+  wire  _T_99 = ciphers_28 == op2_buffer; // @[SE.scala 141:41]
+  wire  _T_100 = ciphers_29 == op2_buffer; // @[SE.scala 141:41]
+  wire  _T_101 = ciphers_30 == op2_buffer; // @[SE.scala 141:41]
+  wire  _T_133 = _T_118 | ciphers_16 == op2_buffer | ciphers_17 == op2_buffer | ciphers_18 == op2_buffer | ciphers_19
+     == op2_buffer | ciphers_20 == op2_buffer | ciphers_21 == op2_buffer | ciphers_22 == op2_buffer | ciphers_23 ==
+    op2_buffer | ciphers_24 == op2_buffer | ciphers_25 == op2_buffer | ciphers_26 == op2_buffer | ciphers_27 ==
+    op2_buffer | ciphers_28 == op2_buffer | ciphers_29 == op2_buffer | ciphers_30 == op2_buffer; // @[SE.scala 141:41]
+  wire  op2_found = _T_133 | ciphers_31 == op2_buffer; // @[SE.scala 141:41]
   wire [7:0] _T_134 = inst_buffer & 8'he0; // @[SE.scala 143:26]
-  wire  _T_136 = 128'h0 == cond_buffer; // @[SE.scala 144:47]
-  wire  _T_183 = 128'h0 == cond_buffer | 128'h0 == cond_buffer | 128'h0 == cond_buffer | 128'h0 == cond_buffer | 128'h0
-     == cond_buffer | 128'h0 == cond_buffer | 128'h0 == cond_buffer | 128'h0 == cond_buffer | 128'h0 == cond_buffer | 128'h0
-     == cond_buffer | 128'h0 == cond_buffer | 128'h0 == cond_buffer | 128'h0 == cond_buffer | 128'h0 == cond_buffer | 128'h0
-     == cond_buffer | _T_136; // @[SE.scala 144:47]
-  wire  _T_198 = _T_183 | 128'h0 == cond_buffer | 128'h0 == cond_buffer | 128'h0 == cond_buffer | 128'h0 == cond_buffer
-     | 128'h0 == cond_buffer | 128'h0 == cond_buffer | 128'h0 == cond_buffer | 128'h0 == cond_buffer | 128'h0 ==
-    cond_buffer | 128'h0 == cond_buffer | 128'h0 == cond_buffer | 128'h0 == cond_buffer | 128'h0 == cond_buffer | 128'h0
-     == cond_buffer | 128'h0 == cond_buffer; // @[SE.scala 144:47]
-  wire  cond_found = 8'h60 == _T_134 ? _T_198 | 128'h0 == cond_buffer : 1'h1; // @[SE.scala 143:48 144:28 146:28]
+  wire  _T_136 = ciphers_0 == cond_buffer; // @[SE.scala 144:47]
+  wire  _T_137 = ciphers_1 == cond_buffer; // @[SE.scala 144:47]
+  wire  _T_138 = ciphers_2 == cond_buffer; // @[SE.scala 144:47]
+  wire  _T_139 = ciphers_3 == cond_buffer; // @[SE.scala 144:47]
+  wire  _T_140 = ciphers_4 == cond_buffer; // @[SE.scala 144:47]
+  wire  _T_141 = ciphers_5 == cond_buffer; // @[SE.scala 144:47]
+  wire  _T_142 = ciphers_6 == cond_buffer; // @[SE.scala 144:47]
+  wire  _T_143 = ciphers_7 == cond_buffer; // @[SE.scala 144:47]
+  wire  _T_144 = ciphers_8 == cond_buffer; // @[SE.scala 144:47]
+  wire  _T_145 = ciphers_9 == cond_buffer; // @[SE.scala 144:47]
+  wire  _T_146 = ciphers_10 == cond_buffer; // @[SE.scala 144:47]
+  wire  _T_147 = ciphers_11 == cond_buffer; // @[SE.scala 144:47]
+  wire  _T_148 = ciphers_12 == cond_buffer; // @[SE.scala 144:47]
+  wire  _T_149 = ciphers_13 == cond_buffer; // @[SE.scala 144:47]
+  wire  _T_150 = ciphers_14 == cond_buffer; // @[SE.scala 144:47]
+  wire  _T_151 = ciphers_15 == cond_buffer; // @[SE.scala 144:47]
+  wire  _T_183 = ciphers_0 == cond_buffer | ciphers_1 == cond_buffer | ciphers_2 == cond_buffer | ciphers_3 ==
+    cond_buffer | ciphers_4 == cond_buffer | ciphers_5 == cond_buffer | ciphers_6 == cond_buffer | ciphers_7 ==
+    cond_buffer | ciphers_8 == cond_buffer | ciphers_9 == cond_buffer | ciphers_10 == cond_buffer | ciphers_11 ==
+    cond_buffer | ciphers_12 == cond_buffer | ciphers_13 == cond_buffer | ciphers_14 == cond_buffer | _T_151; // @[SE.scala 144:47]
+  wire  _T_152 = ciphers_16 == cond_buffer; // @[SE.scala 144:47]
+  wire  _T_153 = ciphers_17 == cond_buffer; // @[SE.scala 144:47]
+  wire  _T_154 = ciphers_18 == cond_buffer; // @[SE.scala 144:47]
+  wire  _T_155 = ciphers_19 == cond_buffer; // @[SE.scala 144:47]
+  wire  _T_156 = ciphers_20 == cond_buffer; // @[SE.scala 144:47]
+  wire  _T_157 = ciphers_21 == cond_buffer; // @[SE.scala 144:47]
+  wire  _T_158 = ciphers_22 == cond_buffer; // @[SE.scala 144:47]
+  wire  _T_159 = ciphers_23 == cond_buffer; // @[SE.scala 144:47]
+  wire  _T_160 = ciphers_24 == cond_buffer; // @[SE.scala 144:47]
+  wire  _T_161 = ciphers_25 == cond_buffer; // @[SE.scala 144:47]
+  wire  _T_162 = ciphers_26 == cond_buffer; // @[SE.scala 144:47]
+  wire  _T_163 = ciphers_27 == cond_buffer; // @[SE.scala 144:47]
+  wire  _T_164 = ciphers_28 == cond_buffer; // @[SE.scala 144:47]
+  wire  _T_165 = ciphers_29 == cond_buffer; // @[SE.scala 144:47]
+  wire  _T_166 = ciphers_30 == cond_buffer; // @[SE.scala 144:47]
+  wire  _T_198 = _T_183 | ciphers_16 == cond_buffer | ciphers_17 == cond_buffer | ciphers_18 == cond_buffer | ciphers_19
+     == cond_buffer | ciphers_20 == cond_buffer | ciphers_21 == cond_buffer | ciphers_22 == cond_buffer | ciphers_23 ==
+    cond_buffer | ciphers_24 == cond_buffer | ciphers_25 == cond_buffer | ciphers_26 == cond_buffer | ciphers_27 ==
+    cond_buffer | ciphers_28 == cond_buffer | ciphers_29 == cond_buffer | ciphers_30 == cond_buffer; // @[SE.scala 144:47]
+  wire  cond_found = 8'h60 == _T_134 ? _T_198 | ciphers_31 == cond_buffer : 1'h1; // @[SE.scala 143:48 144:28 146:28]
   wire  all_match = op1_found & op2_found & cond_found; // @[SE.scala 152:48]
   wire  n_stage_valid = all_match | valid_buffer; // @[SE.scala 164:36]
   wire  _T_4 = n_stage_valid ? 1'h0 : valid_buffer; // @[SE.scala 113:68]
   wire  _GEN_9 = _T_1 | ready_for_input; // @[SE.scala 116:49 117:33 109:38]
   wire  _GEN_10 = _T ? 1'h0 : _GEN_9; // @[SE.scala 114:41 115:33]
+  wire [4:0] _T_232 = _T_38 ? 5'h1e : 5'h1f; // @[SE.scala 148:52]
+  wire [4:0] _T_233 = _T_37 ? 5'h1d : _T_232; // @[SE.scala 148:52]
+  wire [4:0] _T_234 = _T_36 ? 5'h1c : _T_233; // @[SE.scala 148:52]
+  wire [4:0] _T_235 = _T_35 ? 5'h1b : _T_234; // @[SE.scala 148:52]
+  wire [4:0] _T_236 = _T_34 ? 5'h1a : _T_235; // @[SE.scala 148:52]
+  wire [4:0] _T_237 = _T_33 ? 5'h19 : _T_236; // @[SE.scala 148:52]
+  wire [4:0] _T_238 = _T_32 ? 5'h18 : _T_237; // @[SE.scala 148:52]
+  wire [4:0] _T_239 = _T_31 ? 5'h17 : _T_238; // @[SE.scala 148:52]
+  wire [4:0] _T_240 = _T_30 ? 5'h16 : _T_239; // @[SE.scala 148:52]
+  wire [4:0] _T_241 = _T_29 ? 5'h15 : _T_240; // @[SE.scala 148:52]
+  wire [4:0] _T_242 = _T_28 ? 5'h14 : _T_241; // @[SE.scala 148:52]
+  wire [4:0] _T_243 = _T_27 ? 5'h13 : _T_242; // @[SE.scala 148:52]
+  wire [4:0] _T_244 = _T_26 ? 5'h12 : _T_243; // @[SE.scala 148:52]
+  wire [4:0] _T_245 = _T_25 ? 5'h11 : _T_244; // @[SE.scala 148:52]
+  wire [4:0] _T_246 = _T_24 ? 5'h10 : _T_245; // @[SE.scala 148:52]
+  wire [4:0] _T_247 = _T_23 ? 5'hf : _T_246; // @[SE.scala 148:52]
+  wire [4:0] _T_248 = _T_22 ? 5'he : _T_247; // @[SE.scala 148:52]
+  wire [4:0] _T_249 = _T_21 ? 5'hd : _T_248; // @[SE.scala 148:52]
+  wire [4:0] _T_250 = _T_20 ? 5'hc : _T_249; // @[SE.scala 148:52]
+  wire [4:0] _T_251 = _T_19 ? 5'hb : _T_250; // @[SE.scala 148:52]
+  wire [4:0] _T_252 = _T_18 ? 5'ha : _T_251; // @[SE.scala 148:52]
+  wire [4:0] _T_253 = _T_17 ? 5'h9 : _T_252; // @[SE.scala 148:52]
+  wire [4:0] _T_254 = _T_16 ? 5'h8 : _T_253; // @[SE.scala 148:52]
+  wire [4:0] _T_255 = _T_15 ? 5'h7 : _T_254; // @[SE.scala 148:52]
+  wire [4:0] _T_256 = _T_14 ? 5'h6 : _T_255; // @[SE.scala 148:52]
+  wire [4:0] _T_257 = _T_13 ? 5'h5 : _T_256; // @[SE.scala 148:52]
+  wire [4:0] _T_258 = _T_12 ? 5'h4 : _T_257; // @[SE.scala 148:52]
+  wire [4:0] _T_259 = _T_11 ? 5'h3 : _T_258; // @[SE.scala 148:52]
+  wire [4:0] _T_260 = _T_10 ? 5'h2 : _T_259; // @[SE.scala 148:52]
+  wire [4:0] _T_261 = _T_9 ? 5'h1 : _T_260; // @[SE.scala 148:52]
+  wire [4:0] _T_262 = _T_8 ? 5'h0 : _T_261; // @[SE.scala 148:52]
+  wire [4:0] _T_295 = _T_101 ? 5'h1e : 5'h1f; // @[SE.scala 149:52]
+  wire [4:0] _T_296 = _T_100 ? 5'h1d : _T_295; // @[SE.scala 149:52]
+  wire [4:0] _T_297 = _T_99 ? 5'h1c : _T_296; // @[SE.scala 149:52]
+  wire [4:0] _T_298 = _T_98 ? 5'h1b : _T_297; // @[SE.scala 149:52]
+  wire [4:0] _T_299 = _T_97 ? 5'h1a : _T_298; // @[SE.scala 149:52]
+  wire [4:0] _T_300 = _T_96 ? 5'h19 : _T_299; // @[SE.scala 149:52]
+  wire [4:0] _T_301 = _T_95 ? 5'h18 : _T_300; // @[SE.scala 149:52]
+  wire [4:0] _T_302 = _T_94 ? 5'h17 : _T_301; // @[SE.scala 149:52]
+  wire [4:0] _T_303 = _T_93 ? 5'h16 : _T_302; // @[SE.scala 149:52]
+  wire [4:0] _T_304 = _T_92 ? 5'h15 : _T_303; // @[SE.scala 149:52]
+  wire [4:0] _T_305 = _T_91 ? 5'h14 : _T_304; // @[SE.scala 149:52]
+  wire [4:0] _T_306 = _T_90 ? 5'h13 : _T_305; // @[SE.scala 149:52]
+  wire [4:0] _T_307 = _T_89 ? 5'h12 : _T_306; // @[SE.scala 149:52]
+  wire [4:0] _T_308 = _T_88 ? 5'h11 : _T_307; // @[SE.scala 149:52]
+  wire [4:0] _T_309 = _T_87 ? 5'h10 : _T_308; // @[SE.scala 149:52]
+  wire [4:0] _T_310 = _T_86 ? 5'hf : _T_309; // @[SE.scala 149:52]
+  wire [4:0] _T_311 = _T_85 ? 5'he : _T_310; // @[SE.scala 149:52]
+  wire [4:0] _T_312 = _T_84 ? 5'hd : _T_311; // @[SE.scala 149:52]
+  wire [4:0] _T_313 = _T_83 ? 5'hc : _T_312; // @[SE.scala 149:52]
+  wire [4:0] _T_314 = _T_82 ? 5'hb : _T_313; // @[SE.scala 149:52]
+  wire [4:0] _T_315 = _T_81 ? 5'ha : _T_314; // @[SE.scala 149:52]
+  wire [4:0] _T_316 = _T_80 ? 5'h9 : _T_315; // @[SE.scala 149:52]
+  wire [4:0] _T_317 = _T_79 ? 5'h8 : _T_316; // @[SE.scala 149:52]
+  wire [4:0] _T_318 = _T_78 ? 5'h7 : _T_317; // @[SE.scala 149:52]
+  wire [4:0] _T_319 = _T_77 ? 5'h6 : _T_318; // @[SE.scala 149:52]
+  wire [4:0] _T_320 = _T_76 ? 5'h5 : _T_319; // @[SE.scala 149:52]
+  wire [4:0] _T_321 = _T_75 ? 5'h4 : _T_320; // @[SE.scala 149:52]
+  wire [4:0] _T_322 = _T_74 ? 5'h3 : _T_321; // @[SE.scala 149:52]
+  wire [4:0] _T_323 = _T_73 ? 5'h2 : _T_322; // @[SE.scala 149:52]
+  wire [4:0] _T_324 = _T_72 ? 5'h1 : _T_323; // @[SE.scala 149:52]
+  wire [4:0] _T_325 = _T_71 ? 5'h0 : _T_324; // @[SE.scala 149:52]
+  wire [4:0] _T_358 = _T_166 ? 5'h1e : 5'h1f; // @[SE.scala 150:53]
+  wire [4:0] _T_359 = _T_165 ? 5'h1d : _T_358; // @[SE.scala 150:53]
+  wire [4:0] _T_360 = _T_164 ? 5'h1c : _T_359; // @[SE.scala 150:53]
+  wire [4:0] _T_361 = _T_163 ? 5'h1b : _T_360; // @[SE.scala 150:53]
+  wire [4:0] _T_362 = _T_162 ? 5'h1a : _T_361; // @[SE.scala 150:53]
+  wire [4:0] _T_363 = _T_161 ? 5'h19 : _T_362; // @[SE.scala 150:53]
+  wire [4:0] _T_364 = _T_160 ? 5'h18 : _T_363; // @[SE.scala 150:53]
+  wire [4:0] _T_365 = _T_159 ? 5'h17 : _T_364; // @[SE.scala 150:53]
+  wire [4:0] _T_366 = _T_158 ? 5'h16 : _T_365; // @[SE.scala 150:53]
+  wire [4:0] _T_367 = _T_157 ? 5'h15 : _T_366; // @[SE.scala 150:53]
+  wire [4:0] _T_368 = _T_156 ? 5'h14 : _T_367; // @[SE.scala 150:53]
+  wire [4:0] _T_369 = _T_155 ? 5'h13 : _T_368; // @[SE.scala 150:53]
+  wire [4:0] _T_370 = _T_154 ? 5'h12 : _T_369; // @[SE.scala 150:53]
+  wire [4:0] _T_371 = _T_153 ? 5'h11 : _T_370; // @[SE.scala 150:53]
+  wire [4:0] _T_372 = _T_152 ? 5'h10 : _T_371; // @[SE.scala 150:53]
+  wire [4:0] _T_373 = _T_151 ? 5'hf : _T_372; // @[SE.scala 150:53]
+  wire [4:0] _T_374 = _T_150 ? 5'he : _T_373; // @[SE.scala 150:53]
+  wire [4:0] _T_375 = _T_149 ? 5'hd : _T_374; // @[SE.scala 150:53]
+  wire [4:0] _T_376 = _T_148 ? 5'hc : _T_375; // @[SE.scala 150:53]
+  wire [4:0] _T_377 = _T_147 ? 5'hb : _T_376; // @[SE.scala 150:53]
+  wire [4:0] _T_378 = _T_146 ? 5'ha : _T_377; // @[SE.scala 150:53]
+  wire [4:0] _T_379 = _T_145 ? 5'h9 : _T_378; // @[SE.scala 150:53]
+  wire [4:0] _T_380 = _T_144 ? 5'h8 : _T_379; // @[SE.scala 150:53]
+  wire [4:0] _T_381 = _T_143 ? 5'h7 : _T_380; // @[SE.scala 150:53]
+  wire [4:0] _T_382 = _T_142 ? 5'h6 : _T_381; // @[SE.scala 150:53]
+  wire [4:0] _T_383 = _T_141 ? 5'h5 : _T_382; // @[SE.scala 150:53]
+  wire [4:0] _T_384 = _T_140 ? 5'h4 : _T_383; // @[SE.scala 150:53]
+  wire [4:0] _T_385 = _T_139 ? 5'h3 : _T_384; // @[SE.scala 150:53]
+  wire [4:0] _T_386 = _T_138 ? 5'h2 : _T_385; // @[SE.scala 150:53]
+  wire [4:0] _T_387 = _T_137 ? 5'h1 : _T_386; // @[SE.scala 150:53]
+  wire [4:0] _T_388 = _T_136 ? 5'h0 : _T_387; // @[SE.scala 150:53]
   wire  _T_441 = ~reset; // @[SE.scala 161:23]
   reg [7:0] mid_inst_buffer; // @[Reg.scala 15:16]
   reg [127:0] mid_op1_buffer; // @[Reg.scala 15:16]
@@ -40472,9 +43026,102 @@ module SE(
   wire [7:0] cond_reverse_14 = aes_invcipher_io_output_cond_1; // @[SE.scala 169:32 173:33]
   wire [127:0] cond_asUInt = {cond_reverse_15,cond_reverse_14,cond_reverse_13,cond_reverse_12,cond_reverse_11,
     cond_reverse_10,cond_reverse_9,cond_reverse_8,lo_2}; // @[SE.scala 185:40]
-  wire [63:0] _T_464 = mid_inst_buffer[7:5] == 3'h5 ? mid_op1_buffer[127:64] : op1_asUInt[127:64]; // @[SE.scala 199:45]
+  wire [63:0] _T_453 = mid_inst_buffer[7:5] == 3'h5 ? mid_op1_buffer[127:64] : op1_asUInt[127:64]; // @[SE.scala 205:79]
+  wire [63:0] _GEN_15 = 5'h1 == _T_262 ? plaintexts_1 : plaintexts_0; // @[SE.scala 205:{40,40}]
+  wire [63:0] _GEN_16 = 5'h2 == _T_262 ? plaintexts_2 : _GEN_15; // @[SE.scala 205:{40,40}]
+  wire [63:0] _GEN_17 = 5'h3 == _T_262 ? plaintexts_3 : _GEN_16; // @[SE.scala 205:{40,40}]
+  wire [63:0] _GEN_18 = 5'h4 == _T_262 ? plaintexts_4 : _GEN_17; // @[SE.scala 205:{40,40}]
+  wire [63:0] _GEN_19 = 5'h5 == _T_262 ? plaintexts_5 : _GEN_18; // @[SE.scala 205:{40,40}]
+  wire [63:0] _GEN_20 = 5'h6 == _T_262 ? plaintexts_6 : _GEN_19; // @[SE.scala 205:{40,40}]
+  wire [63:0] _GEN_21 = 5'h7 == _T_262 ? plaintexts_7 : _GEN_20; // @[SE.scala 205:{40,40}]
+  wire [63:0] _GEN_22 = 5'h8 == _T_262 ? plaintexts_8 : _GEN_21; // @[SE.scala 205:{40,40}]
+  wire [63:0] _GEN_23 = 5'h9 == _T_262 ? plaintexts_9 : _GEN_22; // @[SE.scala 205:{40,40}]
+  wire [63:0] _GEN_24 = 5'ha == _T_262 ? plaintexts_10 : _GEN_23; // @[SE.scala 205:{40,40}]
+  wire [63:0] _GEN_25 = 5'hb == _T_262 ? plaintexts_11 : _GEN_24; // @[SE.scala 205:{40,40}]
+  wire [63:0] _GEN_26 = 5'hc == _T_262 ? plaintexts_12 : _GEN_25; // @[SE.scala 205:{40,40}]
+  wire [63:0] _GEN_27 = 5'hd == _T_262 ? plaintexts_13 : _GEN_26; // @[SE.scala 205:{40,40}]
+  wire [63:0] _GEN_28 = 5'he == _T_262 ? plaintexts_14 : _GEN_27; // @[SE.scala 205:{40,40}]
+  wire [63:0] _GEN_29 = 5'hf == _T_262 ? plaintexts_15 : _GEN_28; // @[SE.scala 205:{40,40}]
+  wire [63:0] _GEN_30 = 5'h10 == _T_262 ? plaintexts_16 : _GEN_29; // @[SE.scala 205:{40,40}]
+  wire [63:0] _GEN_31 = 5'h11 == _T_262 ? plaintexts_17 : _GEN_30; // @[SE.scala 205:{40,40}]
+  wire [63:0] _GEN_32 = 5'h12 == _T_262 ? plaintexts_18 : _GEN_31; // @[SE.scala 205:{40,40}]
+  wire [63:0] _GEN_33 = 5'h13 == _T_262 ? plaintexts_19 : _GEN_32; // @[SE.scala 205:{40,40}]
+  wire [63:0] _GEN_34 = 5'h14 == _T_262 ? plaintexts_20 : _GEN_33; // @[SE.scala 205:{40,40}]
+  wire [63:0] _GEN_35 = 5'h15 == _T_262 ? plaintexts_21 : _GEN_34; // @[SE.scala 205:{40,40}]
+  wire [63:0] _GEN_36 = 5'h16 == _T_262 ? plaintexts_22 : _GEN_35; // @[SE.scala 205:{40,40}]
+  wire [63:0] _GEN_37 = 5'h17 == _T_262 ? plaintexts_23 : _GEN_36; // @[SE.scala 205:{40,40}]
+  wire [63:0] _GEN_38 = 5'h18 == _T_262 ? plaintexts_24 : _GEN_37; // @[SE.scala 205:{40,40}]
+  wire [63:0] _GEN_39 = 5'h19 == _T_262 ? plaintexts_25 : _GEN_38; // @[SE.scala 205:{40,40}]
+  wire [63:0] _GEN_40 = 5'h1a == _T_262 ? plaintexts_26 : _GEN_39; // @[SE.scala 205:{40,40}]
+  wire [63:0] _GEN_41 = 5'h1b == _T_262 ? plaintexts_27 : _GEN_40; // @[SE.scala 205:{40,40}]
+  wire [63:0] _GEN_42 = 5'h1c == _T_262 ? plaintexts_28 : _GEN_41; // @[SE.scala 205:{40,40}]
+  wire [63:0] _GEN_43 = 5'h1d == _T_262 ? plaintexts_29 : _GEN_42; // @[SE.scala 205:{40,40}]
+  wire [63:0] _GEN_44 = 5'h1e == _T_262 ? plaintexts_30 : _GEN_43; // @[SE.scala 205:{40,40}]
+  wire [63:0] _GEN_45 = 5'h1f == _T_262 ? plaintexts_31 : _GEN_44; // @[SE.scala 205:{40,40}]
+  wire [63:0] _GEN_47 = 5'h1 == _T_325 ? plaintexts_1 : plaintexts_0; // @[SE.scala 206:{40,40}]
+  wire [63:0] _GEN_48 = 5'h2 == _T_325 ? plaintexts_2 : _GEN_47; // @[SE.scala 206:{40,40}]
+  wire [63:0] _GEN_49 = 5'h3 == _T_325 ? plaintexts_3 : _GEN_48; // @[SE.scala 206:{40,40}]
+  wire [63:0] _GEN_50 = 5'h4 == _T_325 ? plaintexts_4 : _GEN_49; // @[SE.scala 206:{40,40}]
+  wire [63:0] _GEN_51 = 5'h5 == _T_325 ? plaintexts_5 : _GEN_50; // @[SE.scala 206:{40,40}]
+  wire [63:0] _GEN_52 = 5'h6 == _T_325 ? plaintexts_6 : _GEN_51; // @[SE.scala 206:{40,40}]
+  wire [63:0] _GEN_53 = 5'h7 == _T_325 ? plaintexts_7 : _GEN_52; // @[SE.scala 206:{40,40}]
+  wire [63:0] _GEN_54 = 5'h8 == _T_325 ? plaintexts_8 : _GEN_53; // @[SE.scala 206:{40,40}]
+  wire [63:0] _GEN_55 = 5'h9 == _T_325 ? plaintexts_9 : _GEN_54; // @[SE.scala 206:{40,40}]
+  wire [63:0] _GEN_56 = 5'ha == _T_325 ? plaintexts_10 : _GEN_55; // @[SE.scala 206:{40,40}]
+  wire [63:0] _GEN_57 = 5'hb == _T_325 ? plaintexts_11 : _GEN_56; // @[SE.scala 206:{40,40}]
+  wire [63:0] _GEN_58 = 5'hc == _T_325 ? plaintexts_12 : _GEN_57; // @[SE.scala 206:{40,40}]
+  wire [63:0] _GEN_59 = 5'hd == _T_325 ? plaintexts_13 : _GEN_58; // @[SE.scala 206:{40,40}]
+  wire [63:0] _GEN_60 = 5'he == _T_325 ? plaintexts_14 : _GEN_59; // @[SE.scala 206:{40,40}]
+  wire [63:0] _GEN_61 = 5'hf == _T_325 ? plaintexts_15 : _GEN_60; // @[SE.scala 206:{40,40}]
+  wire [63:0] _GEN_62 = 5'h10 == _T_325 ? plaintexts_16 : _GEN_61; // @[SE.scala 206:{40,40}]
+  wire [63:0] _GEN_63 = 5'h11 == _T_325 ? plaintexts_17 : _GEN_62; // @[SE.scala 206:{40,40}]
+  wire [63:0] _GEN_64 = 5'h12 == _T_325 ? plaintexts_18 : _GEN_63; // @[SE.scala 206:{40,40}]
+  wire [63:0] _GEN_65 = 5'h13 == _T_325 ? plaintexts_19 : _GEN_64; // @[SE.scala 206:{40,40}]
+  wire [63:0] _GEN_66 = 5'h14 == _T_325 ? plaintexts_20 : _GEN_65; // @[SE.scala 206:{40,40}]
+  wire [63:0] _GEN_67 = 5'h15 == _T_325 ? plaintexts_21 : _GEN_66; // @[SE.scala 206:{40,40}]
+  wire [63:0] _GEN_68 = 5'h16 == _T_325 ? plaintexts_22 : _GEN_67; // @[SE.scala 206:{40,40}]
+  wire [63:0] _GEN_69 = 5'h17 == _T_325 ? plaintexts_23 : _GEN_68; // @[SE.scala 206:{40,40}]
+  wire [63:0] _GEN_70 = 5'h18 == _T_325 ? plaintexts_24 : _GEN_69; // @[SE.scala 206:{40,40}]
+  wire [63:0] _GEN_71 = 5'h19 == _T_325 ? plaintexts_25 : _GEN_70; // @[SE.scala 206:{40,40}]
+  wire [63:0] _GEN_72 = 5'h1a == _T_325 ? plaintexts_26 : _GEN_71; // @[SE.scala 206:{40,40}]
+  wire [63:0] _GEN_73 = 5'h1b == _T_325 ? plaintexts_27 : _GEN_72; // @[SE.scala 206:{40,40}]
+  wire [63:0] _GEN_74 = 5'h1c == _T_325 ? plaintexts_28 : _GEN_73; // @[SE.scala 206:{40,40}]
+  wire [63:0] _GEN_75 = 5'h1d == _T_325 ? plaintexts_29 : _GEN_74; // @[SE.scala 206:{40,40}]
+  wire [63:0] _GEN_76 = 5'h1e == _T_325 ? plaintexts_30 : _GEN_75; // @[SE.scala 206:{40,40}]
+  wire [63:0] _GEN_77 = 5'h1f == _T_325 ? plaintexts_31 : _GEN_76; // @[SE.scala 206:{40,40}]
+  wire [63:0] _GEN_79 = 5'h1 == _T_388 ? plaintexts_1 : plaintexts_0; // @[SE.scala 207:{41,41}]
+  wire [63:0] _GEN_80 = 5'h2 == _T_388 ? plaintexts_2 : _GEN_79; // @[SE.scala 207:{41,41}]
+  wire [63:0] _GEN_81 = 5'h3 == _T_388 ? plaintexts_3 : _GEN_80; // @[SE.scala 207:{41,41}]
+  wire [63:0] _GEN_82 = 5'h4 == _T_388 ? plaintexts_4 : _GEN_81; // @[SE.scala 207:{41,41}]
+  wire [63:0] _GEN_83 = 5'h5 == _T_388 ? plaintexts_5 : _GEN_82; // @[SE.scala 207:{41,41}]
+  wire [63:0] _GEN_84 = 5'h6 == _T_388 ? plaintexts_6 : _GEN_83; // @[SE.scala 207:{41,41}]
+  wire [63:0] _GEN_85 = 5'h7 == _T_388 ? plaintexts_7 : _GEN_84; // @[SE.scala 207:{41,41}]
+  wire [63:0] _GEN_86 = 5'h8 == _T_388 ? plaintexts_8 : _GEN_85; // @[SE.scala 207:{41,41}]
+  wire [63:0] _GEN_87 = 5'h9 == _T_388 ? plaintexts_9 : _GEN_86; // @[SE.scala 207:{41,41}]
+  wire [63:0] _GEN_88 = 5'ha == _T_388 ? plaintexts_10 : _GEN_87; // @[SE.scala 207:{41,41}]
+  wire [63:0] _GEN_89 = 5'hb == _T_388 ? plaintexts_11 : _GEN_88; // @[SE.scala 207:{41,41}]
+  wire [63:0] _GEN_90 = 5'hc == _T_388 ? plaintexts_12 : _GEN_89; // @[SE.scala 207:{41,41}]
+  wire [63:0] _GEN_91 = 5'hd == _T_388 ? plaintexts_13 : _GEN_90; // @[SE.scala 207:{41,41}]
+  wire [63:0] _GEN_92 = 5'he == _T_388 ? plaintexts_14 : _GEN_91; // @[SE.scala 207:{41,41}]
+  wire [63:0] _GEN_93 = 5'hf == _T_388 ? plaintexts_15 : _GEN_92; // @[SE.scala 207:{41,41}]
+  wire [63:0] _GEN_94 = 5'h10 == _T_388 ? plaintexts_16 : _GEN_93; // @[SE.scala 207:{41,41}]
+  wire [63:0] _GEN_95 = 5'h11 == _T_388 ? plaintexts_17 : _GEN_94; // @[SE.scala 207:{41,41}]
+  wire [63:0] _GEN_96 = 5'h12 == _T_388 ? plaintexts_18 : _GEN_95; // @[SE.scala 207:{41,41}]
+  wire [63:0] _GEN_97 = 5'h13 == _T_388 ? plaintexts_19 : _GEN_96; // @[SE.scala 207:{41,41}]
+  wire [63:0] _GEN_98 = 5'h14 == _T_388 ? plaintexts_20 : _GEN_97; // @[SE.scala 207:{41,41}]
+  wire [63:0] _GEN_99 = 5'h15 == _T_388 ? plaintexts_21 : _GEN_98; // @[SE.scala 207:{41,41}]
+  wire [63:0] _GEN_100 = 5'h16 == _T_388 ? plaintexts_22 : _GEN_99; // @[SE.scala 207:{41,41}]
+  wire [63:0] _GEN_101 = 5'h17 == _T_388 ? plaintexts_23 : _GEN_100; // @[SE.scala 207:{41,41}]
+  wire [63:0] _GEN_102 = 5'h18 == _T_388 ? plaintexts_24 : _GEN_101; // @[SE.scala 207:{41,41}]
+  wire [63:0] _GEN_103 = 5'h19 == _T_388 ? plaintexts_25 : _GEN_102; // @[SE.scala 207:{41,41}]
+  wire [63:0] _GEN_104 = 5'h1a == _T_388 ? plaintexts_26 : _GEN_103; // @[SE.scala 207:{41,41}]
+  wire [63:0] _GEN_105 = 5'h1b == _T_388 ? plaintexts_27 : _GEN_104; // @[SE.scala 207:{41,41}]
+  wire [63:0] _GEN_106 = 5'h1c == _T_388 ? plaintexts_28 : _GEN_105; // @[SE.scala 207:{41,41}]
+  wire [63:0] _GEN_107 = 5'h1d == _T_388 ? plaintexts_29 : _GEN_106; // @[SE.scala 207:{41,41}]
+  wire [63:0] _GEN_108 = 5'h1e == _T_388 ? plaintexts_30 : _GEN_107; // @[SE.scala 207:{41,41}]
+  wire [63:0] _GEN_109 = 5'h1f == _T_388 ? plaintexts_31 : _GEN_108; // @[SE.scala 207:{41,41}]
   reg  result_valid_buffer; // @[SE.scala 210:42]
-  wire  _T_488 = aes_cipher_io_input_valid ? 1'h0 : result_valid_buffer; // @[SE.scala 211:60]
+  wire  _T_461 = aes_cipher_io_input_valid ? 1'h0 : result_valid_buffer; // @[SE.scala 211:60]
   wire [7:0] lo_lo_lo_3 = {prng_io_out_7,prng_io_out_6,prng_io_out_5,prng_io_out_4,prng_io_out_3,prng_io_out_2,
     prng_io_out_1,prng_io_out_0}; // @[PRNG.scala 86:17]
   wire [15:0] lo_lo_3 = {prng_io_out_15,prng_io_out_14,prng_io_out_13,prng_io_out_12,prng_io_out_11,prng_io_out_10,
@@ -40493,16 +43140,18 @@ module SE(
     prng_io_out_57,prng_io_out_56,hi_hi_lo_3,hi_lo_3}; // @[PRNG.scala 86:17]
   wire [127:0] padded_result = {seoperation_io_result,hi_3,lo_3}; // @[Cat.scala 30:58]
   reg [127:0] result_buffer; // @[Reg.scala 15:16]
+  reg [63:0] result_plaintext_buffer; // @[SE.scala 224:46]
   wire [63:0] lo_4 = {aes_cipher_io_output_text_7,aes_cipher_io_output_text_6,aes_cipher_io_output_text_5,
     aes_cipher_io_output_text_4,aes_cipher_io_output_text_3,aes_cipher_io_output_text_2,aes_cipher_io_output_text_1,
     aes_cipher_io_output_text_0}; // @[SE.scala 239:65]
-  wire [127:0] _T_506 = {aes_cipher_io_output_text_15,aes_cipher_io_output_text_14,aes_cipher_io_output_text_13,
+  wire [127:0] _T_479 = {aes_cipher_io_output_text_15,aes_cipher_io_output_text_14,aes_cipher_io_output_text_13,
     aes_cipher_io_output_text_12,aes_cipher_io_output_text_11,aes_cipher_io_output_text_10,aes_cipher_io_output_text_9,
     aes_cipher_io_output_text_8,lo_4}; // @[SE.scala 239:65]
   reg [127:0] output_buffer; // @[Reg.scala 15:16]
   reg  output_valid; // @[SE.scala 240:35]
   wire  _GEN_113 = _T_1 ? 1'h0 : output_valid; // @[SE.scala 244:49 245:30 240:35]
   wire  _GEN_114 = aes_cipher_io_output_valid | _GEN_113; // @[SE.scala 242:41 243:30]
+  wire [7:0] _T_485 = ptr + 8'h1; // @[SE.scala 255:36]
   SEOperation seoperation ( // @[SE.scala 76:33]
     .io_inst(seoperation_io_inst),
     .io_op1_input(seoperation_io_op1_input),
@@ -40721,9 +43370,9 @@ module SE(
   assign io_out_valid = output_valid; // @[SE.scala 247:22]
   assign io_out_cntr = {{1'd0}, value}; // @[SE.scala 71:21]
   assign seoperation_io_inst = all_match & valid_buffer ? inst_buffer : mid_inst_buffer; // @[SE.scala 180:35]
-  assign seoperation_io_op1_input = _T_445 ? 64'h0 : _T_464; // @[SE.scala 205:40]
-  assign seoperation_io_op2_input = _T_445 ? 64'h0 : op2_asUInt[127:64]; // @[SE.scala 206:40]
-  assign seoperation_io_cond_input = _T_445 ? 64'h0 : cond_asUInt[127:64]; // @[SE.scala 207:41]
+  assign seoperation_io_op1_input = _T_445 ? _GEN_45 : _T_453; // @[SE.scala 205:40]
+  assign seoperation_io_op2_input = _T_445 ? _GEN_77 : op2_asUInt[127:64]; // @[SE.scala 206:40]
+  assign seoperation_io_cond_input = _T_445 ? _GEN_109 : cond_asUInt[127:64]; // @[SE.scala 207:41]
   assign aes_invcipher_clock = clock;
   assign aes_invcipher_io_input_valid = valid_buffer & ~all_match; // @[SE.scala 159:54]
   assign aes_invcipher_io_input_op1_0 = op1_buffer[7:0]; // @[SE.scala 155:58]
@@ -40811,6 +43460,463 @@ module SE(
         value <= _value_T_1; // @[Counter.scala 76:15]
       end
     end
+    if (reset) begin // @[SE.scala 258:27]
+      ciphers_0 <= 128'h0; // @[SE.scala 261:36]
+    end else if (io_out_valid) begin // @[SE.scala 265:36]
+      if (5'h0 == ptr[4:0]) begin // @[SE.scala 266:38]
+        ciphers_0 <= output_buffer; // @[SE.scala 266:38]
+      end
+    end
+    if (reset) begin // @[SE.scala 258:27]
+      ciphers_1 <= 128'h0; // @[SE.scala 261:36]
+    end else if (io_out_valid) begin // @[SE.scala 265:36]
+      if (5'h1 == ptr[4:0]) begin // @[SE.scala 266:38]
+        ciphers_1 <= output_buffer; // @[SE.scala 266:38]
+      end
+    end
+    if (reset) begin // @[SE.scala 258:27]
+      ciphers_2 <= 128'h0; // @[SE.scala 261:36]
+    end else if (io_out_valid) begin // @[SE.scala 265:36]
+      if (5'h2 == ptr[4:0]) begin // @[SE.scala 266:38]
+        ciphers_2 <= output_buffer; // @[SE.scala 266:38]
+      end
+    end
+    if (reset) begin // @[SE.scala 258:27]
+      ciphers_3 <= 128'h0; // @[SE.scala 261:36]
+    end else if (io_out_valid) begin // @[SE.scala 265:36]
+      if (5'h3 == ptr[4:0]) begin // @[SE.scala 266:38]
+        ciphers_3 <= output_buffer; // @[SE.scala 266:38]
+      end
+    end
+    if (reset) begin // @[SE.scala 258:27]
+      ciphers_4 <= 128'h0; // @[SE.scala 261:36]
+    end else if (io_out_valid) begin // @[SE.scala 265:36]
+      if (5'h4 == ptr[4:0]) begin // @[SE.scala 266:38]
+        ciphers_4 <= output_buffer; // @[SE.scala 266:38]
+      end
+    end
+    if (reset) begin // @[SE.scala 258:27]
+      ciphers_5 <= 128'h0; // @[SE.scala 261:36]
+    end else if (io_out_valid) begin // @[SE.scala 265:36]
+      if (5'h5 == ptr[4:0]) begin // @[SE.scala 266:38]
+        ciphers_5 <= output_buffer; // @[SE.scala 266:38]
+      end
+    end
+    if (reset) begin // @[SE.scala 258:27]
+      ciphers_6 <= 128'h0; // @[SE.scala 261:36]
+    end else if (io_out_valid) begin // @[SE.scala 265:36]
+      if (5'h6 == ptr[4:0]) begin // @[SE.scala 266:38]
+        ciphers_6 <= output_buffer; // @[SE.scala 266:38]
+      end
+    end
+    if (reset) begin // @[SE.scala 258:27]
+      ciphers_7 <= 128'h0; // @[SE.scala 261:36]
+    end else if (io_out_valid) begin // @[SE.scala 265:36]
+      if (5'h7 == ptr[4:0]) begin // @[SE.scala 266:38]
+        ciphers_7 <= output_buffer; // @[SE.scala 266:38]
+      end
+    end
+    if (reset) begin // @[SE.scala 258:27]
+      ciphers_8 <= 128'h0; // @[SE.scala 261:36]
+    end else if (io_out_valid) begin // @[SE.scala 265:36]
+      if (5'h8 == ptr[4:0]) begin // @[SE.scala 266:38]
+        ciphers_8 <= output_buffer; // @[SE.scala 266:38]
+      end
+    end
+    if (reset) begin // @[SE.scala 258:27]
+      ciphers_9 <= 128'h0; // @[SE.scala 261:36]
+    end else if (io_out_valid) begin // @[SE.scala 265:36]
+      if (5'h9 == ptr[4:0]) begin // @[SE.scala 266:38]
+        ciphers_9 <= output_buffer; // @[SE.scala 266:38]
+      end
+    end
+    if (reset) begin // @[SE.scala 258:27]
+      ciphers_10 <= 128'h0; // @[SE.scala 261:36]
+    end else if (io_out_valid) begin // @[SE.scala 265:36]
+      if (5'ha == ptr[4:0]) begin // @[SE.scala 266:38]
+        ciphers_10 <= output_buffer; // @[SE.scala 266:38]
+      end
+    end
+    if (reset) begin // @[SE.scala 258:27]
+      ciphers_11 <= 128'h0; // @[SE.scala 261:36]
+    end else if (io_out_valid) begin // @[SE.scala 265:36]
+      if (5'hb == ptr[4:0]) begin // @[SE.scala 266:38]
+        ciphers_11 <= output_buffer; // @[SE.scala 266:38]
+      end
+    end
+    if (reset) begin // @[SE.scala 258:27]
+      ciphers_12 <= 128'h0; // @[SE.scala 261:36]
+    end else if (io_out_valid) begin // @[SE.scala 265:36]
+      if (5'hc == ptr[4:0]) begin // @[SE.scala 266:38]
+        ciphers_12 <= output_buffer; // @[SE.scala 266:38]
+      end
+    end
+    if (reset) begin // @[SE.scala 258:27]
+      ciphers_13 <= 128'h0; // @[SE.scala 261:36]
+    end else if (io_out_valid) begin // @[SE.scala 265:36]
+      if (5'hd == ptr[4:0]) begin // @[SE.scala 266:38]
+        ciphers_13 <= output_buffer; // @[SE.scala 266:38]
+      end
+    end
+    if (reset) begin // @[SE.scala 258:27]
+      ciphers_14 <= 128'h0; // @[SE.scala 261:36]
+    end else if (io_out_valid) begin // @[SE.scala 265:36]
+      if (5'he == ptr[4:0]) begin // @[SE.scala 266:38]
+        ciphers_14 <= output_buffer; // @[SE.scala 266:38]
+      end
+    end
+    if (reset) begin // @[SE.scala 258:27]
+      ciphers_15 <= 128'h0; // @[SE.scala 261:36]
+    end else if (io_out_valid) begin // @[SE.scala 265:36]
+      if (5'hf == ptr[4:0]) begin // @[SE.scala 266:38]
+        ciphers_15 <= output_buffer; // @[SE.scala 266:38]
+      end
+    end
+    if (reset) begin // @[SE.scala 258:27]
+      ciphers_16 <= 128'h0; // @[SE.scala 261:36]
+    end else if (io_out_valid) begin // @[SE.scala 265:36]
+      if (5'h10 == ptr[4:0]) begin // @[SE.scala 266:38]
+        ciphers_16 <= output_buffer; // @[SE.scala 266:38]
+      end
+    end
+    if (reset) begin // @[SE.scala 258:27]
+      ciphers_17 <= 128'h0; // @[SE.scala 261:36]
+    end else if (io_out_valid) begin // @[SE.scala 265:36]
+      if (5'h11 == ptr[4:0]) begin // @[SE.scala 266:38]
+        ciphers_17 <= output_buffer; // @[SE.scala 266:38]
+      end
+    end
+    if (reset) begin // @[SE.scala 258:27]
+      ciphers_18 <= 128'h0; // @[SE.scala 261:36]
+    end else if (io_out_valid) begin // @[SE.scala 265:36]
+      if (5'h12 == ptr[4:0]) begin // @[SE.scala 266:38]
+        ciphers_18 <= output_buffer; // @[SE.scala 266:38]
+      end
+    end
+    if (reset) begin // @[SE.scala 258:27]
+      ciphers_19 <= 128'h0; // @[SE.scala 261:36]
+    end else if (io_out_valid) begin // @[SE.scala 265:36]
+      if (5'h13 == ptr[4:0]) begin // @[SE.scala 266:38]
+        ciphers_19 <= output_buffer; // @[SE.scala 266:38]
+      end
+    end
+    if (reset) begin // @[SE.scala 258:27]
+      ciphers_20 <= 128'h0; // @[SE.scala 261:36]
+    end else if (io_out_valid) begin // @[SE.scala 265:36]
+      if (5'h14 == ptr[4:0]) begin // @[SE.scala 266:38]
+        ciphers_20 <= output_buffer; // @[SE.scala 266:38]
+      end
+    end
+    if (reset) begin // @[SE.scala 258:27]
+      ciphers_21 <= 128'h0; // @[SE.scala 261:36]
+    end else if (io_out_valid) begin // @[SE.scala 265:36]
+      if (5'h15 == ptr[4:0]) begin // @[SE.scala 266:38]
+        ciphers_21 <= output_buffer; // @[SE.scala 266:38]
+      end
+    end
+    if (reset) begin // @[SE.scala 258:27]
+      ciphers_22 <= 128'h0; // @[SE.scala 261:36]
+    end else if (io_out_valid) begin // @[SE.scala 265:36]
+      if (5'h16 == ptr[4:0]) begin // @[SE.scala 266:38]
+        ciphers_22 <= output_buffer; // @[SE.scala 266:38]
+      end
+    end
+    if (reset) begin // @[SE.scala 258:27]
+      ciphers_23 <= 128'h0; // @[SE.scala 261:36]
+    end else if (io_out_valid) begin // @[SE.scala 265:36]
+      if (5'h17 == ptr[4:0]) begin // @[SE.scala 266:38]
+        ciphers_23 <= output_buffer; // @[SE.scala 266:38]
+      end
+    end
+    if (reset) begin // @[SE.scala 258:27]
+      ciphers_24 <= 128'h0; // @[SE.scala 261:36]
+    end else if (io_out_valid) begin // @[SE.scala 265:36]
+      if (5'h18 == ptr[4:0]) begin // @[SE.scala 266:38]
+        ciphers_24 <= output_buffer; // @[SE.scala 266:38]
+      end
+    end
+    if (reset) begin // @[SE.scala 258:27]
+      ciphers_25 <= 128'h0; // @[SE.scala 261:36]
+    end else if (io_out_valid) begin // @[SE.scala 265:36]
+      if (5'h19 == ptr[4:0]) begin // @[SE.scala 266:38]
+        ciphers_25 <= output_buffer; // @[SE.scala 266:38]
+      end
+    end
+    if (reset) begin // @[SE.scala 258:27]
+      ciphers_26 <= 128'h0; // @[SE.scala 261:36]
+    end else if (io_out_valid) begin // @[SE.scala 265:36]
+      if (5'h1a == ptr[4:0]) begin // @[SE.scala 266:38]
+        ciphers_26 <= output_buffer; // @[SE.scala 266:38]
+      end
+    end
+    if (reset) begin // @[SE.scala 258:27]
+      ciphers_27 <= 128'h0; // @[SE.scala 261:36]
+    end else if (io_out_valid) begin // @[SE.scala 265:36]
+      if (5'h1b == ptr[4:0]) begin // @[SE.scala 266:38]
+        ciphers_27 <= output_buffer; // @[SE.scala 266:38]
+      end
+    end
+    if (reset) begin // @[SE.scala 258:27]
+      ciphers_28 <= 128'h0; // @[SE.scala 261:36]
+    end else if (io_out_valid) begin // @[SE.scala 265:36]
+      if (5'h1c == ptr[4:0]) begin // @[SE.scala 266:38]
+        ciphers_28 <= output_buffer; // @[SE.scala 266:38]
+      end
+    end
+    if (reset) begin // @[SE.scala 258:27]
+      ciphers_29 <= 128'h0; // @[SE.scala 261:36]
+    end else if (io_out_valid) begin // @[SE.scala 265:36]
+      if (5'h1d == ptr[4:0]) begin // @[SE.scala 266:38]
+        ciphers_29 <= output_buffer; // @[SE.scala 266:38]
+      end
+    end
+    if (reset) begin // @[SE.scala 258:27]
+      ciphers_30 <= 128'h0; // @[SE.scala 261:36]
+    end else if (io_out_valid) begin // @[SE.scala 265:36]
+      if (5'h1e == ptr[4:0]) begin // @[SE.scala 266:38]
+        ciphers_30 <= output_buffer; // @[SE.scala 266:38]
+      end
+    end
+    if (reset) begin // @[SE.scala 258:27]
+      ciphers_31 <= 128'h0; // @[SE.scala 261:36]
+    end else if (io_out_valid) begin // @[SE.scala 265:36]
+      if (5'h1f == ptr[4:0]) begin // @[SE.scala 266:38]
+        ciphers_31 <= output_buffer; // @[SE.scala 266:38]
+      end
+    end
+    if (reset) begin // @[SE.scala 258:27]
+      plaintexts_0 <= 64'h0; // @[SE.scala 262:39]
+    end else if (io_out_valid) begin // @[SE.scala 265:36]
+      if (5'h0 == ptr[4:0]) begin // @[SE.scala 267:41]
+        plaintexts_0 <= result_plaintext_buffer; // @[SE.scala 267:41]
+      end
+    end
+    if (reset) begin // @[SE.scala 258:27]
+      plaintexts_1 <= 64'h0; // @[SE.scala 262:39]
+    end else if (io_out_valid) begin // @[SE.scala 265:36]
+      if (5'h1 == ptr[4:0]) begin // @[SE.scala 267:41]
+        plaintexts_1 <= result_plaintext_buffer; // @[SE.scala 267:41]
+      end
+    end
+    if (reset) begin // @[SE.scala 258:27]
+      plaintexts_2 <= 64'h0; // @[SE.scala 262:39]
+    end else if (io_out_valid) begin // @[SE.scala 265:36]
+      if (5'h2 == ptr[4:0]) begin // @[SE.scala 267:41]
+        plaintexts_2 <= result_plaintext_buffer; // @[SE.scala 267:41]
+      end
+    end
+    if (reset) begin // @[SE.scala 258:27]
+      plaintexts_3 <= 64'h0; // @[SE.scala 262:39]
+    end else if (io_out_valid) begin // @[SE.scala 265:36]
+      if (5'h3 == ptr[4:0]) begin // @[SE.scala 267:41]
+        plaintexts_3 <= result_plaintext_buffer; // @[SE.scala 267:41]
+      end
+    end
+    if (reset) begin // @[SE.scala 258:27]
+      plaintexts_4 <= 64'h0; // @[SE.scala 262:39]
+    end else if (io_out_valid) begin // @[SE.scala 265:36]
+      if (5'h4 == ptr[4:0]) begin // @[SE.scala 267:41]
+        plaintexts_4 <= result_plaintext_buffer; // @[SE.scala 267:41]
+      end
+    end
+    if (reset) begin // @[SE.scala 258:27]
+      plaintexts_5 <= 64'h0; // @[SE.scala 262:39]
+    end else if (io_out_valid) begin // @[SE.scala 265:36]
+      if (5'h5 == ptr[4:0]) begin // @[SE.scala 267:41]
+        plaintexts_5 <= result_plaintext_buffer; // @[SE.scala 267:41]
+      end
+    end
+    if (reset) begin // @[SE.scala 258:27]
+      plaintexts_6 <= 64'h0; // @[SE.scala 262:39]
+    end else if (io_out_valid) begin // @[SE.scala 265:36]
+      if (5'h6 == ptr[4:0]) begin // @[SE.scala 267:41]
+        plaintexts_6 <= result_plaintext_buffer; // @[SE.scala 267:41]
+      end
+    end
+    if (reset) begin // @[SE.scala 258:27]
+      plaintexts_7 <= 64'h0; // @[SE.scala 262:39]
+    end else if (io_out_valid) begin // @[SE.scala 265:36]
+      if (5'h7 == ptr[4:0]) begin // @[SE.scala 267:41]
+        plaintexts_7 <= result_plaintext_buffer; // @[SE.scala 267:41]
+      end
+    end
+    if (reset) begin // @[SE.scala 258:27]
+      plaintexts_8 <= 64'h0; // @[SE.scala 262:39]
+    end else if (io_out_valid) begin // @[SE.scala 265:36]
+      if (5'h8 == ptr[4:0]) begin // @[SE.scala 267:41]
+        plaintexts_8 <= result_plaintext_buffer; // @[SE.scala 267:41]
+      end
+    end
+    if (reset) begin // @[SE.scala 258:27]
+      plaintexts_9 <= 64'h0; // @[SE.scala 262:39]
+    end else if (io_out_valid) begin // @[SE.scala 265:36]
+      if (5'h9 == ptr[4:0]) begin // @[SE.scala 267:41]
+        plaintexts_9 <= result_plaintext_buffer; // @[SE.scala 267:41]
+      end
+    end
+    if (reset) begin // @[SE.scala 258:27]
+      plaintexts_10 <= 64'h0; // @[SE.scala 262:39]
+    end else if (io_out_valid) begin // @[SE.scala 265:36]
+      if (5'ha == ptr[4:0]) begin // @[SE.scala 267:41]
+        plaintexts_10 <= result_plaintext_buffer; // @[SE.scala 267:41]
+      end
+    end
+    if (reset) begin // @[SE.scala 258:27]
+      plaintexts_11 <= 64'h0; // @[SE.scala 262:39]
+    end else if (io_out_valid) begin // @[SE.scala 265:36]
+      if (5'hb == ptr[4:0]) begin // @[SE.scala 267:41]
+        plaintexts_11 <= result_plaintext_buffer; // @[SE.scala 267:41]
+      end
+    end
+    if (reset) begin // @[SE.scala 258:27]
+      plaintexts_12 <= 64'h0; // @[SE.scala 262:39]
+    end else if (io_out_valid) begin // @[SE.scala 265:36]
+      if (5'hc == ptr[4:0]) begin // @[SE.scala 267:41]
+        plaintexts_12 <= result_plaintext_buffer; // @[SE.scala 267:41]
+      end
+    end
+    if (reset) begin // @[SE.scala 258:27]
+      plaintexts_13 <= 64'h0; // @[SE.scala 262:39]
+    end else if (io_out_valid) begin // @[SE.scala 265:36]
+      if (5'hd == ptr[4:0]) begin // @[SE.scala 267:41]
+        plaintexts_13 <= result_plaintext_buffer; // @[SE.scala 267:41]
+      end
+    end
+    if (reset) begin // @[SE.scala 258:27]
+      plaintexts_14 <= 64'h0; // @[SE.scala 262:39]
+    end else if (io_out_valid) begin // @[SE.scala 265:36]
+      if (5'he == ptr[4:0]) begin // @[SE.scala 267:41]
+        plaintexts_14 <= result_plaintext_buffer; // @[SE.scala 267:41]
+      end
+    end
+    if (reset) begin // @[SE.scala 258:27]
+      plaintexts_15 <= 64'h0; // @[SE.scala 262:39]
+    end else if (io_out_valid) begin // @[SE.scala 265:36]
+      if (5'hf == ptr[4:0]) begin // @[SE.scala 267:41]
+        plaintexts_15 <= result_plaintext_buffer; // @[SE.scala 267:41]
+      end
+    end
+    if (reset) begin // @[SE.scala 258:27]
+      plaintexts_16 <= 64'h0; // @[SE.scala 262:39]
+    end else if (io_out_valid) begin // @[SE.scala 265:36]
+      if (5'h10 == ptr[4:0]) begin // @[SE.scala 267:41]
+        plaintexts_16 <= result_plaintext_buffer; // @[SE.scala 267:41]
+      end
+    end
+    if (reset) begin // @[SE.scala 258:27]
+      plaintexts_17 <= 64'h0; // @[SE.scala 262:39]
+    end else if (io_out_valid) begin // @[SE.scala 265:36]
+      if (5'h11 == ptr[4:0]) begin // @[SE.scala 267:41]
+        plaintexts_17 <= result_plaintext_buffer; // @[SE.scala 267:41]
+      end
+    end
+    if (reset) begin // @[SE.scala 258:27]
+      plaintexts_18 <= 64'h0; // @[SE.scala 262:39]
+    end else if (io_out_valid) begin // @[SE.scala 265:36]
+      if (5'h12 == ptr[4:0]) begin // @[SE.scala 267:41]
+        plaintexts_18 <= result_plaintext_buffer; // @[SE.scala 267:41]
+      end
+    end
+    if (reset) begin // @[SE.scala 258:27]
+      plaintexts_19 <= 64'h0; // @[SE.scala 262:39]
+    end else if (io_out_valid) begin // @[SE.scala 265:36]
+      if (5'h13 == ptr[4:0]) begin // @[SE.scala 267:41]
+        plaintexts_19 <= result_plaintext_buffer; // @[SE.scala 267:41]
+      end
+    end
+    if (reset) begin // @[SE.scala 258:27]
+      plaintexts_20 <= 64'h0; // @[SE.scala 262:39]
+    end else if (io_out_valid) begin // @[SE.scala 265:36]
+      if (5'h14 == ptr[4:0]) begin // @[SE.scala 267:41]
+        plaintexts_20 <= result_plaintext_buffer; // @[SE.scala 267:41]
+      end
+    end
+    if (reset) begin // @[SE.scala 258:27]
+      plaintexts_21 <= 64'h0; // @[SE.scala 262:39]
+    end else if (io_out_valid) begin // @[SE.scala 265:36]
+      if (5'h15 == ptr[4:0]) begin // @[SE.scala 267:41]
+        plaintexts_21 <= result_plaintext_buffer; // @[SE.scala 267:41]
+      end
+    end
+    if (reset) begin // @[SE.scala 258:27]
+      plaintexts_22 <= 64'h0; // @[SE.scala 262:39]
+    end else if (io_out_valid) begin // @[SE.scala 265:36]
+      if (5'h16 == ptr[4:0]) begin // @[SE.scala 267:41]
+        plaintexts_22 <= result_plaintext_buffer; // @[SE.scala 267:41]
+      end
+    end
+    if (reset) begin // @[SE.scala 258:27]
+      plaintexts_23 <= 64'h0; // @[SE.scala 262:39]
+    end else if (io_out_valid) begin // @[SE.scala 265:36]
+      if (5'h17 == ptr[4:0]) begin // @[SE.scala 267:41]
+        plaintexts_23 <= result_plaintext_buffer; // @[SE.scala 267:41]
+      end
+    end
+    if (reset) begin // @[SE.scala 258:27]
+      plaintexts_24 <= 64'h0; // @[SE.scala 262:39]
+    end else if (io_out_valid) begin // @[SE.scala 265:36]
+      if (5'h18 == ptr[4:0]) begin // @[SE.scala 267:41]
+        plaintexts_24 <= result_plaintext_buffer; // @[SE.scala 267:41]
+      end
+    end
+    if (reset) begin // @[SE.scala 258:27]
+      plaintexts_25 <= 64'h0; // @[SE.scala 262:39]
+    end else if (io_out_valid) begin // @[SE.scala 265:36]
+      if (5'h19 == ptr[4:0]) begin // @[SE.scala 267:41]
+        plaintexts_25 <= result_plaintext_buffer; // @[SE.scala 267:41]
+      end
+    end
+    if (reset) begin // @[SE.scala 258:27]
+      plaintexts_26 <= 64'h0; // @[SE.scala 262:39]
+    end else if (io_out_valid) begin // @[SE.scala 265:36]
+      if (5'h1a == ptr[4:0]) begin // @[SE.scala 267:41]
+        plaintexts_26 <= result_plaintext_buffer; // @[SE.scala 267:41]
+      end
+    end
+    if (reset) begin // @[SE.scala 258:27]
+      plaintexts_27 <= 64'h0; // @[SE.scala 262:39]
+    end else if (io_out_valid) begin // @[SE.scala 265:36]
+      if (5'h1b == ptr[4:0]) begin // @[SE.scala 267:41]
+        plaintexts_27 <= result_plaintext_buffer; // @[SE.scala 267:41]
+      end
+    end
+    if (reset) begin // @[SE.scala 258:27]
+      plaintexts_28 <= 64'h0; // @[SE.scala 262:39]
+    end else if (io_out_valid) begin // @[SE.scala 265:36]
+      if (5'h1c == ptr[4:0]) begin // @[SE.scala 267:41]
+        plaintexts_28 <= result_plaintext_buffer; // @[SE.scala 267:41]
+      end
+    end
+    if (reset) begin // @[SE.scala 258:27]
+      plaintexts_29 <= 64'h0; // @[SE.scala 262:39]
+    end else if (io_out_valid) begin // @[SE.scala 265:36]
+      if (5'h1d == ptr[4:0]) begin // @[SE.scala 267:41]
+        plaintexts_29 <= result_plaintext_buffer; // @[SE.scala 267:41]
+      end
+    end
+    if (reset) begin // @[SE.scala 258:27]
+      plaintexts_30 <= 64'h0; // @[SE.scala 262:39]
+    end else if (io_out_valid) begin // @[SE.scala 265:36]
+      if (5'h1e == ptr[4:0]) begin // @[SE.scala 267:41]
+        plaintexts_30 <= result_plaintext_buffer; // @[SE.scala 267:41]
+      end
+    end
+    if (reset) begin // @[SE.scala 258:27]
+      plaintexts_31 <= 64'h0; // @[SE.scala 262:39]
+    end else if (io_out_valid) begin // @[SE.scala 265:36]
+      if (5'h1f == ptr[4:0]) begin // @[SE.scala 267:41]
+        plaintexts_31 <= result_plaintext_buffer; // @[SE.scala 267:41]
+      end
+    end
+    if (reset) begin // @[SE.scala 83:26]
+      ptr <= 8'h0; // @[SE.scala 83:26]
+    end else if (output_valid) begin // @[SE.scala 250:27]
+      if (ptr == 8'h1f) begin // @[SE.scala 252:35]
+        ptr <= 8'h0; // @[SE.scala 253:29]
+      end else begin
+        ptr <= _T_485; // @[SE.scala 255:29]
+      end
+    end
     if (io_in_valid) begin // @[Reg.scala 16:19]
       inst_buffer <= io_in_inst; // @[Reg.scala 16:23]
     end
@@ -40831,12 +43937,17 @@ module SE(
     if (aes_invcipher_io_input_valid) begin // @[Reg.scala 16:19]
       mid_op1_buffer <= op1_buffer; // @[Reg.scala 16:23]
     end
-    result_valid_buffer <= seOpValid | _T_488; // @[SE.scala 211:37]
+    result_valid_buffer <= seOpValid | _T_461; // @[SE.scala 211:37]
     if (seOpValid) begin // @[Reg.scala 16:19]
       result_buffer <= padded_result; // @[Reg.scala 16:23]
     end
+    if (reset) begin // @[SE.scala 224:46]
+      result_plaintext_buffer <= 64'h0; // @[SE.scala 224:46]
+    end else if (seOpValid) begin // @[SE.scala 225:24]
+      result_plaintext_buffer <= seoperation_io_result; // @[SE.scala 226:41]
+    end
     if (aes_cipher_io_output_valid) begin // @[Reg.scala 16:19]
-      output_buffer <= _T_506; // @[Reg.scala 16:23]
+      output_buffer <= _T_479; // @[Reg.scala 16:23]
     end
     if (reset) begin // @[SE.scala 240:35]
       output_valid <= 1'h0; // @[SE.scala 240:35]
@@ -40869,108 +43980,8 @@ module SE(
     `ifdef PRINTF_COND
       if (`PRINTF_COND) begin
     `endif
-        if (_T_441) begin
-          $fwrite(32'h80000002,"aes_invcipher.io.output_valid: %d\n",aes_invcipher_io_output_valid); // @[SE.scala 191:15]
-        end
-    `ifdef PRINTF_COND
-      end
-    `endif
-    `endif // SYNTHESIS
-    `ifndef SYNTHESIS
-    `ifdef PRINTF_COND
-      if (`PRINTF_COND) begin
-    `endif
-        if (_T_441) begin
-          $fwrite(32'h80000002,"aes_invcipher.io.input_valid: %d\n",aes_invcipher_io_input_valid); // @[SE.scala 192:15]
-        end
-    `ifdef PRINTF_COND
-      end
-    `endif
-    `endif // SYNTHESIS
-    `ifndef SYNTHESIS
-    `ifdef PRINTF_COND
-      if (`PRINTF_COND) begin
-    `endif
-        if (seOpValid & _T_441) begin
-          $fwrite(32'h80000002,"\n-----mid----\n"); // @[SE.scala 195:23]
-        end
-    `ifdef PRINTF_COND
-      end
-    `endif
-    `endif // SYNTHESIS
-    `ifndef SYNTHESIS
-    `ifdef PRINTF_COND
-      if (`PRINTF_COND) begin
-    `endif
-        if (seOpValid & _T_441) begin
-          $fwrite(32'h80000002,"op1_asUInt:%x\n",seoperation_io_op1_input); // @[SE.scala 196:23]
-        end
-    `ifdef PRINTF_COND
-      end
-    `endif
-    `endif // SYNTHESIS
-    `ifndef SYNTHESIS
-    `ifdef PRINTF_COND
-      if (`PRINTF_COND) begin
-    `endif
-        if (seOpValid & _T_441) begin
-          $fwrite(32'h80000002,"op2_asUInt:%x\n",seoperation_io_op2_input); // @[SE.scala 197:23]
-        end
-    `ifdef PRINTF_COND
-      end
-    `endif
-    `endif // SYNTHESIS
-    `ifndef SYNTHESIS
-    `ifdef PRINTF_COND
-      if (`PRINTF_COND) begin
-    `endif
-        if (seOpValid & _T_441) begin
-          $fwrite(32'h80000002,"cond_asUInt:%x\n",seoperation_io_cond_input); // @[SE.scala 198:23]
-        end
-    `ifdef PRINTF_COND
-      end
-    `endif
-    `endif // SYNTHESIS
-    `ifndef SYNTHESIS
-    `ifdef PRINTF_COND
-      if (`PRINTF_COND) begin
-    `endif
-        if (seOpValid & _T_441) begin
-          $fwrite(32'h80000002,"op1_asUInt:%x\n",mid_inst_buffer[7:5] == 3'h5 ? mid_op1_buffer[127:64] : op1_asUInt[127:
-            64]); // @[SE.scala 199:23]
-        end
-    `ifdef PRINTF_COND
-      end
-    `endif
-    `endif // SYNTHESIS
-    `ifndef SYNTHESIS
-    `ifdef PRINTF_COND
-      if (`PRINTF_COND) begin
-    `endif
-        if (seOpValid & _T_441) begin
-          $fwrite(32'h80000002,"op2_asUInt:%x\n",op2_asUInt[127:64]); // @[SE.scala 200:23]
-        end
-    `ifdef PRINTF_COND
-      end
-    `endif
-    `endif // SYNTHESIS
-    `ifndef SYNTHESIS
-    `ifdef PRINTF_COND
-      if (`PRINTF_COND) begin
-    `endif
-        if (seOpValid & _T_441) begin
-          $fwrite(32'h80000002,"cond_asUInt:%x\n",cond_asUInt[127:64]); // @[SE.scala 201:23]
-        end
-    `ifdef PRINTF_COND
-      end
-    `endif
-    `endif // SYNTHESIS
-    `ifndef SYNTHESIS
-    `ifdef PRINTF_COND
-      if (`PRINTF_COND) begin
-    `endif
-        if (seOpValid & _T_441) begin
-          $fwrite(32'h80000002,"inst:%b\n",mid_inst_buffer); // @[SE.scala 202:23]
+        if (output_valid & _T_441) begin
+          $fwrite(32'h80000002,"ptr:%x\n",ptr); // @[SE.scala 251:23]
         end
     `ifdef PRINTF_COND
       end
@@ -41017,30 +44028,162 @@ initial begin
   counterOn = _RAND_0[0:0];
   _RAND_1 = {1{`RANDOM}};
   value = _RAND_1[6:0];
-  _RAND_2 = {1{`RANDOM}};
-  inst_buffer = _RAND_2[7:0];
+  _RAND_2 = {4{`RANDOM}};
+  ciphers_0 = _RAND_2[127:0];
   _RAND_3 = {4{`RANDOM}};
-  op1_buffer = _RAND_3[127:0];
+  ciphers_1 = _RAND_3[127:0];
   _RAND_4 = {4{`RANDOM}};
-  op2_buffer = _RAND_4[127:0];
+  ciphers_2 = _RAND_4[127:0];
   _RAND_5 = {4{`RANDOM}};
-  cond_buffer = _RAND_5[127:0];
-  _RAND_6 = {1{`RANDOM}};
-  valid_buffer = _RAND_6[0:0];
-  _RAND_7 = {1{`RANDOM}};
-  ready_for_input = _RAND_7[0:0];
-  _RAND_8 = {1{`RANDOM}};
-  mid_inst_buffer = _RAND_8[7:0];
+  ciphers_3 = _RAND_5[127:0];
+  _RAND_6 = {4{`RANDOM}};
+  ciphers_4 = _RAND_6[127:0];
+  _RAND_7 = {4{`RANDOM}};
+  ciphers_5 = _RAND_7[127:0];
+  _RAND_8 = {4{`RANDOM}};
+  ciphers_6 = _RAND_8[127:0];
   _RAND_9 = {4{`RANDOM}};
-  mid_op1_buffer = _RAND_9[127:0];
-  _RAND_10 = {1{`RANDOM}};
-  result_valid_buffer = _RAND_10[0:0];
+  ciphers_7 = _RAND_9[127:0];
+  _RAND_10 = {4{`RANDOM}};
+  ciphers_8 = _RAND_10[127:0];
   _RAND_11 = {4{`RANDOM}};
-  result_buffer = _RAND_11[127:0];
+  ciphers_9 = _RAND_11[127:0];
   _RAND_12 = {4{`RANDOM}};
-  output_buffer = _RAND_12[127:0];
-  _RAND_13 = {1{`RANDOM}};
-  output_valid = _RAND_13[0:0];
+  ciphers_10 = _RAND_12[127:0];
+  _RAND_13 = {4{`RANDOM}};
+  ciphers_11 = _RAND_13[127:0];
+  _RAND_14 = {4{`RANDOM}};
+  ciphers_12 = _RAND_14[127:0];
+  _RAND_15 = {4{`RANDOM}};
+  ciphers_13 = _RAND_15[127:0];
+  _RAND_16 = {4{`RANDOM}};
+  ciphers_14 = _RAND_16[127:0];
+  _RAND_17 = {4{`RANDOM}};
+  ciphers_15 = _RAND_17[127:0];
+  _RAND_18 = {4{`RANDOM}};
+  ciphers_16 = _RAND_18[127:0];
+  _RAND_19 = {4{`RANDOM}};
+  ciphers_17 = _RAND_19[127:0];
+  _RAND_20 = {4{`RANDOM}};
+  ciphers_18 = _RAND_20[127:0];
+  _RAND_21 = {4{`RANDOM}};
+  ciphers_19 = _RAND_21[127:0];
+  _RAND_22 = {4{`RANDOM}};
+  ciphers_20 = _RAND_22[127:0];
+  _RAND_23 = {4{`RANDOM}};
+  ciphers_21 = _RAND_23[127:0];
+  _RAND_24 = {4{`RANDOM}};
+  ciphers_22 = _RAND_24[127:0];
+  _RAND_25 = {4{`RANDOM}};
+  ciphers_23 = _RAND_25[127:0];
+  _RAND_26 = {4{`RANDOM}};
+  ciphers_24 = _RAND_26[127:0];
+  _RAND_27 = {4{`RANDOM}};
+  ciphers_25 = _RAND_27[127:0];
+  _RAND_28 = {4{`RANDOM}};
+  ciphers_26 = _RAND_28[127:0];
+  _RAND_29 = {4{`RANDOM}};
+  ciphers_27 = _RAND_29[127:0];
+  _RAND_30 = {4{`RANDOM}};
+  ciphers_28 = _RAND_30[127:0];
+  _RAND_31 = {4{`RANDOM}};
+  ciphers_29 = _RAND_31[127:0];
+  _RAND_32 = {4{`RANDOM}};
+  ciphers_30 = _RAND_32[127:0];
+  _RAND_33 = {4{`RANDOM}};
+  ciphers_31 = _RAND_33[127:0];
+  _RAND_34 = {2{`RANDOM}};
+  plaintexts_0 = _RAND_34[63:0];
+  _RAND_35 = {2{`RANDOM}};
+  plaintexts_1 = _RAND_35[63:0];
+  _RAND_36 = {2{`RANDOM}};
+  plaintexts_2 = _RAND_36[63:0];
+  _RAND_37 = {2{`RANDOM}};
+  plaintexts_3 = _RAND_37[63:0];
+  _RAND_38 = {2{`RANDOM}};
+  plaintexts_4 = _RAND_38[63:0];
+  _RAND_39 = {2{`RANDOM}};
+  plaintexts_5 = _RAND_39[63:0];
+  _RAND_40 = {2{`RANDOM}};
+  plaintexts_6 = _RAND_40[63:0];
+  _RAND_41 = {2{`RANDOM}};
+  plaintexts_7 = _RAND_41[63:0];
+  _RAND_42 = {2{`RANDOM}};
+  plaintexts_8 = _RAND_42[63:0];
+  _RAND_43 = {2{`RANDOM}};
+  plaintexts_9 = _RAND_43[63:0];
+  _RAND_44 = {2{`RANDOM}};
+  plaintexts_10 = _RAND_44[63:0];
+  _RAND_45 = {2{`RANDOM}};
+  plaintexts_11 = _RAND_45[63:0];
+  _RAND_46 = {2{`RANDOM}};
+  plaintexts_12 = _RAND_46[63:0];
+  _RAND_47 = {2{`RANDOM}};
+  plaintexts_13 = _RAND_47[63:0];
+  _RAND_48 = {2{`RANDOM}};
+  plaintexts_14 = _RAND_48[63:0];
+  _RAND_49 = {2{`RANDOM}};
+  plaintexts_15 = _RAND_49[63:0];
+  _RAND_50 = {2{`RANDOM}};
+  plaintexts_16 = _RAND_50[63:0];
+  _RAND_51 = {2{`RANDOM}};
+  plaintexts_17 = _RAND_51[63:0];
+  _RAND_52 = {2{`RANDOM}};
+  plaintexts_18 = _RAND_52[63:0];
+  _RAND_53 = {2{`RANDOM}};
+  plaintexts_19 = _RAND_53[63:0];
+  _RAND_54 = {2{`RANDOM}};
+  plaintexts_20 = _RAND_54[63:0];
+  _RAND_55 = {2{`RANDOM}};
+  plaintexts_21 = _RAND_55[63:0];
+  _RAND_56 = {2{`RANDOM}};
+  plaintexts_22 = _RAND_56[63:0];
+  _RAND_57 = {2{`RANDOM}};
+  plaintexts_23 = _RAND_57[63:0];
+  _RAND_58 = {2{`RANDOM}};
+  plaintexts_24 = _RAND_58[63:0];
+  _RAND_59 = {2{`RANDOM}};
+  plaintexts_25 = _RAND_59[63:0];
+  _RAND_60 = {2{`RANDOM}};
+  plaintexts_26 = _RAND_60[63:0];
+  _RAND_61 = {2{`RANDOM}};
+  plaintexts_27 = _RAND_61[63:0];
+  _RAND_62 = {2{`RANDOM}};
+  plaintexts_28 = _RAND_62[63:0];
+  _RAND_63 = {2{`RANDOM}};
+  plaintexts_29 = _RAND_63[63:0];
+  _RAND_64 = {2{`RANDOM}};
+  plaintexts_30 = _RAND_64[63:0];
+  _RAND_65 = {2{`RANDOM}};
+  plaintexts_31 = _RAND_65[63:0];
+  _RAND_66 = {1{`RANDOM}};
+  ptr = _RAND_66[7:0];
+  _RAND_67 = {1{`RANDOM}};
+  inst_buffer = _RAND_67[7:0];
+  _RAND_68 = {4{`RANDOM}};
+  op1_buffer = _RAND_68[127:0];
+  _RAND_69 = {4{`RANDOM}};
+  op2_buffer = _RAND_69[127:0];
+  _RAND_70 = {4{`RANDOM}};
+  cond_buffer = _RAND_70[127:0];
+  _RAND_71 = {1{`RANDOM}};
+  valid_buffer = _RAND_71[0:0];
+  _RAND_72 = {1{`RANDOM}};
+  ready_for_input = _RAND_72[0:0];
+  _RAND_73 = {1{`RANDOM}};
+  mid_inst_buffer = _RAND_73[7:0];
+  _RAND_74 = {4{`RANDOM}};
+  mid_op1_buffer = _RAND_74[127:0];
+  _RAND_75 = {1{`RANDOM}};
+  result_valid_buffer = _RAND_75[0:0];
+  _RAND_76 = {4{`RANDOM}};
+  result_buffer = _RAND_76[127:0];
+  _RAND_77 = {2{`RANDOM}};
+  result_plaintext_buffer = _RAND_77[63:0];
+  _RAND_78 = {4{`RANDOM}};
+  output_buffer = _RAND_78[127:0];
+  _RAND_79 = {1{`RANDOM}};
+  output_valid = _RAND_79[0:0];
 `endif // RANDOMIZE_REG_INIT
   `endif // RANDOMIZE
 end // initial

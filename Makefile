@@ -1,4 +1,4 @@
-default: VSE.o # tag
+default: VSE.o #gdb tag
 
 tag: firrtl_transform
 	firrtl/utils/bin/firrtl -td generated-src -i generated-src/SE.fir --custom-transforms firrtl.transforms.Tagrize -o tag.v -X verilog
@@ -20,7 +20,7 @@ VSE.o: verilator_generate
 	cd obj_dir; make -f VSE.mk ; cd ..
 
 verilator_generate: generate
-	verilator -Wno-fatal -cc $(gen_dir)/SE.v
+	verilator -Wno-fatal -cc -CFLAGS -g3 $(gen_dir)/SE.v
 
 # generate:
 # 	$(SBT) $(SBT_FLAGS) 'run -td $(gen_dir) -foaf se'
