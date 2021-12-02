@@ -1323,7 +1323,7 @@ case class Module(info: Info, name: String, ports: Seq[Port], body: Statement) e
         }
       }
       this.copy(ports = new_ports, body = n_body)
-    }else if(name == "CipherRoundNMC"){
+    }else if(name == "CipherRound_10"){
       val new_ports = ports.map(_.mapToTag)
       var n_body = body.mapToTag
       for(p <- new_ports){
