@@ -23,12 +23,12 @@ int print128dec(__uint128_t dec){
 	return 0;
 }
 
-int changeKey(uint8_t* key){
-	SECRET_KEY = bit128_t(key);
-	aes128_set_key(SECRET_KEY);
-	SE::changeKey(s_g.words);
-	return 0;
-}
+// int changeKey(uint8_t* key){
+// 	SECRET_KEY = bit128_t(key);
+// 	aes128_set_key(SECRET_KEY);
+// 	SE::changeKey(s_g.words);
+// 	return 0;
+// }
 
 int main(){
 	setParameters();
@@ -62,8 +62,8 @@ int main(){
 	print128dec(l6_SE);
 	printf("ticks: %d\n", SE::real_tickcount);
 
-	uint8_t newKey[16] = {15,14,13,12,11,10,9,8,7,6,5,4,3,2,1,0};
-	changeKey(newKey);
+	// uint8_t newKey[16] = {15,14,13,12,11,10,9,8,7,6,5,4,3,2,1,0};
+	// changeKey(newKey);
 	enc_lib::enc_int l1_new = 1;
 	enc_lib::enc_int l2_new = 2;
 	enc_lib::enc_int l3_new = 3;

@@ -1,4 +1,4 @@
-default: VSE.o tag
+default: VSE.o # tag
 
 tag: firrtl_transform
 	firrtl/utils/bin/firrtl -td generated-src -i generated-src/SE.fir --custom-transforms firrtl.transforms.Tagrize -o tag.v -X verilog
