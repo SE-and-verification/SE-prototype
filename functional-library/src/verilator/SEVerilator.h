@@ -16,6 +16,6 @@ class SE{
 		static VSE *module;
 		static void tick();
 		static void reset();
-		static void changeKey(unsigned int* key);
+		// static void changeKey(unsigned int* key);
 };
 #endif
