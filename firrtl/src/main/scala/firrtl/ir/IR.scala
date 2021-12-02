@@ -1280,7 +1280,7 @@ case class Module(info: Info, name: String, ports: Seq[Port], body: Statement) e
                       var retC = c;
                       if(r.name == p.name && r.name != "io_output_valid"){
                         found = true; 
-                        retC = c.copy(expr = UIntLiteral(1, IntWidth(1)))
+                        retC = c.copy(expr = UIntLiteral(0, IntWidth(1)))
                       }
                       retC
                     }
@@ -1315,7 +1315,7 @@ case class Module(info: Info, name: String, ports: Seq[Port], body: Statement) e
                   its = its.tail
                 }
               }
-              res.append(Connect(info, new Reference(p.name, p.tpe), UIntLiteral(1, IntWidth(1)) ))
+              res.append(Connect(info, new Reference(p.name, p.tpe), UIntLiteral(0, IntWidth(1)) ))
               n_body = Block(res.toSeq)
             }
             case _ => ()
@@ -1323,7 +1323,7 @@ case class Module(info: Info, name: String, ports: Seq[Port], body: Statement) e
         }
       }
       this.copy(ports = new_ports, body = n_body)
-    }else if(name == "AESEncrypt"){
+    }else if(name == "CipherRoundNMC"){
       val new_ports = ports.map(_.mapToTag)
       var n_body = body.mapToTag
       for(p <- new_ports){
@@ -1338,7 +1338,7 @@ case class Module(info: Info, name: String, ports: Seq[Port], body: Statement) e
                       var retC = c;
                       if(r.name == p.name){
                         found = true; 
-                        retC = c.copy(expr = UIntLiteral(1, IntWidth(0)))
+                        retC = c.copy(expr = UIntLiteral(1, IntWidth(1)))
                       }
                       retC
                     }
@@ -1374,7 +1374,7 @@ case class Module(info: Info, name: String, ports: Seq[Port], body: Statement) e
                   its = its.tail
                 }
               }
-              res.append(Connect(info, new Reference(p.name, p.tpe), UIntLiteral(0, IntWidth(1)) ))
+              res.append(Connect(info, new Reference(p.name, p.tpe), UIntLiteral(1, IntWidth(1)) ))
               n_body = Block(res.toSeq)
             }
             case _ => ()
