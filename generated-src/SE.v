@@ -41989,11 +41989,7 @@ module MaxPeriodFibonacciLFSR(
   assign io_out_62 = state_62; // @[PRNG.scala 69:10]
   assign io_out_63 = state_63; // @[PRNG.scala 69:10]
   always @(posedge clock) begin
-    if (reset) begin // @[PRNG.scala 47:50]
-      state_0 <= 1'h0; // @[PRNG.scala 47:50]
-    end else begin
-      state_0 <= _T_2;
-    end
+    state_0 <= reset | _T_2; // @[PRNG.scala 47:{50,50}]
     state_1 <= reset | state_0; // @[PRNG.scala 47:{50,50}]
     if (reset) begin // @[PRNG.scala 47:50]
       state_2 <= 1'h0; // @[PRNG.scala 47:50]
@@ -42018,14 +42014,22 @@ module MaxPeriodFibonacciLFSR(
     end else begin
       state_8 <= state_7;
     end
-    state_9 <= reset | state_8; // @[PRNG.scala 47:{50,50}]
-    state_10 <= reset | state_9; // @[PRNG.scala 47:{50,50}]
     if (reset) begin // @[PRNG.scala 47:50]
-      state_11 <= 1'h0; // @[PRNG.scala 47:50]
+      state_9 <= 1'h0; // @[PRNG.scala 47:50]
     end else begin
-      state_11 <= state_10;
+      state_9 <= state_8;
     end
-    state_12 <= reset | state_11; // @[PRNG.scala 47:{50,50}]
+    if (reset) begin // @[PRNG.scala 47:50]
+      state_10 <= 1'h0; // @[PRNG.scala 47:50]
+    end else begin
+      state_10 <= state_9;
+    end
+    state_11 <= reset | state_10; // @[PRNG.scala 47:{50,50}]
+    if (reset) begin // @[PRNG.scala 47:50]
+      state_12 <= 1'h0; // @[PRNG.scala 47:50]
+    end else begin
+      state_12 <= state_11;
+    end
     if (reset) begin // @[PRNG.scala 47:50]
       state_13 <= 1'h0; // @[PRNG.scala 47:50]
     end else begin
@@ -42033,161 +42037,141 @@ module MaxPeriodFibonacciLFSR(
     end
     state_14 <= reset | state_13; // @[PRNG.scala 47:{50,50}]
     state_15 <= reset | state_14; // @[PRNG.scala 47:{50,50}]
+    state_16 <= reset | state_15; // @[PRNG.scala 47:{50,50}]
     if (reset) begin // @[PRNG.scala 47:50]
-      state_16 <= 1'h0; // @[PRNG.scala 47:50]
+      state_17 <= 1'h0; // @[PRNG.scala 47:50]
     end else begin
-      state_16 <= state_15;
+      state_17 <= state_16;
     end
-    state_17 <= reset | state_16; // @[PRNG.scala 47:{50,50}]
     if (reset) begin // @[PRNG.scala 47:50]
       state_18 <= 1'h0; // @[PRNG.scala 47:50]
     end else begin
       state_18 <= state_17;
     end
     state_19 <= reset | state_18; // @[PRNG.scala 47:{50,50}]
-    state_20 <= reset | state_19; // @[PRNG.scala 47:{50,50}]
+    if (reset) begin // @[PRNG.scala 47:50]
+      state_20 <= 1'h0; // @[PRNG.scala 47:50]
+    end else begin
+      state_20 <= state_19;
+    end
     if (reset) begin // @[PRNG.scala 47:50]
       state_21 <= 1'h0; // @[PRNG.scala 47:50]
     end else begin
       state_21 <= state_20;
     end
-    if (reset) begin // @[PRNG.scala 47:50]
-      state_22 <= 1'h0; // @[PRNG.scala 47:50]
-    end else begin
-      state_22 <= state_21;
-    end
+    state_22 <= reset | state_21; // @[PRNG.scala 47:{50,50}]
     if (reset) begin // @[PRNG.scala 47:50]
       state_23 <= 1'h0; // @[PRNG.scala 47:50]
     end else begin
       state_23 <= state_22;
     end
     state_24 <= reset | state_23; // @[PRNG.scala 47:{50,50}]
+    state_25 <= reset | state_24; // @[PRNG.scala 47:{50,50}]
     if (reset) begin // @[PRNG.scala 47:50]
-      state_25 <= 1'h0; // @[PRNG.scala 47:50]
+      state_26 <= 1'h0; // @[PRNG.scala 47:50]
     end else begin
-      state_25 <= state_24;
+      state_26 <= state_25;
     end
-    state_26 <= reset | state_25; // @[PRNG.scala 47:{50,50}]
-    if (reset) begin // @[PRNG.scala 47:50]
-      state_27 <= 1'h0; // @[PRNG.scala 47:50]
-    end else begin
-      state_27 <= state_26;
-    end
+    state_27 <= reset | state_26; // @[PRNG.scala 47:{50,50}]
     state_28 <= reset | state_27; // @[PRNG.scala 47:{50,50}]
     if (reset) begin // @[PRNG.scala 47:50]
       state_29 <= 1'h0; // @[PRNG.scala 47:50]
     end else begin
       state_29 <= state_28;
     end
-    if (reset) begin // @[PRNG.scala 47:50]
-      state_30 <= 1'h0; // @[PRNG.scala 47:50]
-    end else begin
-      state_30 <= state_29;
-    end
+    state_30 <= reset | state_29; // @[PRNG.scala 47:{50,50}]
     if (reset) begin // @[PRNG.scala 47:50]
       state_31 <= 1'h0; // @[PRNG.scala 47:50]
     end else begin
       state_31 <= state_30;
     end
-    if (reset) begin // @[PRNG.scala 47:50]
-      state_32 <= 1'h0; // @[PRNG.scala 47:50]
-    end else begin
-      state_32 <= state_31;
-    end
+    state_32 <= reset | state_31; // @[PRNG.scala 47:{50,50}]
     state_33 <= reset | state_32; // @[PRNG.scala 47:{50,50}]
+    state_34 <= reset | state_33; // @[PRNG.scala 47:{50,50}]
+    state_35 <= reset | state_34; // @[PRNG.scala 47:{50,50}]
+    state_36 <= reset | state_35; // @[PRNG.scala 47:{50,50}]
     if (reset) begin // @[PRNG.scala 47:50]
-      state_34 <= 1'h0; // @[PRNG.scala 47:50]
+      state_37 <= 1'h0; // @[PRNG.scala 47:50]
     end else begin
-      state_34 <= state_33;
+      state_37 <= state_36;
     end
     if (reset) begin // @[PRNG.scala 47:50]
-      state_35 <= 1'h0; // @[PRNG.scala 47:50]
+      state_38 <= 1'h0; // @[PRNG.scala 47:50]
     end else begin
-      state_35 <= state_34;
+      state_38 <= state_37;
     end
-    if (reset) begin // @[PRNG.scala 47:50]
-      state_36 <= 1'h0; // @[PRNG.scala 47:50]
-    end else begin
-      state_36 <= state_35;
-    end
-    state_37 <= reset | state_36; // @[PRNG.scala 47:{50,50}]
-    state_38 <= reset | state_37; // @[PRNG.scala 47:{50,50}]
     if (reset) begin // @[PRNG.scala 47:50]
       state_39 <= 1'h0; // @[PRNG.scala 47:50]
     end else begin
       state_39 <= state_38;
     end
-    state_40 <= reset | state_39; // @[PRNG.scala 47:{50,50}]
+    if (reset) begin // @[PRNG.scala 47:50]
+      state_40 <= 1'h0; // @[PRNG.scala 47:50]
+    end else begin
+      state_40 <= state_39;
+    end
     state_41 <= reset | state_40; // @[PRNG.scala 47:{50,50}]
     state_42 <= reset | state_41; // @[PRNG.scala 47:{50,50}]
-    if (reset) begin // @[PRNG.scala 47:50]
-      state_43 <= 1'h0; // @[PRNG.scala 47:50]
-    end else begin
-      state_43 <= state_42;
-    end
+    state_43 <= reset | state_42; // @[PRNG.scala 47:{50,50}]
     if (reset) begin // @[PRNG.scala 47:50]
       state_44 <= 1'h0; // @[PRNG.scala 47:50]
     end else begin
       state_44 <= state_43;
     end
+    state_45 <= reset | state_44; // @[PRNG.scala 47:{50,50}]
     if (reset) begin // @[PRNG.scala 47:50]
-      state_45 <= 1'h0; // @[PRNG.scala 47:50]
+      state_46 <= 1'h0; // @[PRNG.scala 47:50]
     end else begin
-      state_45 <= state_44;
+      state_46 <= state_45;
     end
-    state_46 <= reset | state_45; // @[PRNG.scala 47:{50,50}]
     if (reset) begin // @[PRNG.scala 47:50]
       state_47 <= 1'h0; // @[PRNG.scala 47:50]
     end else begin
       state_47 <= state_46;
     end
     state_48 <= reset | state_47; // @[PRNG.scala 47:{50,50}]
-    state_49 <= reset | state_48; // @[PRNG.scala 47:{50,50}]
-    state_50 <= reset | state_49; // @[PRNG.scala 47:{50,50}]
-    state_51 <= reset | state_50; // @[PRNG.scala 47:{50,50}]
+    if (reset) begin // @[PRNG.scala 47:50]
+      state_49 <= 1'h0; // @[PRNG.scala 47:50]
+    end else begin
+      state_49 <= state_48;
+    end
+    if (reset) begin // @[PRNG.scala 47:50]
+      state_50 <= 1'h0; // @[PRNG.scala 47:50]
+    end else begin
+      state_50 <= state_49;
+    end
+    if (reset) begin // @[PRNG.scala 47:50]
+      state_51 <= 1'h0; // @[PRNG.scala 47:50]
+    end else begin
+      state_51 <= state_50;
+    end
     if (reset) begin // @[PRNG.scala 47:50]
       state_52 <= 1'h0; // @[PRNG.scala 47:50]
     end else begin
       state_52 <= state_51;
     end
     state_53 <= reset | state_52; // @[PRNG.scala 47:{50,50}]
+    state_54 <= reset | state_53; // @[PRNG.scala 47:{50,50}]
     if (reset) begin // @[PRNG.scala 47:50]
-      state_54 <= 1'h0; // @[PRNG.scala 47:50]
+      state_55 <= 1'h0; // @[PRNG.scala 47:50]
     end else begin
-      state_54 <= state_53;
+      state_55 <= state_54;
     end
-    state_55 <= reset | state_54; // @[PRNG.scala 47:{50,50}]
+    state_56 <= reset | state_55; // @[PRNG.scala 47:{50,50}]
+    state_57 <= reset | state_56; // @[PRNG.scala 47:{50,50}]
+    state_58 <= reset | state_57; // @[PRNG.scala 47:{50,50}]
     if (reset) begin // @[PRNG.scala 47:50]
-      state_56 <= 1'h0; // @[PRNG.scala 47:50]
+      state_59 <= 1'h0; // @[PRNG.scala 47:50]
     end else begin
-      state_56 <= state_55;
+      state_59 <= state_58;
     end
-    if (reset) begin // @[PRNG.scala 47:50]
-      state_57 <= 1'h0; // @[PRNG.scala 47:50]
-    end else begin
-      state_57 <= state_56;
-    end
-    if (reset) begin // @[PRNG.scala 47:50]
-      state_58 <= 1'h0; // @[PRNG.scala 47:50]
-    end else begin
-      state_58 <= state_57;
-    end
-    state_59 <= reset | state_58; // @[PRNG.scala 47:{50,50}]
-    if (reset) begin // @[PRNG.scala 47:50]
-      state_60 <= 1'h0; // @[PRNG.scala 47:50]
-    end else begin
-      state_60 <= state_59;
-    end
+    state_60 <= reset | state_59; // @[PRNG.scala 47:{50,50}]
     if (reset) begin // @[PRNG.scala 47:50]
       state_61 <= 1'h0; // @[PRNG.scala 47:50]
     end else begin
       state_61 <= state_60;
     end
-    if (reset) begin // @[PRNG.scala 47:50]
-      state_62 <= 1'h0; // @[PRNG.scala 47:50]
-    end else begin
-      state_62 <= state_61;
-    end
+    state_62 <= reset | state_61; // @[PRNG.scala 47:{50,50}]
     state_63 <= reset | state_62; // @[PRNG.scala 47:{50,50}]
   end
 // Register and memory initialization
