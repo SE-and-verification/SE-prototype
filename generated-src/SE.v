@@ -41989,32 +41989,40 @@ module MaxPeriodFibonacciLFSR(
   assign io_out_62 = state_62; // @[PRNG.scala 69:10]
   assign io_out_63 = state_63; // @[PRNG.scala 69:10]
   always @(posedge clock) begin
-    if (reset) begin // @[PRNG.scala 47:50]
-      state_0 <= 1'h0; // @[PRNG.scala 47:50]
-    end else begin
-      state_0 <= _T_2;
-    end
+    state_0 <= reset | _T_2; // @[PRNG.scala 47:{50,50}]
     if (reset) begin // @[PRNG.scala 47:50]
       state_1 <= 1'h0; // @[PRNG.scala 47:50]
     end else begin
       state_1 <= state_0;
     end
     state_2 <= reset | state_1; // @[PRNG.scala 47:{50,50}]
-    state_3 <= reset | state_2; // @[PRNG.scala 47:{50,50}]
     if (reset) begin // @[PRNG.scala 47:50]
-      state_4 <= 1'h0; // @[PRNG.scala 47:50]
+      state_3 <= 1'h0; // @[PRNG.scala 47:50]
     end else begin
-      state_4 <= state_3;
+      state_3 <= state_2;
     end
+    state_4 <= reset | state_3; // @[PRNG.scala 47:{50,50}]
     state_5 <= reset | state_4; // @[PRNG.scala 47:{50,50}]
-    state_6 <= reset | state_5; // @[PRNG.scala 47:{50,50}]
+    if (reset) begin // @[PRNG.scala 47:50]
+      state_6 <= 1'h0; // @[PRNG.scala 47:50]
+    end else begin
+      state_6 <= state_5;
+    end
     if (reset) begin // @[PRNG.scala 47:50]
       state_7 <= 1'h0; // @[PRNG.scala 47:50]
     end else begin
       state_7 <= state_6;
     end
-    state_8 <= reset | state_7; // @[PRNG.scala 47:{50,50}]
-    state_9 <= reset | state_8; // @[PRNG.scala 47:{50,50}]
+    if (reset) begin // @[PRNG.scala 47:50]
+      state_8 <= 1'h0; // @[PRNG.scala 47:50]
+    end else begin
+      state_8 <= state_7;
+    end
+    if (reset) begin // @[PRNG.scala 47:50]
+      state_9 <= 1'h0; // @[PRNG.scala 47:50]
+    end else begin
+      state_9 <= state_8;
+    end
     if (reset) begin // @[PRNG.scala 47:50]
       state_10 <= 1'h0; // @[PRNG.scala 47:50]
     end else begin
@@ -42031,11 +42039,7 @@ module MaxPeriodFibonacciLFSR(
     end else begin
       state_13 <= state_12;
     end
-    if (reset) begin // @[PRNG.scala 47:50]
-      state_14 <= 1'h0; // @[PRNG.scala 47:50]
-    end else begin
-      state_14 <= state_13;
-    end
+    state_14 <= reset | state_13; // @[PRNG.scala 47:{50,50}]
     if (reset) begin // @[PRNG.scala 47:50]
       state_15 <= 1'h0; // @[PRNG.scala 47:50]
     end else begin
@@ -42047,15 +42051,23 @@ module MaxPeriodFibonacciLFSR(
       state_16 <= state_15;
     end
     state_17 <= reset | state_16; // @[PRNG.scala 47:{50,50}]
-    state_18 <= reset | state_17; // @[PRNG.scala 47:{50,50}]
-    state_19 <= reset | state_18; // @[PRNG.scala 47:{50,50}]
-    state_20 <= reset | state_19; // @[PRNG.scala 47:{50,50}]
-    state_21 <= reset | state_20; // @[PRNG.scala 47:{50,50}]
     if (reset) begin // @[PRNG.scala 47:50]
-      state_22 <= 1'h0; // @[PRNG.scala 47:50]
+      state_18 <= 1'h0; // @[PRNG.scala 47:50]
     end else begin
-      state_22 <= state_21;
+      state_18 <= state_17;
     end
+    if (reset) begin // @[PRNG.scala 47:50]
+      state_19 <= 1'h0; // @[PRNG.scala 47:50]
+    end else begin
+      state_19 <= state_18;
+    end
+    if (reset) begin // @[PRNG.scala 47:50]
+      state_20 <= 1'h0; // @[PRNG.scala 47:50]
+    end else begin
+      state_20 <= state_19;
+    end
+    state_21 <= reset | state_20; // @[PRNG.scala 47:{50,50}]
+    state_22 <= reset | state_21; // @[PRNG.scala 47:{50,50}]
     state_23 <= reset | state_22; // @[PRNG.scala 47:{50,50}]
     if (reset) begin // @[PRNG.scala 47:50]
       state_24 <= 1'h0; // @[PRNG.scala 47:50]
@@ -42067,37 +42079,37 @@ module MaxPeriodFibonacciLFSR(
     end else begin
       state_25 <= state_24;
     end
-    if (reset) begin // @[PRNG.scala 47:50]
-      state_26 <= 1'h0; // @[PRNG.scala 47:50]
-    end else begin
-      state_26 <= state_25;
-    end
+    state_26 <= reset | state_25; // @[PRNG.scala 47:{50,50}]
     if (reset) begin // @[PRNG.scala 47:50]
       state_27 <= 1'h0; // @[PRNG.scala 47:50]
     end else begin
       state_27 <= state_26;
     end
-    state_28 <= reset | state_27; // @[PRNG.scala 47:{50,50}]
-    state_29 <= reset | state_28; // @[PRNG.scala 47:{50,50}]
-    state_30 <= reset | state_29; // @[PRNG.scala 47:{50,50}]
+    if (reset) begin // @[PRNG.scala 47:50]
+      state_28 <= 1'h0; // @[PRNG.scala 47:50]
+    end else begin
+      state_28 <= state_27;
+    end
+    if (reset) begin // @[PRNG.scala 47:50]
+      state_29 <= 1'h0; // @[PRNG.scala 47:50]
+    end else begin
+      state_29 <= state_28;
+    end
+    if (reset) begin // @[PRNG.scala 47:50]
+      state_30 <= 1'h0; // @[PRNG.scala 47:50]
+    end else begin
+      state_30 <= state_29;
+    end
     state_31 <= reset | state_30; // @[PRNG.scala 47:{50,50}]
+    state_32 <= reset | state_31; // @[PRNG.scala 47:{50,50}]
     if (reset) begin // @[PRNG.scala 47:50]
-      state_32 <= 1'h0; // @[PRNG.scala 47:50]
+      state_33 <= 1'h0; // @[PRNG.scala 47:50]
     end else begin
-      state_32 <= state_31;
+      state_33 <= state_32;
     end
-    state_33 <= reset | state_32; // @[PRNG.scala 47:{50,50}]
     state_34 <= reset | state_33; // @[PRNG.scala 47:{50,50}]
-    if (reset) begin // @[PRNG.scala 47:50]
-      state_35 <= 1'h0; // @[PRNG.scala 47:50]
-    end else begin
-      state_35 <= state_34;
-    end
-    if (reset) begin // @[PRNG.scala 47:50]
-      state_36 <= 1'h0; // @[PRNG.scala 47:50]
-    end else begin
-      state_36 <= state_35;
-    end
+    state_35 <= reset | state_34; // @[PRNG.scala 47:{50,50}]
+    state_36 <= reset | state_35; // @[PRNG.scala 47:{50,50}]
     if (reset) begin // @[PRNG.scala 47:50]
       state_37 <= 1'h0; // @[PRNG.scala 47:50]
     end else begin
@@ -42110,20 +42122,20 @@ module MaxPeriodFibonacciLFSR(
       state_39 <= state_38;
     end
     state_40 <= reset | state_39; // @[PRNG.scala 47:{50,50}]
-    state_41 <= reset | state_40; // @[PRNG.scala 47:{50,50}]
+    if (reset) begin // @[PRNG.scala 47:50]
+      state_41 <= 1'h0; // @[PRNG.scala 47:50]
+    end else begin
+      state_41 <= state_40;
+    end
     state_42 <= reset | state_41; // @[PRNG.scala 47:{50,50}]
-    state_43 <= reset | state_42; // @[PRNG.scala 47:{50,50}]
+    if (reset) begin // @[PRNG.scala 47:50]
+      state_43 <= 1'h0; // @[PRNG.scala 47:50]
+    end else begin
+      state_43 <= state_42;
+    end
     state_44 <= reset | state_43; // @[PRNG.scala 47:{50,50}]
-    if (reset) begin // @[PRNG.scala 47:50]
-      state_45 <= 1'h0; // @[PRNG.scala 47:50]
-    end else begin
-      state_45 <= state_44;
-    end
-    if (reset) begin // @[PRNG.scala 47:50]
-      state_46 <= 1'h0; // @[PRNG.scala 47:50]
-    end else begin
-      state_46 <= state_45;
-    end
+    state_45 <= reset | state_44; // @[PRNG.scala 47:{50,50}]
+    state_46 <= reset | state_45; // @[PRNG.scala 47:{50,50}]
     state_47 <= reset | state_46; // @[PRNG.scala 47:{50,50}]
     if (reset) begin // @[PRNG.scala 47:50]
       state_48 <= 1'h0; // @[PRNG.scala 47:50]
@@ -42143,24 +42155,24 @@ module MaxPeriodFibonacciLFSR(
       state_52 <= state_51;
     end
     state_53 <= reset | state_52; // @[PRNG.scala 47:{50,50}]
-    state_54 <= reset | state_53; // @[PRNG.scala 47:{50,50}]
+    if (reset) begin // @[PRNG.scala 47:50]
+      state_54 <= 1'h0; // @[PRNG.scala 47:50]
+    end else begin
+      state_54 <= state_53;
+    end
     state_55 <= reset | state_54; // @[PRNG.scala 47:{50,50}]
     if (reset) begin // @[PRNG.scala 47:50]
       state_56 <= 1'h0; // @[PRNG.scala 47:50]
     end else begin
       state_56 <= state_55;
     end
+    state_57 <= reset | state_56; // @[PRNG.scala 47:{50,50}]
+    state_58 <= reset | state_57; // @[PRNG.scala 47:{50,50}]
     if (reset) begin // @[PRNG.scala 47:50]
-      state_57 <= 1'h0; // @[PRNG.scala 47:50]
+      state_59 <= 1'h0; // @[PRNG.scala 47:50]
     end else begin
-      state_57 <= state_56;
+      state_59 <= state_58;
     end
-    if (reset) begin // @[PRNG.scala 47:50]
-      state_58 <= 1'h0; // @[PRNG.scala 47:50]
-    end else begin
-      state_58 <= state_57;
-    end
-    state_59 <= reset | state_58; // @[PRNG.scala 47:{50,50}]
     state_60 <= reset | state_59; // @[PRNG.scala 47:{50,50}]
     if (reset) begin // @[PRNG.scala 47:50]
       state_61 <= 1'h0; // @[PRNG.scala 47:50]
@@ -42168,7 +42180,11 @@ module MaxPeriodFibonacciLFSR(
       state_61 <= state_60;
     end
     state_62 <= reset | state_61; // @[PRNG.scala 47:{50,50}]
-    state_63 <= reset | state_62; // @[PRNG.scala 47:{50,50}]
+    if (reset) begin // @[PRNG.scala 47:50]
+      state_63 <= 1'h0; // @[PRNG.scala 47:50]
+    end else begin
+      state_63 <= state_62;
+    end
   end
 // Register and memory initialization
 `ifdef RANDOMIZE_GARBAGE_ASSIGN
