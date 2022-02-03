@@ -1,10 +1,10 @@
 default: VSE.o tag
 
 tag: firrtl_transform
-	firrtl/utils/bin/firrtl -td generated-src -i generated-src/SE.fir --custom-transforms firrtl.transforms.Tagrize -o tag.v -X verilog
+	../firrtl/utils/bin/firrtl -td generated-src -i generated-src/SE.fir --custom-transforms firrtl.transforms.Tagrize -o tag.v -X verilog
 
-firrtl_transform: firrtl/src/main/scala/firrtl/transforms/Tagrize.scala
-	cd firrtl && sbt assembly
+firrtl_transform: ../firrtl/src/main/scala/firrtl/transforms/Tagrize.scala
+	cd ../firrtl && sbt assembly
 
 base_dir   = $(abspath .)
 src_dir    = $(base_dir)/src/main
