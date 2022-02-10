@@ -11,9 +11,6 @@ unsigned int SE::tickcount = 0;
 unsigned int SE::real_tickcount = 0;
 
 
-SE::~SE(void){
-	delete SE::module;
-}
 SE::SE(void){
 	if(!SE::module){
 		SE::tickcount = 0;
