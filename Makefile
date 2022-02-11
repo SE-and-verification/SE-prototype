@@ -12,7 +12,7 @@ gen_dir    = $(base_dir)/generated-src
 out_dir    = $(base_dir)/outputs
 
 SBT       = sbt
-SBT_FLAGS = -ivy $(HOME)/.ivy2 
+# SBT_FLAGS = -ivy $(HOME)/.ivy2 
 
 VERILATOR_FLAGS =--debug -g3 -I obj_dir -I/usr/share/verilator/include module.cpp /usr/share/verilator/include/verilated.cpp
 

@@ -57,6 +57,7 @@ class SE(implicit debug:Boolean) extends Module{
 	val io = IO(new SEIO)
 	val counterOn = RegInit(false.B)
 	val cnter = new Counter(100)
+	val rolled = true
 	when(counterOn){
 		cnter.inc()
 	}

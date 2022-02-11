@@ -14,14 +14,14 @@ class EncryptIO extends Bundle{
 // implements wrapper for AES cipher and inverse cipher
 // change Nk=4 for AES128, NK=6 for AES192, Nk=8 for AES256
 // change expandedKeyMemType= ROM, Mem, SyncReadMem
-class AESEncrypt extends Module {
+class AESEncrypt(implicit rolled: Boolean) extends Module {
   val KeyLength: Int = 4 * Params.rows
   val Nr: Int = 10 // 10, 12, 14 rounds
   val Nrplus1: Int = Nr + 1 // 10+1, 12+1, 14+1
   val EKDepth: Int = 16 // enough memory for any expanded key
 
   val io = IO(new EncryptIO)
-
+  if(!rolled){
  val CipherRoundARK = CipherRound("AddRoundKeyOnly", true)
   val CipherRounds = Array.fill(Nr - 1) {
     CipherRound("CompleteRound", true)
@@ -52,10 +52,14 @@ class AESEncrypt extends Module {
 
   io.output_valid := CipherRoundNMC.io.output_valid
   io.output_text := CipherRoundNMC.io.state_out
-  // when(io.input_valid){
-  //   printf("input valid \n")
-  // }
-  // when(io.output_valid){
-  //   printf("output valid \n")
-  // }
+  }else{
+    val cipher = Module(new Cipher(6, true))
+    cipher.io.start := io.input_valid
+    cipher.io.plaintext := io.input_text
+    cipher.io.roundKey := io.input_roundKeys
+
+
+    io.output_text := cipher.io.state_out
+    io.output_valid := cipher.io.state_out_valid
+  }
 }
