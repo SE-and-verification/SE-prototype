@@ -75,8 +75,8 @@ class SE(implicit debug:Boolean) extends Module{
 	key: preset expanded AES ROM key
 	*/
 	val seoperation = Module(new SEOperation)
-	val aes_invcipher = Module(new AESDecrypt)
-	val aes_cipher = Module(new AESEncrypt)
+	val aes_invcipher = Module(new AESDecrypt(rolled))
+	val aes_cipher = Module(new AESEncrypt(rolled))
 	val key = Reg(Vec(11, Vec(16,UInt(8.W))))
 
 	val ciphers = Reg(Vec(32, UInt(128.W)))
@@ -289,6 +289,7 @@ class SEChangeKey(implicit debug:Boolean) extends Module{
 	val io = IO(new SEChangeKeyIO)
 	val counterOn = RegInit(false.B)
 	val cnter = new Counter(100)
+	val rolled = false
 	when(counterOn){
 		cnter.inc()
 	}
@@ -306,8 +307,8 @@ class SEChangeKey(implicit debug:Boolean) extends Module{
 	key: preset expanded AES ROM key
 	*/
 	val seoperation = Module(new SEOperation)
-	val aes_invcipher = Module(new AESDecrypt)
-	val aes_cipher = Module(new AESEncrypt)
+	val aes_invcipher = Module(new AESDecrypt(rolled))
+	val aes_cipher = Module(new AESEncrypt(rolled))
 	val key = Reg(Vec(11, Vec(16,UInt(8.W))))
 
 	val expandedKey128 =VecInit(

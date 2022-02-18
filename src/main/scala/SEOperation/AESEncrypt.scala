@@ -14,7 +14,7 @@ class EncryptIO extends Bundle{
 // implements wrapper for AES cipher and inverse cipher
 // change Nk=4 for AES128, NK=6 for AES192, Nk=8 for AES256
 // change expandedKeyMemType= ROM, Mem, SyncReadMem
-class AESEncrypt(implicit rolled: Boolean) extends Module {
+class AESEncrypt(val rolled: Boolean) extends Module {
   val KeyLength: Int = 4 * Params.rows
   val Nr: Int = 10 // 10, 12, 14 rounds
   val Nrplus1: Int = Nr + 1 // 10+1, 12+1, 14+1
@@ -53,10 +53,17 @@ class AESEncrypt(implicit rolled: Boolean) extends Module {
   io.output_valid := CipherRoundNMC.io.output_valid
   io.output_text := CipherRoundNMC.io.state_out
   }else{
+    val address = RegInit(0.U(log2Ceil(EKDepth).W))
+
+    when(io.input_valid) {
+      address := Nr.U
+    }.elsewhen(address =/= 0.U){
+      address := address - 1.U
+    }
     val cipher = Module(new Cipher(6, true))
     cipher.io.start := io.input_valid
     cipher.io.plaintext := io.input_text
-    cipher.io.roundKey := io.input_roundKeys
+    cipher.io.roundKey := io.input_roundKeys(address)
 
 
     io.output_text := cipher.io.state_out
