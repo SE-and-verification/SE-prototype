@@ -1,0 +1,282 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wave_config>
+   <wave_state>
+   </wave_state>
+   <db_ref_list>
+      <db_ref path="D:/Work/Code/Xilinx Projects/Simon/Simon/working/SIMON_CIPHER_TB_isim_beh.wdb" id="1" type="auto">
+         <top_modules>
+            <top_module name="numeric_std" />
+            <top_module name="simon_cipher_tb" />
+            <top_module name="simon_constants" />
+            <top_module name="std_logic_1164" />
+         </top_modules>
+      </db_ref>
+   </db_ref_list>
+   <WVObjectSize size="54" />
+   <wvobject fp_name="/simon_cipher_tb/sys_clk" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">sys_clk</obj_property>
+      <obj_property name="ObjectShortName">sys_clk</obj_property>
+   </wvobject>
+   <wvobject fp_name="/simon_cipher_tb/rst" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">rst</obj_property>
+      <obj_property name="ObjectShortName">rst</obj_property>
+   </wvobject>
+   <wvobject fp_name="/simon_cipher_tb/sys_clk_period" type="other" db_ref_id="1">
+      <obj_property name="ElementShortName">sys_clk_period</obj_property>
+      <obj_property name="ObjectShortName">sys_clk_period</obj_property>
+   </wvobject>
+   <wvobject fp_name="/simon_cipher_tb/control" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">control[1:0]</obj_property>
+      <obj_property name="ObjectShortName">control[1:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="divider10" type="divider">
+      <obj_property name="label">UUT1 Key: 64 Block: 32</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
+      <obj_property name="BkColor">#ffa500</obj_property>
+      <obj_property name="TextColor">230 230 230</obj_property>
+   </wvobject>
+   <wvobject fp_name="/simon_cipher_tb/busy_1" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">busy_1</obj_property>
+      <obj_property name="ObjectShortName">busy_1</obj_property>
+   </wvobject>
+   <wvobject fp_name="/simon_cipher_tb/key_1" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">key_1[63:0]</obj_property>
+      <obj_property name="ObjectShortName">key_1[63:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/simon_cipher_tb/block_input_1" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">block_input_1[31:0]</obj_property>
+      <obj_property name="ObjectShortName">block_input_1[31:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/simon_cipher_tb/block_output_1" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">block_output_1[31:0]</obj_property>
+      <obj_property name="ObjectShortName">block_output_1[31:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="divider218" type="divider">
+      <obj_property name="label">UUT2 Key: 72 Block: 48</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
+      <obj_property name="BkColor">#800080</obj_property>
+      <obj_property name="TextColor">230 230 230</obj_property>
+   </wvobject>
+   <wvobject fp_name="/simon_cipher_tb/busy_2" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">busy_2</obj_property>
+      <obj_property name="ObjectShortName">busy_2</obj_property>
+   </wvobject>
+   <wvobject fp_name="/simon_cipher_tb/key_2" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">key_2[71:0]</obj_property>
+      <obj_property name="ObjectShortName">key_2[71:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/simon_cipher_tb/block_input_2" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">block_input_2[47:0]</obj_property>
+      <obj_property name="ObjectShortName">block_input_2[47:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/simon_cipher_tb/block_output_2" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">block_output_2[47:0]</obj_property>
+      <obj_property name="ObjectShortName">block_output_2[47:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="divider20" type="divider">
+      <obj_property name="label">UUT3 Key: 96 Block 48</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
+      <obj_property name="BkColor">#800000</obj_property>
+      <obj_property name="TextColor">230 230 230</obj_property>
+   </wvobject>
+   <wvobject fp_name="/simon_cipher_tb/busy_3" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">busy_3</obj_property>
+      <obj_property name="ObjectShortName">busy_3</obj_property>
+   </wvobject>
+   <wvobject fp_name="/simon_cipher_tb/key_3" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">key_3[95:0]</obj_property>
+      <obj_property name="ObjectShortName">key_3[95:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/simon_cipher_tb/block_input_3" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">block_input_3[47:0]</obj_property>
+      <obj_property name="ObjectShortName">block_input_3[47:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/simon_cipher_tb/block_output_3" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">block_output_3[47:0]</obj_property>
+      <obj_property name="ObjectShortName">block_output_3[47:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="divider25" type="divider">
+      <obj_property name="label">UUT4 Key: 96 Block: 64</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
+      <obj_property name="BkColor">#00ff00</obj_property>
+      <obj_property name="TextColor">230 230 230</obj_property>
+   </wvobject>
+   <wvobject fp_name="/simon_cipher_tb/busy_4" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">busy_4</obj_property>
+      <obj_property name="ObjectShortName">busy_4</obj_property>
+   </wvobject>
+   <wvobject fp_name="/simon_cipher_tb/key_4" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">key_4[95:0]</obj_property>
+      <obj_property name="ObjectShortName">key_4[95:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/simon_cipher_tb/block_input_4" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">block_input_4[63:0]</obj_property>
+      <obj_property name="ObjectShortName">block_input_4[63:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/simon_cipher_tb/block_output_4" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">block_output_4[63:0]</obj_property>
+      <obj_property name="ObjectShortName">block_output_4[63:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="divider31" type="divider">
+      <obj_property name="label">UUT5 Key: 128 Block: 64</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
+      <obj_property name="BkColor">128 128 255</obj_property>
+      <obj_property name="TextColor">230 230 230</obj_property>
+   </wvobject>
+   <wvobject fp_name="/simon_cipher_tb/busy_5" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">busy_5</obj_property>
+      <obj_property name="ObjectShortName">busy_5</obj_property>
+   </wvobject>
+   <wvobject fp_name="/simon_cipher_tb/key_5" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">key_5[127:0]</obj_property>
+      <obj_property name="ObjectShortName">key_5[127:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/simon_cipher_tb/block_input_5" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">block_input_5[63:0]</obj_property>
+      <obj_property name="ObjectShortName">block_input_5[63:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/simon_cipher_tb/block_output_5" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">block_output_5[63:0]</obj_property>
+      <obj_property name="ObjectShortName">block_output_5[63:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="divider30" type="divider">
+      <obj_property name="label">UUT6 Key: 96 Block: 96</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
+      <obj_property name="BkColor">#000080</obj_property>
+      <obj_property name="TextColor">230 230 230</obj_property>
+   </wvobject>
+   <wvobject fp_name="/simon_cipher_tb/busy_6" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">busy_6</obj_property>
+      <obj_property name="ObjectShortName">busy_6</obj_property>
+   </wvobject>
+   <wvobject fp_name="/simon_cipher_tb/key_6" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">key_6[95:0]</obj_property>
+      <obj_property name="ObjectShortName">key_6[95:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/simon_cipher_tb/block_input_6" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">block_input_6[95:0]</obj_property>
+      <obj_property name="ObjectShortName">block_input_6[95:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/simon_cipher_tb/block_output_6" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">block_output_6[95:0]</obj_property>
+      <obj_property name="ObjectShortName">block_output_6[95:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="divider32" type="divider">
+      <obj_property name="label">UUT7 Key: 144 Block: 96</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
+      <obj_property name="BkColor">#00ffff</obj_property>
+      <obj_property name="TextColor">230 230 230</obj_property>
+   </wvobject>
+   <wvobject fp_name="/simon_cipher_tb/busy_7" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">busy_7</obj_property>
+      <obj_property name="ObjectShortName">busy_7</obj_property>
+   </wvobject>
+   <wvobject fp_name="/simon_cipher_tb/key_7" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">key_7[143:0]</obj_property>
+      <obj_property name="ObjectShortName">key_7[143:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/simon_cipher_tb/block_input_7" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">block_input_7[95:0]</obj_property>
+      <obj_property name="ObjectShortName">block_input_7[95:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/simon_cipher_tb/block_output_7" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">block_output_7[95:0]</obj_property>
+      <obj_property name="ObjectShortName">block_output_7[95:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="divider33" type="divider">
+      <obj_property name="label">UUT8 Key: 128 Block: 128</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
+      <obj_property name="BkColor">#ff0000</obj_property>
+      <obj_property name="TextColor">230 230 230</obj_property>
+   </wvobject>
+   <wvobject fp_name="/simon_cipher_tb/busy_8" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">busy_8</obj_property>
+      <obj_property name="ObjectShortName">busy_8</obj_property>
+   </wvobject>
+   <wvobject fp_name="/simon_cipher_tb/key_8" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">key_8[127:0]</obj_property>
+      <obj_property name="ObjectShortName">key_8[127:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/simon_cipher_tb/block_input_8" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">block_input_8[127:0]</obj_property>
+      <obj_property name="ObjectShortName">block_input_8[127:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/simon_cipher_tb/block_output_8" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">block_output_8[127:0]</obj_property>
+      <obj_property name="ObjectShortName">block_output_8[127:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="divider34" type="divider">
+      <obj_property name="label">UUT9 Key: 192 Block: 128</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
+      <obj_property name="BkColor">#c0c0c0</obj_property>
+      <obj_property name="TextColor">230 230 230</obj_property>
+   </wvobject>
+   <wvobject fp_name="/simon_cipher_tb/busy_9" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">busy_9</obj_property>
+      <obj_property name="ObjectShortName">busy_9</obj_property>
+   </wvobject>
+   <wvobject fp_name="/simon_cipher_tb/key_9" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">key_9[191:0]</obj_property>
+      <obj_property name="ObjectShortName">key_9[191:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/simon_cipher_tb/block_input_9" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">block_input_9[127:0]</obj_property>
+      <obj_property name="ObjectShortName">block_input_9[127:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/simon_cipher_tb/block_output_9" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">block_output_9[127:0]</obj_property>
+      <obj_property name="ObjectShortName">block_output_9[127:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="divider12" type="divider">
+      <obj_property name="label">UUT10 Key: 256 Block: 128</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
+      <obj_property name="BkColor">#0000ff</obj_property>
+      <obj_property name="TextColor">230 230 230</obj_property>
+   </wvobject>
+   <wvobject fp_name="/simon_cipher_tb/busy_10" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">busy_10</obj_property>
+      <obj_property name="ObjectShortName">busy_10</obj_property>
+   </wvobject>
+   <wvobject fp_name="/simon_cipher_tb/key_10" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">key_10[255:0]</obj_property>
+      <obj_property name="ObjectShortName">key_10[255:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/simon_cipher_tb/block_input_10" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">block_input_10[127:0]</obj_property>
+      <obj_property name="ObjectShortName">block_input_10[127:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/simon_cipher_tb/block_output_10" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">block_output_10[127:0]</obj_property>
+      <obj_property name="ObjectShortName">block_output_10[127:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+</wave_config>

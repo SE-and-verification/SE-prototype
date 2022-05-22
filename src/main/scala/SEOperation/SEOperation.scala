@@ -1,53 +1,60 @@
 package se.seoperation
 
 import chisel3._
-import chisel3.simplechisel._
 import chisel3.util._
-import chisel3.simplechisel.util._
 import FU._
+import COMP._
+import ARITH._
+import SHIFT._
+import LOGICAL._
+import COND._
 
-class SEOpInput extends Bundle{
-	val inst = UInt(8.W)
+class SEOpIO  extends Bundle{
+	val inst = Input(UInt(8.W))
+	val valid = Input(Bool())
 
-	val op1_input = UInt(128.W)
-	val op1_is_a_byte = Bool()
+	val op1_input = Input(UInt(64.W))
 
-	val op2_input  = UInt(128.W)
-	val op2_is_a_byte = Bool()
+	val op2_input  = Input(UInt(64.W))
 
-	val cond_input  = UInt(128.W)
+	val cond_input  = Input(UInt(64.W))
+
+	val result = Output(UInt(64.W))
 }
 
-class SEOpOutput extends Bundle{
-	val raw_result = UInt(64.W)
-	val raw_result_is_a_byte = Bool()
-}
 
-class SEOperation extends SimpleChiselModule{
-  val in = IO(Input(new SEOpInput))
-  val out = IO(Output(new SEOpOutput))
-  val ctrl = IO(new DecoupledIOCtrl(0,0))
+class SEOperation(implicit debug: Boolean) extends Module{
+
+	val io = IO(new SEOpIO)
+
 	
 	val decode = Module(new SEControl)
 	val fu = Module(new FU)
 
-	val op1 = in.op1_input(127,64)
-	val op2 = in.op2_input(127,64)
-	val cond = in.cond_input(127,64)
+	val op1 = io.op1_input
+	val op2 = io.op2_input
+	val cond = io.cond_input
 
-	SimpleChiselBundle(in.inst) >>> decode
-
-
-	decode.ctrl.out.ready := fu.ctrl.in.ready
-	fu.ctrl.in.valid := decode.ctrl.out.valid && decode.out.legal
-	fu.ctrl.out.ready := ctrl.in.valid
+	decode.io.inst_in := io.inst
 
  
-  fu.in.A := op1
-  fu.in.B := op2
-  fu.in.fu_op := Mux(decode.out.cmov, Mux(cond >= 0.U, FU_COPY_A, FU_COPY_B), decode.out.fu_op)
+  fu.io.A := op1
+  fu.io.B := op2
+	fu.io.cond := cond
+  fu.io.fu_op := decode.io.fu_op
+	fu.io.fu_type := decode.io.fu_type
+	fu.io.signed := decode.io.signed
+	io.result := fu.io.out
 
-	out.raw_result_is_a_byte := decode.out.isCmp || (in.op1_is_a_byte && in.op2_is_a_byte)
-	out.raw_result := Mux(out.raw_result_is_a_byte, fu.out.out<<56,fu.out.out)
-	ctrl.out.valid := fu.ctrl.out.valid
+	if(debug){
+		when(io.valid){
+			printf("\n------fu-----\n")
+			printf("fu op1: %x\n",op1)
+			printf("fu op2: %x\n",op2)
+			printf("fu cond: %x\n",cond)
+			printf("fu result: %x\n",io.result)
+			printf("fu fu_op: %d\n",decode.io.fu_op)
+			printf("fu fu_type: %d\n",decode.io.fu_type)
+		}
+	}
 }

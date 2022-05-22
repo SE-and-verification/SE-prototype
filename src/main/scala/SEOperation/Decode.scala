@@ -1,9 +1,7 @@
 package se.seoperation
 
 import chisel3._
-import chisel3.simplechisel._
 import chisel3.util._
-import chisel3.simplechisel.util._
 
 
 object SEControl {
@@ -16,60 +14,63 @@ object SEControl {
 
   import Instructions._
   import FU._
-
-  val default = List(FU_XXX, LEGAL, N, N)
+  import COMP._
+  import ARITH._
+  import SHIFT._
+  import LOGICAL._
+  import COND._
+  import CRYPTO._
+  val default = List(FU_XXX, COMP_XXX,LEGAL, N)
   val map = Array(
-    ADD   -> List(FU_ADD, LEGAL, N, N),
-    SUB   -> List(FU_SUB, LEGAL, N, N),
-    SLL   -> List(FU_SLL, LEGAL, N, N),
-    SLT   -> List(FU_SLT, LEGAL, N, Y),
-    SLTU  -> List(FU_SLTU, LEGAL, N, Y),
-    XOR   -> List(FU_XOR, LEGAL, N, N),
-    SRL   -> List(FU_SRL, LEGAL, N, N),
-    SRA   -> List(FU_SRA, LEGAL, N, N),
-    OR    -> List(FU_OR , LEGAL, N, N),
-    AND   -> List(FU_AND, LEGAL, N, N),
-    CMOV  -> List(FU_XXX, LEGAL, Y, N),
-    SGT   -> List(FU_SGT, LEGAL, N, Y),
-    SGTU  -> List(FU_SGTU, LEGAL, N, Y),
-    EQ    -> List(FU_EQ, LEGAL, N, Y),
-    NEQ   -> List(FU_NEQ, LEGAL, N, Y),
-    SLE   -> List(FU_SLE, LEGAL, N, Y),
-    SLEU  -> List(FU_SLEU, LEGAL, N, Y),
-    SGE   -> List(FU_SGE, LEGAL, N, Y),
-    SGEU  -> List(FU_SGEU, LEGAL, N, Y),
-    MULT  -> List(FU_MULT, LEGAL, N, N),
-    DIV   -> List(FU_DIV, LEGAL, N, N),
-    NEG   -> List(FU_NEG, LEGAL, N, Y)
+  // Shifts
+  SLL   -> List(FU_SHIFT,SHIFT_SLL, LEGAL, N),
+  SRL   -> List(FU_SHIFT,SHIFT_SRL, LEGAL, N),
+  SRA   -> List(FU_SHIFT,SHIFT_SRA, LEGAL, N),
+
+  // Arithmetic
+  ADD   -> List(FU_ARITH,ARITH_ADD, LEGAL, N),
+  SUB   -> List(FU_ARITH,ARITH_SUB, LEGAL, N),
+  MULT  -> List(FU_ARITH,ARITH_MULT, LEGAL, N),
+  MULTS -> List(FU_ARITH,ARITH_MULT, LEGAL, Y),
+
+
+  // Logical
+  XOR   -> List(FU_LOGICAL,LOGICAL_XOR, LEGAL, N),
+  OR    -> List(FU_LOGICAL,LOGICAL_OR, LEGAL, N),
+  AND   -> List(FU_LOGICAL,LOGICAL_AND, LEGAL, N),
+
+  // Compare
+  LT    -> List(FU_COMP,COMP_LT, LEGAL, N),
+  LTS   -> List(FU_COMP,COMP_LT, LEGAL, Y),
+ 
+  // Conditional
+  CMOV  -> List(FU_COND, COND_COND, LEGAL, N),
+
+  // ENC
+  ENC   -> List(FU_ENC, CRYPTO_ENC, LEGAL, N)
 	)
 }
 
 
-class SEControlInput extends Bundle{
-  val inst = Input(UInt(8.W))
+class SEControlIO extends Bundle{
+  val inst_in = Input(UInt(8.W))
+
+  val inst_out   = Output(UInt(8.W))
+  val fu_op   = Output(UInt(3.W))
+  val fu_type = Output(UInt(2.W))
+  val legal   = Output(Bool())
+  val signed = Output(Bool()) // signed version or not
 }
 
-class SEControlOutput extends Bundle{
-  val inst      = Output(UInt(8.W))
-  val fu_op    = Output(UInt(5.W))
-  val legal     = Output(Bool())
-  val cmov  = Output(Bool())
-  val isCmp = Output(Bool()) // if it is cmp, then result is only a byte
-}
 
+class SEControl extends Module {
+  val io = IO(new SEControlIO)
 
-class SEControl extends SimpleChiselModule {
-  val in = IO(new SEControlInput)
-  val out = IO(new SEControlOutput)
-  val ctrl = IO(new DecoupledIOCtrl(0,0))
-  val ctrlSignals = ListLookup(in.inst, SEControl.default, SEControl.map)
+  val ctrlSignals = ListLookup(io.inst_in, SEControl.default, SEControl.map)
 
-  ctrl.in.ready := ctrl.out.ready
-  ctrl.out.valid := ctrl.in.valid
-  
-  out.inst := in.inst
-  out.fu_op := ctrlSignals(0)
-  out.legal := ctrlSignals(1)
-  out.cmov := ctrlSignals(2)
-  out.isCmp := ctrlSignals(3)
+  io.inst_out := io.inst_in
+  io.fu_op := ctrlSignals(0)
+  io.fu_type := ctrlSignals(1)
+  io.legal := ctrlSignals(2)
+  io.signed := ctrlSignals(3)
 }

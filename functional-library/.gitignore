@@ -1,0 +1,5 @@
+
+# Ignore some extensions...
+*.o
+.gch
+*.vscode*

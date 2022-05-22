@@ -2,107 +2,104 @@ package se.seoperation
 
 import chisel3._
 import chisel3.util._
-import chisel3.simplechisel._
-import chisel3.simplechisel.util._
 
 object FU {
-  val FU_ADD    = 0.U(5.W)
-  val FU_SUB    = 1.U(5.W)
-  val FU_AND    = 2.U(5.W)
-  val FU_OR     = 3.U(5.W)
-  val FU_XOR    = 4.U(5.W)
-  val FU_SLT    = 5.U(5.W)
-  val FU_SLL    = 6.U(5.W)
-  val FU_SLTU   = 7.U(5.W)
-  val FU_SRL    = 8.U(5.W)
-  val FU_SRA    = 9.U(5.W)
-  val FU_COPY_A = 10.U(5.W)
-  val FU_COPY_B = 11.U(5.W)
-  val FU_MULT   = 15.U(5.W)
-  val FU_DIV    = 16.U(5.W)
-  val FU_SGT    = 17.U(5.W)
-  val FU_SGTU   = 18.U(5.W)
-  val FU_SLE    = 19.U(5.W)
-  val FU_EQ     = 20.U(5.W)
-  val FU_SLEU   = 21.U(5.W)
-  val FU_NEQ    = 22.U(5.W)
-  val FU_SGE    = 23.U(5.W)
-  val FU_SGEU   = 24.U(5.W)
-  val FU_NEG    = 26.U(5.W)
-  val FU_XXX    = 26.U(5.W)
+  // Shifts
+  val FU_SHIFT  = 0.U(3.W)
+
+  val FU_ARITH = 1.U(3.W)
+
+  val FU_COMP = 2.U(3.W)
+  
+  val FU_COND = 3.U(3.W)
+
+  val FU_LOGICAL = 4.U(3.W)
+
+  val FU_ENC = 5.U(3.W)
+
+  val FU_XXX = 6.U(3.W)
 }
 
 import FU._
+import COMP._
+import ARITH._
+import SHIFT._
+import LOGICAL._
+import COND._
+import CRYPTO._
 
-class  AlUInput extends Bundle{
-    val A = UInt(64.W)
-    val B = UInt(64.W)
-    val fu_op = UInt(5.W)
+class  FUIO extends Bundle{
+    val A = Input(UInt(64.W))
+    val B = Input(UInt(64.W))
+    val cond = Input(UInt(64.W))
+    val fu_op = Input(UInt(3.W))
+    val fu_type = Input(UInt(2.W))
+    val signed = Input(Bool())
+    val out = Output(UInt(64.W))
 }
 
-class AlUOutput extends Bundle{
-    val out = UInt(64.W)
-}
-
-class FU extends SimpleChiselModule{
-  val in = IO(Input(new AlUInput))
-  val out = IO(Output(new AlUOutput))
-  val ctrl = IO(new DecoupledIOCtrl(0,0))
-
-  ctrl.out.ready >>> ctrl.in.ready
-  ctrl.in.valid  >>> ctrl.out.valid
-
-  val sum = in.A + Mux(in.fu_op(0), -in.B, in.B)
-  val cmplt = Mux(in.A(63) === in.B(63), sum(63),
-            Mux(in.fu_op(1), in.B(63), in.A(63)))
-  val shamt  = in.B(4,0).asUInt
-  val shin   = Mux(in.fu_op(3), in.A, Reverse(in.A))
-  val shiftr = (Cat(in.fu_op(0) && shin(63), shin).asSInt >> shamt)(63, 0)
-  val shiftl = Reverse(shiftr)
+class FU(implicit debug: Boolean) extends Module{
+  val io = IO(new FUIO)
   val output = Wire(UInt(64.W))
-  when(in.fu_op === FU_ADD || in.fu_op === FU_SUB){
-    output := sum
-  }.elsewhen(in.fu_op === FU_SLT || in.fu_op === FU_SLTU){
-    output := cmplt
-  }.elsewhen(in.fu_op === FU_SRA || in.fu_op === FU_SRL){
-    output := shiftr
-  }.elsewhen(in.fu_op === FU_SLL){
-    output := shiftl
-  }.elsewhen(in.fu_op === FU_AND){
-    output := in.A & in.B
-  }.elsewhen(in.fu_op === FU_OR){
-    output := in.A | in.B
-  }.elsewhen(in.fu_op === FU_XOR){
-    output := in.A ^ in.B
-  }.elsewhen(in.fu_op === FU_COPY_A){
-    output := in.A
-  }.elsewhen(in.fu_op === FU_COPY_B){
-    output := in.B
-  }.elsewhen(in.fu_op === FU_MULT){
-    output := in.A * in.B
-  }.elsewhen(in.fu_op === FU_DIV){
-    output := in.A/in.B
-  }.elsewhen(in.fu_op === FU_EQ){
-    output := in.A === in.B
-  }.elsewhen(in.fu_op === FU_NEQ){
-    output := in.A =/= in.B
-  }.elsewhen(in.fu_op === FU_SGT){
-    output := Mux(in.A(63) === in.B(63), ~((in.A - in.B)(63)) &&(sum=/=0.U), ~in.A(63))
-  }.elsewhen(in.fu_op === FU_SGTU){
-    output := in.A > in.B
-  }.elsewhen(in.fu_op === FU_SLEU){
-    output := in.A <= in.B
-  }.elsewhen(in.fu_op === FU_SLE){
-    output := Mux(in.A(63) === in.B(63), (in.A - in.B)(63), in.A(63))|| ( in.A === in.B)
-  }.elsewhen(in.fu_op === FU_SGEU){
-    output := in.A >= in.B
-  }.elsewhen(in.fu_op === FU_SGE){
-    output := Mux(in.A(63) === in.B(63), ~((in.A - in.B)(63)), ~in.A(63))
-  }.elsewhen(in.fu_op === FU_NEG){
-    output := Mux(in.A === 0.U, 1.U, 0.U)
-  }otherwise{
-    output := 0.U
+
+  when(io.fu_op === FU_SHIFT){
+    when(io.fu_type === SHIFT_SLL){
+      if(debug) printf("Inst: sll\n")
+      output := io.A << io.B(5,0)
+    }.elsewhen(io.fu_type === SHIFT_SRL){
+      if(debug) printf("Inst: srl\n")
+      output := io.A >> io.B(5,0)
+    }.otherwise{
+      if(debug) printf("Inst: sra\n")
+      output := Cat(io.A(63),(io.A.asSInt >> io.B(5,0))(62,0)).asUInt
+    }
+  }.elsewhen(io.fu_op === FU_ARITH){
+    when(io.signed){
+        if(debug) printf("Inst: mults\n")
+        output := (io.A.asSInt * io.B.asSInt).asUInt
+    }.otherwise{
+      when(io.fu_type === ARITH_ADD){
+        if(debug) printf("Inst: add\n")
+        output := io.A + io.B
+      }.elsewhen(io.fu_type === ARITH_SUB){
+        if(debug) printf("Inst: sub\n")
+        output := io.A - io.B
+      }.otherwise{
+        if(debug) printf("Inst: mult\n")
+        output := io.A * io.B
+      }
+    }
+  }.elsewhen(io.fu_op === FU_LOGICAL){
+      when(io.fu_type === LOGICAL_XOR){
+        if(debug) printf("Inst: xor\n")
+        output := io.A ^ io.B
+      }.elsewhen(io.fu_type === LOGICAL_OR){
+        if(debug) printf("Inst: or\n")
+        output := io.A | io.B
+      }.otherwise{
+        if(debug) printf("Inst: and\n")
+        output := io.A & io.B
+      }
+  }.elsewhen(io.fu_op === FU_COMP){
+    when(io.signed){
+      if(debug) printf("Inst: lts\n")
+      output := io.A.asSInt < io.B.asSInt
+    }.otherwise{
+      if(debug) printf("Inst: lt\n")
+      output := io.A < io.B
+    }
+  }.elsewhen(io.fu_type === FU_COND){
+    when(io.cond =/= 0.U){
+      if(debug) printf("Inst: cmova\n")
+      output := io.A
+    }.otherwise{
+      if(debug) printf("Inst: cmovb\n")
+      output := io.B
+    }
+  }.otherwise{
+      if(debug) printf("Inst: enc\n")
+      output := io.A
   }
 
-  SimpleChiselBundle(output) >>> out
+  io.out := output
 }

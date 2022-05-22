@@ -3,7 +3,10 @@
         {
             "name": "Linux",
             "includePath": [
-                "${workspaceFolder}/**"
+                "${workspaceFolder}/**",
+                "~/Documents/SE-prototype/functional-library/src/datatypes",
+                "~/Documents/SE-prototype/obj_dir",
+                "/usr/local/share/verilator/include"
             ],
             "defines": [],
             "compilerPath": "/usr/bin/gcc",
