@@ -24,13 +24,11 @@ $ g++ -std=c++11 editdist_enc_do.cpp -o editdist_enc_do ~/Privacy/functional-lib
 #include <iostream>
 #include <string>
 
-#include "../../../functional-library/src/datatypes/enc_lib.h"
+#include "../../../functional-library/src/datatypes/include/enc_fpga_lib.h"
 #include "../../../functional-library/src/datatypes/enc_string.h"
 #include "../../../functional-library/src/interface/interface.h"
 #include "../../../functional-library/src/interface/parameters.h"
 
-//#include "../../../encrypted-datatype-library/src/datatypes/enc_lib.h"
-//#include "../../../encrypted-datatype-library/src/datatypes/enc_string.h"
 
 #define MIN(x, y, z) ((x < y).GET_DECRYPTED_VALUE() && (x < z).GET_DECRYPTED_VALUE() ? x : (y < z).GET_DECRYPTED_VALUE() ? y : z)
 
@@ -39,7 +37,6 @@ $ g++ -std=c++11 editdist_enc_do.cpp -o editdist_enc_do ~/Privacy/functional-lib
 #define PRINT_INPUTS true
 #define PRINT_INTERMEDIATES false
 
-using namespace enc_lib;
 using namespace std;
 
 

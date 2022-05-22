@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <math.h>
-#include "../../../functional-library/src/datatypes/enc_lib.h"
+#include "../../../functional-library/src/datatypes/include/enc_fpga_lib.h"
 #include "../../../functional-library/src/interface/interface.h"
 #include "../../../functional-library/src/interface/parameters.h"
 
@@ -9,7 +9,6 @@
 
 #define PI         (4*atan(1))
 
-using namespace enc_lib;
 
 enc_double a1  __attribute__((__section__("ciphertexts")))(1.0);
 enc_double b1  __attribute__((__section__("ciphertexts")))(-10.5);

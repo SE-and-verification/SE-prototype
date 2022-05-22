@@ -19,18 +19,16 @@
 #include <string>
 #include <vector>
 
-#include "../../../functional-library/src/datatypes/enc_lib.h"
+#include "../../../functional-library/src/datatypes/include/enc_fpga_lib.h"
 #include "../../../functional-library/src/datatypes/enc_string.h"
 #include "../../../functional-library/src/interface/interface.h"
 #include "../../../functional-library/src/interface/parameters.h"
 
-//#include "../../../encrypted-datatype-library/src/datatypes/enc_lib.h"
-//#include "../../../encrypted-datatype-library/src/datatypes/enc_string.h"
+
 
 #define MIN(x, y, z) ((x < y) && (x < z) ? x : (y < z) ? y : z)
 
 
-using namespace enc_lib;
 using namespace std;
 
 enc_int editDistance(enc_string<10>, enc_string<10>);

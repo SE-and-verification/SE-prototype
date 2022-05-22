@@ -1,12 +1,11 @@
 #include <stddef.h>
 //#include <string.h>
 #include <limits.h>
-#include "../../../encrypted-datatype-library/src/datatypes/enc_lib.h"
+#include "../../../encrypted-datatype-library/src/datatypes/include/enc_fpga_lib.h"
 #include "../../../encrypted-datatype-library/src/datatypes/enc_string.h"
 #include "../../../encrypted-datatype-library/src/datatypes/enc_array.h"
 
 
-using namespace enc_lib;
 
 
 static enc_int len;
