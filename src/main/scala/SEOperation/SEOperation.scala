@@ -23,13 +23,13 @@ class SEOpIO  extends Bundle{
 }
 
 
-class SEOperation(implicit debug: Boolean) extends Module{
+class SEOperation(val debug: Boolean) extends Module{
 
 	val io = IO(new SEOpIO)
 
 	
 	val decode = Module(new SEControl)
-	val fu = Module(new FU)
+	val fu = Module(new FU(debug))
 
 	val op1 = io.op1_input
 	val op2 = io.op2_input

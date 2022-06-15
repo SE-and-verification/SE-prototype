@@ -38,7 +38,7 @@ class  FUIO extends Bundle{
     val out = Output(UInt(64.W))
 }
 
-class FU(implicit debug: Boolean) extends Module{
+class FU(val debug: Boolean) extends Module{
   val io = IO(new FUIO)
   val output = Wire(UInt(64.W))
 
