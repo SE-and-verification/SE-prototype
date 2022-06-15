@@ -31,7 +31,6 @@ object SEControl {
   ADD   -> List(FU_ARITH,ARITH_ADD, LEGAL, N),
   SUB   -> List(FU_ARITH,ARITH_SUB, LEGAL, N),
   MULT  -> List(FU_ARITH,ARITH_MULT, LEGAL, N),
-  MULTS -> List(FU_ARITH,ARITH_MULT, LEGAL, Y),
 
 
   // Logical
@@ -41,7 +40,6 @@ object SEControl {
 
   // Compare
   LT    -> List(FU_COMP,COMP_LT, LEGAL, N),
-  LTS   -> List(FU_COMP,COMP_LT, LEGAL, Y),
  
   // Conditional
   CMOV  -> List(FU_COND, COND_COND, LEGAL, N),

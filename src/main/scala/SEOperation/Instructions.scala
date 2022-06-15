@@ -43,7 +43,6 @@ object Instructions {
 
   // Compare
   def LT     = BitPat("b01000000")
-  def LTS    = BitPat("b01000001")
 
   // Conditional
   def CMOV   = BitPat("b011?????")
