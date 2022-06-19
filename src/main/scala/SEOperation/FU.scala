@@ -29,45 +29,45 @@ import COND._
 import CRYPTO._
 
 class  FUIO extends Bundle{
-    val A = Input(UInt(64.W))
-    val B = Input(UInt(64.W))
-    val cond = Input(UInt(64.W))
+    val A = Input(SInt(64.W))
+    val B = Input(SInt(64.W))
+    val cond = Input(SInt(64.W))
     val fu_op = Input(UInt(3.W))
-    val fu_type = Input(UInt(2.W))
-    val signed = Input(Bool())
-    val out = Output(UInt(64.W))
+    val fu_type = Input(UInt(3.W))
+    val out = Output(SInt(64.W))
 }
 
 class FU(implicit debug: Boolean) extends Module{
   val io = IO(new FUIO)
-  val output = Wire(UInt(64.W))
+  val output = Wire(SInt(64.W))
 
   when(io.fu_op === FU_SHIFT){
     when(io.fu_type === SHIFT_SLL){
       if(debug) printf("Inst: sll\n")
       output := io.A << io.B(5,0)
-    }.elsewhen(io.fu_type === SHIFT_SRL){
+    }.otherwise{
       if(debug) printf("Inst: srl\n")
       output := io.A >> io.B(5,0)
-    }.otherwise{
-      if(debug) printf("Inst: sra\n")
-      output := Cat(io.A(63),(io.A.asSInt >> io.B(5,0))(62,0)).asUInt
     }
   }.elsewhen(io.fu_op === FU_ARITH){
-    when(io.signed){
-        if(debug) printf("Inst: mults\n")
-        output := (io.A.asSInt * io.B.asSInt).asUInt
+    when(io.fu_type === ARITH_ADD){
+      if(debug) printf("Inst: add\n")
+      output := io.A + io.B
+    }.elsewhen(io.fu_type === ARITH_SUB){
+      if(debug) printf("Inst: sub\n")
+      output := io.A - io.B
+    }.elsewhen(io.fu_type === ARITH_MULT){
+      if(debug) printf("Inst: mult\n")
+      output := io.A * io.B
+    }.elsewhen(io.fu_type === ARITH_DIV){
+      if(debug) printf("Inst: div\n")
+      output := io.A / io.B
+    }.elsewhen(io.fu_type === ARITH_MOD){
+      if(debug) printf("Inst: mod\n")
+      output := io.A % io.B
     }.otherwise{
-      when(io.fu_type === ARITH_ADD){
-        if(debug) printf("Inst: add\n")
-        output := io.A + io.B
-      }.elsewhen(io.fu_type === ARITH_SUB){
-        if(debug) printf("Inst: sub\n")
-        output := io.A - io.B
-      }.otherwise{
-        if(debug) printf("Inst: mult\n")
-        output := io.A * io.B
-      }
+      if(debug) printf("Inst: neg\n")
+      output :=  - io.A.asSInt
     }
   }.elsewhen(io.fu_op === FU_LOGICAL){
       when(io.fu_type === LOGICAL_XOR){
@@ -76,20 +76,35 @@ class FU(implicit debug: Boolean) extends Module{
       }.elsewhen(io.fu_type === LOGICAL_OR){
         if(debug) printf("Inst: or\n")
         output := io.A | io.B
+      }.elsewhen(io.fu_type === LOGICAL_NOT){
+        if(debug) printf("Inst: not\n")
+        output := Mux(io.A === 0.S, 1.S, 0.S)
       }.otherwise{
         if(debug) printf("Inst: and\n")
         output := io.A & io.B
       }
   }.elsewhen(io.fu_op === FU_COMP){
-    when(io.signed){
-      if(debug) printf("Inst: lts\n")
-      output := io.A.asSInt < io.B.asSInt
-    }.otherwise{
+    when(io.fu_type === COMP_EQ){
+      if(debug) printf("Inst: eq\n")
+      output := (io.A === io.B).asSInt
+    }.elsewhen(io.fu_type === COMP_LT){
       if(debug) printf("Inst: lt\n")
-      output := io.A < io.B
+      output := (io.A < io.B).asSInt
+    }.elsewhen(io.fu_type === COMP_LET){
+      if(debug) printf("Inst: let\n")
+      output := (io.A <= io.B).asSInt
+    }.elsewhen(io.fu_type === COMP_GT){
+      if(debug) printf("Inst: gt\n")
+      output := (io.A > io.B).asSInt
+    }.elsewhen(io.fu_type === COMP_GET){
+      if(debug) printf("Inst: get\n")
+      output := (io.A >= io.B).asSInt
+    }.otherwise{
+      if(debug) printf("Inst: neq\n")
+      output := (io.A =/= io.B).asSInt
     }
   }.elsewhen(io.fu_type === FU_COND){
-    when(io.cond =/= 0.U){
+    when(io.cond =/= 0.S){
       if(debug) printf("Inst: cmova\n")
       output := io.A
     }.otherwise{

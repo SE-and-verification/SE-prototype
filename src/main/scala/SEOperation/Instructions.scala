@@ -30,19 +30,25 @@ if it is comparison between signed and unsigned integers, the signed number will
 */
 object Instructions {
   // Shifts
-  def SLL    = BitPat("b00000000")
-  def SRL    = BitPat("b00000100")
-  def SRA    = BitPat("b00001000")
+  def SLL    = BitPat("b00000100")
+  def SRL    = BitPat("b00001000")
 
 
   // Arithmetic
   def ADD    = BitPat("b00100000")
   def SUB    = BitPat("b00100100")
   def MULT   = BitPat("b00101000")
-  def MULTS  = BitPat("b00101001")
+  def DIV    = BitPat("b00101100")
+  def MOD    = BitPat("b00110000")
+  def NEG    = BitPat("b00110100")
 
   // Compare
-  def LT     = BitPat("b01000000")
+  def LT     = BitPat("b01000100")
+  def GT     = BitPat("b01001000")
+  def LET    = BitPat("b01001100")
+  def GET    = BitPat("b01010000")
+  def EQ     = BitPat("b01010100")
+  def NEQ    = BitPat("b01011000")
 
   // Conditional
   def CMOV   = BitPat("b011?????")
@@ -51,6 +57,7 @@ object Instructions {
   def XOR    = BitPat("b10000000")
   def OR     = BitPat("b10000100")
   def AND    = BitPat("b10001000")
+  def NOT    = BitPat("b10001100")
 
   // ENC
   def ENC    = BitPat("b101?????")
@@ -60,37 +67,45 @@ object Instructions {
 
 object COMP {
   // comp type 
-  val COMP_LT  = 0.U(2.W)
-  val COMP_XXX = 2.U(2.W)
+  val COMP_LT  = 0.U(3.W)
+  val COMP_GT  = 1.U(3.W)
+  val COMP_LET  = 2.U(3.W)
+  val COMP_GET  = 3.U(3.W)
+  val COMP_EQ  = 4.U(3.W)
+  val COMP_NEQ  = 5.U(3.W)
+  val COMP_XXX = 7.U(3.W)
 }
 
 object ARITH {
-  val ARITH_ADD = 0.U(2.W)
-  val ARITH_SUB = 1.U(2.W)
-  val ARITH_MULT = 2.U(2.W)
-  val ARITH_XXX = 3.U(2.W)
+  val ARITH_ADD = 0.U(3.W)
+  val ARITH_SUB = 1.U(3.W)
+  val ARITH_MULT = 2.U(3.W)
+  val ARITH_DIV = 3.U(3.W)
+  val ARITH_MOD = 4.U(3.W)
+  val ARITH_NEG = 5.U(3.W)
+  val ARITH_XXX = 7.U(3.W)
 }
 
 object SHIFT{
-  val SHIFT_SLL = 0.U(2.W)
-  val SHIFT_SRL = 1.U(2.W)
-  val SHIFT_SRA = 2.U(2.W)
-  val SHIFT_XXX = 3.U(2.W)
+  val SHIFT_SLL = 0.U(3.W)
+  val SHIFT_SRL = 1.U(3.W)
+  val SHIFT_XXX = 7.U(3.W)
 }
 
 object LOGICAL{
-  val LOGICAL_XOR = 0.U(2.W)
-  val LOGICAL_OR = 1.U(2.W)
-  val LOGICAL_AND = 2.U(2.W)
-  val LOGICAL_XXX = 3.U(2.W)
+  val LOGICAL_XOR = 0.U(3.W)
+  val LOGICAL_OR = 1.U(3.W)
+  val LOGICAL_AND = 2.U(3.W)
+  val LOGICAL_NOT = 3.U(3.W)
+  val LOGICAL_XXX = 7.U(3.W)
 }
 
 object COND{
-  val COND_COND = 0.U(2.W)
-  val COND_XXX = 3.U(2.W)
+  val COND_COND = 0.U(3.W)
+  val COND_XXX = 7.U(3.W)
 }
 
 object CRYPTO{
-  val CRYPTO_ENC = 0.U(2.W)
-  val CRYPTO_XXX = 3.U(2.W)
+  val CRYPTO_ENC = 0.U(3.W)
+  val CRYPTO_XXX = 7.U(3.W)
 }

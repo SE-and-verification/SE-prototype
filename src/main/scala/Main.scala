@@ -18,20 +18,13 @@ object Main extends App {
   // writer write chirrtl.serialize
   // writer.close
   if(!changeKey){
-    val verilog = new FileWriter(new File(dir, s"SE.v"))
-    verilog write ChiselStage.emitVerilog(new SE)
-    verilog.close
 
     val firrtl_file =new FileWriter(new File(dir, s"SE.fir"))
     firrtl_file write ChiselStage.emitFirrtl(new SE)
     firrtl_file.close
-  }else{
     val verilog = new FileWriter(new File(dir, s"SE.v"))
-    verilog write ChiselStage.emitVerilog(new SEChangeKey)
+    verilog write ChiselStage.emitVerilog(new SE)
     verilog.close
 
-    val firrtl_file =new FileWriter(new File(dir, s"SE.fir"))
-    firrtl_file write ChiselStage.emitFirrtl(new SEChangeKey)
-    firrtl_file.close
   }
 }

@@ -25,22 +25,28 @@ object SEControl {
   // Shifts
   SLL   -> List(FU_SHIFT,SHIFT_SLL, LEGAL, N),
   SRL   -> List(FU_SHIFT,SHIFT_SRL, LEGAL, N),
-  SRA   -> List(FU_SHIFT,SHIFT_SRA, LEGAL, N),
 
   // Arithmetic
   ADD   -> List(FU_ARITH,ARITH_ADD, LEGAL, N),
   SUB   -> List(FU_ARITH,ARITH_SUB, LEGAL, N),
   MULT  -> List(FU_ARITH,ARITH_MULT, LEGAL, N),
-
+  DIV   -> List(FU_ARITH,ARITH_DIV, LEGAL, N),
+  MOD   -> List(FU_ARITH,ARITH_MOD, LEGAL, N),
+  NEG   -> List(FU_ARITH,ARITH_NEG, LEGAL, N),
 
   // Logical
   XOR   -> List(FU_LOGICAL,LOGICAL_XOR, LEGAL, N),
   OR    -> List(FU_LOGICAL,LOGICAL_OR, LEGAL, N),
   AND   -> List(FU_LOGICAL,LOGICAL_AND, LEGAL, N),
-
+  NOT   -> List(FU_LOGICAL,LOGICAL_NOT, LEGAL, N),
   // Compare
   LT    -> List(FU_COMP,COMP_LT, LEGAL, N),
- 
+  GT    -> List(FU_COMP,COMP_GT, LEGAL, N),
+  LET   -> List(FU_COMP,COMP_LET, LEGAL, N),
+  GET   -> List(FU_COMP,COMP_GET, LEGAL, N),
+  EQ    -> List(FU_COMP,COMP_EQ, LEGAL, N),
+  NEQ   -> List(FU_COMP,COMP_NEQ, LEGAL, N),
+
   // Conditional
   CMOV  -> List(FU_COND, COND_COND, LEGAL, N),
 
@@ -55,9 +61,8 @@ class SEControlIO extends Bundle{
 
   val inst_out   = Output(UInt(8.W))
   val fu_op   = Output(UInt(3.W))
-  val fu_type = Output(UInt(2.W))
+  val fu_type = Output(UInt(3.W))
   val legal   = Output(Bool())
-  val signed = Output(Bool()) // signed version or not
 }
 
 
@@ -70,5 +75,4 @@ class SEControl extends Module {
   io.fu_op := ctrlSignals(0)
   io.fu_type := ctrlSignals(1)
   io.legal := ctrlSignals(2)
-  io.signed := ctrlSignals(3)
 }
