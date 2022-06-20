@@ -1,4 +1,4 @@
-default: VSE.o #tag
+default: generate #tag
 
 tag: firrtl_transform
 	../se-firrtl/utils/bin/firrtl -td generated-src -i generated-src/SE.fir --custom-transforms firrtl.transforms.Tagrize -o tag.v -X verilog
@@ -8,7 +8,7 @@ firrtl_transform: ../se-firrtl/src/main/scala/firrtl/transforms/Tagrize.scala
 
 base_dir   = $(abspath .)
 src_dir    = $(base_dir)/src/main
-gen_dir    = $(base_dir)/generated-src
+gen_dir    = $(base_dir)/../hw/rtl/
 out_dir    = $(base_dir)/outputs
 
 SBT       = sbt
@@ -31,10 +31,8 @@ generate:
 sbt:
 	$(SBT) $(SBT_FLAGS)
 
-compile: $(gen_dir)/Tile.v
+# compile: $(gen_dir)/Tile.v
 
-$(gen_dir)/Tile.v: $(wildcard $(src_dir)/scala/*.scala)
-	$(SBT) $(SBT_FLAGS) "run $(gen_dir)"
 
 CXXFLAGS += -std=c++11 -Wall -Wno-unused-variable
 

@@ -5,23 +5,8 @@ import chisel3.util._
 import aes._
 import se.seoperation._
 import chisel3.util.random._
-
-class SEChangeKeyInput extends Bundle{
-	val inst = Input(UInt(8.W)) // Instruction encoding is defined in SEOperation/Instructions.scala
-
-	val op1 = Input(UInt(128.W))
-
-	val op2 = Input(UInt(128.W))
-
-	// The condition for CMOV. Should always be encrypted. Can be anything if not used
-	val cond = Input(UInt(128.W)) 
-	val valid = Input(Bool())
-	val ready = Output(Bool())
-
-	val changeKey_en = Input(Bool())
-	val newKey = Input(Vec(11, Vec(16, UInt(8.W))))
-}
-
+import se.Params._
+import aes.Params
 class SEInput extends Bundle{
 	val inst = Input(UInt(8.W)) // Instruction encoding is defined in SEOperation/Instructions.scala
 
@@ -30,46 +15,25 @@ class SEInput extends Bundle{
 	val op2 = Input(UInt(128.W))
 
 	// The condition for CMOV. Should always be encrypted. Can be anything if not used
-	val cond = Input(UInt(128.W)) 
-	val valid = Input(Bool())
-	val ready = Output(Bool())
+	val cond = Input(UInt(128.W))
 }
 
 class SEOutput extends Bundle{
-	val result = Output(UInt(128.W))
-	val valid = Output(Bool())
-	val ready = Input(Bool())
-	val cntr = Output(UInt(8.W))
+	val out = Output(UInt(128.W))
 }
 
 class SEIO extends Bundle{
-	val in = new SEInput
-	val out = new SEOutput
-}
-
-class SEChangeKeyIO extends Bundle{
-	val in = new SEChangeKeyInput
-	val out = new SEOutput
+	val in_idx = Input(UInt(log2Ceil(NumFPGAEntries).W))
+	val out_idx = Output(UInt(log2Ceil(NumFPGAEntries).W))
+	val request = Flipped(DecoupledIO(new SEInput))
+	val result = DecoupledIO(new SEOutput)
 }
 
 class SE(implicit debug:Boolean) extends Module{
 	// Define the input, output ports and the control bits
 	val io = IO(new SEIO)
-	val counterOn = RegInit(false.B)
-	val cnter = new Counter(100)
 	val rolled = true
-	when(counterOn){
-		cnter.inc()
-	}
-	when(io.in.valid && io.in.ready){
-		counterOn := true.B
-	}.elsewhen(io.out.valid && io.out.ready){
-		counterOn := false.B
-	}
-	when(io.out.valid && io.out.ready){
-		cnter.reset()
-	}
-	io.out.cntr := cnter.value
+
 	/*
 	seoperation: the module to actually compute on decrypted plaintexts
 	key: preset expanded AES ROM key
@@ -99,25 +63,27 @@ class SE(implicit debug:Boolean) extends Module{
 		}
 
 	// Once we receive the data, first latch them into buffers. 
-	val inst_buffer = RegEnable(io.in.inst, io.in.valid)
+	val inst_buffer = RegEnable(io.request.bits.inst, io.request.valid)
 
-	val op1_buffer = RegEnable(io.in.op1, io.in.valid)
+	val op1_buffer = RegEnable(io.request.bits.op1, io.request.valid)
 
-	val op2_buffer = RegEnable( io.in.op2, io.in.valid)
+	val op2_buffer = RegEnable( io.request.bits.op2, io.request.valid)
 
-	val cond_buffer = RegEnable( io.in.cond, io.in.valid)
+	val cond_buffer = RegEnable( io.request.bits.cond, io.request.valid)
 
 	val valid_buffer = Reg(Bool())
 
 	val n_result_valid_buffer = Wire(Bool())
 	val ready_for_input = RegInit(true.B)
 	val n_stage_valid = Wire(Bool())
-	io.in.ready := ready_for_input
-
-	valid_buffer := Mux(io.in.valid && io.in.ready, true.B, Mux(n_stage_valid, false.B, valid_buffer))
-	when(io.in.valid && io.in.ready){
+	val in_idx_reg = RegInit(0.U(8.W))
+	io.request.ready := ready_for_input
+	io.out_idx := in_idx_reg
+	valid_buffer := Mux(io.request.valid && io.request.ready, true.B, Mux(n_stage_valid, false.B, valid_buffer))
+	when(io.request.valid && io.request.ready){
 		ready_for_input := false.B
-	}.elsewhen(io.out.valid && io.out.ready){
+		in_idx_reg := io.in_idx
+	}.elsewhen(io.result.valid && io.result.ready){
 		ready_for_input := true.B
 	}
 
@@ -125,9 +91,9 @@ class SE(implicit debug:Boolean) extends Module{
 		when(reset.asBool){
 			printf("resetting\n")
 		}
-		when(io.in.valid && io.in.ready){
+		when(io.request.valid && io.request.ready){
 			printf("changed to false\n")
-		}.elsewhen(io.out.valid && io.out.ready){
+		}.elsewhen(io.result.valid && io.result.ready){
 			printf("changed to true\n")
 		}
 	}
@@ -168,13 +134,13 @@ class SE(implicit debug:Boolean) extends Module{
 	n_stage_valid := all_match || valid_buffer
 
 	// Reverse the byte order so we can convert them into uint with Chisel infrastructure.
-	val op1_reverse = Wire(Vec(Params.StateLength, UInt(8.W)))
-	val op2_reverse = Wire(Vec(Params.StateLength, UInt(8.W)))
-	val cond_reverse = Wire(Vec(Params.StateLength, UInt(8.W)))
-	for(i <- 0 until Params.StateLength){
-		op1_reverse(i) := aes_invcipher.io.output_op1(Params.StateLength-i-1)
-		op2_reverse(i) := aes_invcipher.io.output_op2(Params.StateLength-i-1)
-		cond_reverse(i) := aes_invcipher.io.output_cond(Params.StateLength-i-1)
+	val op1_reverse = Wire(Vec(aes.Params.StateLength, UInt(8.W)))
+	val op2_reverse = Wire(Vec(aes.Params.StateLength, UInt(8.W)))
+	val cond_reverse = Wire(Vec(aes.Params.StateLength, UInt(8.W)))
+	for(i <- 0 until aes.Params.StateLength){
+		op1_reverse(i) := aes_invcipher.io.output_op1(aes.Params.StateLength-i-1)
+		op2_reverse(i) := aes_invcipher.io.output_op2(aes.Params.StateLength-i-1)
+		cond_reverse(i) := aes_invcipher.io.output_cond(aes.Params.StateLength-i-1)
 	}
 
 	val mid_inst_buffer = RegEnable(inst_buffer,aes_invcipher.io.input_valid)
@@ -231,9 +197,9 @@ class SE(implicit debug:Boolean) extends Module{
 	}
 	// Connect the cipher
 	val aes_input = result_buffer.asTypeOf(aes_cipher.io.input_text)
-	val aes_input_reverse = Wire(Vec(Params.StateLength, UInt(8.W)))
-	for(i <- 0 until Params.StateLength){
-		aes_input_reverse(i) := aes_input(Params.StateLength-i-1)
+	val aes_input_reverse = Wire(Vec(aes.Params.StateLength, UInt(8.W)))
+	for(i <- 0 until aes.Params.StateLength){
+		aes_input_reverse(i) := aes_input(aes.Params.StateLength-i-1)
 	}
 	aes_cipher.io.input_text := aes_input_reverse
 	aes_cipher.io.input_valid := result_valid_buffer
@@ -245,11 +211,11 @@ class SE(implicit debug:Boolean) extends Module{
 
 	when(aes_cipher.io.output_valid){
 		output_valid := true.B
-	}.elsewhen(io.out.valid && io.out.ready){
+	}.elsewhen(io.result.valid && io.result.ready){
 		output_valid := false.B
 	}
-	io.out.valid := output_valid
-	io.out.result := output_buffer
+	io.result.valid := output_valid
+	io.result.bits.out := output_buffer
 
 	when(output_valid){
 		printf("ptr:%x\n",ptr)
@@ -266,20 +232,11 @@ class SE(implicit debug:Boolean) extends Module{
 			plaintexts(i) := 0.S
 		}
 	}.otherwise{	
-		when(io.out.valid ){
+		when(io.result.valid ){
 			ciphers(ptr) := output_buffer
 			plaintexts(ptr) := result_plaintext_buffer
 		}
 	}
 
-	InfoAnnotator.info(io.in.op1, "SensitiveInput")
-	InfoAnnotator.info(io.in.op2, "SensitiveInput")
-	InfoAnnotator.info(io.in.cond, "SensitiveInput")
-
-	InfoAnnotator.info(aes_invcipher, "Decryption")
-	InfoAnnotator.info(aes_cipher, "Encryption")
-	InfoAnnotator.info(seoperation, "Private")
-	InfoAnnotator.info(io.out.result, "SensitiveOutput")
-	InfoAnnotator.info(key, "KeyStore")
 	
 }
