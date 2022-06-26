@@ -6,7 +6,7 @@ import scala.collection.mutable.ArrayBuffer
 
 class Locality() extends Module {
 	import se.Params._
-	implicit val debug = true
+	implicit val debug = false
   val io = IO(new LocalityTopInterface)
 
 	// This part is assumed as a perfectly wrapped blackbox
@@ -287,7 +287,7 @@ class Locality() extends Module {
 
 			printf("request: valid | ready | op 1 | op2 | cond | inst\n")
 			printf("\t %b | %b | %b | %b | %b | %x \n", request.valid, request.ready, request.bits.op1, request.bits.op2, request.bits.cond, request.bits.inst)
-			printf("result: valid | ready | isZero | isNar | out | lt | eq | gt | exceptions\n")
+			printf("result: valid | ready | out\n")
 
 			printf("\t %b | %b | %x \n", result.valid, result.ready, result.bits.out)
 

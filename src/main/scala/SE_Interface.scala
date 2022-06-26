@@ -19,7 +19,7 @@ class RequestOperandEntry extends Bundle{
 }
 
 class LocalityTopRequest extends RequestOperandEntry{
-	val inst = UInt(3.W)
+	val inst = UInt(8.W)
 	val wr_addr = UInt(8.W)
 }
 
