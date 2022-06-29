@@ -59,12 +59,6 @@ class FU(implicit debug: Boolean) extends Module{
     }.elsewhen(io.fu_type === ARITH_MULT){
       if(debug) printf("Inst: mult\n")
       output := io.A * io.B
-    }.elsewhen(io.fu_type === ARITH_DIV){
-      if(debug) printf("Inst: div\n")
-      output := io.A / io.B
-    }.elsewhen(io.fu_type === ARITH_MOD){
-      if(debug) printf("Inst: mod\n")
-      output := io.A % io.B
     }.otherwise{
       if(debug) printf("Inst: neg\n")
       output :=  - io.A.asSInt

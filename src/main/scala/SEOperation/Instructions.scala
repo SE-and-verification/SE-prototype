@@ -38,8 +38,6 @@ object Instructions {
   def ADD    = BitPat("b00100000")
   def SUB    = BitPat("b00100100")
   def MULT   = BitPat("b00101000")
-  def DIV    = BitPat("b00101100")
-  def MOD    = BitPat("b00110000")
   def NEG    = BitPat("b00110100")
 
   // Compare

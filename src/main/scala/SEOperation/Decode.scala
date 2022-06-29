@@ -30,8 +30,6 @@ object SEControl {
   ADD   -> List(FU_ARITH,ARITH_ADD, LEGAL, N),
   SUB   -> List(FU_ARITH,ARITH_SUB, LEGAL, N),
   MULT  -> List(FU_ARITH,ARITH_MULT, LEGAL, N),
-  DIV   -> List(FU_ARITH,ARITH_DIV, LEGAL, N),
-  MOD   -> List(FU_ARITH,ARITH_MOD, LEGAL, N),
   NEG   -> List(FU_ARITH,ARITH_NEG, LEGAL, N),
 
   // Logical

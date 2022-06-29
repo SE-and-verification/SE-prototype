@@ -6,7 +6,7 @@ import scala.collection.mutable.ArrayBuffer
 
 class Locality() extends Module {
 	import se.Params._
-	implicit val debug = false
+	implicit val debug = true
   val io = IO(new LocalityTopInterface)
 
 	// This part is assumed as a perfectly wrapped blackbox
