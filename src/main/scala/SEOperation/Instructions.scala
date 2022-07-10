@@ -49,7 +49,7 @@ object Instructions {
   def NEQ    = BitPat("b01011000")
 
   // Conditional
-  def CMOV   = BitPat("b011?????")
+  def CMOV   = BitPat("b01100000")
 
   // Logical
   def XOR    = BitPat("b10000000")

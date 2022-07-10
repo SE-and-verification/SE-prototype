@@ -97,7 +97,7 @@ class FU(implicit debug: Boolean) extends Module{
       if(debug) printf("Inst: neq\n")
       output := (io.A =/= io.B).asSInt
     }
-  }.elsewhen(io.fu_type === FU_COND){
+  }.elsewhen(io.fu_op === FU_COND){
     when(io.cond =/= 0.S){
       if(debug) printf("Inst: cmova\n")
       output := io.A

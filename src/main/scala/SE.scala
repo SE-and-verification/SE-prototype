@@ -43,7 +43,6 @@ class SE(implicit debug:Boolean) extends Module{
 	val aes_cipher = Module(new AESEncrypt(rolled))
 	val key = Reg(Vec(11, Vec(16,UInt(8.W))))
 
-	val ptr = RegInit(0.U(8.W))
 	val expandedKey128 =VecInit(
     VecInit(0x00.U(8.W), 0x01.U(8.W), 0x02.U(8.W), 0x03.U(8.W), 0x04.U(8.W), 0x05.U(8.W), 0x06.U(8.W), 0x07.U(8.W), 0x08.U(8.W), 0x09.U(8.W), 0x0a.U(8.W), 0x0b.U(8.W), 0x0c.U(8.W), 0x0d.U(8.W), 0x0e.U(8.W), 0x0f.U(8.W)),
     VecInit(0xd6.U(8.W), 0xaa.U(8.W), 0x74.U(8.W), 0xfd.U(8.W), 0xd2.U(8.W), 0xaf.U(8.W), 0x72.U(8.W), 0xfa.U(8.W), 0xda.U(8.W), 0xa6.U(8.W), 0x78.U(8.W), 0xf1.U(8.W), 0xd6.U(8.W), 0xab.U(8.W), 0x76.U(8.W), 0xfe.U(8.W)),
@@ -77,7 +76,8 @@ class SE(implicit debug:Boolean) extends Module{
 	
 	io.request.ready := ready_for_input
 	io.out_idx := in_idx_reg
-	valid_buffer := Mux(io.request.valid && io.request.ready, true.B, !aes_invcipher.io.input_valid)
+	valid_buffer := Mux(io.request.valid && io.request.ready, true.B, 
+		Mux(valid_buffer, !aes_invcipher.io.input_valid, valid_buffer))
 	when(io.request.valid && io.request.ready){
 		ready_for_input := false.B
 		in_idx_reg := io.in_idx
@@ -169,19 +169,17 @@ class SE(implicit debug:Boolean) extends Module{
 
 	// Pad with RNG
 	val bit64_randnum = PRNG(new MaxPeriodFibonacciLFSR(64, Some(scala.math.BigInt(64, scala.util.Random))))
-	val padded_result = Cat(seoperation.io.result,bit64_randnum)
+	val padded_result = Cat(seoperation.io.result, 0.U(64.W))
 	val result_buffer = RegEnable( padded_result, seop_input_valid)
 	if(debug){
 		when(result_valid_buffer){
 			printf("\n-----back----\n")
 			printf("padded_result:%x\n",result_buffer )
 			printf("seoperation.io.result:%x\n",seoperation.io.result)
+			printf("se.result.counter:%d\n",io.out_idx)
 		}
 	}
-	val result_plaintext_buffer = RegInit(0.S(64.W))
-	when(seop_input_valid){
-		result_plaintext_buffer := seoperation.io.result
-	}
+
 	// Connect the cipher
 	val aes_input = result_buffer.asTypeOf(aes_cipher.io.input_text)
 	val aes_input_reverse = Wire(Vec(aes.Params.StateLength, UInt(8.W)))
@@ -204,14 +202,7 @@ class SE(implicit debug:Boolean) extends Module{
 	io.result.valid := output_valid
 	io.result.bits.out := output_buffer
 
-	when(output_valid){
-		printf("ptr:%x\n",ptr)
-		when(ptr === 31.U){
-			ptr := 0.U
-		}.otherwise{
-			ptr := ptr + 1.U
-		}
-	}
+
 	when(reset.asBool){
 		key := expandedKey128
 	}
