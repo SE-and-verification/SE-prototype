@@ -11,13 +11,15 @@ import COND._
 
 class SEOpIO  extends Bundle{
 	val inst = Input(UInt(8.W))
-	val valid = Input(Bool())
+	val valid = Input(Bool()) // can i use this for saying that the input is ready ..?
 
 	val op1_input = Input(UInt(64.W))
 
 	val op2_input  = Input(UInt(64.W))
 
 	val cond_input  = Input(UInt(64.W))
+
+	val validOutput = Output(Bool())
 
 	val result = Output(UInt(64.W))
 }
@@ -26,7 +28,6 @@ class SEOpIO  extends Bundle{
 class SEOperation(val debug: Boolean) extends Module{
 
 	val io = IO(new SEOpIO)
-
 	
 	val decode = Module(new SEControl)
 	val fu = Module(new FU(debug))
@@ -37,14 +38,19 @@ class SEOperation(val debug: Boolean) extends Module{
 
 	decode.io.inst_in := io.inst
 
- 
+
   fu.io.A := op1
   fu.io.B := op2
 	fu.io.cond := cond
   fu.io.fu_op := decode.io.fu_op
 	fu.io.fu_type := decode.io.fu_type
 	fu.io.signed := decode.io.signed
+	// when operands are valid, functional unit ready to do computation
+	fu.io.ready := io.valid 
+
 	io.result := fu.io.out
+	// sends valid output signal to the rest of the SE
+	io.validOutput := fu.io.valid
 
 	if(debug){
 		when(io.valid){

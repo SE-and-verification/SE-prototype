@@ -198,19 +198,21 @@ class SE(val debug:Boolean, val canChangeKey: Boolean) extends Module{
 	// 	printf("cond_asUInt:%x\n",cond_asUInt(127,64))
 	// 	printf("inst:%b\n",mid_inst_buffer)
 	// }
-
 	seoperation.io.op1_input := Mux(all_match&& valid_buffer, op1_val ,Mux(mid_inst_buffer(7,5) === 5.U(3.W), mid_op1_buffer(127,64),op1_asUInt(127,64)))
 	seoperation.io.op2_input := Mux(all_match&& valid_buffer, op2_val, op2_asUInt(127,64))
 	seoperation.io.cond_input := Mux(all_match&& valid_buffer, cond_val, cond_asUInt(127,64))
 
   // Once we receive the result form the seoperation, we latech the result first.
-	val result_valid_buffer = RegNext(n_result_valid_buffer)
+  // flag: i am kinda confused on this, what is n_result_valid buffer.], added the ands
+	val result_valid_buffer = RegNext(n_result_valid_buffer && seoperation.io.validOutput)
 	n_result_valid_buffer := Mux(seOpValid, true.B, Mux(aes_cipher.io.input_valid, false.B, result_valid_buffer))
 
 	// Pad with RNG
 	val bit64_randnum = PRNG(new MaxPeriodFibonacciLFSR(64, Some(scala.math.BigInt(64, scala.util.Random))))
 	val padded_result = Cat(seoperation.io.result,bit64_randnum)
-	val result_buffer = RegEnable( padded_result, seOpValid)
+
+	// change: result buffer not set until seoperation has valid output
+	val result_buffer = RegEnable( padded_result, seOpValid && seoperation.io.validOutput)
 	if(debug){
 		when(result_valid_buffer){
 			printf("\n-----back----\n")
@@ -219,10 +221,12 @@ class SE(val debug:Boolean, val canChangeKey: Boolean) extends Module{
 		}
 	}
 	val result_plaintext_buffer = RegInit(0.U(64.W))
-	when(seOpValid){
+	// change: result_plaintext_buffer not set until valid output
+	when(seOpValid && seoperation.io.validOutput){
 		result_plaintext_buffer := seoperation.io.result
 	}
 	// Connect the cipher
+	// flag: make output valid an input of encryper
 	val aes_input = result_buffer.asTypeOf(aes_cipher.io.input_text)
 	val aes_input_reverse = Wire(Vec(Params.StateLength, UInt(8.W)))
 	for(i <- 0 until Params.StateLength){
@@ -242,6 +246,7 @@ class SE(val debug:Boolean, val canChangeKey: Boolean) extends Module{
 		output_valid := false.B
 	}
 	io.out.valid := output_valid
+
 	io.out.result := output_buffer
 
 	when(output_valid){

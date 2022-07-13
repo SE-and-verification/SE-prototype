@@ -35,12 +35,24 @@ class  FUIO extends Bundle{
     val fu_op = Input(UInt(3.W))
     val fu_type = Input(UInt(2.W))
     val signed = Input(Bool())
+    val ready = Input(Bool())
+    val valid = Output(Bool())
     val out = Output(UInt(64.W))
 }
 
 class FU(val debug: Boolean) extends Module{
   val io = IO(new FUIO)
   val output = Wire(UInt(64.W))
+
+  io.valid := false.B // false until set to true?
+
+  when(io.fu_op =/= FU_ARITH){
+    io.valid := true.B
+  }.otherwise{
+    when(io.fu_type =/= ARITH_MULT){
+      io.valid := true.B
+    }
+  }
 
   when(io.fu_op === FU_SHIFT){
     when(io.fu_type === SHIFT_SLL){
@@ -59,15 +71,82 @@ class FU(val debug: Boolean) extends Module{
         output := (io.A.asSInt * io.B.asSInt).asUInt
     }.otherwise{
       when(io.fu_type === ARITH_ADD){
+        // change: timing side channels ..?
         if(debug) printf("Inst: add\n")
-        output := io.A + io.B
+        when (io.A === 0.U) { output := io.B
+        }.elsewhen (io.B === 0.U){ output := io.A
+        }.otherwise{
+          output := io.A + io.B
+        }
       }.elsewhen(io.fu_type === ARITH_SUB){
         if(debug) printf("Inst: sub\n")
         output := io.A - io.B
       }.otherwise{
+
+        // changes: 
         if(debug) printf("Inst: mult\n")
+  
+        val state = RegInit(0.U) // starting state, inputs not ready
+        val valid = RegInit(false.B); // output not ready yet
+        val ready = io.ready // input;
+        val inA = io.A // combinational
+        val inB = io.B // combinational
+
+        val regA = Reg(UInt(64.W))
+        val regB = Reg(UInt(64.W))
+        val tempSum = Reg(UInt(64.W))
+
+        when (state === 0.U) {
+            // waiting for ready
+
+            // got to ready!
+            when (ready) {
+              // initializing all values!
+                regA := inA
+                regB := inB
+                valid := false.B
+                state := 1.U
+                tempSum := 0.U
+            }
+        }
+        when (state === 1.U) {
+            // there are still 1s left in reg b
+            when (regB =/= 0.U) {
+                // do multiplication stuff
+              when (regB(0) === 1.B){
+                tempSum := regA + tempSum
+                }
+              // left shift A by 1 for next round of multiplcation
+              regA := regA << 1.U 
+              // right shift B by 1 to get next bit
+              regB := regB >> 1.U
+
+            } .otherwise { // when no more 1s left in b, done w multiplying
+                valid := true.B
+                state := 2.U
+            }
+        }
+        when (state === 2.U) {
+          // does nothing until new values come in and ready goes to 0 while decrypying
+            when (!ready) {
+                state := 0.U
+            }
+        }
+
+        output := tempSum
+        
+        /*
         output := io.A * io.B
+        io.valid := true.B
+        */
+        /*
+        when (io.A === 0.U | io.B === 0.U) { output := 0.U(64.W) // if any operand is 0, output a 64 bit 0
+        }.elsewhen (io.A === 2.U) { output := io.B << 2.U // left shift by 1 to be faster
+        }.elsewhen (io.B === 2.U) { output := io.A << 2.U // left shift is faster
+        }.otherwise {output := io.A * io.B} */
+
       }
+
     }
   }.elsewhen(io.fu_op === FU_LOGICAL){
       when(io.fu_type === LOGICAL_XOR){
@@ -102,4 +181,5 @@ class FU(val debug: Boolean) extends Module{
   }
 
   io.out := output
+  
 }
