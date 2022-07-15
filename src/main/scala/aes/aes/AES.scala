@@ -6,9 +6,9 @@ import chisel3.util._
 class AESIO extends Bundle{
     val AES_mode = Input(UInt(2.W)) //  0=00=off, 1=01=expanded key update, 2=10=cipher, 3=11=inverse cipher
     //
-    val input_text = Input(Vec(Params.StateLength, UInt(8.W))) // plaintext, ciphertext, roundKey
+    val input_text = Input(Vec(16, UInt(8.W))) // plaintext, ciphertext, roundKey
     //
-    val output_text = Output(Vec(Params.StateLength, UInt(8.W))) // ciphertext or plaintext
+    val output_text = Output(Vec(16, UInt(8.W))) // ciphertext or plaintext
     val output_valid = Output(Bool())
 }
 // implements wrapper for AES cipher and inverse cipher
@@ -17,7 +17,7 @@ class AESIO extends Bundle{
 class AES(Nk: Int, unrolled: Int, SubBytes_SCD: Boolean, InvSubBytes_SCD: Boolean, expandedKeyMemType: String) extends Module {
   require(Nk == 4 || Nk == 6 || Nk == 8)
   require(expandedKeyMemType == "ROM" || expandedKeyMemType == "Mem" || expandedKeyMemType == "SyncReadMem")
-  val KeyLength: Int = Nk * Params.rows
+  val KeyLength: Int = Nk * 4
   val Nr: Int = Nk + 6 // 10, 12, 14 rounds
   val Nrplus1: Int = Nr + 1 // 10+1, 12+1, 14+1
   val EKDepth: Int = 16 // enough memory for any expanded key
@@ -28,18 +28,18 @@ class AES(Nk: Int, unrolled: Int, SubBytes_SCD: Boolean, InvSubBytes_SCD: Boolea
   val CipherModule = Cipher(Nk, SubBytes_SCD)
   val InvCipherModule = InvCipher(Nk, InvSubBytes_SCD)
 
-  // A roundKey is Params.StateLength bytes, and 1+(10/12/14) (< EKDepth) of them are needed
+  // A roundKey is 16 bytes, and 1+(10/12/14) (< EKDepth) of them are needed
   // Mem = combinational/asynchronous-read, sequential/synchronous-write = register banks
   // Create a asynchronous-read, synchronous-write memory block big enough for any key length
-  val expandedKeyARMem = Mem(EKDepth, Vec(Params.StateLength, UInt(8.W)))
+  val expandedKeyARMem = Mem(EKDepth, Vec(16, UInt(8.W)))
 
   // SyncReadMem = sequential/synchronous-read, sequential/synchronous-write = SRAMs
   // Create a synchronous-read, synchronous-write memory block big enough for any key length
-  val expandedKeySRMem = SyncReadMem(EKDepth, Vec(Params.StateLength, UInt(8.W)))
+  val expandedKeySRMem = SyncReadMem(EKDepth, Vec(16, UInt(8.W)))
 
   // use the same address and dataOut val elements to interface with the parameterized memory
   val address = RegInit(0.U(log2Ceil(EKDepth).W))
-  val dataOut = Wire(Vec(Params.StateLength, UInt(8.W)))
+  val dataOut = Wire(Vec(16, UInt(8.W)))
 
   when(io.AES_mode === 1.U) { // write to memory
     if (expandedKeyMemType == "Mem") {

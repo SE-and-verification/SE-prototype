@@ -4,17 +4,17 @@ import chisel3._
 import chisel3.util._
 
 class CipherIO extends Bundle{
-  val plaintext = Input(Vec(Params.StateLength, UInt(8.W)))
-  val roundKey = Input(Vec(Params.StateLength, UInt(8.W)))
+  val plaintext = Input(Vec(16, UInt(8.W)))
+  val roundKey = Input(Vec(16, UInt(8.W)))
   val start = Input(Bool())
-  val state_out = Output(Vec(Params.StateLength, UInt(8.W)))
+  val state_out = Output(Vec(16, UInt(8.W)))
   val state_out_valid = Output(Bool())
 }
 // implements AES_Encrypt
 // change Nk=4 for AES128, NK=6 for AES192, Nk=8 for AES256
 class Cipher(Nk: Int, SubBytes_SCD: Boolean) extends Module {
   require(Nk == 4 || Nk == 6 || Nk == 8)
-  val KeyLength: Int = Nk * Params.rows
+  val KeyLength: Int = Nk * 4
   val Nr: Int = Nk + 6 // 10, 12, 14 rounds
   val Nrplus1: Int = Nr + 1 // 10+1, 12+1, 14+1
 
@@ -27,7 +27,7 @@ class Cipher(Nk: Int, SubBytes_SCD: Boolean) extends Module {
   val MixColumnsModule = MixColumns()
 
   // Internal variables
-  val initValues = Seq.fill(Params.StateLength)(0.U(8.W))
+  val initValues = Seq.fill(16)(0.U(8.W))
   val state = RegInit(VecInit(initValues))
   val rounds = RegInit(0.U(4.W))
 

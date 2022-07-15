@@ -4,8 +4,8 @@ import chisel3._
 import chisel3.util._
 
 class MixColumnsIO extends Bundle{
-  val state_in = Input(Vec(Params.StateLength, UInt(8.W)))
-  val state_out = Output(Vec(Params.StateLength, UInt(8.W)))
+  val state_in = Input(Vec(16, UInt(8.W)))
+  val state_out = Output(Vec(16, UInt(8.W)))
 }
 // implements MixColumns
 class MixColumns(Pipelined: Boolean = false) extends Module {
@@ -120,7 +120,7 @@ class MixColumns(Pipelined: Boolean = false) extends Module {
     0x37.U, 0x39.U, 0x2b.U, 0x25.U, 0x0f.U, 0x01.U, 0x13.U, 0x1d.U, 0x47.U, 0x49.U, 0x5b.U, 0x55.U, 0x7f.U, 0x71.U, 0x63.U, 0x6d.U,
     0xd7.U, 0xd9.U, 0xcb.U, 0xc5.U, 0xef.U, 0xe1.U, 0xf3.U, 0xfd.U, 0xa7.U, 0xa9.U, 0xbb.U, 0xb5.U, 0x9f.U, 0x91.U, 0x83.U, 0x8d.U))
 */
-  val tmp_state = Wire(Vec(Params.StateLength, UInt(8.W)))
+  val tmp_state = Wire(Vec(16, UInt(8.W)))
 
   tmp_state(0) := mul02(io.state_in(0)) ^ mul03(io.state_in(1)) ^ io.state_in(2) ^ io.state_in(3)
   tmp_state(1) := io.state_in(0) ^ mul02(io.state_in(1)) ^ mul03(io.state_in(2)) ^ io.state_in(3)

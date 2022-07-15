@@ -5,14 +5,14 @@ import chisel3.util._
 
 class DecryptIO extends Bundle{
 	val input_valid = Input(Bool())
-  val input_roundKeys = Input(Vec(11,Vec(Params.StateLength, UInt(8.W))))
-	val input_op1 = Input(Vec(Params.StateLength, UInt(8.W))) // plaintext, ciphertext, roundKey
-	val input_op2 = Input(Vec(Params.StateLength, UInt(8.W))) // plaintext, ciphertext, roundKey
-	val input_cond = Input(Vec(Params.StateLength, UInt(8.W))) // plaintext, ciphertext, roundKey
+  val input_roundKeys = Input(Vec(11,Vec(16, UInt(8.W))))
+	val input_op1 = Input(Vec(16, UInt(8.W))) // plaintext, ciphertext, roundKey
+	val input_op2 = Input(Vec(16, UInt(8.W))) // plaintext, ciphertext, roundKey
+	val input_cond = Input(Vec(16, UInt(8.W))) // plaintext, ciphertext, roundKey
 
-	val output_op1 = Output(Vec(Params.StateLength, UInt(8.W))) // ciphertext or plaintext
-	val output_op2 = Output(Vec(Params.StateLength, UInt(8.W))) // ciphertext or plaintext
-	val output_cond = Output(Vec(Params.StateLength, UInt(8.W))) // ciphertext or plaintext
+	val output_op1 = Output(Vec(16, UInt(8.W))) // ciphertext or plaintext
+	val output_op2 = Output(Vec(16, UInt(8.W))) // ciphertext or plaintext
+	val output_cond = Output(Vec(16, UInt(8.W))) // ciphertext or plaintext
 
 	val output_valid = Output(Bool())
 }
@@ -20,7 +20,7 @@ class DecryptIO extends Bundle{
 // change Nk=4 for AES128, NK=6 for AES192, Nk=8 for AES256
 // change expandedKeyMemType= ROM, Mem, SyncReadMem
 class AESDecrypt(val rolled: Boolean) extends Module {
-  val KeyLength: Int = 4 * Params.rows
+  val KeyLength: Int = 16
   val Nr: Int = 10 // 10, 12, 14 rounds
   val Nrplus1: Int = Nr + 1 // 10+1, 12+1, 14+1
   val EKDepth: Int = 16 // enough memory for any expanded key

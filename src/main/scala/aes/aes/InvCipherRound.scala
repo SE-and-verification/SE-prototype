@@ -5,9 +5,9 @@ import chisel3.util._
 
 class InvCipherRoundIO extends Bundle{
   val input_valid = Input(Bool())
-  val state_in = Input(Vec(Params.StateLength, UInt(8.W)))
-  val roundKey = Input(Vec(Params.StateLength, UInt(8.W)))
-  val state_out = Output(Vec(Params.StateLength, UInt(8.W)))
+  val state_in = Input(Vec(16, UInt(8.W)))
+  val roundKey = Input(Vec(16, UInt(8.W)))
+  val state_out = Output(Vec(16, UInt(8.W)))
   val output_valid = Output(Bool())
 }
 // implements AES_Decrypt round transforms
@@ -16,7 +16,7 @@ class InvCipherRound(transform: String, InvSubBytes_SCD: Boolean) extends Module
   val io = IO(new InvCipherRoundIO)
 
   // A well defined 'DontCare' or Initialization value
-  val ZeroInit = VecInit.tabulate(Params.StateLength)((x:Int)=> 0.U(8.W))
+  val ZeroInit = VecInit.tabulate(16)((x:Int)=> 0.U(8.W))
 
   // Transform sequences
   if (transform == "AddRoundKeyOnly") {

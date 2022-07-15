@@ -161,13 +161,13 @@ class SE(val debug:Boolean, val canChangeKey: Boolean) extends Module{
 	n_stage_valid := all_match || valid_buffer
 
 	// Reverse the byte order so we can convert them into uint with Chisel infrastructure.
-	val op1_reverse = Wire(Vec(Params.StateLength, UInt(8.W)))
-	val op2_reverse = Wire(Vec(Params.StateLength, UInt(8.W)))
-	val cond_reverse = Wire(Vec(Params.StateLength, UInt(8.W)))
-	for(i <- 0 until Params.StateLength){
-		op1_reverse(i) := aes_invcipher.io.output_op1(Params.StateLength-i-1)
-		op2_reverse(i) := aes_invcipher.io.output_op2(Params.StateLength-i-1)
-		cond_reverse(i) := aes_invcipher.io.output_cond(Params.StateLength-i-1)
+	val op1_reverse = Wire(Vec(16, UInt(8.W)))
+	val op2_reverse = Wire(Vec(16, UInt(8.W)))
+	val cond_reverse = Wire(Vec(16, UInt(8.W)))
+	for(i <- 0 until 16){
+		op1_reverse(i) := aes_invcipher.io.output_op1(16-i-1)
+		op2_reverse(i) := aes_invcipher.io.output_op2(16-i-1)
+		cond_reverse(i) := aes_invcipher.io.output_cond(16-i-1)
 	}
 
 	val mid_inst_buffer = RegEnable(inst_buffer,aes_invcipher.io.input_valid)
@@ -224,9 +224,9 @@ class SE(val debug:Boolean, val canChangeKey: Boolean) extends Module{
 	}
 	// Connect the cipher
 	val aes_input = result_buffer.asTypeOf(aes_cipher.io.input_text)
-	val aes_input_reverse = Wire(Vec(Params.StateLength, UInt(8.W)))
-	for(i <- 0 until Params.StateLength){
-		aes_input_reverse(i) := aes_input(Params.StateLength-i-1)
+	val aes_input_reverse = Wire(Vec(16, UInt(8.W)))
+	for(i <- 0 until 16){
+		aes_input_reverse(i) := aes_input(16-i-1)
 	}
 	aes_cipher.io.input_text := aes_input_reverse
 	aes_cipher.io.input_valid := result_valid_buffer

@@ -3,9 +3,9 @@ package aes
 import chisel3._
 
 class DASCAIO extends Bundle{
-  val plaintext = Input(Vec(Params.StateLength, UInt(8.W))) // plaintext
-  val roundKey = Input(Vec(Params.StateLength, UInt(8.W))) // roundKey
-  val ciphertext = Output(Vec(Params.StateLength, UInt(8.W))) // ciphertext
+  val plaintext = Input(Vec(16, UInt(8.W))) // plaintext
+  val roundKey = Input(Vec(16, UInt(8.W))) // roundKey
+  val ciphertext = Output(Vec(16, UInt(8.W))) // ciphertext
 }
 class DASCA extends Module {
   val io = IO(new DASCAIO)

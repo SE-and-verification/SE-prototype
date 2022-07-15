@@ -4,8 +4,8 @@ import chisel3._
 import chisel3.util._
 
 class InvSubBytesIO extends Bundle{
-  val state_in = Input(Vec(Params.StateLength, UInt(8.W)))
-  val state_out = Output(Vec(Params.StateLength, UInt(8.W)))
+  val state_in = Input(Vec(16, UInt(8.W)))
+  val state_out = Output(Vec(16, UInt(8.W)))
 } 
 // implements InvSubBytes
 class InvSubBytes(SCD: Boolean = false, Pipelined: Boolean = false) extends Module {
@@ -29,7 +29,7 @@ class InvSubBytes(SCD: Boolean = false, Pipelined: Boolean = false) extends Modu
     0xa0.U, 0xe0.U, 0x3b.U, 0x4d.U, 0xae.U, 0x2a.U, 0xf5.U, 0xb0.U, 0xc8.U, 0xeb.U, 0xbb.U, 0x3c.U, 0x83.U, 0x53.U, 0x99.U, 0x61.U,
     0x17.U, 0x2b.U, 0x04.U, 0x7e.U, 0xba.U, 0x77.U, 0xd6.U, 0x26.U, 0xe1.U, 0x69.U, 0x14.U, 0x63.U, 0x55.U, 0x21.U, 0x0c.U, 0x7d.U))
 
-  for (i <- 0 until Params.StateLength) {
+  for (i <- 0 until 16) {
     if (Pipelined) {
       io.state_out(i) := RegNext(inverted_s_box(io.state_in(i)))
     } else {
