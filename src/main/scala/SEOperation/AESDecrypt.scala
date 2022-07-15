@@ -27,81 +27,28 @@ class AESDecrypt(val rolled: Boolean) extends Module {
   val EKDepth: Int = 16 // enough memory for any expanded key
   print(s"rolled: ${rolled}\n")
   val io = IO(new DecryptIO)
-  if(!rolled){
-    val InvCipherRoundARK = Array.fill(3){
-      InvCipherRound("AddRoundKeyOnly")
-      }
-    val InvCipherRounds = Array.fill(3){
-      Array.fill(Nr - 1) {
-        InvCipherRound("CompleteRound")
-      }
-    }
-    val InvCipherRoundNMC = Array.fill(3){
-      InvCipherRound("NoInvMixColumns")
-    }
 
-    InvCipherRoundARK(0).io.input_valid := io.input_valid
-    InvCipherRoundARK(0).io.state_in := io.input_op1
-    InvCipherRoundARK(0).io.roundKey := io.input_roundKeys(Nr)
-
-    InvCipherRoundARK(1).io.input_valid := io.input_valid
-    InvCipherRoundARK(1).io.state_in := io.input_op2
-    InvCipherRoundARK(1).io.roundKey := io.input_roundKeys(Nr)
-
-    InvCipherRoundARK(2).io.input_valid := io.input_valid
-    InvCipherRoundARK(2).io.state_in := io.input_cond
-    InvCipherRoundARK(2).io.roundKey := io.input_roundKeys(Nr)
-    // Cipher Nr-1 rounds
-    for(j <- 0 to 2){
-      for (i <- 0 until (Nr - 1)){
-        if (i == 0) {
-          InvCipherRounds(j)(i).io.input_valid := InvCipherRoundARK(j).io.output_valid
-          InvCipherRounds(j)(i).io.state_in := InvCipherRoundARK(j).io.state_out
-        }
-        else {
-          InvCipherRounds(j)(i).io.input_valid := InvCipherRounds(j)(i - 1).io.output_valid
-          InvCipherRounds(j)(i).io.state_in := InvCipherRounds(j)(i - 1).io.state_out
-        }
-        InvCipherRounds(j)(i).io.roundKey := io.input_roundKeys(Nr - i - 1)
-      }
+  assert(rolled)
+  val invciphers = Array.fill(3){InvCipher()}
+  for (cipher <- invciphers) {
+    cipher.io.start := io.input_valid
+    cipher.io.roundKeys := io.input_roundKeys
   }
-    // Cipher last round
-    for(j <- 0 to 2){
-      InvCipherRoundNMC(j).io.input_valid := InvCipherRounds(j)(Nr - 1 - 1).io.output_valid
-      InvCipherRoundNMC(j).io.state_in := InvCipherRounds(j)(Nr - 1 - 1).io.state_out
-      InvCipherRoundNMC(j).io.roundKey := io.input_roundKeys(0)
-    }
 
-    io.output_op1 := InvCipherRoundNMC(0).io.state_out
-    io.output_op2 := InvCipherRoundNMC(1).io.state_out
-    io.output_cond := InvCipherRoundNMC(2).io.state_out
-    io.output_valid := InvCipherRoundNMC(0).io.output_valid || InvCipherRoundNMC(1).io.output_valid || InvCipherRoundNMC(2).io.output_valid
-  }
-  else{
-    val invciphers = Array.fill(3){InvCipher()}
+  invciphers(0).io.start := io.input_valid
+  invciphers(0).io.ciphertext := io.input_op1
 
-    val address = RegInit(0.U(log2Ceil(EKDepth).W))
+  invciphers(1).io.start := io.input_valid
+  invciphers(1).io.ciphertext := io.input_op2
 
-    when(io.input_valid) {
-      address := Nr.U
-    }.elsewhen(address =/= 0.U){
-      address := address - 1.U
-    }
-    invciphers(0).io.start := io.input_valid
-    invciphers(0).io.ciphertext := io.input_op1
-    invciphers(0).io.roundKey := io.input_roundKeys(address)
+  invciphers(2).io.start := io.input_valid
+  invciphers(2).io.ciphertext := io.input_cond
 
-    invciphers(1).io.start := io.input_valid
-    invciphers(1).io.ciphertext := io.input_op2
-    invciphers(1).io.roundKey := io.input_roundKeys(address)
+  io.output_op1 := invciphers(0).io.state_out
+  io.output_op2 := invciphers(1).io.state_out
+  io.output_cond := invciphers(2).io.state_out
 
-    invciphers(2).io.start := io.input_valid
-    invciphers(2).io.ciphertext := io.input_cond
-    invciphers(2).io.roundKey := io.input_roundKeys(address)
-
-    io.output_op1 := invciphers(0).io.state_out
-    io.output_op2 := invciphers(1).io.state_out
-    io.output_cond := invciphers(2).io.state_out
-    io.output_valid := invciphers(0).io.state_out_valid || invciphers(1).io.state_out_valid || invciphers(2).io.state_out_valid
-  }
+  // TODO: the commented line was what this originally was; why was it using || and not && ?! that seems very weird and wrong
+  //io.output_valid := invciphers(0).io.state_out_valid || invciphers(1).io.state_out_valid || invciphers(2).io.state_out_valid
+  io.output_valid := invciphers.map(c => c.io.state_out_valid).reduce((a, b) => a && b)
 }

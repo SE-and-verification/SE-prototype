@@ -5,6 +5,9 @@ import chisel3._
 class InvShiftRowsIO extends Bundle{
   val state_in = Input(Vec(16, UInt(8.W)))
   val state_out = Output(Vec(16, UInt(8.W)))
+
+  val ready = Input(Bool())
+  val valid = Output(Bool())
 }
 
 // implements InvShiftRows
@@ -30,6 +33,8 @@ class InvShiftRows extends Module {
   io.state_out(13) := io.state_in(9)
   io.state_out(14) := io.state_in(6)
   io.state_out(15) := io.state_in(3)
+
+  io.valid := io.ready
 }
 
 object InvShiftRows {

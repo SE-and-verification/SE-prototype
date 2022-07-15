@@ -5,7 +5,7 @@ import chisel3.util._
 
 class EncryptIO extends Bundle{
 	val input_valid = Input(Bool())
-	val input_text= Input(Vec(16, UInt(8.W))) // plaintext, ciphertext, roundKey
+	val input_text = Input(Vec(16, UInt(8.W))) // plaintext, ciphertext, roundKey
   val input_roundKeys = Input(Vec(11,Vec(16, UInt(8.W))))
 	val output_text = Output(Vec(16, UInt(8.W))) // ciphertext or plaintext
 
@@ -64,8 +64,7 @@ class AESEncrypt(val rolled: Boolean) extends Module {
     val cipher = Module(new Cipher)
     cipher.io.start := io.input_valid
     cipher.io.plaintext := io.input_text
-    cipher.io.roundKey := io.input_roundKeys(address)
-
+    cipher.io.roundKeys := io.input_roundKeys
 
     io.output_text := cipher.io.state_out
     io.output_valid := cipher.io.state_out_valid

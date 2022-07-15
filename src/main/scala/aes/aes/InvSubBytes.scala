@@ -6,6 +6,9 @@ import chisel3.util._
 class InvSubBytesIO extends Bundle{
   val state_in = Input(Vec(16, UInt(8.W)))
   val state_out = Output(Vec(16, UInt(8.W)))
+
+  val ready = Input(Bool())
+  val valid = Output(Bool())
 }
 
 // implements InvSubBytes
@@ -38,6 +41,11 @@ class InvSubBytes(Pipelined: Boolean = false) extends Module {
     }
   }
 
+  if (Pipelined) {
+    io.valid := RegNext(io.ready)
+  } else {
+    io.valid := io.ready
+  }
 }
 
 object InvSubBytes {

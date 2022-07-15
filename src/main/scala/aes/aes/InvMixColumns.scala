@@ -5,7 +5,10 @@ import chisel3.util._
 
 class InvMixColumnsIO extends Bundle{
   val state_in = Input(Vec(16, UInt(8.W)))
-val state_out = Output(Vec(16, UInt(8.W)))
+  val state_out = Output(Vec(16, UInt(8.W)))
+
+  val ready = Input(Bool())
+  val valid = Output(Bool())
 }
 
 // implements InvMixColumns
@@ -146,8 +149,10 @@ class InvMixColumns(Pipelined: Boolean = false) extends Module {
 
   if (Pipelined) {
     io.state_out := RegNext(tmp_state)
+    io.valid := RegNext(io.ready)
   } else {
     io.state_out := tmp_state
+    io.valid := io.ready
   }
 }
 

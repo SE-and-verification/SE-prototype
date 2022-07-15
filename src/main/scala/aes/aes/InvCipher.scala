@@ -5,7 +5,7 @@ import chisel3.util._
 
 class InvCipherIO extends Bundle{
   val ciphertext = Input(Vec(16, UInt(8.W)))
-  val roundKey = Input(Vec(16, UInt(8.W)))
+  val roundKeys = Input(Vec(11, Vec(16, UInt(8.W))))
   val start = Input(Bool())
   val state_out = Output(Vec(16, UInt(8.W)))
   val state_out_valid = Output(Bool())
@@ -19,6 +19,9 @@ class InvCipher extends Module {
 
   val io = IO(new InvCipherIO)
 
+  // TODO: reverse roundKeys in users of {Inv,}Cipher instead of here
+  val roundKeys = VecInit(io.roundKeys.reverse)
+
   // Instantiate module objects
   val AddRoundKeyModule = AddRoundKey()
   val InvSubBytesModule = InvSubBytes()
@@ -31,46 +34,63 @@ class InvCipher extends Module {
   val rounds = RegInit(0.U(4.W))
 
   // STM
-  val sIdle :: sInitialAR :: sBusy :: Nil = Enum(3)
+  val sIdle :: sStartRound :: sWaitRound :: sDone :: Nil = Enum(4)
   val STM = RegInit(sIdle)
 
-  switch(STM) {
-    is(sIdle) {
-      when(io.start) {
-        STM := sInitialAR
-      } // Start cipher
-      rounds := 0.U
-    }
-    is(sInitialAR) {
-      rounds := rounds + 1.U
-      STM := sBusy
-    }
-    is(sBusy) {
-      rounds := rounds + 1.U
-      when(rounds === Nr.U) {
-        STM := sIdle
+  when (io.start) {
+    rounds := 0.U
+    STM := sStartRound
+  }
+
+  when (STM === sStartRound) {
+    STM := sWaitRound
+  }
+
+  // AddRoundKeyModule.io.valid could be true when
+  // STM === sStartRound if Pipelined === false, so
+  // check for it in both sStartRound and sWaitRound
+  when (STM === sStartRound || STM === sWaitRound) {
+    when (rounds === 0.U || rounds === Nr.U) {
+      when (AddRoundKeyModule.io.valid) {
+        state := AddRoundKeyModule.io.state_out
+        rounds := rounds + 1.U
+        STM := Mux(rounds === Nr.U, sDone, sStartRound)
+      }
+    } .otherwise {
+      when (InvMixColumnsModule.io.valid) {
+        state := InvMixColumnsModule.io.state_out
+        rounds := rounds + 1.U
+        //STM := sStartRound
+        STM := Mux(rounds === Nr.U, sDone, sStartRound)
       }
     }
   }
 
+  when (STM === sDone) {
+    rounds := 0.U
+    STM := sIdle
+  }
+
   // InvShiftRows state
   InvShiftRowsModule.io.state_in := state
+  InvShiftRowsModule.io.ready := (STM === sStartRound && rounds =/= 0.U)
 
   // InvSubBytes state
   InvSubBytesModule.io.state_in := InvShiftRowsModule.io.state_out
+  InvSubBytesModule.io.ready := InvShiftRowsModule.io.valid
 
   // AddRoundKey state
-  AddRoundKeyModule.io.state_in := Mux(STM === sInitialAR, io.ciphertext, InvSubBytesModule.io.state_out)
-  AddRoundKeyModule.io.roundKey := io.roundKey
+  AddRoundKeyModule.io.state_in := Mux(STM === sStartRound && rounds === 0.U, io.ciphertext, InvSubBytesModule.io.state_out)
+  AddRoundKeyModule.io.roundKey := roundKeys(rounds)
+  AddRoundKeyModule.io.ready := (STM === sStartRound && rounds === 0.U) || InvSubBytesModule.io.valid
 
   // InvMixColumns state
   InvMixColumnsModule.io.state_in := AddRoundKeyModule.io.state_out
-
-  state := Mux(STM =/= sIdle, Mux((rounds > 0.U) & (rounds < Nr.U), InvMixColumnsModule.io.state_out, AddRoundKeyModule.io.state_out), VecInit(initValues))
+  InvMixColumnsModule.io.ready := AddRoundKeyModule.io.valid
 
   // Set state_out_valid true when cipher ends
-  io.state_out_valid := rounds === Nrplus1.U
-  io.state_out := Mux(rounds === Nrplus1.U, state, RegInit(VecInit(initValues)))
+  io.state_out_valid := (STM === sDone)
+  io.state_out := Mux(io.state_out_valid, state, VecInit(initValues))
 
   // Debug statements
   //  printf("D_STM: %d, rounds: %d, valid: %d\n", STM, rounds, io.state_out_valid)

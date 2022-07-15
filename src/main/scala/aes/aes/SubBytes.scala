@@ -6,6 +6,9 @@ import chisel3.util._
 class SubBytesIO extends Bundle{
   val state_in = Input(Vec(16, UInt(8.W)))
   val state_out = Output(Vec(16, UInt(8.W)))
+
+  val ready = Input(Bool())
+  val valid = Output(Bool())
 }
 
 // implements SubBytes
@@ -35,6 +38,12 @@ class SubBytes(Pipelined: Boolean = false) extends Module {
     } else {
       io.state_out(i) := s_box(io.state_in(i))
     }
+  }
+
+  if (Pipelined) {
+    io.valid := RegNext(io.ready)
+  } else {
+    io.valid := io.ready
   }
 }
 
