@@ -11,7 +11,7 @@ class CipherRoundIO extends Bundle{
   val output_valid = Output(Bool())
 }
 // implements AES_Encrypt round transforms
-class CipherRound(transform: String, SubBytes_SCD: Boolean = false) extends Module {
+class CipherRound(transform: String) extends Module {
   require(transform == "AddRoundKeyOnly" || transform == "NoMixColumns" || transform == "CompleteRound")
   val io = IO(new CipherRoundIO)
 
@@ -41,7 +41,7 @@ class CipherRound(transform: String, SubBytes_SCD: Boolean = false) extends Modu
 
     // Instantiate module objects
     val AddRoundKeyModule = AddRoundKey()
-    val SubBytesModule = SubBytes(SubBytes_SCD)
+    val SubBytesModule = SubBytes()
     val ShiftRowsModule = ShiftRows()
 
     // SubBytes and AddRoundKeyModule roundKey
@@ -65,7 +65,7 @@ class CipherRound(transform: String, SubBytes_SCD: Boolean = false) extends Modu
 
     // Instantiate module objects
     val AddRoundKeyModule = AddRoundKey()
-    val SubBytesModule = SubBytes(SubBytes_SCD)
+    val SubBytesModule = SubBytes()
     val ShiftRowsModule = ShiftRows()
     val MixColumnsModule = MixColumns()
 
@@ -92,5 +92,5 @@ class CipherRound(transform: String, SubBytes_SCD: Boolean = false) extends Modu
 }
 
 object CipherRound {
-  def apply(transform: String, SubBytes_SCD: Boolean = false): CipherRound = Module(new CipherRound(transform, SubBytes_SCD))
+  def apply(transform: String): CipherRound = Module(new CipherRound(transform))
 }

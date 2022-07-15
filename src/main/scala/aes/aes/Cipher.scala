@@ -11,18 +11,16 @@ class CipherIO extends Bundle{
   val state_out_valid = Output(Bool())
 }
 // implements AES_Encrypt
-// change Nk=4 for AES128, NK=6 for AES192, Nk=8 for AES256
-class Cipher(Nk: Int, SubBytes_SCD: Boolean) extends Module {
-  require(Nk == 4 || Nk == 6 || Nk == 8)
-  val KeyLength: Int = Nk * 4
-  val Nr: Int = Nk + 6 // 10, 12, 14 rounds
+class Cipher extends Module {
+  val KeyLength: Int = 16
+  val Nr: Int = 10 // 10, 12, 14 rounds
   val Nrplus1: Int = Nr + 1 // 10+1, 12+1, 14+1
 
   val io = IO(new CipherIO)
 
   // Instantiate module objects
   val AddRoundKeyModule = AddRoundKey()
-  val SubBytesModule = SubBytes(SubBytes_SCD)
+  val SubBytesModule = SubBytes()
   val ShiftRowsModule = ShiftRows()
   val MixColumnsModule = MixColumns()
 
@@ -81,5 +79,5 @@ class Cipher(Nk: Int, SubBytes_SCD: Boolean) extends Module {
 }
 
 object Cipher {
-  def apply(Nk: Int, SubBytes_SCD: Boolean): Cipher = Module(new Cipher(Nk, SubBytes_SCD))
+  def apply(): Cipher = Module(new Cipher)
 }

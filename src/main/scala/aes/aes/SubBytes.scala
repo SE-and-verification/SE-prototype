@@ -8,7 +8,7 @@ class SubBytesIO extends Bundle{
   val state_out = Output(Vec(16, UInt(8.W)))
 }
 // implements SubBytes
-class SubBytes(SCD: Boolean = false, Pipelined: Boolean = false) extends Module {
+class SubBytes(Pipelined: Boolean = false) extends Module {
   val io = IO(new SubBytesIO)
   val s_box = VecInit(Array(
     0x63.U, 0x7c.U, 0x77.U, 0x7b.U, 0xf2.U, 0x6b.U, 0x6f.U, 0xc5.U, 0x30.U, 0x01.U, 0x67.U, 0x2b.U, 0xfe.U, 0xd7.U, 0xab.U, 0x76.U,
@@ -38,5 +38,5 @@ class SubBytes(SCD: Boolean = false, Pipelined: Boolean = false) extends Module 
 }
 
 object SubBytes {
-  def apply(SCD: Boolean = false, Pipelined: Boolean = false): SubBytes = Module(new SubBytes(SCD, Pipelined))
+  def apply(Pipelined: Boolean = false): SubBytes = Module(new SubBytes(Pipelined))
 }

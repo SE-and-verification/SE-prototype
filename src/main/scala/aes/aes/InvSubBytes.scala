@@ -8,7 +8,7 @@ class InvSubBytesIO extends Bundle{
   val state_out = Output(Vec(16, UInt(8.W)))
 } 
 // implements InvSubBytes
-class InvSubBytes(SCD: Boolean = false, Pipelined: Boolean = false) extends Module {
+class InvSubBytes(Pipelined: Boolean = false) extends Module {
   val io = IO(new InvSubBytesIO)
 
   val inverted_s_box = VecInit(Array(
@@ -40,5 +40,5 @@ class InvSubBytes(SCD: Boolean = false, Pipelined: Boolean = false) extends Modu
 }
 
 object InvSubBytes {
-  def apply(SCD: Boolean = false, Pipelined: Boolean = false): InvSubBytes = Module(new InvSubBytes(SCD, Pipelined))
+  def apply(Pipelined: Boolean = false): InvSubBytes = Module(new InvSubBytes(Pipelined))
 }

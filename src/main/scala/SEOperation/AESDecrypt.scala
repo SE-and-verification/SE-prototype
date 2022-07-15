@@ -28,15 +28,15 @@ class AESDecrypt(val rolled: Boolean) extends Module {
   val io = IO(new DecryptIO)
   if(!rolled){
     val InvCipherRoundARK = Array.fill(3){
-      InvCipherRound("AddRoundKeyOnly", true)
+      InvCipherRound("AddRoundKeyOnly")
       }
     val InvCipherRounds = Array.fill(3){ 
       Array.fill(Nr - 1) {
-        InvCipherRound("CompleteRound", true)
+        InvCipherRound("CompleteRound")
       }
     }
     val InvCipherRoundNMC = Array.fill(3){ 
-      InvCipherRound("NoInvMixColumns", true)
+      InvCipherRound("NoInvMixColumns")
     }
 
     InvCipherRoundARK(0).io.input_valid := io.input_valid
@@ -77,7 +77,7 @@ class AESDecrypt(val rolled: Boolean) extends Module {
     io.output_valid := InvCipherRoundNMC(0).io.output_valid || InvCipherRoundNMC(1).io.output_valid || InvCipherRoundNMC(2).io.output_valid
   }
   else{
-    val invciphers = Array.fill(3){InvCipher(6, true)}
+    val invciphers = Array.fill(3){InvCipher()}
 
     val address = RegInit(0.U(log2Ceil(EKDepth).W))
 

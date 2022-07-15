@@ -11,18 +11,16 @@ class InvCipherIO extends Bundle{
   val state_out_valid = Output(Bool())
 }
 // implements AES_Decrypt
-// change Nk=4 for AES128, NK=6 for AES192, Nk=8 for AES256
-class InvCipher(Nk: Int, InvSubBytes_SCD: Boolean) extends Module {
-  require(Nk == 4 || Nk == 6 || Nk == 8)
-  val KeyLength: Int = Nk * 4
-  val Nr: Int = Nk + 6 // 10, 12, 14 rounds
+class InvCipher extends Module {
+  val KeyLength: Int = 16
+  val Nr: Int = 10 // 10, 12, 14 rounds
   val Nrplus1: Int = Nr + 1 // 10+1, 12+1, 14+1
 
   val io = IO(new InvCipherIO)
 
   // Instantiate module objects
   val AddRoundKeyModule = AddRoundKey()
-  val InvSubBytesModule = InvSubBytes(InvSubBytes_SCD)
+  val InvSubBytesModule = InvSubBytes()
   val InvShiftRowsModule = InvShiftRows()
   val InvMixColumnsModule = InvMixColumns()
 
@@ -80,5 +78,5 @@ class InvCipher(Nk: Int, InvSubBytes_SCD: Boolean) extends Module {
 }
 
 object InvCipher {
-  def apply(Nk: Int, InvSubBytes_SCD: Boolean): InvCipher = Module(new InvCipher(Nk, InvSubBytes_SCD))
+  def apply(): InvCipher = Module(new InvCipher)
 }

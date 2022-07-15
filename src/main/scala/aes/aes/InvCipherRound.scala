@@ -11,7 +11,7 @@ class InvCipherRoundIO extends Bundle{
   val output_valid = Output(Bool())
 }
 // implements AES_Decrypt round transforms
-class InvCipherRound(transform: String, InvSubBytes_SCD: Boolean) extends Module {
+class InvCipherRound(transform: String) extends Module {
   require(transform == "AddRoundKeyOnly" || transform == "NoInvMixColumns" || transform == "CompleteRound")
   val io = IO(new InvCipherRoundIO)
 
@@ -41,7 +41,7 @@ class InvCipherRound(transform: String, InvSubBytes_SCD: Boolean) extends Module
 
     // Instantiate module objects
     val AddRoundKeyModule = AddRoundKey()
-    val InvSubBytesModule = InvSubBytes(InvSubBytes_SCD)
+    val InvSubBytesModule = InvSubBytes()
     val InvShiftRowsModule = InvShiftRows()
 
     // InvShiftRows and AddRoundKeyModule roundKey
@@ -65,7 +65,7 @@ class InvCipherRound(transform: String, InvSubBytes_SCD: Boolean) extends Module
 
     // Instantiate module objects
     val AddRoundKeyModule = AddRoundKey()
-    val InvSubBytesModule = InvSubBytes(InvSubBytes_SCD)
+    val InvSubBytesModule = InvSubBytes()
     val InvShiftRowsModule = InvShiftRows()
     val InvMixColumnsModule = InvMixColumns()
 
@@ -93,5 +93,5 @@ class InvCipherRound(transform: String, InvSubBytes_SCD: Boolean) extends Module
 }
 
 object InvCipherRound {
-  def apply(transform: String, SubBytes_SCD: Boolean): InvCipherRound = Module(new InvCipherRound(transform, SubBytes_SCD))
+  def apply(transform: String): InvCipherRound = Module(new InvCipherRound(transform))
 }

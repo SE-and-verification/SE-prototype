@@ -22,11 +22,11 @@ class AESEncrypt(val rolled: Boolean) extends Module {
 
   val io = IO(new EncryptIO)
   if(!rolled){
- val CipherRoundARK = CipherRound("AddRoundKeyOnly", true)
+ val CipherRoundARK = CipherRound("AddRoundKeyOnly")
   val CipherRounds = Array.fill(Nr - 1) {
-    CipherRound("CompleteRound", true)
+    CipherRound("CompleteRound")
   }
-  val CipherRoundNMC = CipherRound("NoMixColumns", true)
+  val CipherRoundNMC = CipherRound("NoMixColumns")
 
   CipherRoundARK.io.input_valid := io.input_valid
   CipherRoundARK.io.state_in := io.input_text
@@ -60,7 +60,7 @@ class AESEncrypt(val rolled: Boolean) extends Module {
     }.elsewhen(address =/= 0.U){
       address := address - 1.U
     }
-    val cipher = Module(new Cipher(6, true))
+    val cipher = Module(new Cipher)
     cipher.io.start := io.input_valid
     cipher.io.plaintext := io.input_text
     cipher.io.roundKey := io.input_roundKeys(address)
