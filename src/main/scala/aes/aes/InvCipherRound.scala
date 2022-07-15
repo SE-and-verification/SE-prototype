@@ -34,8 +34,8 @@ class InvCipherRound(transform: String, InvSubBytes_SCD: Boolean) extends Module
     }
 
     // output
-    io.state_out := ShiftRegister(AddRoundKeyModule.io.state_out, 1)
-    io.output_valid := ShiftRegister(io.input_valid, 1)
+    io.state_out := RegNext(AddRoundKeyModule.io.state_out)
+    io.output_valid := RegNext(io.input_valid)
 
   } else if (transform == "NoInvMixColumns") {
 
@@ -58,8 +58,8 @@ class InvCipherRound(transform: String, InvSubBytes_SCD: Boolean) extends Module
     AddRoundKeyModule.io.state_in := InvSubBytesModule.io.state_out
 
     // output
-    io.state_out := ShiftRegister(AddRoundKeyModule.io.state_out, 1)
-    io.output_valid := ShiftRegister(io.input_valid, 1)
+    io.state_out := RegNext(AddRoundKeyModule.io.state_out)
+    io.output_valid := RegNext(io.input_valid)
 
   } else if (transform == "CompleteRound") {
 
@@ -85,8 +85,8 @@ class InvCipherRound(transform: String, InvSubBytes_SCD: Boolean) extends Module
     InvMixColumnsModule.io.state_in := AddRoundKeyModule.io.state_out
 
     // output
-    io.state_out := ShiftRegister(InvMixColumnsModule.io.state_out, 1)
-    io.output_valid := ShiftRegister(io.input_valid, 1)
+    io.state_out := RegNext(InvMixColumnsModule.io.state_out)
+    io.output_valid := RegNext(io.input_valid)
 
   }
 

@@ -143,7 +143,7 @@ class MixColumns(Pipelined: Boolean = false) extends Module {
   tmp_state(15) := mul03(io.state_in(12)) ^ io.state_in(13) ^ io.state_in(14) ^ mul02(io.state_in(15))
 
   if (Pipelined) {
-    io.state_out := ShiftRegister(tmp_state, 1)
+    io.state_out := RegNext(tmp_state)
   } else {
     io.state_out := tmp_state
   }

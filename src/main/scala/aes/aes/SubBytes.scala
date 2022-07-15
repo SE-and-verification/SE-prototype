@@ -30,7 +30,7 @@ class SubBytes(SCD: Boolean = false, Pipelined: Boolean = false) extends Module 
 
   for (i <- 0 until Params.StateLength) {
     if (Pipelined) {
-      io.state_out(i) := ShiftRegister(s_box(io.state_in(i)), 1)
+      io.state_out(i) := RegNext(s_box(io.state_in(i)))
     } else {
       io.state_out(i) := s_box(io.state_in(i))
     }

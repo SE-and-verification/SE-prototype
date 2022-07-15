@@ -14,7 +14,7 @@ class AddRoundKey(Pipelined: Boolean = false) extends Module {
 
   for (i <- 0 until Params.StateLength) {
     if (Pipelined) {
-      io.state_out(i) := ShiftRegister(io.state_in(i) ^ io.roundKey(i), 1)
+      io.state_out(i) := RegNext(io.state_in(i) ^ io.roundKey(i))
     } else {
       io.state_out(i) := io.state_in(i) ^ io.roundKey(i)
     }

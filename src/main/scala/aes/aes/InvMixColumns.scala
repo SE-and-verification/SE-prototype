@@ -144,7 +144,7 @@ class InvMixColumns(Pipelined: Boolean = false) extends Module {
   tmp_state(15) := mul11(io.state_in(12)) ^ mul13(io.state_in(13)) ^ mul09(io.state_in(14)) ^ mul14(io.state_in(15))
 
   if (Pipelined) {
-    io.state_out := ShiftRegister(tmp_state, 1)
+    io.state_out := RegNext(tmp_state)
   } else {
     io.state_out := tmp_state
   }

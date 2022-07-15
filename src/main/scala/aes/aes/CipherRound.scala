@@ -34,8 +34,8 @@ class CipherRound(transform: String, SubBytes_SCD: Boolean = false) extends Modu
     }
 
     // output
-    io.state_out := ShiftRegister(AddRoundKeyModule.io.state_out, 1)
-    io.output_valid := ShiftRegister(io.input_valid, 1)
+    io.state_out := RegNext(AddRoundKeyModule.io.state_out)
+    io.output_valid := RegNext(io.input_valid)
 
   } else if (transform == "NoMixColumns") {
 
@@ -58,8 +58,8 @@ class CipherRound(transform: String, SubBytes_SCD: Boolean = false) extends Modu
     AddRoundKeyModule.io.state_in := ShiftRowsModule.io.state_out
 
     // output
-    io.state_out := ShiftRegister(AddRoundKeyModule.io.state_out, 1)
-    io.output_valid := ShiftRegister(io.input_valid, 1)
+    io.state_out := RegNext(AddRoundKeyModule.io.state_out)
+    io.output_valid := RegNext(io.input_valid)
 
   } else if (transform == "CompleteRound") {
 
@@ -85,8 +85,8 @@ class CipherRound(transform: String, SubBytes_SCD: Boolean = false) extends Modu
     AddRoundKeyModule.io.state_in := MixColumnsModule.io.state_out
 
     // output
-    io.state_out := ShiftRegister(AddRoundKeyModule.io.state_out, 1)
-    io.output_valid := ShiftRegister(io.input_valid, 1)
+    io.state_out := RegNext(AddRoundKeyModule.io.state_out)
+    io.output_valid := RegNext(io.input_valid)
   }
 
 }

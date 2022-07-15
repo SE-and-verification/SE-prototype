@@ -85,7 +85,7 @@ class UnrolledAES(Nk: Int, unrolled: Int, SubBytes_SCD: Boolean, InvSubBytes_SCD
   //      // address logistics
   //      when(
   //        if ((expandedKeyMemType == "Mem") || (expandedKeyMemType == "ROM")) {
-  //          (ShiftRegister(io.AES_mode, 1) === 2.U) // delay by 1 for Mem and ROM
+  //          (RegNext(io.AES_mode) === 2.U) // delay by 1 for Mem and ROM
   //        }
   //        else {
   //          (io.AES_mode === 2.U) // no delay for SyncReadMem

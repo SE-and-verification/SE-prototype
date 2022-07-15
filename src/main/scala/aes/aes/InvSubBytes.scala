@@ -31,7 +31,7 @@ class InvSubBytes(SCD: Boolean = false, Pipelined: Boolean = false) extends Modu
 
   for (i <- 0 until Params.StateLength) {
     if (Pipelined) {
-      io.state_out(i) := ShiftRegister(inverted_s_box(io.state_in(i)), 1)
+      io.state_out(i) := RegNext(inverted_s_box(io.state_in(i)))
     } else {
       io.state_out(i) := inverted_s_box(io.state_in(i))
     }

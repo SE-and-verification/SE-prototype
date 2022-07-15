@@ -69,7 +69,7 @@ class AES(Nk: Int, unrolled: Int, SubBytes_SCD: Boolean, InvSubBytes_SCD: Boolea
       // address logistics
       when(
         if ((expandedKeyMemType == "Mem") || (expandedKeyMemType == "ROM")) {
-          (ShiftRegister(io.AES_mode, 1) === 2.U) // delay by 1 for Mem and ROM
+          (RegNext(io.AES_mode) === 2.U) // delay by 1 for Mem and ROM
         }
         else {
           (io.AES_mode === 2.U) // no delay for SyncReadMem
@@ -102,7 +102,7 @@ class AES(Nk: Int, unrolled: Int, SubBytes_SCD: Boolean, InvSubBytes_SCD: Boolea
   CipherModule.io.start := (io.AES_mode === 2.U)
   // Inverse Cipher starts at AES_Mode=3 and address=Nr
   if (expandedKeyMemType == "SyncReadMem") {
-    InvCipherModule.io.start := (ShiftRegister(io.AES_mode, 1) === 3.U) // delay by 1 for SyncReadMem
+    InvCipherModule.io.start := (RegNext(io.AES_mode) === 3.U) // delay by 1 for SyncReadMem
   }
   else {
     InvCipherModule.io.start := (io.AES_mode === 3.U) // no delay for Mem and ROM
