@@ -14,7 +14,7 @@ class SEInput(val canChangeKey: Boolean) extends Bundle{
 	val op2 = Input(UInt(128.W))
 
 	// The condition for CMOV. Should always be encrypted. Can be anything if not used
-	val cond = Input(UInt(128.W)) 
+	val cond = Input(UInt(128.W))
 	val valid = Input(Bool())
 	val ready = Output(Bool())
 
@@ -91,7 +91,7 @@ class SE(val debug:Boolean, val canChangeKey: Boolean) extends Module{
 		}
 	}
 
-	// Once we receive the data, first latch them into buffers. 
+	// Once we receive the data, first latch them into buffers.
 	val inst_buffer = RegEnable(io.in.inst, io.in.valid)
 
 	val op1_buffer = RegEnable(io.in.op1, io.in.valid)

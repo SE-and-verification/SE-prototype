@@ -8,6 +8,7 @@ class AddRoundKeyIO extends Bundle{
   val roundKey = Input(Vec(16, UInt(8.W)))
   val state_out = Output(Vec(16, UInt(8.W)))
 }
+
 // implements AddRoundKey
 class AddRoundKey(Pipelined: Boolean = false) extends Module {
   val io = IO(new AddRoundKeyIO)

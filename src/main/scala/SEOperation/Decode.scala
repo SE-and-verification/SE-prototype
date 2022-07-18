@@ -42,7 +42,7 @@ object SEControl {
   // Compare
   LT    -> List(FU_COMP,COMP_LT, LEGAL, N),
   LTS   -> List(FU_COMP,COMP_LT, LEGAL, Y),
- 
+
   // Conditional
   CMOV  -> List(FU_COND, COND_COND, LEGAL, N),
 

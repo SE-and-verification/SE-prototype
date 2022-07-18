@@ -11,7 +11,7 @@ bits       7-5           4-2          1            0
 
 func class:
       name      in hex    in binary
-      shifts    0x0          000 
+      shifts    0x0          000
       alu.      0x1          001
       comp.     0x2          010
       cmov.     0x3          011
@@ -60,7 +60,7 @@ object Instructions {
 
 
 object COMP {
-  // comp type 
+  // comp type
   val COMP_LT  = 0.U(2.W)
   val COMP_XXX = 2.U(2.W)
 }

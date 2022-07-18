@@ -7,6 +7,7 @@ class SubBytesIO extends Bundle{
   val state_in = Input(Vec(16, UInt(8.W)))
   val state_out = Output(Vec(16, UInt(8.W)))
 }
+
 // implements SubBytes
 class SubBytes(Pipelined: Boolean = false) extends Module {
   val io = IO(new SubBytesIO)

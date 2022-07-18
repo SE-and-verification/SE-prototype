@@ -10,7 +10,7 @@ object FU {
   val FU_ARITH = 1.U(3.W)
 
   val FU_COMP = 2.U(3.W)
-  
+
   val FU_COND = 3.U(3.W)
 
   val FU_LOGICAL = 4.U(3.W)

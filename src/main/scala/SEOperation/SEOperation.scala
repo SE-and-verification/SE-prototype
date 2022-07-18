@@ -37,7 +37,7 @@ class SEOperation(val debug: Boolean) extends Module{
 
 	decode.io.inst_in := io.inst
 
- 
+
   fu.io.A := op1
   fu.io.B := op2
 	fu.io.cond := cond

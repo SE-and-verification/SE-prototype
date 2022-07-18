@@ -16,6 +16,7 @@ class DecryptIO extends Bundle{
 
 	val output_valid = Output(Bool())
 }
+
 // implements wrapper for AES cipher and inverse cipher
 // change Nk=4 for AES128, NK=6 for AES192, Nk=8 for AES256
 // change expandedKeyMemType= ROM, Mem, SyncReadMem
@@ -30,12 +31,12 @@ class AESDecrypt(val rolled: Boolean) extends Module {
     val InvCipherRoundARK = Array.fill(3){
       InvCipherRound("AddRoundKeyOnly")
       }
-    val InvCipherRounds = Array.fill(3){ 
+    val InvCipherRounds = Array.fill(3){
       Array.fill(Nr - 1) {
         InvCipherRound("CompleteRound")
       }
     }
-    val InvCipherRoundNMC = Array.fill(3){ 
+    val InvCipherRoundNMC = Array.fill(3){
       InvCipherRound("NoInvMixColumns")
     }
 

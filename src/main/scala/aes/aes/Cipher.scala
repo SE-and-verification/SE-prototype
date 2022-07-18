@@ -10,6 +10,7 @@ class CipherIO extends Bundle{
   val state_out = Output(Vec(16, UInt(8.W)))
   val state_out_valid = Output(Bool())
 }
+
 // implements AES_Encrypt
 class Cipher extends Module {
   val KeyLength: Int = 16

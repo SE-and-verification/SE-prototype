@@ -10,6 +10,7 @@ class CipherRoundIO extends Bundle{
   val state_out = Output(Vec(16, UInt(8.W)))
   val output_valid = Output(Bool())
 }
+
 // implements AES_Encrypt round transforms
 class CipherRound(transform: String) extends Module {
   require(transform == "AddRoundKeyOnly" || transform == "NoMixColumns" || transform == "CompleteRound")
