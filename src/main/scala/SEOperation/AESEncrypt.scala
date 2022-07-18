@@ -22,51 +22,13 @@ class AESEncrypt(val rolled: Boolean) extends Module {
   val EKDepth: Int = 16 // enough memory for any expanded key
 
   val io = IO(new EncryptIO)
-  if(!rolled){
- val CipherRoundARK = CipherRound("AddRoundKeyOnly")
-  val CipherRounds = Array.fill(Nr - 1) {
-    CipherRound("CompleteRound")
-  }
-  val CipherRoundNMC = CipherRound("NoMixColumns")
 
-  CipherRoundARK.io.input_valid := io.input_valid
-  CipherRoundARK.io.state_in := io.input_text
-  CipherRoundARK.io.roundKey := io.input_roundKeys(0)
+  assert(rolled)
+  val cipher = Module(new Cipher)
+  cipher.io.start := io.input_valid
+  cipher.io.plaintext := io.input_text
+  cipher.io.roundKeys := io.input_roundKeys
 
-  // Cipher Nr-1 rounds
-  for (i <- 0 until (Nr - 1)) yield {
-    if (i == 0) {
-      CipherRounds(i).io.input_valid := CipherRoundARK.io.output_valid
-      CipherRounds(i).io.state_in := CipherRoundARK.io.state_out
-    }
-    else {
-      CipherRounds(i).io.input_valid := CipherRounds(i - 1).io.output_valid
-      CipherRounds(i).io.state_in := CipherRounds(i - 1).io.state_out
-    }
-    CipherRounds(i).io.roundKey := io.input_roundKeys(i + 1)
-  }
-
-  // Cipher last round
-  CipherRoundNMC.io.input_valid := CipherRounds(Nr - 1 - 1).io.output_valid
-  CipherRoundNMC.io.state_in := CipherRounds(Nr - 1 - 1).io.state_out
-  CipherRoundNMC.io.roundKey := io.input_roundKeys(Nr)
-
-  io.output_valid := CipherRoundNMC.io.output_valid
-  io.output_text := CipherRoundNMC.io.state_out
-  }else{
-    val address = RegInit(0.U(log2Ceil(EKDepth).W))
-
-    when(io.input_valid) {
-      address := Nr.U
-    }.elsewhen(address =/= 0.U){
-      address := address - 1.U
-    }
-    val cipher = Module(new Cipher)
-    cipher.io.start := io.input_valid
-    cipher.io.plaintext := io.input_text
-    cipher.io.roundKeys := io.input_roundKeys
-
-    io.output_text := cipher.io.state_out
-    io.output_valid := cipher.io.state_out_valid
-  }
+  io.output_text := cipher.io.state_out
+  io.output_valid := cipher.io.state_out_valid
 }
