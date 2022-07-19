@@ -48,7 +48,7 @@ class FU(val debug: Boolean) extends Module{
     io.valid := true.B
   }.elsewhen(io.fu_type =/= ARITH_MULT){
     io.valid := true.B
-  }.otherwise {
+  } .otherwise {
     io.valid := false.B
   }
 
@@ -112,7 +112,7 @@ class FU(val debug: Boolean) extends Module{
                  printf("WOO: %d\n",ready)
                   regA := inA
                   regB := inB
-                  valid := false.B
+                  io.valid := false.B
                   state := 1.U
                   tempSum := 0.U
            }
@@ -134,7 +134,7 @@ class FU(val debug: Boolean) extends Module{
 
             } .otherwise { // when no more 1s left in b, done w multiplying
                 printf("DONE: %d\n",ready)
-                valid := true.B
+                io.valid := true.B
                 state := 2.U
                 printf("tempSum: %d\n", tempSum)
             }
@@ -144,11 +144,12 @@ class FU(val debug: Boolean) extends Module{
           // does nothing until new values come in and ready goes to 0 while decrypying
             when (!ready) {
                 state := 0.U
-                valid:= false.B
+                io.valid:= false.B
             }
         }
         
         output := tempSum
+        
         
         
         /*
