@@ -106,7 +106,7 @@ class FU(val debug: Boolean) extends Module{
         //printf("REAL VAL: %d\n",inA * inB)
 
           // got to ready!
-          /*
+          
            when (ready) {
                 // initializing all values!
                  printf("WOO: %d\n",ready)
@@ -149,11 +149,11 @@ class FU(val debug: Boolean) extends Module{
         }
         
         output := tempSum
-        */
         
         
+        /*
         output := io.A * io.B
-        io.valid := true.B 
+        io.valid := true.B  */
         
         
         /*
