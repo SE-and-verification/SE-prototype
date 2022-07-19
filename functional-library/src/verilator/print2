@@ -1,0 +1,737 @@
+Setting AES keys
+1:
+de99be30bdaaa370|ae07abe46a9a1813
+2:
+c226be9c7383e039|9bfed07acf8f6ec7
+decrypted: 0000000000000000|200000000000000
+decrypted: 0000000000000000|100000000000000
+decrypted: 0000000000000000|300000000000000
+Inst: sll
+fu result: 0000000000000000
+changed to false
+aes_invcipher.io.output_valid: 0
+Inst: sll
+fu result: 0000000000000000
+
+-----front----
+op1 buffer:c226be9c7383e0399bfed07acf8f6ec7
+op2 buffer:de99be30bdaaa370ae07abe46a9a1813
+cond:00000000000000000000000000000000
+inst:00100000
+op1_buffer: c226be9c7383e0399bfed07acf8f6ec7
+op2_buffer: de99be30bdaaa370ae07abe46a9a1813
+aes_invcipher.io.output_valid: 0
+Inst: add
+fu result: 0000000000000000
+aes_invcipher.io.output_valid: 0
+Inst: add
+fu result: 0000000000000000
+aes_invcipher.io.output_valid: 0
+Inst: add
+fu result: 0000000000000000
+aes_invcipher.io.output_valid: 0
+Inst: add
+fu result: 0000000000000000
+aes_invcipher.io.output_valid: 0
+Inst: add
+fu result: 0000000000000000
+aes_invcipher.io.output_valid: 0
+Inst: add
+fu result: 0000000000000000
+aes_invcipher.io.output_valid: 0
+Inst: add
+fu result: 0000000000000000
+aes_invcipher.io.output_valid: 0
+Inst: add
+fu result: 0000000000000000
+aes_invcipher.io.output_valid: 0
+Inst: add
+fu result: 0000000000000000
+aes_invcipher.io.output_valid: 0
+Inst: add
+fu result: 0000000000000000
+aes_invcipher.io.output_valid: 0
+Inst: add
+fu result: 0000000000000000
+aes_invcipher.io.output_valid: 0
+Inst: add
+fu result: 0000000000000000
+aes_invcipher.io.output_valid: 0
+Inst: add
+fu result: 0000000000000000
+aes_invcipher.io.output_valid: 0
+Inst: add
+
+------fu-----
+fu op1: 391b5b21d0aac9c8
+fu op2: f9a7f222435f024e
+fu cond: c640815094166d8e
+fu fu_op: 1
+fu fu_type: 0
+fu result: 32c34d441409cc16
+aes_invcipher.io.output_valid: 1
+Inst: add
+fu result: 0000000000000000
+aes_invcipher.io.output_valid: 0
+
+-----back----
+padded_result:32c34d441409cc16b90cb2324ab00201
+seoperation.io.result:0000000000000000
+Inst: add
+fu result: 0000000000000000
+aes_invcipher.io.output_valid: 0
+Inst: add
+fu result: 0000000000000000
+aes_invcipher.io.output_valid: 0
+Inst: add
+fu result: 0000000000000000
+aes_invcipher.io.output_valid: 0
+Inst: add
+fu result: 0000000000000000
+aes_invcipher.io.output_valid: 0
+Inst: add
+fu result: 0000000000000000
+aes_invcipher.io.output_valid: 0
+Inst: add
+fu result: 0000000000000000
+aes_invcipher.io.output_valid: 0
+Inst: add
+fu result: 0000000000000000
+aes_invcipher.io.output_valid: 0
+Inst: add
+fu result: 0000000000000000
+aes_invcipher.io.output_valid: 0
+Inst: add
+fu result: 0000000000000000
+aes_invcipher.io.output_valid: 0
+Inst: add
+fu result: 0000000000000000
+aes_invcipher.io.output_valid: 0
+Inst: add
+fu result: 0000000000000000
+aes_invcipher.io.output_valid: 0
+Inst: add
+fu result: 0000000000000000
+aes_invcipher.io.output_valid: 0
+Inst: add
+fu result: 0000000000000000
+aes_invcipher.io.output_valid: 0
+Inst: add
+fu result: 0000000000000000
+aes_invcipher.io.output_valid: 0
+ticks: 0
+number cycles: 30
+dc5054a6c5949146|b89950aad68bd600
+decrypted: f3b37f0a67313a5e|e6100403c689eb61
+Inst: add
+fu result: 0000000000000000
+changed to true
+aes_invcipher.io.output_valid: 0
+ptr:00
+Inst: add
+fu result: 0000000000000000
+changed to false
+aes_invcipher.io.output_valid: 0
+Inst: add
+fu result: 0000000000000000
+
+-----front----
+op1 buffer:c226be9c7383e0399bfed07acf8f6ec7
+op2 buffer:745bcb12acb22446c805311c6145cb90
+cond:00000000000000000000000000000000
+inst:00101000
+op1_buffer: c226be9c7383e0399bfed07acf8f6ec7
+op2_buffer: 745bcb12acb22446c805311c6145cb90
+aes_invcipher.io.output_valid: 0
+Inst: mult
+state: 0
+fu result: 0000000000000000
+aes_invcipher.io.output_valid: 0
+Inst: mult
+state: 0
+fu result: 0000000000000000
+aes_invcipher.io.output_valid: 0
+Inst: mult
+state: 0
+fu result: 0000000000000000
+aes_invcipher.io.output_valid: 0
+Inst: mult
+state: 0
+fu result: 0000000000000000
+aes_invcipher.io.output_valid: 0
+Inst: mult
+state: 0
+fu result: 0000000000000000
+aes_invcipher.io.output_valid: 0
+Inst: mult
+state: 0
+fu result: 0000000000000000
+aes_invcipher.io.output_valid: 0
+Inst: mult
+state: 0
+fu result: 0000000000000000
+aes_invcipher.io.output_valid: 0
+Inst: mult
+state: 0
+fu result: 0000000000000000
+aes_invcipher.io.output_valid: 0
+Inst: mult
+state: 0
+fu result: 0000000000000000
+aes_invcipher.io.output_valid: 0
+Inst: mult
+state: 0
+fu result: 0000000000000000
+aes_invcipher.io.output_valid: 0
+Inst: mult
+state: 0
+fu result: 0000000000000000
+aes_invcipher.io.output_valid: 0
+Inst: mult
+state: 0
+fu result: 0000000000000000
+aes_invcipher.io.output_valid: 0
+Inst: mult
+state: 0
+fu result: 0000000000000000
+aes_invcipher.io.output_valid: 0
+Inst: mult
+state: 0
+
+------fu-----
+fu op1: 391b5b21d0aac9c8
+fu op2: 987e3d52e6bf8247
+fu cond: c640815094166d8e
+fu fu_op: 1
+fu fu_type: 2
+fu result: b3cadd1dd60d8678
+aes_invcipher.io.output_valid: 1
+Inst: mult
+state: 0
+fu result: 0000000000000000
+aes_invcipher.io.output_valid: 0
+
+-----back----
+padded_result:b3cadd1dd60d86784ab0020193bb64e0
+seoperation.io.result:0000000000000000
+Inst: mult
+state: 0
+fu result: 0000000000000000
+aes_invcipher.io.output_valid: 0
+Inst: mult
+state: 0
+fu result: 0000000000000000
+aes_invcipher.io.output_valid: 0
+Inst: mult
+state: 0
+fu result: 0000000000000000
+aes_invcipher.io.output_valid: 0
+Inst: mult
+state: 0
+fu result: 0000000000000000
+aes_invcipher.io.output_valid: 0
+Inst: mult
+state: 0
+fu result: 0000000000000000
+aes_invcipher.io.output_valid: 0
+Inst: mult
+state: 0
+fu result: 0000000000000000
+aes_invcipher.io.output_valid: 0
+Inst: mult
+state: 0
+fu result: 0000000000000000
+aes_invcipher.io.output_valid: 0
+Inst: mult
+state: 0
+fu result: 0000000000000000
+aes_invcipher.io.output_valid: 0
+Inst: mult
+state: 0
+fu result: 0000000000000000
+aes_invcipher.io.output_valid: 0
+Inst: mult
+state: 0
+fu result: 0000000000000000
+aes_invcipher.io.output_valid: 0
+Inst: mult
+state: 0
+fu result: 0000000000000000
+aes_invcipher.io.output_valid: 0
+Inst: mult
+state: 0
+fu result: 0000000000000000
+aes_invcipher.io.output_valid: 0
+Inst: mult
+state: 0
+fu result: 0000000000000000
+aes_invcipher.io.output_valid: 0
+Inst: mult
+state: 0
+fu result: 0000000000000000
+aes_invcipher.io.output_valid: 0
+AFTER ADD
+ticks: 31
+number cycles: 30
+2b1846f05283a38e|8bd1e37e2b659f2a
+decrypted: bde83b522eb074bf|b3f918c1330ec0c3
+Inst: mult
+state: 0
+fu result: 0000000000000000
+changed to true
+aes_invcipher.io.output_valid: 0
+ptr:01
+Inst: mult
+state: 0
+fu result: 0000000000000000
+changed to false
+aes_invcipher.io.output_valid: 0
+Inst: mult
+state: 0
+fu result: 0000000000000000
+
+-----front----
+op1 buffer:c226be9c7383e0399bfed07acf8f6ec7
+op2 buffer:de99be30bdaaa370ae07abe46a9a1813
+cond:00000000000000000000000000000000
+inst:00100000
+op1_buffer: c226be9c7383e0399bfed07acf8f6ec7
+op2_buffer: de99be30bdaaa370ae07abe46a9a1813
+aes_invcipher.io.output_valid: 0
+Inst: add
+fu result: 0000000000000000
+aes_invcipher.io.output_valid: 0
+Inst: add
+fu result: 0000000000000000
+aes_invcipher.io.output_valid: 0
+Inst: add
+fu result: 0000000000000000
+aes_invcipher.io.output_valid: 0
+Inst: add
+fu result: 0000000000000000
+aes_invcipher.io.output_valid: 0
+Inst: add
+fu result: 0000000000000000
+aes_invcipher.io.output_valid: 0
+Inst: add
+fu result: 0000000000000000
+aes_invcipher.io.output_valid: 0
+Inst: add
+fu result: 0000000000000000
+aes_invcipher.io.output_valid: 0
+Inst: add
+fu result: 0000000000000000
+aes_invcipher.io.output_valid: 0
+Inst: add
+fu result: 0000000000000000
+aes_invcipher.io.output_valid: 0
+Inst: add
+fu result: 0000000000000000
+aes_invcipher.io.output_valid: 0
+Inst: add
+fu result: 0000000000000000
+aes_invcipher.io.output_valid: 0
+Inst: add
+fu result: 0000000000000000
+aes_invcipher.io.output_valid: 0
+Inst: add
+fu result: 0000000000000000
+aes_invcipher.io.output_valid: 0
+Inst: add
+
+------fu-----
+fu op1: 391b5b21d0aac9c8
+fu op2: f9a7f222435f024e
+fu cond: c640815094166d8e
+fu fu_op: 1
+fu fu_type: 0
+fu result: 32c34d441409cc16
+aes_invcipher.io.output_valid: 1
+Inst: add
+fu result: 0000000000000000
+aes_invcipher.io.output_valid: 0
+
+-----back----
+padded_result:32c34d441409cc1693bb64e021503617
+seoperation.io.result:0000000000000000
+Inst: add
+fu result: 0000000000000000
+aes_invcipher.io.output_valid: 0
+Inst: add
+fu result: 0000000000000000
+aes_invcipher.io.output_valid: 0
+Inst: add
+fu result: 0000000000000000
+aes_invcipher.io.output_valid: 0
+Inst: add
+fu result: 0000000000000000
+aes_invcipher.io.output_valid: 0
+Inst: add
+fu result: 0000000000000000
+aes_invcipher.io.output_valid: 0
+Inst: add
+fu result: 0000000000000000
+aes_invcipher.io.output_valid: 0
+Inst: add
+fu result: 0000000000000000
+aes_invcipher.io.output_valid: 0
+Inst: add
+fu result: 0000000000000000
+aes_invcipher.io.output_valid: 0
+Inst: add
+fu result: 0000000000000000
+aes_invcipher.io.output_valid: 0
+Inst: add
+fu result: 0000000000000000
+aes_invcipher.io.output_valid: 0
+Inst: add
+fu result: 0000000000000000
+aes_invcipher.io.output_valid: 0
+Inst: add
+fu result: 0000000000000000
+aes_invcipher.io.output_valid: 0
+Inst: add
+fu result: 0000000000000000
+aes_invcipher.io.output_valid: 0
+Inst: add
+fu result: 0000000000000000
+aes_invcipher.io.output_valid: 0
+AFTER MULT
+ticks: 62
+number cycles: 30
+Inst: add
+fu result: 0000000000000000
+changed to true
+aes_invcipher.io.output_valid: 0
+ptr:02
+Inst: add
+fu result: 0000000000000000
+changed to false
+aes_invcipher.io.output_valid: 0
+Inst: add
+fu result: 0000000000000000
+
+-----front----
+op1 buffer:c226be9c7383e0399bfed07acf8f6ec7
+op2 buffer:745bcb12acb22446c805311c6145cb90
+cond:00000000000000000000000000000000
+inst:00101000
+op1_buffer: c226be9c7383e0399bfed07acf8f6ec7
+op2_buffer: 745bcb12acb22446c805311c6145cb90
+aes_invcipher.io.output_valid: 0
+Inst: mult
+state: 0
+fu result: 0000000000000000
+aes_invcipher.io.output_valid: 0
+Inst: mult
+state: 0
+fu result: 0000000000000000
+aes_invcipher.io.output_valid: 0
+Inst: mult
+state: 0
+fu result: 0000000000000000
+aes_invcipher.io.output_valid: 0
+Inst: mult
+state: 0
+fu result: 0000000000000000
+aes_invcipher.io.output_valid: 0
+Inst: mult
+state: 0
+fu result: 0000000000000000
+aes_invcipher.io.output_valid: 0
+Inst: mult
+state: 0
+fu result: 0000000000000000
+aes_invcipher.io.output_valid: 0
+Inst: mult
+state: 0
+fu result: 0000000000000000
+aes_invcipher.io.output_valid: 0
+Inst: mult
+state: 0
+fu result: 0000000000000000
+aes_invcipher.io.output_valid: 0
+Inst: mult
+state: 0
+fu result: 0000000000000000
+aes_invcipher.io.output_valid: 0
+Inst: mult
+state: 0
+fu result: 0000000000000000
+aes_invcipher.io.output_valid: 0
+Inst: mult
+state: 0
+fu result: 0000000000000000
+aes_invcipher.io.output_valid: 0
+Inst: mult
+state: 0
+fu result: 0000000000000000
+aes_invcipher.io.output_valid: 0
+Inst: mult
+state: 0
+fu result: 0000000000000000
+aes_invcipher.io.output_valid: 0
+Inst: mult
+state: 0
+
+------fu-----
+fu op1: 391b5b21d0aac9c8
+fu op2: 987e3d52e6bf8247
+fu cond: c640815094166d8e
+fu fu_op: 1
+fu fu_type: 2
+fu result: b3cadd1dd60d8678
+aes_invcipher.io.output_valid: 1
+Inst: mult
+state: 0
+fu result: 0000000000000000
+aes_invcipher.io.output_valid: 0
+
+-----back----
+padded_result:b3cadd1dd60d86782150361712a0c423
+seoperation.io.result:0000000000000000
+Inst: mult
+state: 0
+fu result: 0000000000000000
+aes_invcipher.io.output_valid: 0
+Inst: mult
+state: 0
+fu result: 0000000000000000
+aes_invcipher.io.output_valid: 0
+Inst: mult
+state: 0
+fu result: 0000000000000000
+aes_invcipher.io.output_valid: 0
+Inst: mult
+state: 0
+fu result: 0000000000000000
+aes_invcipher.io.output_valid: 0
+Inst: mult
+state: 0
+fu result: 0000000000000000
+aes_invcipher.io.output_valid: 0
+Inst: mult
+state: 0
+fu result: 0000000000000000
+aes_invcipher.io.output_valid: 0
+Inst: mult
+state: 0
+fu result: 0000000000000000
+aes_invcipher.io.output_valid: 0
+Inst: mult
+state: 0
+fu result: 0000000000000000
+aes_invcipher.io.output_valid: 0
+Inst: mult
+state: 0
+fu result: 0000000000000000
+aes_invcipher.io.output_valid: 0
+Inst: mult
+state: 0
+fu result: 0000000000000000
+aes_invcipher.io.output_valid: 0
+Inst: mult
+state: 0
+fu result: 0000000000000000
+aes_invcipher.io.output_valid: 0
+Inst: mult
+state: 0
+fu result: 0000000000000000
+aes_invcipher.io.output_valid: 0
+Inst: mult
+state: 0
+fu result: 0000000000000000
+aes_invcipher.io.output_valid: 0
+Inst: mult
+state: 0
+fu result: 0000000000000000
+aes_invcipher.io.output_valid: 0
+number cycles: 30
+Inst: mult
+state: 0
+fu result: 0000000000000000
+changed to true
+aes_invcipher.io.output_valid: 0
+ptr:03
+Inst: mult
+state: 0
+fu result: 0000000000000000
+changed to false
+aes_invcipher.io.output_valid: 0
+Inst: add
+
+------fu-----
+fu op1: 32c34d441409cc16
+fu op2: b3cadd1dd60d8678
+fu cond: 0000000000000000
+fu fu_op: 1
+fu fu_type: 0
+fu result: e68e2a61ea17528e
+
+-----front----
+op1 buffer:e243489e3fff9125242ef5db6712c913
+op2 buffer:cf99dd49191362e453dbe4ae3dbeaf9d
+cond:00000000000000000000000000000000
+inst:00100000
+aes_invcipher.io.output_valid: 0
+Inst: mult
+state: 0
+fu result: 0000000000000000
+aes_invcipher.io.output_valid: 0
+
+-----back----
+padded_result:e68e2a61ea17528ed85c4a83108df1ca
+seoperation.io.result:0000000000000000
+Inst: mult
+state: 0
+fu result: 0000000000000000
+aes_invcipher.io.output_valid: 0
+Inst: mult
+state: 0
+fu result: 0000000000000000
+aes_invcipher.io.output_valid: 0
+Inst: mult
+state: 0
+fu result: 0000000000000000
+aes_invcipher.io.output_valid: 0
+Inst: mult
+state: 0
+fu result: 0000000000000000
+aes_invcipher.io.output_valid: 0
+Inst: mult
+state: 0
+fu result: 0000000000000000
+aes_invcipher.io.output_valid: 0
+Inst: mult
+state: 0
+fu result: 0000000000000000
+aes_invcipher.io.output_valid: 0
+Inst: mult
+state: 0
+fu result: 0000000000000000
+aes_invcipher.io.output_valid: 0
+Inst: mult
+state: 0
+fu result: 0000000000000000
+aes_invcipher.io.output_valid: 0
+Inst: mult
+state: 0
+fu result: 0000000000000000
+aes_invcipher.io.output_valid: 0
+Inst: mult
+state: 0
+fu result: 0000000000000000
+aes_invcipher.io.output_valid: 0
+Inst: mult
+state: 0
+fu result: 0000000000000000
+aes_invcipher.io.output_valid: 0
+Inst: mult
+state: 0
+fu result: 0000000000000000
+aes_invcipher.io.output_valid: 0
+Inst: mult
+state: 0
+fu result: 0000000000000000
+aes_invcipher.io.output_valid: 0
+Inst: mult
+state: 0
+fu result: 0000000000000000
+aes_invcipher.io.output_valid: 0
+number cycles: 16
+bd73f8775ef1dbd3|725f6fcdc5aba054
+decrypted: 924eee2496be81a5|962a65dbc043ccaf
+Inst: mult
+state: 0
+fu result: 0000000000000000
+changed to true
+aes_invcipher.io.output_valid: 0
+ptr:04
+Inst: mult
+state: 0
+fu result: 0000000000000000
+changed to false
+aes_invcipher.io.output_valid: 0
+Inst: sll
+
+------fu-----
+fu op1: 32c34d441409cc16
+fu op2: b3cadd1dd60d8678
+fu cond: 0000000000000000
+fu fu_op: 0
+fu fu_type: 0
+fu result: 1600000000000000
+
+-----front----
+op1 buffer:e243489e3fff9125242ef5db6712c913
+op2 buffer:cf99dd49191362e453dbe4ae3dbeaf9d
+cond:00000000000000000000000000000000
+inst:00000000
+aes_invcipher.io.output_valid: 0
+Inst: mult
+state: 0
+fu result: 0000000000000000
+aes_invcipher.io.output_valid: 0
+
+-----back----
+padded_result:16000000000000002a0c4237c728bf08
+seoperation.io.result:0000000000000000
+Inst: mult
+state: 0
+fu result: 0000000000000000
+aes_invcipher.io.output_valid: 0
+Inst: mult
+state: 0
+fu result: 0000000000000000
+aes_invcipher.io.output_valid: 0
+Inst: mult
+state: 0
+fu result: 0000000000000000
+aes_invcipher.io.output_valid: 0
+Inst: mult
+state: 0
+fu result: 0000000000000000
+aes_invcipher.io.output_valid: 0
+Inst: mult
+state: 0
+fu result: 0000000000000000
+aes_invcipher.io.output_valid: 0
+Inst: mult
+state: 0
+fu result: 0000000000000000
+aes_invcipher.io.output_valid: 0
+Inst: mult
+state: 0
+fu result: 0000000000000000
+aes_invcipher.io.output_valid: 0
+Inst: mult
+state: 0
+fu result: 0000000000000000
+aes_invcipher.io.output_valid: 0
+Inst: mult
+state: 0
+fu result: 0000000000000000
+aes_invcipher.io.output_valid: 0
+Inst: mult
+state: 0
+fu result: 0000000000000000
+aes_invcipher.io.output_valid: 0
+Inst: mult
+state: 0
+fu result: 0000000000000000
+aes_invcipher.io.output_valid: 0
+Inst: mult
+state: 0
+fu result: 0000000000000000
+aes_invcipher.io.output_valid: 0
+Inst: mult
+state: 0
+fu result: 0000000000000000
+aes_invcipher.io.output_valid: 0
+Inst: mult
+state: 0
+fu result: 0000000000000000
+aes_invcipher.io.output_valid: 0
+number cycles: 16
+720c15f1c1074be6|6d6240bb54c341ed
+decrypted: 879e48bd775062bb|66322d5385011373

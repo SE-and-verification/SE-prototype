@@ -183,9 +183,9 @@ class SE(val debug:Boolean, val canChangeKey: Boolean) extends Module{
 	// printf("op1_found: %d\n",op1_found)
 	// printf("op2_found: %d\n",op2_found)
 	// printf("cond_found: %d\n",cond_found)
-	// printf("seOpValid: %d\n",seOpValid)
+	//printf("seOpValid: %d\n",seOpValid)
 	// printf("all_match: %d\n",all_match)
-	// printf("aes_invcipher.io.output_valid: %d\n",aes_invcipher.io.output_valid)
+	//printf("aes_invcipher.io.output_valid: %d\n",aes_invcipher.io.output_valid)
 	// printf("aes_invcipher.io.input_valid: %d\n",aes_invcipher.io.input_valid)
 
 	// when(seOpValid ){
@@ -204,15 +204,28 @@ class SE(val debug:Boolean, val canChangeKey: Boolean) extends Module{
 
   // Once we receive the result form the seoperation, we latech the result first.
   // flag: i am kinda confused on this, what is n_result_valid buffer.], added the ands
-	val result_valid_buffer = RegNext(n_result_valid_buffer && seoperation.io.validOutput)
-	n_result_valid_buffer := Mux(seOpValid, true.B, Mux(aes_cipher.io.input_valid, false.B, result_valid_buffer))
+	val result_valid_buffer = RegNext(n_result_valid_buffer)
+	//printf("result_valid_buffer: %d\n", result_valid_buffer)
+	//printf("n_result_valid_buffer: %d\n", result_valid_buffer)
+	n_result_valid_buffer := Mux(seoperation.io.validOutput, true.B, Mux(aes_cipher.io.input_valid, false.B, result_valid_buffer))
+
+	/*
+	// NOTE: not real code
+	when (seOpValid) {
+		n_result_valid_buffer := true
+	} .elsewhen (aes_cipher.io.input_valid) {
+		n_result_valid_buffer := false
+	} .otherwise {
+		n_result_valid_buffer := n_result_valid_buffer
+	}
+	*/
 
 	// Pad with RNG
-	val bit64_randnum = PRNG(new MaxPeriodFibonacciLFSR(64, Some(scala.math.BigInt(64, scala.util.Random))))
+	val bit64_randnum = 0.U(64.W) //PRNG(new MaxPeriodFibonacciLFSR(64, Some(scala.math.BigInt(64, scala.util.Random))))
 	val padded_result = Cat(seoperation.io.result,bit64_randnum)
 
 	// change: result buffer not set until seoperation has valid output
-	val result_buffer = RegEnable( padded_result, seOpValid && seoperation.io.validOutput)
+	val result_buffer = RegEnable( padded_result, seoperation.io.validOutput)
 	if(debug){
 		when(result_valid_buffer){
 			printf("\n-----back----\n")
@@ -222,7 +235,7 @@ class SE(val debug:Boolean, val canChangeKey: Boolean) extends Module{
 	}
 	val result_plaintext_buffer = RegInit(0.U(64.W))
 	// change: result_plaintext_buffer not set until valid output
-	when(seOpValid && seoperation.io.validOutput){
+	when(seoperation.io.validOutput){
 		result_plaintext_buffer := seoperation.io.result
 	}
 	// Connect the cipher

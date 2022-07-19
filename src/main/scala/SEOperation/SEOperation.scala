@@ -46,7 +46,7 @@ class SEOperation(val debug: Boolean) extends Module{
 	fu.io.fu_type := decode.io.fu_type
 	fu.io.signed := decode.io.signed
 	// when operands are valid, functional unit ready to do computation
-	fu.io.ready := io.valid 
+	fu.io.ready := io.valid
 
 	io.result := fu.io.out
 	// sends valid output signal to the rest of the SE
@@ -58,9 +58,11 @@ class SEOperation(val debug: Boolean) extends Module{
 			printf("fu op1: %x\n",op1)
 			printf("fu op2: %x\n",op2)
 			printf("fu cond: %x\n",cond)
-			printf("fu result: %x\n",io.result)
 			printf("fu fu_op: %d\n",decode.io.fu_op)
 			printf("fu fu_type: %d\n",decode.io.fu_type)
+		}
+		when(io.validOutput){
+			printf("fu result: %x\n",io.result)
 		}
 	}
 }

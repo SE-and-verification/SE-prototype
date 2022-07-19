@@ -75,6 +75,7 @@ class AESDecrypt(val rolled: Boolean) extends Module {
     io.output_op2 := InvCipherRoundNMC(1).io.state_out
     io.output_cond := InvCipherRoundNMC(2).io.state_out
     io.output_valid := InvCipherRoundNMC(0).io.output_valid || InvCipherRoundNMC(1).io.output_valid || InvCipherRoundNMC(2).io.output_valid
+
   }
   else{
     val invciphers = Array.fill(3){InvCipher(6, true)}

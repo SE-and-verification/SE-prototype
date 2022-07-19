@@ -1,0 +1,201 @@
+Setting AES keys
+1:
+de99be30bdaaa370|ae07abe46a9a1813
+2:
+c226be9c7383e039|9bfed07acf8f6ec7
+decrypted: 0000000000000000|200000000000000
+decrypted: 0000000000000000|100000000000000
+decrypted: 0000000000000000|300000000000000
+aes_invcipher.io.output_valid: 0
+op1_buffer: c226be9c7383e0399bfed07acf8f6ec7
+op2_buffer: de99be30bdaaa370ae07abe46a9a1813
+aes_invcipher.io.output_valid: 0
+aes_invcipher.io.output_valid: 0
+aes_invcipher.io.output_valid: 0
+aes_invcipher.io.output_valid: 0
+aes_invcipher.io.output_valid: 0
+aes_invcipher.io.output_valid: 0
+aes_invcipher.io.output_valid: 0
+aes_invcipher.io.output_valid: 0
+aes_invcipher.io.output_valid: 0
+aes_invcipher.io.output_valid: 0
+aes_invcipher.io.output_valid: 0
+aes_invcipher.io.output_valid: 0
+aes_invcipher.io.output_valid: 0
+aes_invcipher.io.output_valid: 0
+aes_invcipher.io.output_valid: 1
+aes_invcipher.io.output_valid: 0
+aes_invcipher.io.output_valid: 0
+aes_invcipher.io.output_valid: 0
+aes_invcipher.io.output_valid: 0
+aes_invcipher.io.output_valid: 0
+aes_invcipher.io.output_valid: 0
+aes_invcipher.io.output_valid: 0
+aes_invcipher.io.output_valid: 0
+aes_invcipher.io.output_valid: 0
+aes_invcipher.io.output_valid: 0
+aes_invcipher.io.output_valid: 0
+aes_invcipher.io.output_valid: 0
+aes_invcipher.io.output_valid: 0
+aes_invcipher.io.output_valid: 0
+aes_invcipher.io.output_valid: 0
+ticks: 0
+number cycles: 30
+e3b6863b7308d491|263da0548ef130e2
+decrypted: 1cb66f9c98d7ae3e|b11e8cdf6273621a
+aes_invcipher.io.output_valid: 0
+ptr:00
+aes_invcipher.io.output_valid: 0
+op1_buffer: c226be9c7383e0399bfed07acf8f6ec7
+op2_buffer: 745bcb12acb22446c805311c6145cb90
+aes_invcipher.io.output_valid: 0
+aes_invcipher.io.output_valid: 0
+aes_invcipher.io.output_valid: 0
+aes_invcipher.io.output_valid: 0
+aes_invcipher.io.output_valid: 0
+aes_invcipher.io.output_valid: 0
+aes_invcipher.io.output_valid: 0
+aes_invcipher.io.output_valid: 0
+aes_invcipher.io.output_valid: 0
+aes_invcipher.io.output_valid: 0
+aes_invcipher.io.output_valid: 0
+aes_invcipher.io.output_valid: 0
+aes_invcipher.io.output_valid: 0
+aes_invcipher.io.output_valid: 0
+aes_invcipher.io.output_valid: 1
+aes_invcipher.io.output_valid: 0
+aes_invcipher.io.output_valid: 0
+aes_invcipher.io.output_valid: 0
+aes_invcipher.io.output_valid: 0
+aes_invcipher.io.output_valid: 0
+aes_invcipher.io.output_valid: 0
+aes_invcipher.io.output_valid: 0
+aes_invcipher.io.output_valid: 0
+aes_invcipher.io.output_valid: 0
+aes_invcipher.io.output_valid: 0
+aes_invcipher.io.output_valid: 0
+aes_invcipher.io.output_valid: 0
+aes_invcipher.io.output_valid: 0
+aes_invcipher.io.output_valid: 0
+aes_invcipher.io.output_valid: 0
+ticks: 31
+number cycles: 30
+bf762d2e2ae57b98|b71aaaa46a725771
+decrypted: 6eb2b035f08eb1c8|4bcdf36ba813c9b3
+aes_invcipher.io.output_valid: 0
+ptr:01
+aes_invcipher.io.output_valid: 0
+op1_buffer: c226be9c7383e0399bfed07acf8f6ec7
+op2_buffer: de99be30bdaaa370ae07abe46a9a1813
+aes_invcipher.io.output_valid: 0
+aes_invcipher.io.output_valid: 0
+aes_invcipher.io.output_valid: 0
+aes_invcipher.io.output_valid: 0
+aes_invcipher.io.output_valid: 0
+aes_invcipher.io.output_valid: 0
+aes_invcipher.io.output_valid: 0
+aes_invcipher.io.output_valid: 0
+aes_invcipher.io.output_valid: 0
+aes_invcipher.io.output_valid: 0
+aes_invcipher.io.output_valid: 0
+aes_invcipher.io.output_valid: 0
+aes_invcipher.io.output_valid: 0
+aes_invcipher.io.output_valid: 0
+aes_invcipher.io.output_valid: 1
+aes_invcipher.io.output_valid: 0
+aes_invcipher.io.output_valid: 0
+aes_invcipher.io.output_valid: 0
+aes_invcipher.io.output_valid: 0
+aes_invcipher.io.output_valid: 0
+aes_invcipher.io.output_valid: 0
+aes_invcipher.io.output_valid: 0
+aes_invcipher.io.output_valid: 0
+aes_invcipher.io.output_valid: 0
+aes_invcipher.io.output_valid: 0
+aes_invcipher.io.output_valid: 0
+aes_invcipher.io.output_valid: 0
+aes_invcipher.io.output_valid: 0
+aes_invcipher.io.output_valid: 0
+aes_invcipher.io.output_valid: 0
+ticks: 62
+number cycles: 30
+aes_invcipher.io.output_valid: 0
+ptr:02
+aes_invcipher.io.output_valid: 0
+op1_buffer: c226be9c7383e0399bfed07acf8f6ec7
+op2_buffer: 745bcb12acb22446c805311c6145cb90
+aes_invcipher.io.output_valid: 0
+aes_invcipher.io.output_valid: 0
+aes_invcipher.io.output_valid: 0
+aes_invcipher.io.output_valid: 0
+aes_invcipher.io.output_valid: 0
+aes_invcipher.io.output_valid: 0
+aes_invcipher.io.output_valid: 0
+aes_invcipher.io.output_valid: 0
+aes_invcipher.io.output_valid: 0
+aes_invcipher.io.output_valid: 0
+aes_invcipher.io.output_valid: 0
+aes_invcipher.io.output_valid: 0
+aes_invcipher.io.output_valid: 0
+aes_invcipher.io.output_valid: 0
+aes_invcipher.io.output_valid: 1
+aes_invcipher.io.output_valid: 0
+aes_invcipher.io.output_valid: 0
+aes_invcipher.io.output_valid: 0
+aes_invcipher.io.output_valid: 0
+aes_invcipher.io.output_valid: 0
+aes_invcipher.io.output_valid: 0
+aes_invcipher.io.output_valid: 0
+aes_invcipher.io.output_valid: 0
+aes_invcipher.io.output_valid: 0
+aes_invcipher.io.output_valid: 0
+aes_invcipher.io.output_valid: 0
+aes_invcipher.io.output_valid: 0
+aes_invcipher.io.output_valid: 0
+aes_invcipher.io.output_valid: 0
+aes_invcipher.io.output_valid: 0
+number cycles: 30
+aes_invcipher.io.output_valid: 0
+ptr:03
+aes_invcipher.io.output_valid: 0
+aes_invcipher.io.output_valid: 0
+aes_invcipher.io.output_valid: 0
+aes_invcipher.io.output_valid: 0
+aes_invcipher.io.output_valid: 0
+aes_invcipher.io.output_valid: 0
+aes_invcipher.io.output_valid: 0
+aes_invcipher.io.output_valid: 0
+aes_invcipher.io.output_valid: 0
+aes_invcipher.io.output_valid: 0
+aes_invcipher.io.output_valid: 0
+aes_invcipher.io.output_valid: 0
+aes_invcipher.io.output_valid: 0
+aes_invcipher.io.output_valid: 0
+aes_invcipher.io.output_valid: 0
+aes_invcipher.io.output_valid: 0
+aes_invcipher.io.output_valid: 0
+number cycles: 16
+74abe823bfd9fea5|89282278a0992778
+decrypted: aaf00c400d79607b|c6b6232eac73af5
+aes_invcipher.io.output_valid: 0
+ptr:04
+aes_invcipher.io.output_valid: 0
+aes_invcipher.io.output_valid: 0
+aes_invcipher.io.output_valid: 0
+aes_invcipher.io.output_valid: 0
+aes_invcipher.io.output_valid: 0
+aes_invcipher.io.output_valid: 0
+aes_invcipher.io.output_valid: 0
+aes_invcipher.io.output_valid: 0
+aes_invcipher.io.output_valid: 0
+aes_invcipher.io.output_valid: 0
+aes_invcipher.io.output_valid: 0
+aes_invcipher.io.output_valid: 0
+aes_invcipher.io.output_valid: 0
+aes_invcipher.io.output_valid: 0
+aes_invcipher.io.output_valid: 0
+aes_invcipher.io.output_valid: 0
+aes_invcipher.io.output_valid: 0
+number cycles: 16
+f018f8138d24f4ce|638e06ad1370c56e
+decrypted: 3174b7bddd9a060f|5f2f2b52f891c0b5

@@ -44,14 +44,12 @@ class FU(val debug: Boolean) extends Module{
   val io = IO(new FUIO)
   val output = Wire(UInt(64.W))
 
-  io.valid := false.B // false until set to true?
-
   when(io.fu_op =/= FU_ARITH){
     io.valid := true.B
-  }.otherwise{
-    when(io.fu_type =/= ARITH_MULT){
-      io.valid := true.B
-    }
+  }.elsewhen(io.fu_type =/= ARITH_MULT){
+    io.valid := true.B
+  }.otherwise {
+    io.valid := false.B
   }
 
   when(io.fu_op === FU_SHIFT){
@@ -86,7 +84,13 @@ class FU(val debug: Boolean) extends Module{
         // changes: 
         if(debug) printf("Inst: mult\n")
   
+  
         val state = RegInit(0.U) // starting state, inputs not ready
+        /*when (io.ready) {
+          state := 400.U
+        }*/
+        printf("state: %d\n",state)
+
         val valid = RegInit(false.B); // output not ready yet
         val ready = io.ready // input;
         val inA = io.A // combinational
@@ -95,50 +99,63 @@ class FU(val debug: Boolean) extends Module{
         val regA = Reg(UInt(64.W))
         val regB = Reg(UInt(64.W))
         val tempSum = Reg(UInt(64.W))
+        
+       // printf("ready: %d\n",ready)
+        //printf("valid: %d\n",valid)
 
-        when (state === 0.U) {
-            // waiting for ready
+        //printf("REAL VAL: %d\n",inA * inB)
 
-            // got to ready!
-            when (ready) {
-              // initializing all values!
-                regA := inA
-                regB := inB
-                valid := false.B
-                state := 1.U
-                tempSum := 0.U
-            }
-        }
-        when (state === 1.U) {
+          // got to ready!
+          /*
+           when (ready) {
+                // initializing all values!
+                 printf("WOO: %d\n",ready)
+                  regA := inA
+                  regB := inB
+                  valid := false.B
+                  state := 1.U
+                  tempSum := 0.U
+           }
+          
+           when (state === 1.U) {
             // there are still 1s left in reg b
             when (regB =/= 0.U) {
+              printf("mutliplying: %d\n",ready)
                 // do multiplication stuff
+              
               when (regB(0) === 1.B){
                 tempSum := regA + tempSum
-                }
+              }
+              
               // left shift A by 1 for next round of multiplcation
               regA := regA << 1.U 
               // right shift B by 1 to get next bit
               regB := regB >> 1.U
 
             } .otherwise { // when no more 1s left in b, done w multiplying
+                printf("DONE: %d\n",ready)
                 valid := true.B
                 state := 2.U
+                printf("tempSum: %d\n", tempSum)
             }
-        }
-        when (state === 2.U) {
+              
+
+        }.elsewhen (state === 2.U) {
           // does nothing until new values come in and ready goes to 0 while decrypying
             when (!ready) {
                 state := 0.U
+                valid:= false.B
             }
         }
-
-        output := tempSum
         
-        /*
-        output := io.A * io.B
-        io.valid := true.B
+        output := tempSum
         */
+        
+        
+        output := io.A * io.B
+        io.valid := true.B 
+        
+        
         /*
         when (io.A === 0.U | io.B === 0.U) { output := 0.U(64.W) // if any operand is 0, output a 64 bit 0
         }.elsewhen (io.A === 2.U) { output := io.B << 2.U // left shift by 1 to be faster

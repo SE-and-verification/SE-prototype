@@ -53,6 +53,9 @@ int main(){
 	__uint128_t l3_SE = SE::SECompute(l2.ciphertext.convert_to_128(), l1.ciphertext.convert_to_128(), 0, Instruction::ADD());
 	print128(l3_SE);
 	print128dec(l3_SE);
+	printf("%s\n", "AFTER ADD");
+
+
 
 	// print128(l6.ciphertext.convert_to_128());
 	printf("ticks: %d\n", SE::real_tickcount);
@@ -60,7 +63,10 @@ int main(){
 	__uint128_t l6_SE = SE::SECompute(l2.ciphertext.convert_to_128(), l3.ciphertext.convert_to_128(), 0, Instruction::MULT());
 	print128(l6_SE);
 	print128dec(l6_SE);
+	printf("%s\n", "AFTER MULT");
+
 	printf("ticks: %d\n", SE::real_tickcount);
+
 
 	// uint8_t newKey[16] = {15,14,13,12,11,10,9,8,7,6,5,4,3,2,1,0};
 	// changeKey(newKey);
