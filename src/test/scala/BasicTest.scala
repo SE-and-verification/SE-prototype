@@ -12,7 +12,7 @@ class BasicTest extends AnyFlatSpec with ChiselScalatestTester {
 
   it should "test mult operation" in {
     test(new SEOperation(false)).withAnnotations(Seq(WriteVcdAnnotation))  { c =>
-        c.io.op1_input.poke(2.U)
+        c.io.op1_input.poke(2.U) // happen at falling clock edge..? idk
         c.io.op2_input.poke(1.U)
         c.io.valid.poke(true.B) // saying operands are valid
         c.io.inst.poke(40.U)

@@ -96,22 +96,54 @@ class FU(val debug: Boolean) extends Module{
         val regB = Reg(UInt(64.W))
         val tempSum = Reg(UInt(64.W))
 
-        val actual = Reg(UInt(64.W))      
-        // Ready is high! Operands done decrypting
-        // will scrap any progress if new operands come in
-        //printf("inA: %d\n", inA)
-        when (ready) {
-             // initializing all values
-               regA := inA
-               regB := inB
-        
-               io.valid := false.B
-               state := 1.U
-               tempSum := 0.U
-               actual := RegNext(inA * inB)
+        val actual = Reg(UInt(64.W))
+
+        // will store new inputs no matter the state
+        // this will only store the newest operands that are not currently being multiplied
+        // do i need a register file orrrr ..?
+        val buffA = RegEnable(inA, ready)
+        val buffB = RegEnable(inB, ready)
+        val newValues = RegInit(false.B)
+
+        // if not done multiplying but new values are coming in
+        when (ready && state =/= 0.U){
+          newValues := true.B
+        }
+
+        // waiting for operands state
+        when(state === 0.U){
+          // Ready is high! Operands done decrypting
+          when (ready & ~newValues) {
+               // initializing all values
+              regA := inA
+              regB := inB
+              io.valid := false.B
+              state := 1.U
+              tempSum := 0.U
+              //actual := RegNext(inA * inB)
+          }.elsewhen(~ready & newValues){ 
+            // if new values came in while still multiplying but ready is low
+              regA := buffA
+              regB := buffB
+              io.valid := false.B
+              state := 1.U
+              tempSum := 0.U
+              newValues := false.B
+          }.otherwise{
+            // if new values AND even more values being added rn
+            // stores the new inputs, computes on ones that were inputted before
+              regA := buffA
+              regB := buffB
+              io.valid := false.B
+              state := 1.U
+              tempSum := 0.U
+              buffA := inA
+              buffB := inB
+          }
+          
         }
           
-          // in computation state
+        // in computation state
         when (state === 1.U) {
          // there are still 1s left in reg b
          when (actual === tempSum){
