@@ -32,6 +32,7 @@ int print128dec(__uint128_t dec){
 
 int main(){
 	setParameters();
+	Verilated::traceEverOn(true);
 	SE se_simulator;
 	enc_lib::enc_int l1 = 1;
 	enc_lib::enc_int l2 = 2;

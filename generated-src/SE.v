@@ -76,6 +76,8 @@ module FU(
   reg [63:0] _RAND_1;
   reg [63:0] _RAND_2;
   reg [63:0] _RAND_3;
+  reg [63:0] _RAND_4;
+  reg [127:0] _RAND_5;
 `endif // RANDOMIZE_REG_INIT
   wire  _T_1 = io_fu_type != 2'h2; // @[FU.scala 49:25]
   wire  _GEN_1 = io_fu_op != 3'h1 | _T_1; // @[FU.scala 47:30 48:14]
@@ -97,101 +99,96 @@ module FU(
   wire [63:0] _GEN_5 = io_A == 64'h0 ? io_B : _GEN_4; // @[FU.scala 74:{29,38}]
   wire [63:0] _output_T_17 = io_A - io_B; // @[FU.scala 81:24]
   reg [1:0] state; // @[FU.scala 88:28]
-  reg [63:0] regA; // @[FU.scala 99:23]
-  reg [63:0] regB; // @[FU.scala 100:23]
-  reg [63:0] tempSum; // @[FU.scala 101:26]
-  wire [63:0] _GEN_6 = io_ready ? io_A : regA; // @[FU.scala 110:25 113:24 99:23]
-  wire [63:0] _GEN_7 = io_ready ? io_B : regB; // @[FU.scala 100:23 110:25 114:24]
-  wire  _GEN_8 = io_ready ? 1'h0 : _GEN_1; // @[FU.scala 110:25 115:28]
-  wire [1:0] _GEN_9 = io_ready ? 2'h1 : state; // @[FU.scala 110:25 116:25 88:28]
-  wire [63:0] _GEN_10 = io_ready ? 64'h0 : tempSum; // @[FU.scala 110:25 101:26 117:27]
-  wire  _T_28 = state == 2'h1; // @[FU.scala 120:24]
-  wire  _T_29 = regB != 64'h0; // @[FU.scala 122:24]
-  wire [63:0] _tempSum_T_1 = regA + tempSum; // @[FU.scala 127:33]
-  wire [64:0] _regA_T = {regA, 1'h0}; // @[FU.scala 131:28]
-  wire [63:0] _regB_T = {{1'd0}, regB[63:1]}; // @[FU.scala 133:28]
-  wire [64:0] _GEN_13 = regB != 64'h0 ? _regA_T : {{1'd0}, _GEN_6}; // @[FU.scala 122:33 131:20]
-  wire  _GEN_15 = regB != 64'h0 ? _GEN_8 : 1'h1; // @[FU.scala 122:33 137:26]
-  wire  _GEN_18 = ~io_ready ? 1'h0 : _GEN_8; // @[FU.scala 145:27 147:25]
-  wire  _GEN_20 = state == 2'h2 ? _GEN_18 : _GEN_8; // @[FU.scala 143:36]
-  wire [64:0] _GEN_22 = state == 2'h1 ? _GEN_13 : {{1'd0}, _GEN_6}; // @[FU.scala 120:33]
-  wire  _GEN_24 = state == 2'h1 ? _GEN_15 : _GEN_20; // @[FU.scala 120:33]
-  wire [63:0] _GEN_26 = _T_6 ? _output_T_17 : tempSum; // @[FU.scala 151:16 79:43 81:16]
-  wire  _GEN_27 = _T_6 ? _GEN_1 : _GEN_24; // @[FU.scala 79:43]
-  wire [63:0] _GEN_28 = _T_3 ? _GEN_5 : _GEN_26; // @[FU.scala 71:37]
-  wire  _GEN_29 = _T_3 ? _GEN_1 : _GEN_27; // @[FU.scala 71:37]
-  wire [127:0] _GEN_30 = io_signed ? _output_T_13 : {{64'd0}, _GEN_28}; // @[FU.scala 67:20 69:16]
-  wire  _GEN_31 = io_signed ? _GEN_1 : _GEN_29; // @[FU.scala 67:20]
-  wire  _T_40 = io_fu_op == 3'h4; // @[FU.scala 169:23]
-  wire [63:0] _output_T_18 = io_A ^ io_B; // @[FU.scala 172:24]
-  wire [63:0] _output_T_19 = io_A | io_B; // @[FU.scala 175:24]
-  wire [63:0] _output_T_20 = io_A & io_B; // @[FU.scala 178:24]
-  wire [63:0] _GEN_32 = _T_6 ? _output_T_19 : _output_T_20; // @[FU.scala 173:44 175:16 178:16]
-  wire [63:0] _GEN_33 = _T_3 ? _output_T_18 : _GEN_32; // @[FU.scala 170:39 172:16]
-  wire  _T_49 = io_fu_op == 3'h2; // @[FU.scala 180:23]
-  wire  _GEN_34 = io_signed ? $signed(io_A) < $signed(io_B) : io_A < io_B; // @[FU.scala 181:20 183:14 186:14]
-  wire [2:0] _GEN_44 = {{1'd0}, io_fu_type}; // @[FU.scala 188:25]
-  wire  _T_54 = _GEN_44 == 3'h3; // @[FU.scala 188:25]
-  wire  _T_55 = io_cond != 64'h0; // @[FU.scala 189:18]
-  wire [63:0] _GEN_35 = io_cond != 64'h0 ? io_A : io_B; // @[FU.scala 189:26 191:14 194:14]
-  wire [63:0] _GEN_36 = _GEN_44 == 3'h3 ? _GEN_35 : io_A; // @[FU.scala 188:37 198:14]
-  wire [63:0] _GEN_37 = io_fu_op == 3'h2 ? {{63'd0}, _GEN_34} : _GEN_36; // @[FU.scala 180:35]
-  wire [63:0] _GEN_38 = io_fu_op == 3'h4 ? _GEN_33 : _GEN_37; // @[FU.scala 169:38]
-  wire [127:0] _GEN_39 = io_fu_op == 3'h1 ? _GEN_30 : {{64'd0}, _GEN_38}; // @[FU.scala 66:36]
-  wire  _GEN_40 = io_fu_op == 3'h1 ? _GEN_31 : _GEN_1; // @[FU.scala 66:36]
-  wire [127:0] _GEN_41 = io_fu_op == 3'h0 ? {{1'd0}, _GEN_3} : _GEN_39; // @[FU.scala 55:30]
-  wire  _GEN_46 = ~_T_3; // @[FU.scala 60:23]
-  wire  _GEN_47 = _T_2 & ~_T_3; // @[FU.scala 60:23]
-  wire  _GEN_51 = ~_T_6; // @[FU.scala 63:23]
-  wire  _GEN_53 = ~_T_2; // @[FU.scala 68:25]
-  wire  _GEN_54 = ~_T_2 & _T_11; // @[FU.scala 68:25]
-  wire  _GEN_58 = ~io_signed; // @[FU.scala 73:25]
-  wire  _GEN_59 = _GEN_54 & ~io_signed; // @[FU.scala 73:25]
-  wire  _GEN_66 = _GEN_59 & _GEN_46; // @[FU.scala 80:25]
-  wire  _GEN_75 = _GEN_66 & _GEN_51; // @[FU.scala 85:25]
-  wire  _GEN_101 = _GEN_75 & _T_28; // @[FU.scala 123:21]
-  wire  _GEN_113 = _GEN_101 & ~_T_29; // @[FU.scala 136:23]
-  wire  _GEN_127 = _GEN_53 & ~_T_11; // @[FU.scala 171:25]
-  wire  _GEN_128 = _GEN_53 & ~_T_11 & _T_40; // @[FU.scala 171:25]
-  wire  _GEN_135 = _GEN_128 & _GEN_46; // @[FU.scala 174:25]
-  wire  _GEN_149 = _GEN_127 & ~_T_40; // @[FU.scala 182:23]
-  wire  _GEN_150 = _GEN_127 & ~_T_40 & _T_49; // @[FU.scala 182:23]
-  wire  _GEN_166 = _GEN_149 & ~_T_49; // @[FU.scala 190:23]
-  wire  _GEN_167 = _GEN_149 & ~_T_49 & _T_54; // @[FU.scala 190:23]
-  assign io_valid = io_fu_op == 3'h0 ? _GEN_1 : _GEN_40; // @[FU.scala 55:30]
-  assign io_out = _GEN_41[63:0]; // @[FU.scala 45:20]
+  reg [63:0] regA; // @[FU.scala 95:23]
+  reg [63:0] regB; // @[FU.scala 96:23]
+  reg [63:0] tempSum; // @[FU.scala 97:26]
+  reg [63:0] actual; // @[FU.scala 99:25]
+  reg [127:0] actual_REG; // @[FU.scala 111:33]
+  wire [63:0] _GEN_6 = io_ready ? io_A : regA; // @[FU.scala 103:22 105:21 95:23]
+  wire [63:0] _GEN_7 = io_ready ? io_B : regB; // @[FU.scala 103:22 106:21 96:23]
+  wire  _GEN_8 = io_ready ? 1'h0 : _GEN_1; // @[FU.scala 103:22 108:25]
+  wire [1:0] _GEN_9 = io_ready ? 2'h1 : state; // @[FU.scala 103:22 109:22 88:28]
+  wire [63:0] _GEN_10 = io_ready ? 64'h0 : tempSum; // @[FU.scala 103:22 110:24 97:26]
+  wire [127:0] _GEN_11 = io_ready ? actual_REG : {{64'd0}, actual}; // @[FU.scala 103:22 111:23 99:25]
+  wire  _T_22 = state == 2'h1; // @[FU.scala 115:21]
+  wire  _T_23 = actual == tempSum; // @[FU.scala 117:23]
+  wire [63:0] _tempSum_T_1 = regA + tempSum; // @[FU.scala 123:31]
+  wire [64:0] _regA_T = {regA, 1'h0}; // @[FU.scala 126:26]
+  wire [63:0] _regB_T = {{1'd0}, regB[63:1]}; // @[FU.scala 128:26]
+  wire [64:0] _GEN_14 = regB != 64'h0 ? _regA_T : {{1'd0}, _GEN_6}; // @[FU.scala 120:31 126:18]
+  wire  _GEN_16 = regB != 64'h0 ? _GEN_8 : 1'h1; // @[FU.scala 120:31 130:24]
+  wire  _GEN_19 = state == 2'h2 ? 1'h0 : _GEN_8; // @[FU.scala 133:36 137:21]
+  wire [64:0] _GEN_21 = state == 2'h1 ? _GEN_14 : {{1'd0}, _GEN_6}; // @[FU.scala 115:30]
+  wire  _GEN_23 = state == 2'h1 ? _GEN_16 : _GEN_19; // @[FU.scala 115:30]
+  wire [63:0] _GEN_25 = _T_6 ? _output_T_17 : tempSum; // @[FU.scala 140:16 79:43 81:16]
+  wire  _GEN_26 = _T_6 ? _GEN_1 : _GEN_23; // @[FU.scala 79:43]
+  wire [63:0] _GEN_27 = _T_3 ? _GEN_5 : _GEN_25; // @[FU.scala 71:37]
+  wire  _GEN_28 = _T_3 ? _GEN_1 : _GEN_26; // @[FU.scala 71:37]
+  wire [127:0] _GEN_29 = io_signed ? _output_T_13 : {{64'd0}, _GEN_27}; // @[FU.scala 67:20 69:16]
+  wire  _GEN_30 = io_signed ? _GEN_1 : _GEN_28; // @[FU.scala 67:20]
+  wire  _T_30 = io_fu_op == 3'h4; // @[FU.scala 149:23]
+  wire [63:0] _output_T_18 = io_A ^ io_B; // @[FU.scala 152:24]
+  wire [63:0] _output_T_19 = io_A | io_B; // @[FU.scala 155:24]
+  wire [63:0] _output_T_20 = io_A & io_B; // @[FU.scala 158:24]
+  wire [63:0] _GEN_31 = _T_6 ? _output_T_19 : _output_T_20; // @[FU.scala 153:44 155:16 158:16]
+  wire [63:0] _GEN_32 = _T_3 ? _output_T_18 : _GEN_31; // @[FU.scala 150:39 152:16]
+  wire  _T_39 = io_fu_op == 3'h2; // @[FU.scala 160:23]
+  wire  _GEN_33 = io_signed ? $signed(io_A) < $signed(io_B) : io_A < io_B; // @[FU.scala 161:20 163:14 166:14]
+  wire [2:0] _GEN_43 = {{1'd0}, io_fu_type}; // @[FU.scala 168:25]
+  wire  _T_44 = _GEN_43 == 3'h3; // @[FU.scala 168:25]
+  wire  _T_45 = io_cond != 64'h0; // @[FU.scala 169:18]
+  wire [63:0] _GEN_34 = io_cond != 64'h0 ? io_A : io_B; // @[FU.scala 169:26 171:14 174:14]
+  wire [63:0] _GEN_35 = _GEN_43 == 3'h3 ? _GEN_34 : io_A; // @[FU.scala 168:37 178:14]
+  wire [63:0] _GEN_36 = io_fu_op == 3'h2 ? {{63'd0}, _GEN_33} : _GEN_35; // @[FU.scala 160:35]
+  wire [63:0] _GEN_37 = io_fu_op == 3'h4 ? _GEN_32 : _GEN_36; // @[FU.scala 149:38]
+  wire [127:0] _GEN_38 = io_fu_op == 3'h1 ? _GEN_29 : {{64'd0}, _GEN_37}; // @[FU.scala 66:36]
+  wire  _GEN_39 = io_fu_op == 3'h1 ? _GEN_30 : _GEN_1; // @[FU.scala 66:36]
+  wire [127:0] _GEN_40 = io_fu_op == 3'h0 ? {{1'd0}, _GEN_3} : _GEN_38; // @[FU.scala 55:30]
+  wire  _GEN_45 = ~_T_3; // @[FU.scala 60:23]
+  wire  _GEN_46 = _T_2 & ~_T_3; // @[FU.scala 60:23]
+  wire  _GEN_50 = ~_T_6; // @[FU.scala 63:23]
+  wire  _GEN_52 = ~_T_2; // @[FU.scala 68:25]
+  wire  _GEN_53 = ~_T_2 & _T_11; // @[FU.scala 68:25]
+  wire  _GEN_57 = ~io_signed; // @[FU.scala 73:25]
+  wire  _GEN_58 = _GEN_53 & ~io_signed; // @[FU.scala 73:25]
+  wire  _GEN_65 = _GEN_58 & _GEN_45; // @[FU.scala 80:25]
+  wire  _GEN_79 = _GEN_52 & ~_T_11; // @[FU.scala 151:25]
+  wire  _GEN_80 = _GEN_52 & ~_T_11 & _T_30; // @[FU.scala 151:25]
+  wire  _GEN_87 = _GEN_80 & _GEN_45; // @[FU.scala 154:25]
+  wire  _GEN_101 = _GEN_79 & ~_T_30; // @[FU.scala 162:23]
+  wire  _GEN_102 = _GEN_79 & ~_T_30 & _T_39; // @[FU.scala 162:23]
+  wire  _GEN_118 = _GEN_101 & ~_T_39; // @[FU.scala 170:23]
+  wire  _GEN_119 = _GEN_101 & ~_T_39 & _T_44; // @[FU.scala 170:23]
+  assign io_valid = io_fu_op == 3'h0 ? _GEN_1 : _GEN_39; // @[FU.scala 55:30]
+  assign io_out = _GEN_40[63:0]; // @[FU.scala 45:20]
   always @(posedge clock) begin
     if (reset) begin // @[FU.scala 88:28]
       state <= 2'h0; // @[FU.scala 88:28]
-    end else if (state == 2'h1) begin // @[FU.scala 120:33]
-      if (regB != 64'h0) begin // @[FU.scala 122:33]
+    end else if (state == 2'h1) begin // @[FU.scala 115:30]
+      if (regB != 64'h0) begin // @[FU.scala 120:31]
         state <= _GEN_9;
       end else begin
-        state <= 2'h2; // @[FU.scala 138:23]
+        state <= 2'h2; // @[FU.scala 131:21]
       end
-    end else if (state == 2'h2) begin // @[FU.scala 143:36]
-      if (~io_ready) begin // @[FU.scala 145:27]
-        state <= 2'h0; // @[FU.scala 146:23]
-      end else begin
-        state <= _GEN_9;
-      end
+    end else if (state == 2'h2) begin // @[FU.scala 133:36]
+      state <= 2'h0; // @[FU.scala 136:19]
     end else begin
       state <= _GEN_9;
     end
-    regA <= _GEN_22[63:0];
-    if (state == 2'h1) begin // @[FU.scala 120:33]
-      if (regB != 64'h0) begin // @[FU.scala 122:33]
-        regB <= _regB_T; // @[FU.scala 133:20]
+    regA <= _GEN_21[63:0];
+    if (state == 2'h1) begin // @[FU.scala 115:30]
+      if (regB != 64'h0) begin // @[FU.scala 120:31]
+        regB <= _regB_T; // @[FU.scala 128:18]
       end else begin
         regB <= _GEN_7;
       end
     end else begin
       regB <= _GEN_7;
     end
-    if (state == 2'h1) begin // @[FU.scala 120:33]
-      if (regB != 64'h0) begin // @[FU.scala 122:33]
-        if (regB[0]) begin // @[FU.scala 126:37]
-          tempSum <= _tempSum_T_1; // @[FU.scala 127:25]
+    if (state == 2'h1) begin // @[FU.scala 115:30]
+      if (regB != 64'h0) begin // @[FU.scala 120:31]
+        if (regB[0]) begin // @[FU.scala 122:35]
+          tempSum <= _tempSum_T_1; // @[FU.scala 123:23]
         end else begin
           tempSum <= _GEN_10;
         end
@@ -201,6 +198,8 @@ module FU(
     end else begin
       tempSum <= _GEN_10;
     end
+    actual <= _GEN_11[63:0];
+    actual_REG <= io_A * io_B; // @[FU.scala 111:38]
     `ifndef SYNTHESIS
     `ifdef PRINTF_COND
       if (`PRINTF_COND) begin
@@ -227,7 +226,7 @@ module FU(
     `ifdef PRINTF_COND
       if (`PRINTF_COND) begin
     `endif
-        if (_GEN_47 & ~_T_6 & _T_5) begin
+        if (_GEN_46 & ~_T_6 & _T_5) begin
           $fwrite(32'h80000002,"Inst: sra\n"); // @[FU.scala 63:23]
         end
     `ifdef PRINTF_COND
@@ -249,7 +248,7 @@ module FU(
     `ifdef PRINTF_COND
       if (`PRINTF_COND) begin
     `endif
-        if (_GEN_54 & ~io_signed & _T_3 & _T_5) begin
+        if (_GEN_53 & ~io_signed & _T_3 & _T_5) begin
           $fwrite(32'h80000002,"Inst: add\n"); // @[FU.scala 73:25]
         end
     `ifdef PRINTF_COND
@@ -260,7 +259,7 @@ module FU(
     `ifdef PRINTF_COND
       if (`PRINTF_COND) begin
     `endif
-        if (_GEN_59 & _GEN_46 & _T_6 & _T_5) begin
+        if (_GEN_58 & _GEN_45 & _T_6 & _T_5) begin
           $fwrite(32'h80000002,"Inst: sub\n"); // @[FU.scala 80:25]
         end
     `ifdef PRINTF_COND
@@ -271,8 +270,8 @@ module FU(
     `ifdef PRINTF_COND
       if (`PRINTF_COND) begin
     `endif
-        if (_GEN_66 & _GEN_51 & _T_5) begin
-          $fwrite(32'h80000002,"Inst: mult\n"); // @[FU.scala 85:25]
+        if (_GEN_65 & _GEN_50 & _T_22 & _T_23 & _T_5) begin
+          $fwrite(32'h80000002,"EQUAL: %d\n",io_valid); // @[FU.scala 118:23]
         end
     `ifdef PRINTF_COND
       end
@@ -282,8 +281,8 @@ module FU(
     `ifdef PRINTF_COND
       if (`PRINTF_COND) begin
     `endif
-        if (_GEN_75 & _T_5) begin
-          $fwrite(32'h80000002,"state: %d\n",state); // @[FU.scala 92:15]
+        if (_GEN_52 & ~_T_11 & _T_30 & _T_3 & _T_5) begin
+          $fwrite(32'h80000002,"Inst: xor\n"); // @[FU.scala 151:25]
         end
     `ifdef PRINTF_COND
       end
@@ -293,8 +292,8 @@ module FU(
     `ifdef PRINTF_COND
       if (`PRINTF_COND) begin
     `endif
-        if (_GEN_75 & io_ready & _T_5) begin
-          $fwrite(32'h80000002,"WOO: %d\n",io_ready); // @[FU.scala 112:24]
+        if (_GEN_80 & _GEN_45 & _T_6 & _T_5) begin
+          $fwrite(32'h80000002,"Inst: or\n"); // @[FU.scala 154:25]
         end
     `ifdef PRINTF_COND
       end
@@ -304,8 +303,8 @@ module FU(
     `ifdef PRINTF_COND
       if (`PRINTF_COND) begin
     `endif
-        if (_GEN_75 & _T_28 & _T_29 & _T_5) begin
-          $fwrite(32'h80000002,"mutliplying: %d\n",io_ready); // @[FU.scala 123:21]
+        if (_GEN_87 & _GEN_50 & _T_5) begin
+          $fwrite(32'h80000002,"Inst: and\n"); // @[FU.scala 157:25]
         end
     `ifdef PRINTF_COND
       end
@@ -315,8 +314,8 @@ module FU(
     `ifdef PRINTF_COND
       if (`PRINTF_COND) begin
     `endif
-        if (_GEN_101 & ~_T_29 & _T_5) begin
-          $fwrite(32'h80000002,"DONE: %d\n",io_ready); // @[FU.scala 136:23]
+        if (_GEN_79 & ~_T_30 & _T_39 & io_signed & _T_5) begin
+          $fwrite(32'h80000002,"Inst: lts\n"); // @[FU.scala 162:23]
         end
     `ifdef PRINTF_COND
       end
@@ -326,8 +325,8 @@ module FU(
     `ifdef PRINTF_COND
       if (`PRINTF_COND) begin
     `endif
-        if (_GEN_113 & _T_5) begin
-          $fwrite(32'h80000002,"tempSum: %d\n",tempSum); // @[FU.scala 139:23]
+        if (_GEN_102 & _GEN_57 & _T_5) begin
+          $fwrite(32'h80000002,"Inst: lt\n"); // @[FU.scala 165:23]
         end
     `ifdef PRINTF_COND
       end
@@ -337,8 +336,8 @@ module FU(
     `ifdef PRINTF_COND
       if (`PRINTF_COND) begin
     `endif
-        if (_GEN_53 & ~_T_11 & _T_40 & _T_3 & _T_5) begin
-          $fwrite(32'h80000002,"Inst: xor\n"); // @[FU.scala 171:25]
+        if (_GEN_101 & ~_T_39 & _T_44 & _T_45 & _T_5) begin
+          $fwrite(32'h80000002,"Inst: cmova\n"); // @[FU.scala 170:23]
         end
     `ifdef PRINTF_COND
       end
@@ -348,8 +347,8 @@ module FU(
     `ifdef PRINTF_COND
       if (`PRINTF_COND) begin
     `endif
-        if (_GEN_128 & _GEN_46 & _T_6 & _T_5) begin
-          $fwrite(32'h80000002,"Inst: or\n"); // @[FU.scala 174:25]
+        if (_GEN_119 & ~_T_45 & _T_5) begin
+          $fwrite(32'h80000002,"Inst: cmovb\n"); // @[FU.scala 173:23]
         end
     `ifdef PRINTF_COND
       end
@@ -359,63 +358,8 @@ module FU(
     `ifdef PRINTF_COND
       if (`PRINTF_COND) begin
     `endif
-        if (_GEN_135 & _GEN_51 & _T_5) begin
-          $fwrite(32'h80000002,"Inst: and\n"); // @[FU.scala 177:25]
-        end
-    `ifdef PRINTF_COND
-      end
-    `endif
-    `endif // SYNTHESIS
-    `ifndef SYNTHESIS
-    `ifdef PRINTF_COND
-      if (`PRINTF_COND) begin
-    `endif
-        if (_GEN_127 & ~_T_40 & _T_49 & io_signed & _T_5) begin
-          $fwrite(32'h80000002,"Inst: lts\n"); // @[FU.scala 182:23]
-        end
-    `ifdef PRINTF_COND
-      end
-    `endif
-    `endif // SYNTHESIS
-    `ifndef SYNTHESIS
-    `ifdef PRINTF_COND
-      if (`PRINTF_COND) begin
-    `endif
-        if (_GEN_150 & _GEN_58 & _T_5) begin
-          $fwrite(32'h80000002,"Inst: lt\n"); // @[FU.scala 185:23]
-        end
-    `ifdef PRINTF_COND
-      end
-    `endif
-    `endif // SYNTHESIS
-    `ifndef SYNTHESIS
-    `ifdef PRINTF_COND
-      if (`PRINTF_COND) begin
-    `endif
-        if (_GEN_149 & ~_T_49 & _T_54 & _T_55 & _T_5) begin
-          $fwrite(32'h80000002,"Inst: cmova\n"); // @[FU.scala 190:23]
-        end
-    `ifdef PRINTF_COND
-      end
-    `endif
-    `endif // SYNTHESIS
-    `ifndef SYNTHESIS
-    `ifdef PRINTF_COND
-      if (`PRINTF_COND) begin
-    `endif
-        if (_GEN_167 & ~_T_55 & _T_5) begin
-          $fwrite(32'h80000002,"Inst: cmovb\n"); // @[FU.scala 193:23]
-        end
-    `ifdef PRINTF_COND
-      end
-    `endif
-    `endif // SYNTHESIS
-    `ifndef SYNTHESIS
-    `ifdef PRINTF_COND
-      if (`PRINTF_COND) begin
-    `endif
-        if (_GEN_166 & ~_T_54 & _T_5) begin
-          $fwrite(32'h80000002,"Inst: enc\n"); // @[FU.scala 197:23]
+        if (_GEN_118 & ~_T_44 & _T_5) begin
+          $fwrite(32'h80000002,"Inst: enc\n"); // @[FU.scala 177:23]
         end
     `ifdef PRINTF_COND
       end
@@ -466,6 +410,10 @@ initial begin
   regB = _RAND_2[63:0];
   _RAND_3 = {2{`RANDOM}};
   tempSum = _RAND_3[63:0];
+  _RAND_4 = {2{`RANDOM}};
+  actual = _RAND_4[63:0];
+  _RAND_5 = {4{`RANDOM}};
+  actual_REG = _RAND_5[127:0];
 `endif // RANDOMIZE_REG_INIT
   `endif // RANDOMIZE
 end // initial

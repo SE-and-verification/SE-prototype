@@ -82,16 +82,12 @@ class FU(val debug: Boolean) extends Module{
       }.otherwise{
 
         // changes: 
-        if(debug) printf("Inst: mult\n")
+        // if(debug) printf("Inst: mult\n")
   
   
         val state = RegInit(0.U) // starting state, inputs not ready
-        /*when (io.ready) {
-          state := 400.U
-        }*/
-        printf("state: %d\n",state)
-
-        val valid = RegInit(false.B); // output not ready yet
+        
+        //val valid = RegInit(false.B); // output not ready yet
         val ready = io.ready // input;
         val inA = io.A // combinational
         val inB = io.B // combinational
@@ -99,70 +95,54 @@ class FU(val debug: Boolean) extends Module{
         val regA = Reg(UInt(64.W))
         val regB = Reg(UInt(64.W))
         val tempSum = Reg(UInt(64.W))
+
+        val actual = Reg(UInt(64.W))      
+        // Ready is high! Operands done decrypting
+        // will scrap any progress if new operands come in
+        //printf("inA: %d\n", inA)
+        when (ready) {
+             // initializing all values
+               regA := inA
+               regB := inB
         
-       // printf("ready: %d\n",ready)
-        //printf("valid: %d\n",valid)
-
-        //printf("REAL VAL: %d\n",inA * inB)
-
-          // got to ready!
+               io.valid := false.B
+               state := 1.U
+               tempSum := 0.U
+               actual := RegNext(inA * inB)
+        }
           
-           when (ready) {
-                // initializing all values!
-                 printf("WOO: %d\n",ready)
-                  regA := inA
-                  regB := inB
-                  io.valid := false.B
-                  state := 1.U
-                  tempSum := 0.U
-           }
-          
-           when (state === 1.U) {
-            // there are still 1s left in reg b
-            when (regB =/= 0.U) {
-              printf("mutliplying: %d\n",ready)
-                // do multiplication stuff
-              
-              when (regB(0) === 1.B){
-                tempSum := regA + tempSum
-              }
-              
-              // left shift A by 1 for next round of multiplcation
-              regA := regA << 1.U 
-              // right shift B by 1 to get next bit
-              regB := regB >> 1.U
-
-            } .otherwise { // when no more 1s left in b, done w multiplying
-                printf("DONE: %d\n",ready)
-                io.valid := true.B
-                state := 2.U
-                printf("tempSum: %d\n", tempSum)
+          // in computation state
+        when (state === 1.U) {
+         // there are still 1s left in reg b
+         when (actual === tempSum){
+                printf("EQUAL: %d\n",io.valid)                
+         }
+          when (regB =/= 0.U) {
+              // do multiplication stuff
+            when (regB(0) === 1.B){
+              tempSum := regA + tempSum
             }
-              
-
+            // left shift A by 1 for next round of multiplcation
+            regA := regA << 1.U 
+            // right shift B by 1 to get next LSB
+            regB := regB >> 1.U
+          }.otherwise { // when no more 1s left in b, done w multiplying
+              io.valid := true.B
+              state := 2.U
+          }
         }.elsewhen (state === 2.U) {
+          // sets valid to false after it was just high, then goes to waiting state 0
           // does nothing until new values come in and ready goes to 0 while decrypying
-            when (!ready) {
-                state := 0.U
-                io.valid:= false.B
-            }
+            state := 0.U
+            io.valid:= false.B
         }
         
         output := tempSum
         
-        
-        
         /*
         output := io.A * io.B
         io.valid := true.B  */
-        
-        
-        /*
-        when (io.A === 0.U | io.B === 0.U) { output := 0.U(64.W) // if any operand is 0, output a 64 bit 0
-        }.elsewhen (io.A === 2.U) { output := io.B << 2.U // left shift by 1 to be faster
-        }.elsewhen (io.B === 2.U) { output := io.A << 2.U // left shift is faster
-        }.otherwise {output := io.A * io.B} */
-
+      
       }
 
     }

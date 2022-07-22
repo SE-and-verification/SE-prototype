@@ -14,7 +14,7 @@ out_dir    = $(base_dir)/outputs
 SBT       = sbt
 # SBT_FLAGS = -ivy $(HOME)/.ivy2 
 
-VERILATOR_FLAGS =--debug -g3 -I obj_dir -I/usr/share/verilator/include module.cpp /usr/share/verilator/include/verilated.cpp
+VERILATOR_FLAGS =--trace --debug -g3 -I obj_dir -I/usr/share/verilator/include module.cpp /usr/share/verilator/include/verilated.cpp
 
 VSE.o: verilator_generate
 	cd obj_dir; make -f VSE.mk ; cd ..

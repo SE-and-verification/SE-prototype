@@ -9,6 +9,7 @@ lazy val root = (project in file("."))
     name := "SE",
     libraryDependencies ++= Seq(
       "edu.berkeley.cs" %% "chisel3" % "3.5.2",
+      "edu.berkeley.cs" %% "chiseltest" % "0.5.2"
     ),
     addCompilerPlugin("edu.berkeley.cs" % "chisel3-plugin" % "3.5.2" cross CrossVersion.full),
     scalacOptions ++= Seq(

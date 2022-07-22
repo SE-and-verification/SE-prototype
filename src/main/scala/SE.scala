@@ -190,7 +190,7 @@ class SE(val debug:Boolean, val canChangeKey: Boolean) extends Module{
 
 	// when(seOpValid ){
 	// 	printf("\n-----mid----\n")
-	// 	printf("op1_asUInt:%x\n",seoperation.io.op1_input)
+	//printf("op1_asUInt:%x\n",seoperation.io.op1_input)
 	// 	printf("op2_asUInt:%x\n",seoperation.io.op2_input)
 	// 	printf("cond_asUInt:%x\n",seoperation.io.cond_input)
 	// 	printf("op1_asUInt:%x\n",Mux(mid_inst_buffer(7,5) === 5.U(3.W), mid_op1_buffer(127,64),op1_asUInt(127,64)))
