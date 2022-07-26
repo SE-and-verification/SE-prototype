@@ -33,49 +33,33 @@ int print128dec(__uint128_t dec){
 int main(){
 	setParameters();
 	SE se_simulator;
-	enc_lib::enc_int l1 = 1;
-	enc_lib::enc_int l2 = 2;
-	enc_lib::enc_int l3 = l1+l2;
-	enc_lib::enc_int l6 = l2*l3;
 
-	// __uint128_t l3_veri = SE::SECompute(l1.ciphertext.convert_to_128(), l2.ciphertext.convert_to_128(), 0, Instruction::ADD())
+	uint64_t firstTicks, thisTicks, b = 0;
+	__uint128_t ctxt, squared;
 
-	// printf("%d\n",decrypt_128_64( l3_veri));
-	printf("%d:\n",1);
-	print128(l1.ciphertext.convert_to_128());
-	printf("%d:\n",2);
-	print128(l2.ciphertext.convert_to_128());
-	print128dec(l2.ciphertext.convert_to_128());
-	print128dec(l1.ciphertext.convert_to_128());
-	print128dec(l3.ciphertext.convert_to_128());
-	// print128(l3.ciphertext.convert_to_128());
-	printf("ticks: %d\n", SE::real_tickcount);
-	__uint128_t l3_SE = SE::SECompute(l2.ciphertext.convert_to_128(), l1.ciphertext.convert_to_128(), 0, Instruction::ADD());
-	print128(l3_SE);
-	print128dec(l3_SE);
+	{
+		firstTicks = SE::real_tickcount;
+		enc_lib::enc_int b_e = b;
+		ctxt = b_e.ciphertext.convert_to_128();
+		squared = SE::SECompute(ctxt, ctxt, ctxt, Instruction::MULT());
+		thisTicks = firstTicks = SE::real_tickcount - firstTicks;
+	}
 
-	// print128(l6.ciphertext.convert_to_128());
-	printf("ticks: %d\n", SE::real_tickcount);
+	print128(ctxt);
+	print128(squared);
+	std::cout << "ticks: " << thisTicks << std::endl;
 
-	__uint128_t l6_SE = SE::SECompute(l2.ciphertext.convert_to_128(), l3.ciphertext.convert_to_128(), 0, Instruction::MULT());
-	print128(l6_SE);
-	print128dec(l6_SE);
-	printf("ticks: %d\n", SE::real_tickcount);
+	do {
+		thisTicks = SE::real_tickcount;
+		enc_lib::enc_int b_e = b++;
+		ctxt = b_e.ciphertext.convert_to_128();
+		squared = SE::SECompute(ctxt, ctxt, ctxt, Instruction::MULT());
+		thisTicks = SE::real_tickcount - thisTicks;
+	} while (thisTicks == firstTicks);
 
-	// uint8_t newKey[16] = {15,14,13,12,11,10,9,8,7,6,5,4,3,2,1,0};
-	// changeKey(newKey);
-	enc_lib::enc_int l1_new = 1;
-	enc_lib::enc_int l2_new = 2;
-	enc_lib::enc_int l3_new = 3;
-	__uint128_t l3_SE_new = SE::SECompute(l2_new.ciphertext.convert_to_128(), l1_new.ciphertext.convert_to_128(), 0, Instruction::ADD());
-	__uint128_t l6_SE_new = SE::SECompute(l2_new.ciphertext.convert_to_128(), l3_new.ciphertext.convert_to_128(), 0, Instruction::MULT());
-	__uint128_t l9_SE_new = SE::SECompute(l3_SE_new, l6_SE_new, 0, Instruction::ADD());
-	print128(l9_SE_new);
-	print128dec(l9_SE_new);
+	print128(ctxt);
+	print128(squared);
+	std::cout << "ticks: " << thisTicks << std::endl;
 
-	__uint128_t shift_SE_new = SE::SECompute(l3_SE_new, l6_SE_new, 0, Instruction::SLL());
-
-	print128(shift_SE_new);
-	print128dec(shift_SE_new);
 	return 0;
 }
