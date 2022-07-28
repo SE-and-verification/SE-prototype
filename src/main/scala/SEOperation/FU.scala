@@ -44,6 +44,8 @@ class FU(val debug: Boolean) extends Module{
   val io = IO(new FUIO)
   val output = Wire(UInt(64.W))
 
+  val valid = RegInit(true.B) // initia
+
   when(io.fu_op =/= FU_ARITH){
     io.valid := true.B
   }.elsewhen(io.fu_type =/= ARITH_MULT){
@@ -81,13 +83,10 @@ class FU(val debug: Boolean) extends Module{
         output := io.A - io.B
       }.otherwise{
 
-        // changes: 
-        // if(debug) printf("Inst: mult\n")
-  
-  
+        if(debug) printf("Inst: mult\n")
+        
         val state = RegInit(0.U) // starting state, inputs not ready
         
-        //val valid = RegInit(false.B); // output not ready yet
         val ready = io.ready // input;
         val inA = io.A // combinational
         val inB = io.B // combinational
@@ -96,59 +95,22 @@ class FU(val debug: Boolean) extends Module{
         val regB = Reg(UInt(64.W))
         val tempSum = Reg(UInt(64.W))
 
-        val actual = Reg(UInt(64.W))
-
-        // will store new inputs no matter the state
-        // this will only store the newest operands that are not currently being multiplied
-        // do i need a register file orrrr ..?
-        val buffA = RegEnable(inA, ready)
-        val buffB = RegEnable(inB, ready)
-        val newValues = RegInit(false.B)
-
-        // if not done multiplying but new values are coming in
-        when (ready && state =/= 0.U){
-          newValues := true.B
-        }
 
         // waiting for operands state
         when(state === 0.U){
           // Ready is high! Operands done decrypting
-          when (ready & ~newValues) {
+          when (ready) {
                // initializing all values
               regA := inA
               regB := inB
               io.valid := false.B
               state := 1.U
               tempSum := 0.U
-              //actual := RegNext(inA * inB)
-          }.elsewhen(~ready & newValues){ 
-            // if new values came in while still multiplying but ready is low
-              regA := buffA
-              regB := buffB
-              io.valid := false.B
-              state := 1.U
-              tempSum := 0.U
-              newValues := false.B
-          }.otherwise{
-            // if new values AND even more values being added rn
-            // stores the new inputs, computes on ones that were inputted before
-              regA := buffA
-              regB := buffB
-              io.valid := false.B
-              state := 1.U
-              tempSum := 0.U
-              buffA := inA
-              buffB := inB
           }
-          
         }
-          
         // in computation state
         when (state === 1.U) {
          // there are still 1s left in reg b
-         when (actual === tempSum){
-                printf("EQUAL: %d\n",io.valid)                
-         }
           when (regB =/= 0.U) {
               // do multiplication stuff
             when (regB(0) === 1.B){
@@ -160,20 +122,11 @@ class FU(val debug: Boolean) extends Module{
             regB := regB >> 1.U
           }.otherwise { // when no more 1s left in b, done w multiplying
               io.valid := true.B
-              state := 2.U
+              state := 0.U
           }
-        }.elsewhen (state === 2.U) {
-          // sets valid to false after it was just high, then goes to waiting state 0
-          // does nothing until new values come in and ready goes to 0 while decrypying
-            state := 0.U
-            io.valid:= false.B
         }
         
-        output := tempSum
-        
-        /*
-        output := io.A * io.B
-        io.valid := true.B  */
+        output := tempSum 
       
       }
 

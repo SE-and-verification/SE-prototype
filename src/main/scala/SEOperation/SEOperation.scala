@@ -11,7 +11,7 @@ import COND._
 
 class SEOpIO  extends Bundle{
 	val inst = Input(UInt(8.W))
-	val valid = Input(Bool()) // can i use this for saying that the input is ready ..?
+	val valid = Input(Bool())
 
 	val op1_input = Input(UInt(64.W))
 

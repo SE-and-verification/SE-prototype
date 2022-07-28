@@ -6,7 +6,7 @@ import java.io.{File, FileWriter}
 import chisel3._
 import chisel3.stage._
 object Main extends App {
-  val debug = true
+  val debug = false
   val canChangeKey = false
   val dir = new File(args(0)) ; dir.mkdirs
   // val raw = new FileWriter(new File(dir, "se_raw.fir"))
