@@ -63,9 +63,13 @@ class SE(val debug:Boolean, val canChangeKey: Boolean) extends Module{
 	val aes_cipher = Module(new AESEncrypt(rolled))
 	val key = Reg(Vec(11, Vec(16,UInt(8.W))))
 
-	val ciphers = Reg(Vec(32, UInt(128.W)))
-	val plaintexts = Reg(Vec(32, UInt(64.W)))
-	val ptr = RegInit(0.U(8.W))
+	val ciphers_pos = Reg(Vec(16, UInt(128.W)))
+	val ciphers_neg = Reg(Vec(16, UInt(128.W)))
+
+	val plaintexts_pos = Reg(Vec(16, UInt(64.W)))
+	val plaintexts_neg = Reg(Vec(16, UInt(64.W)))
+	val ptr_pos = RegInit(0.U(4.W))
+	val ptr_neg = RegInit(0.U(4.W))
 	val expandedKey128 =VecInit(
     VecInit(0x00.U(8.W), 0x01.U(8.W), 0x02.U(8.W), 0x03.U(8.W), 0x04.U(8.W), 0x05.U(8.W), 0x06.U(8.W), 0x07.U(8.W), 0x08.U(8.W), 0x09.U(8.W), 0x0a.U(8.W), 0x0b.U(8.W), 0x0c.U(8.W), 0x0d.U(8.W), 0x0e.U(8.W), 0x0f.U(8.W)),
     VecInit(0xd6.U(8.W), 0xaa.U(8.W), 0x74.U(8.W), 0xfd.U(8.W), 0xd2.U(8.W), 0xaf.U(8.W), 0x72.U(8.W), 0xfa.U(8.W), 0xda.U(8.W), 0xa6.U(8.W), 0x78.U(8.W), 0xf1.U(8.W), 0xd6.U(8.W), 0xab.U(8.W), 0x76.U(8.W), 0xfe.U(8.W)),
@@ -134,19 +138,25 @@ class SE(val debug:Boolean, val canChangeKey: Boolean) extends Module{
 		}
 	}
 
-	val op1_found = ciphers.contains(op1_buffer)
-	val op2_found = ciphers.contains(op2_buffer)
-	val cond_found = Wire(Bool())
-	when(inst_buffer === Instructions.CMOV){
-		cond_found := ciphers.contains(cond_buffer)
-	}.otherwise{
-		cond_found := true.B
-	}
-	val op1_val = plaintexts(ciphers.indexWhere(e => (e===op1_buffer)))
-	val op2_val = plaintexts(ciphers.indexWhere(e => (e===op2_buffer)))
-	val cond_val = plaintexts(ciphers.indexWhere(e => (e===cond_buffer)))
+	val op1_pos_found = ciphers_pos.contains(op1_buffer)
+	val op1_neg_found = ciphers_neg.contains(op1_buffer)
+	val op2_pos_found = ciphers_pos.contains(op2_buffer)
+	val op2_neg_found = ciphers_neg.contains(op2_buffer)	
+	val cond_pos_found = Wire(Bool())
+	val cond_neg_found = Wire(Bool())
 
-	val all_match = op1_found && op2_found && cond_found
+	when(inst_buffer === Instructions.CMOV){
+		cond_pos_found := ciphers_pos.contains(cond_buffer) 
+		cond_neg_found := ciphers_neg.contains(cond_buffer) 
+	}.otherwise{
+		cond_pos_found := true.B
+		cond_neg_found := true.B
+	}
+	val op1_val = Mux(op1_pos_found, plaintexts_pos(ciphers_pos.indexWhere(e => (e===op1_buffer))), plaintexts_neg(ciphers_neg.indexWhere(e => (e===op1_buffer))))
+	val op2_val = Mux(op2_pos_found, plaintexts_pos(ciphers_pos.indexWhere(e => (e===op2_buffer))), plaintexts_neg(ciphers_neg.indexWhere(e => (e===op2_buffer))))
+	val cond_val = Mux(cond_pos_found, plaintexts_pos(ciphers_pos.indexWhere(e => (e===cond_buffer))), plaintexts_neg(ciphers_neg.indexWhere(e => (e===cond_buffer))))
+
+	val all_match = (op1_pos_found || op1_neg_found)  && (op2_pos_found || op2_neg_found) && (cond_pos_found || cond_neg_found)
 
 	// Feed the ciphertexts into the invcipher
 	aes_invcipher.io.input_op1 := op1_buffer.asTypeOf(aes_invcipher.io.input_op1)
@@ -245,25 +255,42 @@ class SE(val debug:Boolean, val canChangeKey: Boolean) extends Module{
 	io.out.result := output_buffer
 
 	when(output_valid){
-		printf("ptr:%x\n",ptr)
-		when(ptr === 31.U){
-			ptr := 0.U
+		when(result_plaintext_buffer(63) === 0.U){
+			printf("ptr_pos:%x\n",ptr_pos)
+			when(ptr_pos === 15.U){
+				ptr_pos := 0.U
+			}.otherwise{
+				ptr_pos := ptr_pos + 1.U
+			}
 		}.otherwise{
-			ptr := ptr + 1.U
+			printf("ptr_neg:%x\n",ptr_neg)
+			when(ptr_neg === 15.U){
+				ptr_neg := 0.U
+			}.otherwise{
+				ptr_neg := ptr_neg + 1.U
+			}
 		}
 	}
 	when(reset.asBool){
 		key := expandedKey128
-		for(i <- 0 until 32){
-			ciphers(i) := 0.U
-			plaintexts(i) := 0.U
+		for(i <- 0 until 16){
+			ciphers_pos(i) := 0.U
+			plaintexts_pos(i) := 0.U
+			ciphers_neg(i) := 0.U
+			plaintexts_neg(i) := 0.U
 		}
 	}.otherwise{	
-		when(io.out.valid ){
-			ciphers(ptr) := output_buffer
-			plaintexts(ptr) := result_plaintext_buffer
+		when(io.out.valid){
+			when(result_plaintext_buffer(63) === 0.U){
+				ciphers_pos(ptr_pos) := output_buffer
+				plaintexts_pos(ptr_pos) := result_plaintext_buffer
+			}.otherwise{
+				ciphers_neg(ptr_pos) := output_buffer
+				plaintexts_neg(ptr_pos) := result_plaintext_buffer
+			}
 		}
 	}
+
 
 	InfoAnnotator.info(io.in.op1, "SensitiveInput")
 	InfoAnnotator.info(io.in.op2, "SensitiveInput")
