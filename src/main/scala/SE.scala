@@ -64,6 +64,7 @@ class SE(val debug:Boolean, val canChangeKey: Boolean) extends Module{
 	val key = Reg(Vec(11, Vec(16,UInt(8.W))))
 
 	val ciphers = Reg(Vec(32, UInt(128.W)))
+	val cache_valid = Reg(Vec(32, Bool()))
 	val plaintexts = Reg(Vec(32, UInt(64.W)))
 	val ptr = RegInit(0.U(8.W))
 	val expandedKey128 =VecInit(
@@ -142,11 +143,16 @@ class SE(val debug:Boolean, val canChangeKey: Boolean) extends Module{
 	}.otherwise{
 		cond_found := true.B
 	}
-	val op1_val = plaintexts(ciphers.indexWhere(e => (e===op1_buffer)))
-	val op2_val = plaintexts(ciphers.indexWhere(e => (e===op2_buffer)))
-	val cond_val = plaintexts(ciphers.indexWhere(e => (e===cond_buffer)))
+	val op1_idx = ciphers.indexWhere(e => (e===op1_buffer))
+	val op2_idx = ciphers.indexWhere(e => (e===op2_buffer))
+	val cond_idx = ciphers.indexWhere(e => (e===cond_buffer))
 
-	val all_match = op1_found && op2_found && cond_found
+	val op1_val = plaintexts(op1_idx)
+	val op2_val = plaintexts(op2_idx)
+	val cond_val = plaintexts(cond_idx)
+
+	val all_match = op1_found && op2_found && cond_found && cache_valid(op1_idx) && cache_valid(op2_idx) && cache_valid(cond_idx)
+
 
 	// Feed the ciphertexts into the invcipher
 	aes_invcipher.io.input_op1 := op1_buffer.asTypeOf(aes_invcipher.io.input_op1)
@@ -257,11 +263,13 @@ class SE(val debug:Boolean, val canChangeKey: Boolean) extends Module{
 		for(i <- 0 until 32){
 			ciphers(i) := 0.U
 			plaintexts(i) := 0.U
+			cache_valid(i) := false.B
 		}
 	}.otherwise{	
 		when(io.out.valid ){
 			ciphers(ptr) := output_buffer
 			plaintexts(ptr) := result_plaintext_buffer
+			cache_valid(ptr) := true.B
 		}
 	}
 
