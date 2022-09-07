@@ -70,6 +70,9 @@ class SE(val debug:Boolean, val canChangeKey: Boolean) extends Module{
 	val plaintexts_neg = Reg(Vec(16, UInt(64.W)))
 	val ptr_pos = RegInit(0.U(4.W))
 	val ptr_neg = RegInit(0.U(4.W))
+	val cache_valid_pos = Reg(Vec(16, Bool()))
+	val cache_valid_neg = Reg(Vec(16, Bool()))
+
 	val expandedKey128 =VecInit(
     VecInit(0x00.U(8.W), 0x01.U(8.W), 0x02.U(8.W), 0x03.U(8.W), 0x04.U(8.W), 0x05.U(8.W), 0x06.U(8.W), 0x07.U(8.W), 0x08.U(8.W), 0x09.U(8.W), 0x0a.U(8.W), 0x0b.U(8.W), 0x0c.U(8.W), 0x0d.U(8.W), 0x0e.U(8.W), 0x0f.U(8.W)),
     VecInit(0xd6.U(8.W), 0xaa.U(8.W), 0x74.U(8.W), 0xfd.U(8.W), 0xd2.U(8.W), 0xaf.U(8.W), 0x72.U(8.W), 0xfa.U(8.W), 0xda.U(8.W), 0xa6.U(8.W), 0x78.U(8.W), 0xf1.U(8.W), 0xd6.U(8.W), 0xab.U(8.W), 0x76.U(8.W), 0xfe.U(8.W)),
@@ -152,11 +155,17 @@ class SE(val debug:Boolean, val canChangeKey: Boolean) extends Module{
 		cond_pos_found := true.B
 		cond_neg_found := true.B
 	}
-	val op1_val = Mux(op1_pos_found, plaintexts_pos(ciphers_pos.indexWhere(e => (e===op1_buffer))), plaintexts_neg(ciphers_neg.indexWhere(e => (e===op1_buffer))))
-	val op2_val = Mux(op2_pos_found, plaintexts_pos(ciphers_pos.indexWhere(e => (e===op2_buffer))), plaintexts_neg(ciphers_neg.indexWhere(e => (e===op2_buffer))))
-	val cond_val = Mux(cond_pos_found, plaintexts_pos(ciphers_pos.indexWhere(e => (e===cond_buffer))), plaintexts_neg(ciphers_neg.indexWhere(e => (e===cond_buffer))))
 
-	val all_match = (op1_pos_found || op1_neg_found)  && (op2_pos_found || op2_neg_found) && (cond_pos_found || cond_neg_found)
+	val op1_idx = Mux(op1_pos_found, ciphers_pos.indexWhere(e => (e===op1_buffer)), ciphers_neg.indexWhere(e => (e===op1_buffer)))
+	val op2_idx = Mux(op2_pos_found, ciphers_pos.indexWhere(e => (e===op2_buffer)), ciphers_neg.indexWhere(e => (e===op2_buffer)))
+	val cond_idx = Mux(cond_pos_found, ciphers_pos.indexWhere(e => (e===cond_buffer)), ciphers_neg.indexWhere(e => (e===cond_buffer)))
+
+	val op1_val = Mux(op1_pos_found, plaintexts_pos(op1_idx), plaintexts_neg(op1_idx))
+	val op2_val = Mux(op2_pos_found, plaintexts_pos(op2_idx), plaintexts_neg(op2_idx))
+	val cond_val = Mux(cond_pos_found, plaintexts_pos(cond_idx), plaintexts_neg(cond_idx))
+
+	val all_match = ( (op1_pos_found && cache_valid_pos(op1_idx))|| (op1_neg_found && cache_valid_neg(op1_idx)) )  && ( (op2_pos_found && cache_valid_pos(op2_idx)) || (op2_neg_found && cache_valid_neg(op2_idx)) ) 	&& ( (cond_pos_found && cache_valid_pos(cond_idx)) || (cond_neg_found && cache_valid_neg(cond_idx)) )
+
 
 	// Feed the ciphertexts into the invcipher
 	aes_invcipher.io.input_op1 := op1_buffer.asTypeOf(aes_invcipher.io.input_op1)
@@ -278,15 +287,19 @@ class SE(val debug:Boolean, val canChangeKey: Boolean) extends Module{
 			plaintexts_pos(i) := 0.U
 			ciphers_neg(i) := 0.U
 			plaintexts_neg(i) := 0.U
+			cache_valid_pos(i) := false.B
+			cache_valid_neg(i) := false.B
 		}
 	}.otherwise{	
 		when(io.out.valid){
 			when(result_plaintext_buffer(63) === 0.U){
 				ciphers_pos(ptr_pos) := output_buffer
 				plaintexts_pos(ptr_pos) := result_plaintext_buffer
+				cache_valid_pos(ptr_pos) := true.B
 			}.otherwise{
-				ciphers_neg(ptr_pos) := output_buffer
-				plaintexts_neg(ptr_pos) := result_plaintext_buffer
+				ciphers_neg(ptr_neg) := output_buffer
+				plaintexts_neg(ptr_neg) := result_plaintext_buffer
+				cache_valid_neg(ptr_neg) := true.B
 			}
 		}
 	}
