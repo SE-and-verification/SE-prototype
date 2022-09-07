@@ -33,6 +33,7 @@
 #include <tinycrypt/aes.h>
 #include <tinycrypt/constants.h>
 #include <tinycrypt/utils.h>
+#include <stdio.h>
 
 static const uint8_t inv_sbox[256] = {
 	0x52, 0x09, 0x6a, 0xd5, 0x30, 0x36, 0xa5, 0x38, 0xbf, 0x40, 0xa3, 0x9e,
@@ -147,6 +148,7 @@ static inline void inv_shift_rows(uint8_t *s)
 		inv_sub_bytes(state);
 		add_round_key(state, s->words + Nb*i);
 		inv_mix_columns(state);
+	
 	}
 
 	inv_shift_rows(state);

@@ -53,6 +53,7 @@ class FU(implicit debug: Boolean) extends Module{
     when(io.fu_type === ARITH_ADD){
       if(debug) printf("Inst: add\n")
       output := io.A + io.B
+      printf("a:%d,  b:%d\n", io.A, io.B);
     }.elsewhen(io.fu_type === ARITH_SUB){
       if(debug) printf("Inst: sub\n")
       output := io.A - io.B

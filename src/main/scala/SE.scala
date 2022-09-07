@@ -62,11 +62,19 @@ class SE(implicit debug:Boolean) extends Module{
 	// Once we receive the data, first latch them into buffers. 
 	val inst_buffer = RegEnable(io.request.bits.inst, io.request.valid)
 
-	val op1_buffer = RegEnable(io.request.bits.op1, io.request.valid)
-
-	val op2_buffer = RegEnable( io.request.bits.op2, io.request.valid)
-
-	val cond_buffer = RegEnable( io.request.bits.cond, io.request.valid)
+	val op1_buffer = Reg(Vec(aes.Params.StateLength, UInt(8.W)))
+	val op2_buffer = Reg(Vec(aes.Params.StateLength, UInt(8.W)))
+	val cond_buffer = Reg(Vec(aes.Params.StateLength, UInt(8.W)))
+	when(io.request.valid){
+		for(i <- 0 until aes.Params.StateLength){
+			op1_buffer(aes.Params.StateLength - i -1) := io.request.bits.op1((aes.Params.StateLength-i)*8-1,(aes.Params.StateLength-i-1)*8)
+			op2_buffer(aes.Params.StateLength - i -1) := io.request.bits.op2((aes.Params.StateLength-i)*8-1,(aes.Params.StateLength-i-1)*8)
+			cond_buffer(aes.Params.StateLength - i -1) := io.request.bits.cond((aes.Params.StateLength-i)*8-1,(aes.Params.StateLength-i-1)*8)
+			// op1_buffer(i) := io.request.bits.op1((aes.Params.StateLength-i)*8-1,(aes.Params.StateLength-i-1)*8)
+			// op2_buffer(i) := io.request.bits.op2((aes.Params.StateLength-i)*8-1,(aes.Params.StateLength-i-1)*8)
+			// cond_buffer(i) := io.request.bits.cond((aes.Params.StateLength-i)*8-1,(aes.Params.StateLength-i-1)*8)
+		}
+	}
 
 	val valid_buffer = Reg(Bool())
 
@@ -98,9 +106,21 @@ class SE(implicit debug:Boolean) extends Module{
 	if(debug){
 		when(valid_buffer){
 			printf("\n-----front----\n")
-			printf("op1 buffer:%x\n",op1_buffer)
-			printf("op2 buffer:%x\n",op2_buffer)
-			printf("cond:%x\n",cond_buffer)
+		printf("op1_buffer: ")
+		for(i <- 0 until aes.Params.StateLength){
+			printf(" %x",op1_buffer(i))
+		}
+		printf("\n")
+		printf("op2_buffer: ")
+		for(i <- 0 until aes.Params.StateLength){
+			printf(" %x",op2_buffer(i))
+		}
+		printf("\n")
+		printf("cond_buffer: ")
+		for(i <- 0 until aes.Params.StateLength){
+			printf(" %x",cond_buffer(i))
+		}
+		printf("\n")
 			printf("inst:%b\n",inst_buffer)
 		}
 	}
@@ -114,8 +134,16 @@ class SE(implicit debug:Boolean) extends Module{
 	aes_invcipher.io.input_roundKeys := key
 	aes_invcipher.io.input_valid := valid_buffer
 	when(aes_invcipher.io.input_valid){
-		printf("op1_buffer: %x\n",op1_buffer)
-		printf("op2_buffer: %x\n",op2_buffer)
+		printf("op1_buffer: ")
+		for(i <- 0 until aes.Params.StateLength){
+			printf(" %x",op1_buffer(i))
+		}
+		printf("\n")
+		printf("op2_buffer: ")
+		for(i <- 0 until aes.Params.StateLength){
+			printf(" %x",op2_buffer(i))
+		}
+		printf("\n")
 	}
 
 	// Reverse the byte order so we can convert them into uint with Chisel infrastructure.
@@ -127,7 +155,19 @@ class SE(implicit debug:Boolean) extends Module{
 		op2_reverse(i) := aes_invcipher.io.output_op2(aes.Params.StateLength-i-1)
 		cond_reverse(i) := aes_invcipher.io.output_cond(aes.Params.StateLength-i-1)
 	}
+	when(aes_invcipher.io.output_valid){
+		printf("op1decrpted: ")
+		for(i <- 0 until aes.Params.StateLength){
+			printf("%x",op1_reverse(i))
+		}
+		printf("\n")
 
+		printf("op2decrpted: ")
+		for(i <- 0 until aes.Params.StateLength){
+			printf("%x",op2_reverse(i))
+		}
+		printf("\n")
+	}
 	val seop_input_valid = RegNext(aes_invcipher.io.output_valid)
 	val op1_reverse_reg = RegNext(op1_reverse)
 	val op2_reverse_reg = RegNext(op2_reverse)

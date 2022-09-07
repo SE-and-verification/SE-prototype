@@ -56,11 +56,11 @@ class AESEncrypt(val rolled: Boolean) extends Module {
     val address = RegInit(0.U(log2Ceil(EKDepth).W))
 
     when(io.input_valid) {
-      address := Nr.U
-    }.elsewhen(address =/= 0.U){
-      address := address - 1.U
+      address := 0.U
+    }.elsewhen(address =/= Nr.U){
+      address := address + 1.U
     }
-    val cipher = Module(new Cipher(6, true))
+    val cipher = Module(new Cipher(4, true))
     cipher.io.start := io.input_valid
     cipher.io.plaintext := io.input_text
     cipher.io.roundKey := io.input_roundKeys(address)
