@@ -62,16 +62,18 @@ class SE(val debug:Boolean, val canChangeKey: Boolean) extends Module{
 	val aes_invcipher = Module(new AESDecrypt(rolled))
 	val aes_cipher = Module(new AESEncrypt(rolled))
 	val key = Reg(Vec(11, Vec(16,UInt(8.W))))
+	
+	val CACHE_SIZE = 2
 
-	val ciphers_pos = Reg(Vec(16, UInt(128.W)))
-	val ciphers_neg = Reg(Vec(16, UInt(128.W)))
+	val ciphers_pos = Reg(Vec(CACHE_SIZE, UInt(128.W)))
+	val ciphers_neg = Reg(Vec(CACHE_SIZE, UInt(128.W)))
 
-	val plaintexts_pos = Reg(Vec(16, UInt(64.W)))
-	val plaintexts_neg = Reg(Vec(16, UInt(64.W)))
+	val plaintexts_pos = Reg(Vec(CACHE_SIZE, UInt(64.W)))
+	val plaintexts_neg = Reg(Vec(CACHE_SIZE, UInt(64.W)))
 	val ptr_pos = RegInit(0.U(4.W))
 	val ptr_neg = RegInit(0.U(4.W))
-	val cache_valid_pos = Reg(Vec(16, Bool()))
-	val cache_valid_neg = Reg(Vec(16, Bool()))
+	val cache_valid_pos = Reg(Vec(CACHE_SIZE, Bool()))
+	val cache_valid_neg = Reg(Vec(CACHE_SIZE, Bool()))
 
 	val expandedKey128 =VecInit(
     VecInit(0x00.U(8.W), 0x01.U(8.W), 0x02.U(8.W), 0x03.U(8.W), 0x04.U(8.W), 0x05.U(8.W), 0x06.U(8.W), 0x07.U(8.W), 0x08.U(8.W), 0x09.U(8.W), 0x0a.U(8.W), 0x0b.U(8.W), 0x0c.U(8.W), 0x0d.U(8.W), 0x0e.U(8.W), 0x0f.U(8.W)),
@@ -266,14 +268,14 @@ class SE(val debug:Boolean, val canChangeKey: Boolean) extends Module{
 	when(output_valid){
 		when(result_plaintext_buffer(63) === 0.U){
 			printf("ptr_pos:%x\n",ptr_pos)
-			when(ptr_pos === 15.U){
+			when(ptr_pos === (CACHE_SIZE-1).U){
 				ptr_pos := 0.U
 			}.otherwise{
 				ptr_pos := ptr_pos + 1.U
 			}
 		}.otherwise{
 			printf("ptr_neg:%x\n",ptr_neg)
-			when(ptr_neg === 15.U){
+			when(ptr_neg === (CACHE_SIZE-1).U){
 				ptr_neg := 0.U
 			}.otherwise{
 				ptr_neg := ptr_neg + 1.U
@@ -282,7 +284,7 @@ class SE(val debug:Boolean, val canChangeKey: Boolean) extends Module{
 	}
 	when(reset.asBool){
 		key := expandedKey128
-		for(i <- 0 until 16){
+		for(i <- 0 until CACHE_SIZE){
 			ciphers_pos(i) := 0.U
 			plaintexts_pos(i) := 0.U
 			ciphers_neg(i) := 0.U
