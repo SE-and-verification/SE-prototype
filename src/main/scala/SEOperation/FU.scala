@@ -1,4 +1,4 @@
-package se.seoperation
+ package se.seoperation
 
 import chisel3._
 import chisel3.util._
@@ -81,22 +81,22 @@ class FU(implicit debug: Boolean) extends Module{
   }.elsewhen(io.fu_op === FU_COMP){
     when(io.fu_type === COMP_EQ){
       if(debug) printf("Inst: eq\n")
-      output := (io.A === io.B).asSInt
+      output := Mux(io.A === io.B, 1.S, 0.S)
     }.elsewhen(io.fu_type === COMP_LT){
       if(debug) printf("Inst: lt\n")
-      output := (io.A < io.B).asSInt
+      output := Mux(io.A < io.B, 1.S, 0.S)
     }.elsewhen(io.fu_type === COMP_LET){
       if(debug) printf("Inst: let\n")
-      output := (io.A <= io.B).asSInt
+      output := Mux(io.A <= io.B, 1.S, 0.S)
     }.elsewhen(io.fu_type === COMP_GT){
       if(debug) printf("Inst: gt\n")
-      output := (io.A > io.B).asSInt
+      output := Mux(io.A > io.B, 1.S, 0.S)
     }.elsewhen(io.fu_type === COMP_GET){
       if(debug) printf("Inst: get\n")
-      output := (io.A >= io.B).asSInt
+      output := Mux(io.A >= io.B, 1.S, 0.S)
     }.otherwise{
       if(debug) printf("Inst: neq\n")
-      output := (io.A =/= io.B).asSInt
+      output := Mux(io.A =/= io.B, 1.S, 0.S)
     }
   }.elsewhen(io.fu_op === FU_COND){
     when(io.cond =/= 0.S){
