@@ -38,10 +38,10 @@ class SEOperation(implicit debug: Boolean) extends Module{
 	decode.io.inst_in := io.inst
 
  
-  fu.io.A := op1
-  fu.io.B := op2
+  	fu.io.A := op1
+  	fu.io.B := op2
 	fu.io.cond := cond
-  fu.io.fu_op := decode.io.fu_op
+  	fu.io.fu_op := decode.io.fu_op
 	fu.io.fu_type := decode.io.fu_type
 	io.result := fu.io.out
 

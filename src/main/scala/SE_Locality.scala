@@ -124,7 +124,7 @@ class Locality() extends Module {
 	}
 
 	// mem read logic
-	val reg_infetch_cacheline =  RegInit(0.U(8.W))
+	val reg_infetch_cacheline =  RegInit(0.U(13.W))
 	when(io.mem_read.resp_valid){
 		for(i <- 0 until NumFPGAEntries){
 			for(j <- 0 until NumOperand){
@@ -143,10 +143,14 @@ class Locality() extends Module {
 						printf("inst: %d, op: %d, mode cleared\n", i.U(8.W),j.U(8.W))
 					}
 				}
-				// if(debug){
-				// 	printf("tag: %b, v_bit: %b, id_bit: %b\n", tag, v_bit, id_bit)
-				// 	printf("io.mem_read.resp_tag: %b, rb.entries(i).request.operands(j).value: %b\n", io.mem_read.resp_tag, rb.entries(i).request.operands(j).value)
-				// }
+				if(debug){
+					when(rb.entries(i).request.operands(j).mode(1) === 1.U){
+					when(tag === io.mem_read.resp_tag){
+						printf("tag: %b, v_bit: %b, id_bit: %b\n", tag, v_bit, id_bit)
+						// printf("io.mem_read.resp_tag: %b, rb.entries(i).request.operands(j).value: %b\n", io.mem_read.resp_tag, rb.entries(i).request.operands(j).value)
+					}
+					}
+				}
 			}
 		}
 	}
@@ -287,9 +291,9 @@ class Locality() extends Module {
 
 			printf("request: valid | ready | op 1 | op2 | cond | inst\n")
 			printf("\t %b | %b | %b | %b | %b | %x \n", request.valid, request.ready, request.bits.op1, request.bits.op2, request.bits.cond, request.bits.inst)
-			printf("result: valid | ready | out\n")
+			printf("result: valid | ready | out | out_idx\n")
 
-			printf("\t %b | %b | %x \n", result.valid, result.ready, result.bits.out)
+			printf("\t %b | %b | %x | %x\n", result.valid, result.ready, result.bits.out, pe.io.out_idx)
 
 		}
 	}

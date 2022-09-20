@@ -39,6 +39,10 @@ class DispatchArbiter(numBits: Int) extends Module{
 
 	io.hasChosen := afterPriorityExist | beforePriorityExist
 	io.chosen := Mux(afterPriorityExist, afterPriorityChosen, beforePriorityChosen)
+	// printf("DispatchArbiter Debug:\n")
+	// printf("DispatchArbiter valid: %b:\n", io.validity)
+	// printf("priority: %b:\n", io.priority)
+
 }
 
 // class CBArbiter(numBits: Int) extends Module{

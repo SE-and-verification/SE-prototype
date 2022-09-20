@@ -74,16 +74,16 @@ class InvCipher(Nk: Int, InvSubBytes_SCD: Boolean) extends Module {
   io.state_out := Mux(rounds === Nrplus1.U, state, RegInit(VecInit(initValues)))
 
   // Debug statements
-  when(STM =/= sIdle){
-   printf("D_STM: %d, rounds: %d\n", STM, rounds)
-   printf("D_roundKey: %x %x %x %x %x %x %x %x %x %x %x %x %x %x %x %x\n", io.roundKey(0), io.roundKey(1), io.roundKey(2), io.roundKey(3), io.roundKey(4), io.roundKey(5), io.roundKey(6), io.roundKey(7), io.roundKey(8), io.roundKey(9), io.roundKey(10), io.roundKey(11), io.roundKey(12), io.roundKey(13), io.roundKey(14), io.roundKey(15))
-   printf("state: %x %x %x %x %x %x %x %x %x %x %x %x %x %x %x %x\n", state(0), state(1), state(2), state(3), state(4), state(5), state(6), state(7), state(8), state(9), state(10), state(11), state(12), state(13), state(14), state(15))
-   printf("add round key: ")
-   for(i <- 0 to 15){
-    printf(" %x", AddRoundKeyModule.io.state_out(i))
-   }
-   printf("\n")
-  }
+  // when(STM =/= sIdle){
+  //  printf("D_STM: %d, rounds: %d\n", STM, rounds)
+  //  printf("D_roundKey: %x %x %x %x %x %x %x %x %x %x %x %x %x %x %x %x\n", io.roundKey(0), io.roundKey(1), io.roundKey(2), io.roundKey(3), io.roundKey(4), io.roundKey(5), io.roundKey(6), io.roundKey(7), io.roundKey(8), io.roundKey(9), io.roundKey(10), io.roundKey(11), io.roundKey(12), io.roundKey(13), io.roundKey(14), io.roundKey(15))
+  //  printf("state: %x %x %x %x %x %x %x %x %x %x %x %x %x %x %x %x\n", state(0), state(1), state(2), state(3), state(4), state(5), state(6), state(7), state(8), state(9), state(10), state(11), state(12), state(13), state(14), state(15))
+  //  printf("add round key: ")
+  //  for(i <- 0 to 15){
+  //   printf(" %x", AddRoundKeyModule.io.state_out(i))
+  //  }
+  //  printf("\n")
+  // }
 }
 
 object InvCipher {
