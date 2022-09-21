@@ -4,7 +4,7 @@ import chisel3._
 import chisel3.util._
 import scala.collection.mutable.ArrayBuffer
 
-class Locality() extends Module {
+class Locality(coalesce: Boolean) extends Module {
 	import se.Params._
 	implicit val debug = true
   val io = IO(new LocalityTopInterface)
@@ -157,7 +157,7 @@ class Locality() extends Module {
 
 
 	val waitingToBeFetched = Wire(Vec(NumOperand* NumFPGAEntries, Bool()))
-	val notInFetchVec = Wire(Vec(NumOperand* NumFPGAEntries, Bool()))
+	// val notInFetchVec = Wire(Vec(NumOperand* NumFPGAEntries, Bool()))
 	val fetchOffSet = Wire(Vec(NumOperand* NumFPGAEntries, UInt(48.W)))
 	val crnt_inFetch = Wire(Vec(NumOperand* NumFPGAEntries, Bool()))
 	val inFetch = Wire(Vec(NumOperand* NumFPGAEntries, Bool()))
@@ -165,7 +165,7 @@ class Locality() extends Module {
 		for(j <- 0 until NumOperand){
 			if(coalesce){
 				waitingToBeFetched(i*NumOperand+j) := rb.entries(i).valid && (rb.entries(i).request.operands(j).mode(1) === 1.U) && ((rb.entries(i).request.operands(j).value(13, BitsForOffset) & reg_infetch_cacheline ) === 0.U)
-				notInFetchVec(i*NumOperand+j) := (rb.entries(i).request.operands(j).value(13, BitsForOffset) & reg_infetch_cacheline ) === 0.U
+				// notInFetchVec(i*NumOperand+j) := (rb.entries(i).request.operands(j).value(13, BitsForOffset) & reg_infetch_cacheline ) === 0.U
 			}else{ 
 				waitingToBeFetched(i*NumOperand+j) := rb.entries(i).valid && (rb.entries(i).request.operands(j).mode(1) === 1.U) && (!rb.entries(i).request.inFetch(j))
 			}
@@ -200,12 +200,14 @@ class Locality() extends Module {
 		io.mem_read.req_addr := OHToUInt(fetchOffSet(fetchArb.io.chosen)(13, BitsForOffset))
 		io.mem_read.req_tag := 0.U ;
 	}
-	for(i <- 0 until NumFPGAEntries){
-		when(entry_idx === i.U && new_input_log){
-			rb.entries(i.U).request.inFetch := 0.U(NumOperand.W).asBools
-		}.otherwise{
-			for(j <- 0 until NumOperand){
-				rb.entries(i).request.inFetch(j) := inFetch(i*NumOperand+j)
+	if(!coalesce){
+		for(i <- 0 until NumFPGAEntries){
+			when(entry_idx === i.U && new_input_log){
+				rb.entries(i.U).request.inFetch := 0.U(NumOperand.W).asBools
+			}.otherwise{
+				for(j <- 0 until NumOperand){
+					rb.entries(i).request.inFetch(j) := inFetch(i*NumOperand+j)
+				}
 			}
 		}
 	}
@@ -282,7 +284,7 @@ class Locality() extends Module {
 						i.asUInt, crnt_entry.completed, crnt_entry.valid, crnt_entry.dispatched, crnt_entry.written, crnt_entry.wr_addr, request.inst, 
 						operands(0).value, operands(0).mode, fetched(0),operands(1).value,operands(1).mode, fetched(1), operands(2).value,operands(2).mode, fetched(2), result.out)
 			}
-			printf("waiting to be fetched: %b, notinfetch:%b\n",waitingToBeFetched.asUInt, notInFetchVec.asUInt)
+			// printf("waiting to be fetched: %b, notinfetch:%b\n",waitingToBeFetched.asUInt, notInFetchVec.asUInt)
 			printf("reg_infetch_cacheline:%b\n", reg_infetch_cacheline)
 
 			printf("pe: \n")

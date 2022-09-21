@@ -11,8 +11,12 @@ object Main extends App {
   val dir = new File(args(0)) ; dir.mkdirs
 
   if(!changeKey){
-    val verilog = new FileWriter(new File(dir, s"SE.v"))
-    verilog write ChiselStage.emitVerilog(new Locality)
-    verilog.close
+    val coalesce_verilog = new FileWriter(new File(dir, s"SE_coalesce.v"))
+    coalesce_verilog write ChiselStage.emitVerilog(new Locality(true))
+    coalesce_verilog.close
+
+    val nocoalesce_verilog = new FileWriter(new File(dir, s"SE_nocoalesce.v"))
+    nocoalesce_verilog write ChiselStage.emitVerilog(new Locality(false))
+    nocoalesce_verilog.close
   }
 }

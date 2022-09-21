@@ -6,7 +6,6 @@ import scala.math._
 object Params{
 	val debug = true
 	val reuse = true
-	val coalesce = true
 	val outoforder = true
 	val EntryWidth = 128
 	val NumOperand = 3
