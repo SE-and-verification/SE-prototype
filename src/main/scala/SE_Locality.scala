@@ -124,7 +124,7 @@ class Locality(coalesce: Boolean) extends Module {
 	}
 
 	// mem read logic
-	val reg_infetch_cacheline =  RegInit(0.U(13.W))
+	val reg_infetch_cacheline =  RegInit(0.U(NumCacheline.W))
 	when(io.mem_read.resp_valid){
 		for(i <- 0 until NumFPGAEntries){
 			for(j <- 0 until NumOperand){
@@ -159,16 +159,11 @@ class Locality(coalesce: Boolean) extends Module {
 	val waitingToBeFetched = Wire(Vec(NumOperand* NumFPGAEntries, Bool()))
 	// val notInFetchVec = Wire(Vec(NumOperand* NumFPGAEntries, Bool()))
 	val fetchOffSet = Wire(Vec(NumOperand* NumFPGAEntries, UInt(48.W)))
-	val crnt_inFetch = Wire(Vec(NumOperand* NumFPGAEntries, Bool()))
-	val inFetch = Wire(Vec(NumOperand* NumFPGAEntries, Bool()))
+	// val crnt_inFetch = Wire(Vec(NumOperand* NumFPGAEntries, Bool()))
+	// val inFetch = Wire(Vec(NumOperand* NumFPGAEntries, Bool()))
 	for(i <- 0 until NumFPGAEntries){
 		for(j <- 0 until NumOperand){
-			if(coalesce){
-				waitingToBeFetched(i*NumOperand+j) := rb.entries(i).valid && (rb.entries(i).request.operands(j).mode(1) === 1.U) && ((rb.entries(i).request.operands(j).value(13, BitsForOffset) & reg_infetch_cacheline ) === 0.U)
-				// notInFetchVec(i*NumOperand+j) := (rb.entries(i).request.operands(j).value(13, BitsForOffset) & reg_infetch_cacheline ) === 0.U
-			}else{ 
-				waitingToBeFetched(i*NumOperand+j) := rb.entries(i).valid && (rb.entries(i).request.operands(j).mode(1) === 1.U) && (!rb.entries(i).request.inFetch(j))
-			}
+			waitingToBeFetched(i*NumOperand+j) := rb.entries(i).valid && (rb.entries(i).request.operands(j).mode(1) === 1.U) && ((rb.entries(i).request.operands(j).value(13, BitsForOffset) & reg_infetch_cacheline ) === 0.U)
 			fetchOffSet(i*NumOperand+j) := rb.entries(i).request.operands(j).value
 		}
 	}
@@ -177,14 +172,14 @@ class Locality(coalesce: Boolean) extends Module {
 	fetchArb.io.validity := waitingToBeFetched.asUInt
 	fetchArb.io.priority := wbCountOn
 
-	for(i <- 0 until NumFPGAEntries){
-		for(j <- 0 until NumOperand){
-			crnt_inFetch(i*NumOperand+j) := rb.entries(i).request.inFetch(j)
-		}
-	}
+	// for(i <- 0 until NumFPGAEntries){
+	// 	for(j <- 0 until NumOperand){
+	// 		crnt_inFetch(i*NumOperand+j) := rb.entries(i).request.inFetch(j)
+	// 	}
+	// }
 	when(fetchArb.io.hasChosen){
-		val filter = if(coalesce) (fetchOffSet(fetchArb.io.chosen)(13, BitsForOffset) & reg_infetch_cacheline) =/= 0.U else false.B
-		inFetch := (crnt_inFetch.asUInt ^ Mux(filter, (UIntToOH(fetchArb.io.chosen)(NumFPGAEntries*NumOperand-1,0)), 0.U)).asBools
+		val filter = (fetchOffSet(fetchArb.io.chosen)(13, BitsForOffset) & reg_infetch_cacheline) =/= 0.U
+		// inFetch := (crnt_inFetch.asUInt ^ Mux(filter, (UIntToOH(fetchArb.io.chosen)(NumFPGAEntries*NumOperand-1,0)), 0.U)).asBools
 		io.mem_read.req_valid := true.B ^ filter
 		io.mem_read.req_addr := OHToUInt(fetchOffSet(fetchArb.io.chosen)(13, BitsForOffset))
 		val read_req_tag = if(coalesce) fetchOffSet(fetchArb.io.chosen)(13, BitsForOffset)  else fetchOffSet(fetchArb.io.chosen)(13, 0);
@@ -193,28 +188,33 @@ class Locality(coalesce: Boolean) extends Module {
 		printf("fetchoffset: %b, subfield: %b\n",fetchOffSet(fetchArb.io.chosen), fetchOffSet(fetchArb.io.chosen)(13, BitsForOffset))
 		printf("io.mem_read.req_addr: %b\n",io.mem_read.req_addr)
 		printf("filter: %b\n", filter)
-		printf("infetch: %b\n", inFetch.asUInt)
+		// printf("infetch: %b\n", inFetch.asUInt)
 	}.otherwise{
-		inFetch := crnt_inFetch
+		// inFetch := crnt_inFetch
 		io.mem_read.req_valid := false.B
 		io.mem_read.req_addr := OHToUInt(fetchOffSet(fetchArb.io.chosen)(13, BitsForOffset))
 		io.mem_read.req_tag := 0.U ;
 	}
-	if(!coalesce){
-		for(i <- 0 until NumFPGAEntries){
-			when(entry_idx === i.U && new_input_log){
-				rb.entries(i.U).request.inFetch := 0.U(NumOperand.W).asBools
-			}.otherwise{
-				for(j <- 0 until NumOperand){
-					rb.entries(i).request.inFetch(j) := inFetch(i*NumOperand+j)
-				}
-			}
-		}
-	}
+
 	if(coalesce){
-		val unset_tag = (reg_infetch_cacheline | io.mem_read.resp_tag) ^ io.mem_read.resp_tag
+		val unset_tag = (reg_infetch_cacheline| io.mem_read.resp_tag)  ^ io.mem_read.resp_tag
 		val set_tag = reg_infetch_cacheline | io.mem_read.req_tag
 		val unset_then_set_tag = unset_tag | io.mem_read.req_tag
+		when(io.mem_read.resp_valid){
+			when(io.mem_read.req_valid){
+				reg_infetch_cacheline :=  unset_then_set_tag
+			}.otherwise{
+				reg_infetch_cacheline := unset_tag
+			}
+		}.otherwise{
+			when(io.mem_read.req_valid){
+				reg_infetch_cacheline :=  set_tag
+			}
+		}
+	}else{
+		val unset_tag = (reg_infetch_cacheline | io.mem_read.resp_tag(13, BitsForOffset)) ^ io.mem_read.resp_tag(13, BitsForOffset)
+		val set_tag = reg_infetch_cacheline | io.mem_read.req_tag(13, BitsForOffset)
+		val unset_then_set_tag = unset_tag | io.mem_read.req_tag(13, BitsForOffset)
 		when(io.mem_read.resp_valid){
 			when(io.mem_read.req_valid){
 				reg_infetch_cacheline :=  unset_then_set_tag

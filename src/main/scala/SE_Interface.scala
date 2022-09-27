@@ -33,7 +33,7 @@ class MemRead extends Bundle{
 	val req_tag = Output(UInt(16.W))
 	val data = Input(UInt(512.W))
 	val resp_valid = Input(Bool())
-	val resp_tag = Input(UInt(13.W))
+	val resp_tag = Input(UInt(14.W))
 }
 class LocalityTopInterface extends Bundle{
 	val request = Flipped(DecoupledIO(new LocalityTopRequest))
