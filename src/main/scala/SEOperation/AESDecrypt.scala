@@ -24,7 +24,6 @@ class AESDecrypt(val rolled: Boolean) extends Module {
   val Nr: Int = 10 // 10, 12, 14 rounds
   val Nrplus1: Int = Nr + 1 // 10+1, 12+1, 14+1
   val EKDepth: Int = 16 // enough memory for any expanded key
-  print(s"rolled: ${rolled}\n")
   val io = IO(new DecryptIO)
   if(!rolled){
     val InvCipherRoundARK = Array.fill(3){

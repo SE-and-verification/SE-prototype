@@ -285,12 +285,12 @@ class SE(val debug:Boolean, val canChangeKey: Boolean) extends Module{
 	when(reset.asBool){
 		key := expandedKey128
 		for(i <- 0 until CACHE_SIZE){
-			ciphers_pos(i) := 0.U
-			plaintexts_pos(i) := 0.U
-			ciphers_neg(i) := 0.U
-			plaintexts_neg(i) := 0.U
-			cache_valid_pos(i) := false.B
-			cache_valid_neg(i) := false.B
+			ciphers_pos(i) := i.U
+			plaintexts_pos(i) := i.U
+			ciphers_neg(i) := (100-i).U
+			plaintexts_neg(i) := (100-i).U
+			cache_valid_pos(i) := true.B
+			cache_valid_neg(i) := true.B
 		}
 	}.otherwise{	
 		when(io.out.valid){
