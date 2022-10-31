@@ -8,7 +8,7 @@ firrtl_transform: ../se-firrtl/src/main/scala/firrtl/transforms/Tagrize.scala
 
 base_dir   = $(abspath .)
 src_dir    = $(base_dir)/src/main
-gen_dir    = $(base_dir)/../hw/rtl/
+gen_dir    = $(base_dir)/../hw_bdx/rtl/
 out_dir    = $(base_dir)/outputs
 
 SBT       = sbt

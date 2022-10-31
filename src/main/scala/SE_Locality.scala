@@ -183,7 +183,7 @@ class Locality(coalesce: Boolean) extends Module {
 		io.mem_read.req_valid := true.B ^ filter
 		io.mem_read.req_addr := OHToUInt(fetchOffSet(fetchArb.io.chosen)(13, BitsForOffset))
 		val read_req_tag = if(coalesce) fetchOffSet(fetchArb.io.chosen)(13, BitsForOffset)  else fetchOffSet(fetchArb.io.chosen)(13, 0);
-		io.mem_read.req_tag :=  read_req_tag;
+		io.mem_read.req_tag :=  read_req_tag
 		printf("chosen: %d\n", fetchArb.io.chosen)
 		printf("fetchoffset: %b, subfield: %b\n",fetchOffSet(fetchArb.io.chosen), fetchOffSet(fetchArb.io.chosen)(13, BitsForOffset))
 		printf("io.mem_read.req_addr: %b\n",io.mem_read.req_addr)
