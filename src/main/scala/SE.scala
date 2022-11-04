@@ -71,9 +71,11 @@ class SE(val debug:Boolean, val canChangeKey: Boolean) extends Module{
 	val p_lit:BigInt = BigInt("17832699019361157457")
 	val q_lit:BigInt = BigInt("13452944774109394693")
 
-	val p = p_lit.U(64.W)
-	val q = q_lit.U(64.W)
 
+	val p = RegInit(0.U(64.W))
+	val q = RegInit(0.U(64.W))
+	p := p_lit.U(64.W)
+	q := q_lit.U(64.W)
 	// val expandedKey128 =VecInit(
     // VecInit(0x00.U(8.W), 0x01.U(8.W), 0x02.U(8.W), 0x03.U(8.W), 0x04.U(8.W), 0x05.U(8.W), 0x06.U(8.W), 0x07.U(8.W), 0x08.U(8.W), 0x09.U(8.W), 0x0a.U(8.W), 0x0b.U(8.W), 0x0c.U(8.W), 0x0d.U(8.W), 0x0e.U(8.W), 0x0f.U(8.W)),
     // VecInit(0xd6.U(8.W), 0xaa.U(8.W), 0x74.U(8.W), 0xfd.U(8.W), 0xd2.U(8.W), 0xaf.U(8.W), 0x72.U(8.W), 0xfa.U(8.W), 0xda.U(8.W), 0xa6.U(8.W), 0x78.U(8.W), 0xf1.U(8.W), 0xd6.U(8.W), 0xab.U(8.W), 0x76.U(8.W), 0xfe.U(8.W)),

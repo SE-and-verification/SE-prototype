@@ -40,7 +40,7 @@ module inverter(
             e_reg <=3;
             y <= 1;
             y_prev <= 0;
-            state = `UPDATING;
+            state <= `UPDATING;
         end 
               case(state)
                 `UPDATING: begin
@@ -55,13 +55,13 @@ module inverter(
                  end
                 `CHECK: begin
                     if(a == 64'd1 && y_prev[WIDTH*2-1] == 1'b0) 
-                        state = `HOLDING;
+                        state <= `HOLDING;
                     else begin
                          a <= totient_reg;
                          b <= e_plus3;
                          e_reg <= e_plus3;
                          y <= 1;
-                         y_prev = 0;
+                         y_prev <= 0;
                          state <= `UPDATING;
                    end
                  end

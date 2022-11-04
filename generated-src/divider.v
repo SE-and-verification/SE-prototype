@@ -14,7 +14,7 @@ module divider(Z, R, done, X, Y, start, clk);
     reg [5:0] cnt;
     reg done;
     reg last;
-    initial $monitor("x = %d R = %d",x,R);
+
 
     always @(posedge clk) begin
         done <= 0;

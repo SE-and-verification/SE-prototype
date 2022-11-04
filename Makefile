@@ -20,7 +20,7 @@ VSE.o: verilator_generate
 	cd obj_dir; make -f VSE.mk ; cd ..
 
 verilator_generate: generate
-	verilator -Wno-fatal -cc -CFLAGS -g3 $(gen_dir)/SE.v
+	verilator -Wno-fatal -cc -CFLAGS -g3 $(gen_dir)/*.v
 
 # generate:
 # 	$(SBT) $(SBT_FLAGS) 'run -td $(gen_dir) -foaf se'
