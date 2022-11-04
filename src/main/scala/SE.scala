@@ -143,16 +143,16 @@ class SE(val debug:Boolean, val canChangeKey: Boolean) extends Module{
 		}
 	}
 
-	val op1_pos_found = ciphers_pos.contains(op1_buffer)
-	val op1_neg_found = ciphers_neg.contains(op1_buffer)
-	val op2_pos_found = ciphers_pos.contains(op2_buffer)
-	val op2_neg_found = ciphers_neg.contains(op2_buffer)	
+	val op1_pos_found = ciphers_pos.contains(op1_buffer) && cache_valid_pos(ciphers_pos.indexWhere(e => (e===op1_buffer)))
+	val op1_neg_found = ciphers_neg.contains(op1_buffer) && cache_valid_neg(ciphers_neg.indexWhere(e => (e===op1_buffer)))
+	val op2_pos_found = ciphers_pos.contains(op2_buffer) && cache_valid_pos(ciphers_pos.indexWhere(e => (e===op2_buffer)))
+	val op2_neg_found = ciphers_neg.contains(op2_buffer) && cache_valid_neg(ciphers_neg.indexWhere(e => (e===op2_buffer)))
 	val cond_pos_found = Wire(Bool())
 	val cond_neg_found = Wire(Bool())
 
 	when(inst_buffer === Instructions.CMOV){
-		cond_pos_found := ciphers_pos.contains(cond_buffer) 
-		cond_neg_found := ciphers_neg.contains(cond_buffer) 
+		cond_pos_found := ciphers_pos.contains(cond_buffer) && cache_valid_pos(ciphers_pos.indexWhere(e => (e===cond_buffer)))
+		cond_neg_found := ciphers_neg.contains(cond_buffer) && cache_valid_neg(ciphers_neg.indexWhere(e => (e===cond_buffer)))
 	}.otherwise{
 		cond_pos_found := true.B
 		cond_neg_found := true.B
@@ -166,7 +166,7 @@ class SE(val debug:Boolean, val canChangeKey: Boolean) extends Module{
 	val op2_val = Mux(op2_pos_found, plaintexts_pos(op2_idx), plaintexts_neg(op2_idx))
 	val cond_val = Mux(cond_pos_found, plaintexts_pos(cond_idx), plaintexts_neg(cond_idx))
 
-	val all_match = ( (op1_pos_found && cache_valid_pos(op1_idx))|| (op1_neg_found && cache_valid_neg(op1_idx)) )  && ( (op2_pos_found && cache_valid_pos(op2_idx)) || (op2_neg_found && cache_valid_neg(op2_idx)) ) 	&& ( (cond_pos_found && cache_valid_pos(cond_idx)) || (cond_neg_found && cache_valid_neg(cond_idx)) )
+	val all_match = ( (op1_pos_found )|| (op1_neg_found ) )  && ( (op2_pos_found) || (op2_neg_found) ) 	&& ( (cond_pos_found) || (cond_neg_found) )
 
 
 	// Feed the ciphertexts into the invcipher
@@ -265,7 +265,7 @@ class SE(val debug:Boolean, val canChangeKey: Boolean) extends Module{
 	io.out.valid := output_valid
 	io.out.result := output_buffer
 
-	when(output_valid){
+	when(io.out.valid && io.out.ready){
 		when(result_plaintext_buffer(63) === 0.U){
 			printf("ptr_pos:%x\n",ptr_pos)
 			when(ptr_pos === (CACHE_SIZE-1).U){

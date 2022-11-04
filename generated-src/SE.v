@@ -36113,11 +36113,7 @@ module MaxPeriodFibonacciLFSR(
   assign io_out_62 = state_62; // @[PRNG.scala 78:10]
   assign io_out_63 = state_63; // @[PRNG.scala 78:10]
   always @(posedge clock) begin
-    if (reset) begin // @[PRNG.scala 55:49]
-      state_0 <= 1'h0; // @[PRNG.scala 55:49]
-    end else begin
-      state_0 <= _T_2;
-    end
+    state_0 <= reset | _T_2; // @[PRNG.scala 55:{49,49}]
     if (reset) begin // @[PRNG.scala 55:49]
       state_1 <= 1'h0; // @[PRNG.scala 55:49]
     end else begin
@@ -36130,65 +36126,81 @@ module MaxPeriodFibonacciLFSR(
       state_3 <= state_2;
     end
     state_4 <= reset | state_3; // @[PRNG.scala 55:{49,49}]
-    state_5 <= reset | state_4; // @[PRNG.scala 55:{49,49}]
+    if (reset) begin // @[PRNG.scala 55:49]
+      state_5 <= 1'h0; // @[PRNG.scala 55:49]
+    end else begin
+      state_5 <= state_4;
+    end
     state_6 <= reset | state_5; // @[PRNG.scala 55:{49,49}]
     state_7 <= reset | state_6; // @[PRNG.scala 55:{49,49}]
-    state_8 <= reset | state_7; // @[PRNG.scala 55:{49,49}]
-    state_9 <= reset | state_8; // @[PRNG.scala 55:{49,49}]
     if (reset) begin // @[PRNG.scala 55:49]
-      state_10 <= 1'h0; // @[PRNG.scala 55:49]
+      state_8 <= 1'h0; // @[PRNG.scala 55:49]
     end else begin
-      state_10 <= state_9;
+      state_8 <= state_7;
     end
+    if (reset) begin // @[PRNG.scala 55:49]
+      state_9 <= 1'h0; // @[PRNG.scala 55:49]
+    end else begin
+      state_9 <= state_8;
+    end
+    state_10 <= reset | state_9; // @[PRNG.scala 55:{49,49}]
     if (reset) begin // @[PRNG.scala 55:49]
       state_11 <= 1'h0; // @[PRNG.scala 55:49]
     end else begin
       state_11 <= state_10;
     end
-    state_12 <= reset | state_11; // @[PRNG.scala 55:{49,49}]
     if (reset) begin // @[PRNG.scala 55:49]
-      state_13 <= 1'h0; // @[PRNG.scala 55:49]
+      state_12 <= 1'h0; // @[PRNG.scala 55:49]
     end else begin
-      state_13 <= state_12;
+      state_12 <= state_11;
     end
+    state_13 <= reset | state_12; // @[PRNG.scala 55:{49,49}]
     if (reset) begin // @[PRNG.scala 55:49]
       state_14 <= 1'h0; // @[PRNG.scala 55:49]
     end else begin
       state_14 <= state_13;
     end
     state_15 <= reset | state_14; // @[PRNG.scala 55:{49,49}]
-    state_16 <= reset | state_15; // @[PRNG.scala 55:{49,49}]
     if (reset) begin // @[PRNG.scala 55:49]
-      state_17 <= 1'h0; // @[PRNG.scala 55:49]
+      state_16 <= 1'h0; // @[PRNG.scala 55:49]
     end else begin
-      state_17 <= state_16;
+      state_16 <= state_15;
     end
-    state_18 <= reset | state_17; // @[PRNG.scala 55:{49,49}]
-    state_19 <= reset | state_18; // @[PRNG.scala 55:{49,49}]
+    state_17 <= reset | state_16; // @[PRNG.scala 55:{49,49}]
     if (reset) begin // @[PRNG.scala 55:49]
-      state_20 <= 1'h0; // @[PRNG.scala 55:49]
+      state_18 <= 1'h0; // @[PRNG.scala 55:49]
     end else begin
-      state_20 <= state_19;
+      state_18 <= state_17;
     end
-    state_21 <= reset | state_20; // @[PRNG.scala 55:{49,49}]
     if (reset) begin // @[PRNG.scala 55:49]
-      state_22 <= 1'h0; // @[PRNG.scala 55:49]
+      state_19 <= 1'h0; // @[PRNG.scala 55:49]
     end else begin
-      state_22 <= state_21;
+      state_19 <= state_18;
     end
+    state_20 <= reset | state_19; // @[PRNG.scala 55:{49,49}]
+    if (reset) begin // @[PRNG.scala 55:49]
+      state_21 <= 1'h0; // @[PRNG.scala 55:49]
+    end else begin
+      state_21 <= state_20;
+    end
+    state_22 <= reset | state_21; // @[PRNG.scala 55:{49,49}]
     state_23 <= reset | state_22; // @[PRNG.scala 55:{49,49}]
-    state_24 <= reset | state_23; // @[PRNG.scala 55:{49,49}]
-    state_25 <= reset | state_24; // @[PRNG.scala 55:{49,49}]
+    if (reset) begin // @[PRNG.scala 55:49]
+      state_24 <= 1'h0; // @[PRNG.scala 55:49]
+    end else begin
+      state_24 <= state_23;
+    end
+    if (reset) begin // @[PRNG.scala 55:49]
+      state_25 <= 1'h0; // @[PRNG.scala 55:49]
+    end else begin
+      state_25 <= state_24;
+    end
     if (reset) begin // @[PRNG.scala 55:49]
       state_26 <= 1'h0; // @[PRNG.scala 55:49]
     end else begin
       state_26 <= state_25;
     end
-    if (reset) begin // @[PRNG.scala 55:49]
-      state_27 <= 1'h0; // @[PRNG.scala 55:49]
-    end else begin
-      state_27 <= state_26;
-    end
+    state_27 <= reset | state_26; // @[PRNG.scala 55:{49,49}]
     if (reset) begin // @[PRNG.scala 55:49]
       state_28 <= 1'h0; // @[PRNG.scala 55:49]
     end else begin
@@ -36200,22 +36212,14 @@ module MaxPeriodFibonacciLFSR(
     end else begin
       state_30 <= state_29;
     end
-    if (reset) begin // @[PRNG.scala 55:49]
-      state_31 <= 1'h0; // @[PRNG.scala 55:49]
-    end else begin
-      state_31 <= state_30;
-    end
+    state_31 <= reset | state_30; // @[PRNG.scala 55:{49,49}]
     if (reset) begin // @[PRNG.scala 55:49]
       state_32 <= 1'h0; // @[PRNG.scala 55:49]
     end else begin
       state_32 <= state_31;
     end
     state_33 <= reset | state_32; // @[PRNG.scala 55:{49,49}]
-    if (reset) begin // @[PRNG.scala 55:49]
-      state_34 <= 1'h0; // @[PRNG.scala 55:49]
-    end else begin
-      state_34 <= state_33;
-    end
+    state_34 <= reset | state_33; // @[PRNG.scala 55:{49,49}]
     state_35 <= reset | state_34; // @[PRNG.scala 55:{49,49}]
     if (reset) begin // @[PRNG.scala 55:49]
       state_36 <= 1'h0; // @[PRNG.scala 55:49]
@@ -36223,72 +36227,96 @@ module MaxPeriodFibonacciLFSR(
       state_36 <= state_35;
     end
     state_37 <= reset | state_36; // @[PRNG.scala 55:{49,49}]
-    if (reset) begin // @[PRNG.scala 55:49]
-      state_38 <= 1'h0; // @[PRNG.scala 55:49]
-    end else begin
-      state_38 <= state_37;
-    end
+    state_38 <= reset | state_37; // @[PRNG.scala 55:{49,49}]
     state_39 <= reset | state_38; // @[PRNG.scala 55:{49,49}]
-    state_40 <= reset | state_39; // @[PRNG.scala 55:{49,49}]
+    if (reset) begin // @[PRNG.scala 55:49]
+      state_40 <= 1'h0; // @[PRNG.scala 55:49]
+    end else begin
+      state_40 <= state_39;
+    end
     if (reset) begin // @[PRNG.scala 55:49]
       state_41 <= 1'h0; // @[PRNG.scala 55:49]
     end else begin
       state_41 <= state_40;
     end
-    state_42 <= reset | state_41; // @[PRNG.scala 55:{49,49}]
-    state_43 <= reset | state_42; // @[PRNG.scala 55:{49,49}]
-    state_44 <= reset | state_43; // @[PRNG.scala 55:{49,49}]
+    if (reset) begin // @[PRNG.scala 55:49]
+      state_42 <= 1'h0; // @[PRNG.scala 55:49]
+    end else begin
+      state_42 <= state_41;
+    end
+    if (reset) begin // @[PRNG.scala 55:49]
+      state_43 <= 1'h0; // @[PRNG.scala 55:49]
+    end else begin
+      state_43 <= state_42;
+    end
+    if (reset) begin // @[PRNG.scala 55:49]
+      state_44 <= 1'h0; // @[PRNG.scala 55:49]
+    end else begin
+      state_44 <= state_43;
+    end
     state_45 <= reset | state_44; // @[PRNG.scala 55:{49,49}]
-    state_46 <= reset | state_45; // @[PRNG.scala 55:{49,49}]
+    if (reset) begin // @[PRNG.scala 55:49]
+      state_46 <= 1'h0; // @[PRNG.scala 55:49]
+    end else begin
+      state_46 <= state_45;
+    end
     if (reset) begin // @[PRNG.scala 55:49]
       state_47 <= 1'h0; // @[PRNG.scala 55:49]
     end else begin
       state_47 <= state_46;
     end
+    state_48 <= reset | state_47; // @[PRNG.scala 55:{49,49}]
     if (reset) begin // @[PRNG.scala 55:49]
-      state_48 <= 1'h0; // @[PRNG.scala 55:49]
+      state_49 <= 1'h0; // @[PRNG.scala 55:49]
     end else begin
-      state_48 <= state_47;
+      state_49 <= state_48;
     end
-    state_49 <= reset | state_48; // @[PRNG.scala 55:{49,49}]
     if (reset) begin // @[PRNG.scala 55:49]
       state_50 <= 1'h0; // @[PRNG.scala 55:49]
     end else begin
       state_50 <= state_49;
     end
+    state_51 <= reset | state_50; // @[PRNG.scala 55:{49,49}]
     if (reset) begin // @[PRNG.scala 55:49]
-      state_51 <= 1'h0; // @[PRNG.scala 55:49]
+      state_52 <= 1'h0; // @[PRNG.scala 55:49]
     end else begin
-      state_51 <= state_50;
+      state_52 <= state_51;
     end
-    state_52 <= reset | state_51; // @[PRNG.scala 55:{49,49}]
-    state_53 <= reset | state_52; // @[PRNG.scala 55:{49,49}]
+    if (reset) begin // @[PRNG.scala 55:49]
+      state_53 <= 1'h0; // @[PRNG.scala 55:49]
+    end else begin
+      state_53 <= state_52;
+    end
     if (reset) begin // @[PRNG.scala 55:49]
       state_54 <= 1'h0; // @[PRNG.scala 55:49]
     end else begin
       state_54 <= state_53;
     end
-    state_55 <= reset | state_54; // @[PRNG.scala 55:{49,49}]
+    if (reset) begin // @[PRNG.scala 55:49]
+      state_55 <= 1'h0; // @[PRNG.scala 55:49]
+    end else begin
+      state_55 <= state_54;
+    end
     state_56 <= reset | state_55; // @[PRNG.scala 55:{49,49}]
-    state_57 <= reset | state_56; // @[PRNG.scala 55:{49,49}]
+    if (reset) begin // @[PRNG.scala 55:49]
+      state_57 <= 1'h0; // @[PRNG.scala 55:49]
+    end else begin
+      state_57 <= state_56;
+    end
     state_58 <= reset | state_57; // @[PRNG.scala 55:{49,49}]
+    state_59 <= reset | state_58; // @[PRNG.scala 55:{49,49}]
     if (reset) begin // @[PRNG.scala 55:49]
-      state_59 <= 1'h0; // @[PRNG.scala 55:49]
+      state_60 <= 1'h0; // @[PRNG.scala 55:49]
     end else begin
-      state_59 <= state_58;
+      state_60 <= state_59;
     end
-    state_60 <= reset | state_59; // @[PRNG.scala 55:{49,49}]
+    state_61 <= reset | state_60; // @[PRNG.scala 55:{49,49}]
+    state_62 <= reset | state_61; // @[PRNG.scala 55:{49,49}]
     if (reset) begin // @[PRNG.scala 55:49]
-      state_61 <= 1'h0; // @[PRNG.scala 55:49]
+      state_63 <= 1'h0; // @[PRNG.scala 55:49]
     end else begin
-      state_61 <= state_60;
+      state_63 <= state_62;
     end
-    if (reset) begin // @[PRNG.scala 55:49]
-      state_62 <= 1'h0; // @[PRNG.scala 55:49]
-    end else begin
-      state_62 <= state_61;
-    end
-    state_63 <= reset | state_62; // @[PRNG.scala 55:{49,49}]
   end
 // Register and memory initialization
 `ifdef RANDOMIZE_GARBAGE_ASSIGN
@@ -36742,49 +36770,45 @@ module SE(
   reg [127:0] cond_buffer; // @[Reg.scala 16:16]
   reg  valid_buffer; // @[SE.scala 112:31]
   reg  ready_for_input; // @[SE.scala 115:38]
-  wire  _op1_pos_found_T = ciphers_pos_0 == op1_buffer; // @[SE.scala 146:49]
-  wire  op1_pos_found = ciphers_pos_0 == op1_buffer | ciphers_pos_1 == op1_buffer; // @[SE.scala 146:49]
-  wire  _op1_idx_T_2 = _op1_pos_found_T ? 1'h0 : 1'h1; // @[SE.scala 161:64]
-  wire  _op1_idx_T_3 = ciphers_neg_0 == op1_buffer; // @[SE.scala 161:119]
-  wire  _op1_idx_T_5 = ciphers_neg_0 == op1_buffer ? 1'h0 : 1'h1; // @[SE.scala 161:111]
-  wire  op1_idx = op1_pos_found ? _op1_idx_T_2 : _op1_idx_T_5; // @[SE.scala 161:26]
-  wire  _GEN_202 = op1_idx ? cache_valid_pos_1 : cache_valid_pos_0; // @[SE.scala 169:{42,42}]
-  wire  op1_neg_found = _op1_idx_T_3 | ciphers_neg_1 == op1_buffer; // @[SE.scala 147:49]
-  wire  _GEN_204 = op1_idx ? cache_valid_neg_1 : cache_valid_neg_0; // @[SE.scala 169:{88,88}]
-  wire  _op2_pos_found_T = ciphers_pos_0 == op2_buffer; // @[SE.scala 148:49]
-  wire  op2_pos_found = ciphers_pos_0 == op2_buffer | ciphers_pos_1 == op2_buffer; // @[SE.scala 148:49]
-  wire  _op2_idx_T_2 = _op2_pos_found_T ? 1'h0 : 1'h1; // @[SE.scala 162:64]
-  wire  _op2_idx_T_3 = ciphers_neg_0 == op2_buffer; // @[SE.scala 162:119]
-  wire  _op2_idx_T_5 = ciphers_neg_0 == op2_buffer ? 1'h0 : 1'h1; // @[SE.scala 162:111]
-  wire  op2_idx = op2_pos_found ? _op2_idx_T_2 : _op2_idx_T_5; // @[SE.scala 162:26]
-  wire  _GEN_206 = op2_idx ? cache_valid_pos_1 : cache_valid_pos_0; // @[SE.scala 169:{140,140}]
-  wire  op2_neg_found = _op2_idx_T_3 | ciphers_neg_1 == op2_buffer; // @[SE.scala 149:49]
-  wire  _GEN_208 = op2_idx ? cache_valid_neg_1 : cache_valid_neg_0; // @[SE.scala 169:{187,187}]
+  wire  _op1_pos_found_T_6 = ciphers_pos_0 == op1_buffer ? 1'h0 : 1'h1; // @[SE.scala 146:103]
+  wire  _GEN_188 = _op1_pos_found_T_6 ? cache_valid_pos_1 : cache_valid_pos_0; // @[SE.scala 146:{62,62}]
+  wire  op1_pos_found = (ciphers_pos_0 == op1_buffer | ciphers_pos_1 == op1_buffer) & _GEN_188; // @[SE.scala 146:62]
+  wire  _op1_neg_found_T_6 = ciphers_neg_0 == op1_buffer ? 1'h0 : 1'h1; // @[SE.scala 147:103]
+  wire  _GEN_190 = _op1_neg_found_T_6 ? cache_valid_neg_1 : cache_valid_neg_0; // @[SE.scala 147:{62,62}]
+  wire  op1_neg_found = (ciphers_neg_0 == op1_buffer | ciphers_neg_1 == op1_buffer) & _GEN_190; // @[SE.scala 147:62]
+  wire  _op2_pos_found_T_6 = ciphers_pos_0 == op2_buffer ? 1'h0 : 1'h1; // @[SE.scala 148:103]
+  wire  _GEN_192 = _op2_pos_found_T_6 ? cache_valid_pos_1 : cache_valid_pos_0; // @[SE.scala 148:{62,62}]
+  wire  op2_pos_found = (ciphers_pos_0 == op2_buffer | ciphers_pos_1 == op2_buffer) & _GEN_192; // @[SE.scala 148:62]
+  wire  _op2_neg_found_T_6 = ciphers_neg_0 == op2_buffer ? 1'h0 : 1'h1; // @[SE.scala 149:103]
+  wire  _GEN_194 = _op2_neg_found_T_6 ? cache_valid_neg_1 : cache_valid_neg_0; // @[SE.scala 149:{62,62}]
+  wire  op2_neg_found = (ciphers_neg_0 == op2_buffer | ciphers_neg_1 == op2_buffer) & _GEN_194; // @[SE.scala 149:62]
   wire [7:0] _T_6 = inst_buffer & 8'he0; // @[SE.scala 153:26]
-  wire  _cond_pos_found_T = ciphers_pos_0 == cond_buffer; // @[SE.scala 154:55]
-  wire  cond_pos_found = 8'h60 == _T_6 ? ciphers_pos_0 == cond_buffer | ciphers_pos_1 == cond_buffer : 1'h1; // @[SE.scala 153:48 154:32 157:32]
-  wire  _cond_idx_T_2 = _cond_pos_found_T ? 1'h0 : 1'h1; // @[SE.scala 163:66]
-  wire  _cond_idx_T_3 = ciphers_neg_0 == cond_buffer; // @[SE.scala 163:122]
-  wire  _cond_idx_T_5 = ciphers_neg_0 == cond_buffer ? 1'h0 : 1'h1; // @[SE.scala 163:114]
-  wire  cond_idx = cond_pos_found ? _cond_idx_T_2 : _cond_idx_T_5; // @[SE.scala 163:27]
-  wire  _GEN_210 = cond_idx ? cache_valid_pos_1 : cache_valid_pos_0; // @[SE.scala 169:{246,246}]
-  wire  cond_neg_found = 8'h60 == _T_6 ? _cond_idx_T_3 | ciphers_neg_1 == cond_buffer : 1'h1; // @[SE.scala 153:48 155:32 158:32]
-  wire  _GEN_212 = cond_idx ? cache_valid_neg_1 : cache_valid_neg_0; // @[SE.scala 169:{295,295}]
-  wire  all_match = (op1_pos_found & _GEN_202 | op1_neg_found & _GEN_204) & (op2_pos_found & _GEN_206 | op2_neg_found &
-    _GEN_208) & (cond_pos_found & _GEN_210 | cond_neg_found & _GEN_212); // @[SE.scala 169:225]
+  wire  _cond_pos_found_T_6 = ciphers_pos_0 == cond_buffer ? 1'h0 : 1'h1; // @[SE.scala 154:110]
+  wire  _GEN_196 = _cond_pos_found_T_6 ? cache_valid_pos_1 : cache_valid_pos_0; // @[SE.scala 154:{69,69}]
+  wire  cond_pos_found = 8'h60 == _T_6 ? (ciphers_pos_0 == cond_buffer | ciphers_pos_1 == cond_buffer) & _GEN_196 : 1'h1
+    ; // @[SE.scala 153:48 154:32 157:32]
+  wire  _cond_neg_found_T_6 = ciphers_neg_0 == cond_buffer ? 1'h0 : 1'h1; // @[SE.scala 155:110]
+  wire  _GEN_198 = _cond_neg_found_T_6 ? cache_valid_neg_1 : cache_valid_neg_0; // @[SE.scala 155:{69,69}]
+  wire  cond_neg_found = 8'h60 == _T_6 ? (ciphers_neg_0 == cond_buffer | ciphers_neg_1 == cond_buffer) & _GEN_198 : 1'h1
+    ; // @[SE.scala 153:48 155:32 158:32]
+  wire  all_match = (op1_pos_found | op1_neg_found) & (op2_pos_found | op2_neg_found) & (cond_pos_found | cond_neg_found
+    ); // @[SE.scala 169:113]
   wire  n_stage_valid = all_match | valid_buffer; // @[SE.scala 182:36]
   wire  _valid_buffer_T_1 = n_stage_valid ? 1'h0 : valid_buffer; // @[SE.scala 119:68]
   wire  _GEN_185 = _T_1 | ready_for_input; // @[SE.scala 122:49 123:33 115:38]
   wire  _GEN_186 = _T ? 1'h0 : _GEN_185; // @[SE.scala 120:41 121:33]
-  wire [63:0] _GEN_190 = op1_idx ? plaintexts_pos_1 : plaintexts_pos_0; // @[SE.scala 165:{26,26}]
-  wire [63:0] _GEN_192 = op1_idx ? plaintexts_neg_1 : plaintexts_neg_0; // @[SE.scala 165:{26,26}]
-  wire [63:0] op1_val = op1_pos_found ? _GEN_190 : _GEN_192; // @[SE.scala 165:26]
-  wire [63:0] _GEN_194 = op2_idx ? plaintexts_pos_1 : plaintexts_pos_0; // @[SE.scala 166:{26,26}]
-  wire [63:0] _GEN_196 = op2_idx ? plaintexts_neg_1 : plaintexts_neg_0; // @[SE.scala 166:{26,26}]
-  wire [63:0] op2_val = op2_pos_found ? _GEN_194 : _GEN_196; // @[SE.scala 166:26]
-  wire [63:0] _GEN_198 = cond_idx ? plaintexts_pos_1 : plaintexts_pos_0; // @[SE.scala 167:{27,27}]
-  wire [63:0] _GEN_200 = cond_idx ? plaintexts_neg_1 : plaintexts_neg_0; // @[SE.scala 167:{27,27}]
-  wire [63:0] cond_val = cond_pos_found ? _GEN_198 : _GEN_200; // @[SE.scala 167:27]
+  wire  op1_idx = op1_pos_found ? _op1_pos_found_T_6 : _op1_neg_found_T_6; // @[SE.scala 161:26]
+  wire  op2_idx = op2_pos_found ? _op2_pos_found_T_6 : _op2_neg_found_T_6; // @[SE.scala 162:26]
+  wire  cond_idx = cond_pos_found ? _cond_pos_found_T_6 : _cond_neg_found_T_6; // @[SE.scala 163:27]
+  wire [63:0] _GEN_202 = op1_idx ? plaintexts_pos_1 : plaintexts_pos_0; // @[SE.scala 165:{26,26}]
+  wire [63:0] _GEN_204 = op1_idx ? plaintexts_neg_1 : plaintexts_neg_0; // @[SE.scala 165:{26,26}]
+  wire [63:0] op1_val = op1_pos_found ? _GEN_202 : _GEN_204; // @[SE.scala 165:26]
+  wire [63:0] _GEN_206 = op2_idx ? plaintexts_pos_1 : plaintexts_pos_0; // @[SE.scala 166:{26,26}]
+  wire [63:0] _GEN_208 = op2_idx ? plaintexts_neg_1 : plaintexts_neg_0; // @[SE.scala 166:{26,26}]
+  wire [63:0] op2_val = op2_pos_found ? _GEN_206 : _GEN_208; // @[SE.scala 166:26]
+  wire [63:0] _GEN_210 = cond_idx ? plaintexts_pos_1 : plaintexts_pos_0; // @[SE.scala 167:{27,27}]
+  wire [63:0] _GEN_212 = cond_idx ? plaintexts_neg_1 : plaintexts_neg_0; // @[SE.scala 167:{27,27}]
+  wire [63:0] cond_val = cond_pos_found ? _GEN_210 : _GEN_212; // @[SE.scala 167:27]
   wire  _T_57 = ~reset; // @[SE.scala 179:23]
   reg [7:0] mid_inst_buffer; // @[Reg.scala 16:16]
   reg [127:0] mid_op1_buffer; // @[Reg.scala 16:16]
@@ -36884,14 +36908,14 @@ module SE(
   wire [63:0] output_buffer_lo = {aes_cipher_io_output_text_7,aes_cipher_io_output_text_6,aes_cipher_io_output_text_5,
     aes_cipher_io_output_text_4,aes_cipher_io_output_text_3,aes_cipher_io_output_text_2,aes_cipher_io_output_text_1,
     aes_cipher_io_output_text_0}; // @[SE.scala 257:65]
-  wire [127:0] _output_buffer_T = {aes_cipher_io_output_text_15,aes_cipher_io_output_text_14,
+  wire [127:0] _output_buffer_T ;/*= {aes_cipher_io_output_text_15,aes_cipher_io_output_text_14,
     aes_cipher_io_output_text_13,aes_cipher_io_output_text_12,aes_cipher_io_output_text_11,aes_cipher_io_output_text_10,
-    aes_cipher_io_output_text_9,aes_cipher_io_output_text_8,output_buffer_lo}; // @[SE.scala 257:65]
+    aes_cipher_io_output_text_9,aes_cipher_io_output_text_8,output_buffer_lo}; // @[SE.scala 257:65]*/
   reg [127:0] output_buffer; // @[Reg.scala 16:16]
   reg  output_valid; // @[SE.scala 258:35]
   wire  _GEN_218 = _T_1 ? 1'h0 : output_valid; // @[SE.scala 262:49 263:30 258:35]
   wire  _GEN_219 = aes_cipher_io_output_valid | _GEN_218; // @[SE.scala 260:41 261:30]
-  wire  _T_62 = ~result_plaintext_buffer[63]; // @[SE.scala 269:50]
+  wire  _T_63 = ~result_plaintext_buffer[63]; // @[SE.scala 269:50]
   wire [3:0] _ptr_pos_T_1 = ptr_pos + 4'h1; // @[SE.scala 274:52]
   wire [3:0] _ptr_neg_T_1 = ptr_neg + 4'h1; // @[SE.scala 281:52]
   wire  _GEN_230 = ~ptr_pos[0] | cache_valid_pos_0; // @[SE.scala 300:{58,58} 75:34]
@@ -37213,7 +37237,7 @@ module SE(
     if (reset) begin // @[SE.scala 285:27]
       ciphers_pos_0 <= 128'h0; // @[SE.scala 288:40]
     end else if (io_out_valid) begin // @[SE.scala 296:35]
-      if (_T_62) begin // @[SE.scala 297:66]
+      if (_T_63) begin // @[SE.scala 297:66]
         if (~ptr_pos[0]) begin // @[SE.scala 298:54]
           ciphers_pos_0 <= output_buffer; // @[SE.scala 298:54]
         end
@@ -37222,7 +37246,7 @@ module SE(
     if (reset) begin // @[SE.scala 285:27]
       ciphers_pos_1 <= 128'h0; // @[SE.scala 288:40]
     end else if (io_out_valid) begin // @[SE.scala 296:35]
-      if (_T_62) begin // @[SE.scala 297:66]
+      if (_T_63) begin // @[SE.scala 297:66]
         if (ptr_pos[0]) begin // @[SE.scala 298:54]
           ciphers_pos_1 <= output_buffer; // @[SE.scala 298:54]
         end
@@ -37231,7 +37255,7 @@ module SE(
     if (reset) begin // @[SE.scala 285:27]
       ciphers_neg_0 <= 128'h0; // @[SE.scala 290:40]
     end else if (io_out_valid) begin // @[SE.scala 296:35]
-      if (!(_T_62)) begin // @[SE.scala 297:66]
+      if (!(_T_63)) begin // @[SE.scala 297:66]
         if (~ptr_neg[0]) begin // @[SE.scala 302:54]
           ciphers_neg_0 <= output_buffer; // @[SE.scala 302:54]
         end
@@ -37240,7 +37264,7 @@ module SE(
     if (reset) begin // @[SE.scala 285:27]
       ciphers_neg_1 <= 128'h0; // @[SE.scala 290:40]
     end else if (io_out_valid) begin // @[SE.scala 296:35]
-      if (!(_T_62)) begin // @[SE.scala 297:66]
+      if (!(_T_63)) begin // @[SE.scala 297:66]
         if (ptr_neg[0]) begin // @[SE.scala 302:54]
           ciphers_neg_1 <= output_buffer; // @[SE.scala 302:54]
         end
@@ -37249,7 +37273,7 @@ module SE(
     if (reset) begin // @[SE.scala 285:27]
       plaintexts_pos_0 <= 64'h0; // @[SE.scala 289:43]
     end else if (io_out_valid) begin // @[SE.scala 296:35]
-      if (_T_62) begin // @[SE.scala 297:66]
+      if (_T_63) begin // @[SE.scala 297:66]
         if (~ptr_pos[0]) begin // @[SE.scala 299:57]
           plaintexts_pos_0 <= result_plaintext_buffer; // @[SE.scala 299:57]
         end
@@ -37258,7 +37282,7 @@ module SE(
     if (reset) begin // @[SE.scala 285:27]
       plaintexts_pos_1 <= 64'h0; // @[SE.scala 289:43]
     end else if (io_out_valid) begin // @[SE.scala 296:35]
-      if (_T_62) begin // @[SE.scala 297:66]
+      if (_T_63) begin // @[SE.scala 297:66]
         if (ptr_pos[0]) begin // @[SE.scala 299:57]
           plaintexts_pos_1 <= result_plaintext_buffer; // @[SE.scala 299:57]
         end
@@ -37267,7 +37291,7 @@ module SE(
     if (reset) begin // @[SE.scala 285:27]
       plaintexts_neg_0 <= 64'h0; // @[SE.scala 291:43]
     end else if (io_out_valid) begin // @[SE.scala 296:35]
-      if (!(_T_62)) begin // @[SE.scala 297:66]
+      if (!(_T_63)) begin // @[SE.scala 297:66]
         if (~ptr_neg[0]) begin // @[SE.scala 303:57]
           plaintexts_neg_0 <= result_plaintext_buffer; // @[SE.scala 303:57]
         end
@@ -37276,7 +37300,7 @@ module SE(
     if (reset) begin // @[SE.scala 285:27]
       plaintexts_neg_1 <= 64'h0; // @[SE.scala 291:43]
     end else if (io_out_valid) begin // @[SE.scala 296:35]
-      if (!(_T_62)) begin // @[SE.scala 297:66]
+      if (!(_T_63)) begin // @[SE.scala 297:66]
         if (ptr_neg[0]) begin // @[SE.scala 303:57]
           plaintexts_neg_1 <= result_plaintext_buffer; // @[SE.scala 303:57]
         end
@@ -37284,7 +37308,7 @@ module SE(
     end
     if (reset) begin // @[SE.scala 73:30]
       ptr_pos <= 4'h0; // @[SE.scala 73:30]
-    end else if (output_valid) begin // @[SE.scala 268:27]
+    end else if (_T_1) begin // @[SE.scala 268:43]
       if (~result_plaintext_buffer[63]) begin // @[SE.scala 269:58]
         if (ptr_pos == 4'h1) begin // @[SE.scala 271:59]
           ptr_pos <= 4'h0; // @[SE.scala 272:41]
@@ -37295,7 +37319,7 @@ module SE(
     end
     if (reset) begin // @[SE.scala 74:30]
       ptr_neg <= 4'h0; // @[SE.scala 74:30]
-    end else if (output_valid) begin // @[SE.scala 268:27]
+    end else if (_T_1) begin // @[SE.scala 268:43]
       if (!(~result_plaintext_buffer[63])) begin // @[SE.scala 269:58]
         if (ptr_neg == 4'h1) begin // @[SE.scala 278:59]
           ptr_neg <= 4'h0; // @[SE.scala 279:41]
@@ -37307,28 +37331,28 @@ module SE(
     if (reset) begin // @[SE.scala 285:27]
       cache_valid_pos_0 <= 1'h0; // @[SE.scala 292:44]
     end else if (io_out_valid) begin // @[SE.scala 296:35]
-      if (_T_62) begin // @[SE.scala 297:66]
+      if (_T_63) begin // @[SE.scala 297:66]
         cache_valid_pos_0 <= _GEN_230;
       end
     end
     if (reset) begin // @[SE.scala 285:27]
       cache_valid_pos_1 <= 1'h0; // @[SE.scala 292:44]
     end else if (io_out_valid) begin // @[SE.scala 296:35]
-      if (_T_62) begin // @[SE.scala 297:66]
+      if (_T_63) begin // @[SE.scala 297:66]
         cache_valid_pos_1 <= _GEN_231;
       end
     end
     if (reset) begin // @[SE.scala 285:27]
       cache_valid_neg_0 <= 1'h0; // @[SE.scala 293:44]
     end else if (io_out_valid) begin // @[SE.scala 296:35]
-      if (!(_T_62)) begin // @[SE.scala 297:66]
+      if (!(_T_63)) begin // @[SE.scala 297:66]
         cache_valid_neg_0 <= _GEN_236;
       end
     end
     if (reset) begin // @[SE.scala 285:27]
       cache_valid_neg_1 <= 1'h0; // @[SE.scala 293:44]
     end else if (io_out_valid) begin // @[SE.scala 296:35]
-      if (!(_T_62)) begin // @[SE.scala 297:66]
+      if (!(_T_63)) begin // @[SE.scala 297:66]
         cache_valid_neg_1 <= _GEN_237;
       end
     end
@@ -37395,7 +37419,7 @@ module SE(
     `ifdef PRINTF_COND
       if (`PRINTF_COND) begin
     `endif
-        if (output_valid & _T_62 & _T_57) begin
+        if (_T_1 & _T_63 & _T_57) begin
           $fwrite(32'h80000002,"ptr_pos:%x\n",ptr_pos); // @[SE.scala 270:31]
         end
     `ifdef PRINTF_COND
@@ -37406,7 +37430,7 @@ module SE(
     `ifdef PRINTF_COND
       if (`PRINTF_COND) begin
     `endif
-        if (output_valid & ~_T_62 & _T_57) begin
+        if (_T_1 & ~_T_63 & _T_57) begin
           $fwrite(32'h80000002,"ptr_neg:%x\n",ptr_neg); // @[SE.scala 277:31]
         end
     `ifdef PRINTF_COND
