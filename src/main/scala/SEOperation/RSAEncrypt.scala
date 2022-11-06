@@ -22,7 +22,7 @@ class RSAEncrypt extends Module {
     rsa_enc.io.p := io.p
     rsa_enc.io.q := io.q
     rsa_enc.io.clk := Module.clock.asBool
-    rsa_enc.io.reset := Module.reset.asBool || io.input_valid
+    rsa_enc.io.reset := Module.reset.asBool
     rsa_enc.io.reset1 := Module.reset.asBool || io.input_valid
     rsa_enc.io.encrypt_decrypt := true.B
     rsa_enc.io.msg_in := io.input_text.asTypeOf(rsa_enc.io.msg_in)

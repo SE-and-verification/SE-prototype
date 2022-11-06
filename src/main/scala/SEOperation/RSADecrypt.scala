@@ -29,7 +29,7 @@ class RSADecrypt extends Module {
     rsa_dec1.io.p := io.p
     rsa_dec1.io.q := io.q
     rsa_dec1.io.clk := Module.clock.asBool
-    rsa_dec1.io.reset := Module.reset.asBool || io.input_valid
+    rsa_dec1.io.reset := Module.reset.asBool
     rsa_dec1.io.reset1 := Module.reset.asBool || io.input_valid
     rsa_dec1.io.encrypt_decrypt := false.B
     rsa_dec1.io.msg_in := io.input_op1.asTypeOf(rsa_dec1.io.msg_in)
@@ -39,7 +39,7 @@ class RSADecrypt extends Module {
     rsa_dec2.io.p := io.p
     rsa_dec2.io.q := io.q
     rsa_dec2.io.clk := Module.clock.asBool
-    rsa_dec2.io.reset := Module.reset.asBool || io.input_valid
+    rsa_dec2.io.reset := Module.reset.asBool
     rsa_dec2.io.reset1 := Module.reset.asBool || io.input_valid
     rsa_dec2.io.encrypt_decrypt := false.B
     rsa_dec2.io.msg_in := io.input_op2.asTypeOf(rsa_dec2.io.msg_in)
@@ -48,7 +48,7 @@ class RSADecrypt extends Module {
     rsa_dec3.io.p := io.p
     rsa_dec3.io.q := io.q
     rsa_dec3.io.clk := Module.clock.asBool
-    rsa_dec3.io.reset := Module.reset.asBool || io.input_valid
+    rsa_dec3.io.reset := Module.reset.asBool
     rsa_dec3.io.reset1 := Module.reset.asBool || io.input_valid
     rsa_dec3.io.encrypt_decrypt := false.B
     rsa_dec3.io.msg_in := io.input_cond.asTypeOf(rsa_dec3.io.msg_in)
