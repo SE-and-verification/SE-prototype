@@ -68,14 +68,18 @@ class SE(val debug:Boolean, val canChangeKey: Boolean) extends Module{
 	val plaintexts = Reg(Vec(32, UInt(64.W)))
 	val ptr = RegInit(0.U(8.W))
 
-	val p_lit:BigInt = BigInt("17832699019361157457")
-	val q_lit:BigInt = BigInt("13452944774109394693")
+	val d_lit:BigInt = BigInt("60166926585411592733303690086208913473")
+	val e_lit:BigInt = BigInt("65537")
+	val n_lit:BigInt = BigInt("193862333708363793192320956212389408663")
 
 
-	val p = RegInit(0.U(64.W))
-	val q = RegInit(0.U(64.W))
-	p := p_lit.U(64.W)
-	q := q_lit.U(64.W)
+	val d = RegInit(0.U(128.W))
+	val e = RegInit(0.U(128.W))
+	val n = RegInit(0.U(128.W))
+	d := d_lit.U(128.W)
+	e := e_lit.U(128.W)
+	n := n_lit.U(128.W)
+
 	// val expandedKey128 =VecInit(
     // VecInit(0x00.U(8.W), 0x01.U(8.W), 0x02.U(8.W), 0x03.U(8.W), 0x04.U(8.W), 0x05.U(8.W), 0x06.U(8.W), 0x07.U(8.W), 0x08.U(8.W), 0x09.U(8.W), 0x0a.U(8.W), 0x0b.U(8.W), 0x0c.U(8.W), 0x0d.U(8.W), 0x0e.U(8.W), 0x0f.U(8.W)),
     // VecInit(0xd6.U(8.W), 0xaa.U(8.W), 0x74.U(8.W), 0xfd.U(8.W), 0xd2.U(8.W), 0xaf.U(8.W), 0x72.U(8.W), 0xfa.U(8.W), 0xda.U(8.W), 0xa6.U(8.W), 0x78.U(8.W), 0xf1.U(8.W), 0xd6.U(8.W), 0xab.U(8.W), 0x76.U(8.W), 0xfe.U(8.W)),
@@ -167,8 +171,8 @@ class SE(val debug:Boolean, val canChangeKey: Boolean) extends Module{
 	aes_invcipher.io.input_op1 := op1_buffer.asTypeOf(aes_invcipher.io.input_op1)
 	aes_invcipher.io.input_op2 := op2_buffer.asTypeOf(aes_invcipher.io.input_op2)
 	aes_invcipher.io.input_cond := cond_buffer.asTypeOf(aes_invcipher.io.input_cond)
-	aes_invcipher.io.p := p
-	aes_invcipher.io.q := q
+	aes_invcipher.io.n := n
+	aes_invcipher.io.e := d
 	aes_invcipher.io.input_valid := valid_buffer && (!all_match)
 	when(aes_invcipher.io.input_valid){
 		printf("op1_buffer: %x\n",op1_buffer)
@@ -246,8 +250,8 @@ class SE(val debug:Boolean, val canChangeKey: Boolean) extends Module{
 	}
 	aes_cipher.io.input_text := aes_input_reverse
 	aes_cipher.io.input_valid := result_valid_buffer
-	aes_cipher.io.p := p
-	aes_cipher.io.q := q
+	aes_cipher.io.e := e
+	aes_cipher.io.n := n
 
 	// Connect the output side
 	val output_buffer = RegEnable(aes_cipher.io.output_text.do_asUInt, aes_cipher.io.output_valid)
