@@ -41,7 +41,7 @@ class SE(val debug:Boolean, val canChangeKey: Boolean) extends Module{
 	val io = IO(new SEIO(canChangeKey))
 	val counterOn = RegInit(false.B)
 	val cnter = new Counter(100)
-	val rolled = true
+	val rolled = false
 	when(counterOn){
 		cnter.inc()
 	}
@@ -63,7 +63,7 @@ class SE(val debug:Boolean, val canChangeKey: Boolean) extends Module{
 	val aes_cipher = Module(new AESEncrypt(rolled))
 	val key = Reg(Vec(11, Vec(16,UInt(8.W))))
 	
-	val CACHE_SIZE = 2
+	val CACHE_SIZE = 16
 
 	val ciphers_pos = Reg(Vec(CACHE_SIZE, UInt(128.W)))
 	val ciphers_neg = Reg(Vec(CACHE_SIZE, UInt(128.W)))
