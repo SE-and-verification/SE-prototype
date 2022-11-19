@@ -41,7 +41,7 @@ class SE(val debug:Boolean, val canChangeKey: Boolean) extends Module{
 	val io = IO(new SEIO(canChangeKey))
 	val counterOn = RegInit(false.B)
 	val cnter = new Counter(100)
-	val rolled = true
+	val rolled = false
 	when(counterOn){
 		cnter.inc()
 	}

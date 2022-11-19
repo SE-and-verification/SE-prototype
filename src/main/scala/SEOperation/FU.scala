@@ -81,7 +81,7 @@ class FU(val debug: Boolean) extends Module{
       }.elsewhen(io.fu_type === ARITH_SUB){
         if(debug) printf("Inst: sub\n")
         output := io.A - io.B
-      }.otherwise{
+      }.elsewhen(io.fu_type === ARITH_MULT){
 
         // changes: 
         if(debug) printf("Inst: mult\n")
@@ -100,13 +100,14 @@ class FU(val debug: Boolean) extends Module{
             // waiting for ready
 
             // got to ready!
-            when (ready) {
+            when (ready && io.fu_type === ARITH_MULT) {
               // initializing all values!
                 regA := inA
                 regB := inB
-                valid := false.B
+                io.valid := false.B
                 state := 1.U
                 tempSum := 0.U
+                io.valid := false.B
             }
         }
         when (state === 1.U) {
@@ -120,20 +121,22 @@ class FU(val debug: Boolean) extends Module{
               regA := regA << 1.U 
               // right shift B by 1 to get next bit
               regB := regB >> 1.U
+              io.valid := false.B
 
             } .otherwise { // when no more 1s left in b, done w multiplying
-                valid := true.B
-                state := 2.U
-            }
-        }
-        when (state === 2.U) {
-          // does nothing until new values come in and ready goes to 0 while decrypying
-            when (!ready) {
+                io.valid := true.B
                 state := 0.U
             }
         }
+        // when (state === 2.U) {
+        //   // does nothing until new values come in and ready goes to 0 while decrypting
+        //     when (!ready) {
+        //         state := 0.U
+        //     }
+        // }
 
         output := tempSum
+        
         
         /*
         output := io.A * io.B
@@ -145,8 +148,10 @@ class FU(val debug: Boolean) extends Module{
         }.elsewhen (io.B === 2.U) { output := io.A << 2.U // left shift is faster
         }.otherwise {output := io.A * io.B} */
 
+      }.otherwise{
+        output := 0.U
+        io.valid := false.B
       }
-
     }
   }.elsewhen(io.fu_op === FU_LOGICAL){
       when(io.fu_type === LOGICAL_XOR){
