@@ -41,7 +41,7 @@ class SE(val debug:Boolean, val canChangeKey: Boolean) extends Module{
 	val io = IO(new SEIO(canChangeKey))
 	val counterOn = RegInit(false.B)
 	val cnter = new Counter(100)
-	val rolled = true
+	val rolled = false
 	when(counterOn){
 		cnter.inc()
 	}
@@ -146,7 +146,7 @@ class SE(val debug:Boolean, val canChangeKey: Boolean) extends Module{
 	val op2_val = plaintexts(ciphers.indexWhere(e => (e===op2_buffer)))
 	val cond_val = plaintexts(ciphers.indexWhere(e => (e===cond_buffer)))
 
-	val all_match = op1_found && op2_found && cond_found
+	val all_match = false.B //op1_found && op2_found && cond_found
 
 	// Feed the ciphertexts into the invcipher
 	aes_invcipher.io.input_op1 := op1_buffer.asTypeOf(aes_invcipher.io.input_op1)
