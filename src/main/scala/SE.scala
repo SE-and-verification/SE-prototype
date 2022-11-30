@@ -282,27 +282,16 @@ class SE(val debug:Boolean, val canChangeKey: Boolean) extends Module{
 			}
 		}
 	}
-	when(reset.asBool){
-		key := expandedKey128
-		for(i <- 0 until CACHE_SIZE){
-			ciphers_pos(i) := i.U
-			plaintexts_pos(i) := i.U
-			ciphers_neg(i) := (100-i).U
-			plaintexts_neg(i) := (100-i).U
-			cache_valid_pos(i) := true.B
-			cache_valid_neg(i) := true.B
-		}
-	}.otherwise{	
-		when(io.out.valid){
-			when(result_plaintext_buffer(63) === 0.U){
-				ciphers_pos(ptr_pos) := output_buffer
-				plaintexts_pos(ptr_pos) := result_plaintext_buffer
-				cache_valid_pos(ptr_pos) := true.B
-			}.otherwise{
-				ciphers_neg(ptr_neg) := output_buffer
-				plaintexts_neg(ptr_neg) := result_plaintext_buffer
-				cache_valid_neg(ptr_neg) := true.B
-			}
+
+	when(io.out.valid){
+		when(result_plaintext_buffer(63) === 0.U){
+			ciphers_pos(ptr_pos) := output_buffer
+			plaintexts_pos(ptr_pos) := result_plaintext_buffer
+			cache_valid_pos(ptr_pos) := true.B
+		}.otherwise{
+			ciphers_neg(ptr_neg) := output_buffer
+			plaintexts_neg(ptr_neg) := result_plaintext_buffer
+			cache_valid_neg(ptr_neg) := true.B
 		}
 	}
 
