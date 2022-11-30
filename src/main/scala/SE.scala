@@ -164,7 +164,7 @@ class SE(val debug:Boolean, val canChangeKey: Boolean) extends Module{
 	val op2_val = plaintexts(op2_idx)
 	val cond_val = plaintexts(cond_idx)
 
-	val all_match = op1_found && op2_found && cond_found && cache_valid(op1_idx) && cache_valid(op2_idx) && cache_valid(cond_idx)
+	val all_match = false.B//op1_found && op2_found && cond_found && cache_valid(op1_idx) && cache_valid(op2_idx) && cache_valid(cond_idx)
 
 
 	// Feed the ciphertexts into the invcipher
