@@ -5,16 +5,18 @@ import chisel3.util._
 import aes._
 import se.seoperation._
 import chisel3.util.random._
+import crc._
 
 class SEInput(val canChangeKey: Boolean) extends Bundle{
 	val inst = Input(UInt(8.W)) // Instruction encoding is defined in SEOperation/Instructions.scala
 
-	val op1 = Input(UInt(128.W))
+	val op1 = Input(UInt(256.W))
 
-	val op2 = Input(UInt(128.W))
+	val op2 = Input(UInt(256.W))
 
 	// The condition for CMOV. Should always be encrypted. Can be anything if not used
-	val cond = Input(UInt(128.W)) 
+	val cond = Input(UInt(256.W)) 
+
 	val valid = Input(Bool())
 	val ready = Output(Bool())
 
@@ -24,7 +26,7 @@ class SEInput(val canChangeKey: Boolean) extends Bundle{
 
 
 class SEOutput extends Bundle{
-	val result = Output(UInt(128.W))
+	val result = Output(UInt(256.W))
 	val valid = Output(Bool())
 	val ready = Input(Bool())
 	val cntr = Output(UInt(8.W))
@@ -65,15 +67,13 @@ class SE(val debug:Boolean, val canChangeKey: Boolean) extends Module{
 	
 	val CACHE_SIZE = 16
 
-	val ciphers_pos = Reg(Vec(CACHE_SIZE, UInt(128.W)))
-	val ciphers_neg = Reg(Vec(CACHE_SIZE, UInt(128.W)))
+	val ciphers = Reg(Vec(CACHE_SIZE, UInt(256.W)))
 
-	val plaintexts_pos = Reg(Vec(CACHE_SIZE, UInt(64.W)))
-	val plaintexts_neg = Reg(Vec(CACHE_SIZE, UInt(64.W)))
-	val ptr_pos = RegInit(0.U(4.W))
-	val ptr_neg = RegInit(0.U(4.W))
-	val cache_valid_pos = Reg(Vec(CACHE_SIZE, Bool()))
-	val cache_valid_neg = Reg(Vec(CACHE_SIZE, Bool()))
+	val plaintexts = Reg(Vec(CACHE_SIZE, UInt(256.W)))
+
+	val ptr = RegInit(0.U(16.W))
+
+	val cache_valid = Reg(Vec(CACHE_SIZE, Bool()))
 
 	val expandedKey128 =VecInit(
     VecInit(0x00.U(8.W), 0x01.U(8.W), 0x02.U(8.W), 0x03.U(8.W), 0x04.U(8.W), 0x05.U(8.W), 0x06.U(8.W), 0x07.U(8.W), 0x08.U(8.W), 0x09.U(8.W), 0x0a.U(8.W), 0x0b.U(8.W), 0x0c.U(8.W), 0x0d.U(8.W), 0x0e.U(8.W), 0x0f.U(8.W)),
@@ -143,36 +143,81 @@ class SE(val debug:Boolean, val canChangeKey: Boolean) extends Module{
 		}
 	}
 
-	val op1_pos_found = ciphers_pos.contains(op1_buffer)
-	val op1_neg_found = ciphers_neg.contains(op1_buffer)
-	val op2_pos_found = ciphers_pos.contains(op2_buffer)
-	val op2_neg_found = ciphers_neg.contains(op2_buffer)	
-	val cond_pos_found = Wire(Bool())
-	val cond_neg_found = Wire(Bool())
+	val op1_found = ciphers.contains(op1_buffer)
+
+	val op2_found = ciphers.contains(op2_buffer)
+
+	val cond_found = Wire(Bool())
 
 	when(inst_buffer === Instructions.CMOV){
-		cond_pos_found := ciphers_pos.contains(cond_buffer) 
-		cond_neg_found := ciphers_neg.contains(cond_buffer) 
+		cond_found := ciphers.contains(cond_buffer) 
 	}.otherwise{
-		cond_pos_found := true.B
-		cond_neg_found := true.B
+		cond_found := true.B
 	}
 
-	val op1_idx = Mux(op1_pos_found, ciphers_pos.indexWhere(e => (e===op1_buffer)), ciphers_neg.indexWhere(e => (e===op1_buffer)))
-	val op2_idx = Mux(op2_pos_found, ciphers_pos.indexWhere(e => (e===op2_buffer)), ciphers_neg.indexWhere(e => (e===op2_buffer)))
-	val cond_idx = Mux(cond_pos_found, ciphers_pos.indexWhere(e => (e===cond_buffer)), ciphers_neg.indexWhere(e => (e===cond_buffer)))
+	val op1_idx = ciphers.indexWhere(e => (e===op1_buffer))
 
-	val op1_val = Mux(op1_pos_found, plaintexts_pos(op1_idx), plaintexts_neg(op1_idx))
-	val op2_val = Mux(op2_pos_found, plaintexts_pos(op2_idx), plaintexts_neg(op2_idx))
-	val cond_val = Mux(cond_pos_found, plaintexts_pos(cond_idx), plaintexts_neg(cond_idx))
+	val op2_idx = ciphers.indexWhere(e => (e===op2_buffer))
 
-	val all_match = ( (op1_pos_found && cache_valid_pos(op1_idx))|| (op1_neg_found && cache_valid_neg(op1_idx)) )  && ( (op2_pos_found && cache_valid_pos(op2_idx)) || (op2_neg_found && cache_valid_neg(op2_idx)) ) 	&& ( (cond_pos_found && cache_valid_pos(cond_idx)) || (cond_neg_found && cache_valid_neg(cond_idx)) )
+	val cond_idx = ciphers.indexWhere(e => (e===cond_buffer))
 
+	val op1_val_before_xor = plaintexts(op1_idx)
+	val op2_val_before_xor = plaintexts(op2_idx)
+	val cond_val_before_xor = plaintexts(cond_idx)
+
+	val op1_val = Wire(UInt(64.W))
+	val op2_val = Wire(UInt(64.W))
+	val cond_val = Wire(UInt(64.W))
+
+	val op1_hash_val  = Wire(UInt(64.W))
+	val op2_hash_val  = Wire(UInt(64.W))
+	val cond_hash_val  = Wire(UInt(64.W))
+
+	val op1_version_val  = Wire(UInt(64.W))
+	val op2_version_val  = Wire(UInt(64.W))
+	val cond_version_val  = Wire(UInt(64.W))
+
+	for(i <- 0 until 128){
+		if(i >= 64){
+			if( i%2 === 0){
+				op1_val(i-64) := op1_val_before_xor(i) ^ op1_val_before_xor(i+128)
+				op2_val(i-64) := op2_val_before_xor(i) ^ op2_val_before_xor(i+128)
+				cond_val(i-64) := cond_val_before_xor(i) ^ cond_val_before_xor(i+128)
+
+				op1_hash_val(i-64) := op1_val_before_xor(i)
+				op2_hash_val(i-64) := op2_val_before_xor(i)
+				cond_hash_val(i-64) := cond_val_before_xor(i)
+			}else{
+				op1_val(i-64) := op1_val_before_xor(i+128)
+				op2_val(i-64) := op2_val_before_xor(i+128)
+				cond_val(i-64) := cond_val_before_xor(i+128)
+
+				op1_hash_val(i-64) := op1_val_before_xor(i) ^ op1_val_before_xor(i+128)
+				op2_hash_val(i-64) := op2_val_before_xor(i) ^ op2_val_before_xor(i+128)
+				cond_hash_val(i-64) := cond_val_before_xor(i) ^ cond_val_before_xor(i+128)
+			}
+		}else{
+			if( i%2 === 0){
+				op1_version_val(i) := op1_val_before_xor(i)
+				op2_version_val(i) := op2_val_before_xor(i)
+				cond_version_val(i) := cond_val_before_xor(i)
+			}else{
+				op1_version_val(i) := op1_val_before_xor(i) ^ op1_val_before_xor(i+128)
+				op2_version_val(i) := op2_val_before_xor(i) ^ op2_val_before_xor(i+128)
+				cond_version_val(i) := cond_val_before_xor(i) ^ cond_val_before_xor(i+128)
+			}
+		}
+	}
+
+	val all_match = op1_found && cache_valid(op1_idx)  && op2_found && cache_valid(op2_idx) && cond_found && ((inst_buffer =/= Instructions.CMOV) || cache_valid(cond_idx))
 
 	// Feed the ciphertexts into the invcipher
-	aes_invcipher.io.input_op1 := op1_buffer.asTypeOf(aes_invcipher.io.input_op1)
-	aes_invcipher.io.input_op2 := op2_buffer.asTypeOf(aes_invcipher.io.input_op2)
-	aes_invcipher.io.input_cond := cond_buffer.asTypeOf(aes_invcipher.io.input_cond)
+	aes_invcipher.io.input_op1_secret_salt := op1_buffer(255,128).asTypeOf(aes_invcipher.io.input_op1)
+	aes_invcipher.io.input_op2_secret_salt := op2_buffer(255,128).asTypeOf(aes_invcipher.io.input_op2)
+	aes_invcipher.io.input_cond_secret_salt := cond_buffer(255,128).asTypeOf(aes_invcipher.io.input_cond)
+	aes_invcipher.io.input_op1_hash_version := op1_buffer(127,0).asTypeOf(aes_invcipher.io.input_op1)
+	aes_invcipher.io.input_op2_hash_version := op2_buffer(127,0).asTypeOf(aes_invcipher.io.input_op2)
+	aes_invcipher.io.input_cond_hash_version := cond_buffer(127,0).asTypeOf(aes_invcipher.io.input_cond)
 	aes_invcipher.io.input_roundKeys := key
 	aes_invcipher.io.input_valid := valid_buffer && (!all_match)
 	when(aes_invcipher.io.input_valid){
@@ -183,12 +228,22 @@ class SE(val debug:Boolean, val canChangeKey: Boolean) extends Module{
 
 	// Reverse the byte order so we can convert them into uint with Chisel infrastructure.
 	val op1_reverse = Wire(Vec(Params.StateLength, UInt(8.W)))
+	val op1_hash_version_reverse = Wire(Vec(Params.StateLength, UInt(8.W)))
+
 	val op2_reverse = Wire(Vec(Params.StateLength, UInt(8.W)))
+	val op2_hash_version_reverse = Wire(Vec(Params.StateLength, UInt(8.W)))
+
 	val cond_reverse = Wire(Vec(Params.StateLength, UInt(8.W)))
+	val cond_hash_version_reverse = Wire(Vec(Params.StateLength, UInt(8.W)))
+
 	for(i <- 0 until Params.StateLength){
 		op1_reverse(i) := aes_invcipher.io.output_op1(Params.StateLength-i-1)
 		op2_reverse(i) := aes_invcipher.io.output_op2(Params.StateLength-i-1)
 		cond_reverse(i) := aes_invcipher.io.output_cond(Params.StateLength-i-1)
+
+		op1_hash_version_reverse(i) := aes_invcipher.io.output_op1_hash_version(Params.StateLength-i-1)
+		op2_hash_version_reverse(i) := aes_invcipher.io.output_op2_hash_version(Params.StateLength-i-1)
+		cond_hash_version_reverse(i) := aes_invcipher.io.output_cond_hash_version(Params.StateLength-i-1)
 	}
 
 	val mid_inst_buffer = RegEnable(inst_buffer,aes_invcipher.io.input_valid)
@@ -198,9 +253,57 @@ class SE(val debug:Boolean, val canChangeKey: Boolean) extends Module{
 	seoperation.io.inst := Mux(all_match&& valid_buffer,inst_buffer ,mid_inst_buffer)
 	val seOpValid = aes_invcipher.io.output_valid || (all_match && valid_buffer)
 	seoperation.io.valid := seOpValid
-	val op1_asUInt = op1_reverse.do_asUInt
-	val op2_asUInt = op2_reverse.do_asUInt
-	val cond_asUInt = cond_reverse.do_asUInt
+	val op1_asUInt_before_xor = op1_reverse.do_asUInt
+	val op2_asUInt_before_xor = op2_reverse.do_asUInt
+	val cond_asUInt_before_xor = cond_reverse.do_asUInt
+
+	val op1_hash_version_asUInt_before_xor = op1_hash_version_reverse.do_asUInt
+	val op2_hash_version_asUInt_before_xor = op2_hash_version_reverse.do_asUInt
+	val cond_hash_version_asUInt_before_xor = cond_hash_version_reverse.do_asUInt
+
+	val op1_asUInt = Wire(UInt(64.W))
+	val op2_asUInt = Wire(UInt(64.W))
+	val cond_asUInt = Wire(UInt(64.W))
+
+	val op1_hash_asUInt  = Wire(UInt(64.W))
+	val op2_hash_asUInt  = Wire(UInt(64.W))
+	val cond_hash_asUInt  = Wire(UInt(64.W))
+
+	val op1_version_asUInt  = Wire(UInt(64.W))
+	val op2_version_asUInt  = Wire(UInt(64.W))
+	val cond_version_asUInt  = Wire(UInt(64.W))
+
+	for(i <- 0 until 128){
+		if(i >= 64){
+			if( i%2 === 0){
+				op1_asUInt(i-64) := op1_asUInt_before_xor(i) ^ op1_hash_version_asUInt_before_xor(i)
+				op2_asUInt(i-64) := op2_asUInt_before_xor(i) ^ op2_hash_version_asUInt_before_xor(i)
+				cond_asUInt(i-64) := cond_asUInt_before_xor(i) ^ cond_hash_version_asUInt_before_xor(i)
+
+				op1_hash_asUInt(i-64) := op1_hash_version_asUInt_before_xor(i)
+				op2_hash_asUInt(i-64) := op2_hash_version_asUInt_before_xor(i)
+				cond_hash_asUInt(i-64) := cond_hash_version_asUInt_before_xor(i)
+			}else{
+				op1_asUInt(i-64) := op1_asUInt_before_xor(i)
+				op2_asUInt(i-64) := op2_asUInt_before_xor(i)
+				cond_asUInt(i-64) := cond_asUInt_before_xor(i)
+
+				op1_hash_asUInt(i-64) := op1_asUInt_before_xor(i) ^ op1_hash_version_asUInt_before_xor(i)
+				op2_hash_asUInt(i-64) := op2_asUInt_before_xor(i) ^ op2_hash_version_asUInt_before_xor(i)
+				cond_hash_asUInt(i-64) := cond_asUInt_before_xor(i) ^ cond_hash_version_asUInt_before_xor(i)
+			}
+		}else{
+			if( i%2 === 0){
+				op1_version_asUInt(i) := op1_hash_version_asUInt_before_xor(i)
+				op2_version_asUInt(i) := op2_hash_version_asUInt_before_xor(i)
+				cond_version_asUInt(i) := cond_hash_version_asUInt_before_xor(i)
+			}else{
+				op1_version_asUInt(i) := op1_asUInt_before_xor(i) ^ op1_hash_version_asUInt_before_xor(i)
+				op2_version_asUInt(i) := op2_asUInt_before_xor(i) ^ op1_val_op2_hash_version_asUInt_before_xorbefore_xor(i)
+				cond_version_asUInt(i) := cond_val_before_xor(i) ^ cond_hash_version_asUInt_before_xor(i)
+			}
+		}
+	}
 	// printf("op1_found: %d\n",op1_found)
 	// printf("op2_found: %d\n",op2_found)
 	// printf("cond_found: %d\n",cond_found)
@@ -220,13 +323,21 @@ class SE(val debug:Boolean, val canChangeKey: Boolean) extends Module{
 	// 	printf("inst:%b\n",mid_inst_buffer)
 	// }
 
-	seoperation.io.op1_input := Mux(all_match&& valid_buffer, op1_val ,Mux(mid_inst_buffer(7,5) === 5.U(3.W), mid_op1_buffer(127,64),op1_asUInt(127,64)))
-	seoperation.io.op2_input := Mux(all_match&& valid_buffer, op2_val, op2_asUInt(127,64))
-	seoperation.io.cond_input := Mux(all_match&& valid_buffer, cond_val, cond_asUInt(127,64))
+	seoperation.io.op1_input := Mux(mid_inst_buffer(7,5) === 5.U(3.W), mid_op1_buffer(255,128),Mux(all_match&& valid_buffer, op1_val, op1_asUInt))
+	seoperation.io.op2_input := Mux(all_match&& valid_buffer, op2_val, op2_asUInt)
+	seoperation.io.cond_input := Mux(all_match&& valid_buffer, cond_val, cond_asUInt)
 
-  // Once we receive the result form the seoperation, we latech the result first.
+	seoperation.io.op1_input_hash := Mux(all_match&& valid_buffer, op1_hash_val, op1_hash_asUInt)
+	seoperation.io.op2_input_hash := Mux(all_match&& valid_buffer, op2_hash_val, op2_hash_asUInt)
+	seoperation.io.cond_input_hash := Mux(all_match&& valid_buffer, cond_hash_val, cond_hash_asUInt)
+
+	seoperation.io.op1_input_version := Mux(all_match&& valid_buffer, op1_version_val, op1_version_asUInt)
+	seoperation.io.op2_input_version := Mux(all_match&& valid_buffer, op2_version_val, op2_version_asUInt)
+	seoperation.io.cond_input_version := Mux(all_match&& valid_buffer, cond_version_val, cond_version_asUInt)
+  // Once we receive the result form the seoperation, we latch the result first.
 	val result_valid_buffer = RegNext(n_result_valid_buffer)
-	n_result_valid_buffer := Mux(seOpValid, true.B, Mux(aes_cipher.io.input_valid, false.B, result_valid_buffer))
+	n_result_valid_buffer := Mux(
+		, true.B, Mux(aes_cipher.io.input_valid, false.B, result_valid_buffer))
 
 	// Pad with RNG
 	val bit64_randnum = PRNG(new MaxPeriodFibonacciLFSR(64, Some(scala.math.BigInt(64, scala.util.Random))))

@@ -14,12 +14,20 @@ class SEOpIO  extends Bundle{
 	val valid = Input(Bool())
 
 	val op1_input = Input(UInt(64.W))
+	val op1_input_hash = Input(UInt(64.W))
+	val op1_input_version = Input(UInt(64.W))
 
 	val op2_input  = Input(UInt(64.W))
+	val op2_input_hash = Input(UInt(64.W))
+	val op2_input_version = Input(UInt(64.W))
 
 	val cond_input  = Input(UInt(64.W))
+	val cond_input_hash = Input(UInt(64.W))
+	val cond_input_version = Input(UInt(64.W))
 
 	val result = Output(UInt(64.W))
+	val result_hash = Output(Int(64.W))
+	val result_version = Output(Int(64.W))
 }
 
 
@@ -45,6 +53,8 @@ class SEOperation(val debug: Boolean) extends Module{
 	fu.io.fu_type := decode.io.fu_type
 	fu.io.signed := decode.io.signed
 	io.result := fu.io.out
+
+
 
 	if(debug){
 		when(io.valid){
