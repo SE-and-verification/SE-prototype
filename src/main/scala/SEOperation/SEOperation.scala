@@ -28,10 +28,11 @@ class SEOpIO  extends Bundle{
 	val result = Output(UInt(64.W))
 	val result_hash = Output(Int(64.W))
 	val result_version = Output(Int(64.W))
+	val result_ready = Output(Bool())
 }
 
 
-class SEOperation(val debug: Boolean) extends Module{
+class SEOperation(val debug: Boolean, val single_cycle_integrity: Boolean) extends Module{
 
 	val io = IO(new SEOpIO)
 
@@ -52,9 +53,88 @@ class SEOperation(val debug: Boolean) extends Module{
   fu.io.fu_op := decode.io.fu_op
 	fu.io.fu_type := decode.io.fu_type
 	fu.io.signed := decode.io.signed
-	io.result := fu.io.out
 
+	if(single_cycle_integrity){
+		val crc_dut = Module(new SingleCycleCRC)
 
+		crc_dut.io.inst := io.inst
+		crc_dut.io.op1_hash := io.op1_input_hash
+		crc_dut.io.op2_hash := io.op2_input_hash
+		crc_dut.io.cond_hash := io.cond_input_hash
+
+		when(io.inst === Instructions.ENC){
+			io.result := fu.io.out
+			io.result_hash := io.op1_input
+			io.result_version := 0.U
+		}.elsewhen(io.inst === Instructions.CMOV){
+			when( ((io.op1_input_version ^ io.op2_input_version) === 0.U || io.op1_input_version === 0.U || io.op1_input_version === 0.U) &&
+						((io.op2_input_version ^ io.cond_input_version) === 0.U || io.op2_input_version === 0.U || io.cond_input_version === 0.U) &&
+						((io.op1_input_version ^ io.cond_input_version) === 0.U || io.op1_input_version === 0.U || io.cond_input_version === 0.U)
+						){
+				io.result := fu.io.out
+				io.result_version := Mux(io.cond, io.op1_input_version, io.op2_input_version)
+				io.result_hash := crc_dut.io.output_hash
+			}.otherwise{
+				io.result := 0.U
+				io.result_version := 0.U
+				io.result_hash := 0.U
+			}
+		}.otherwise{
+			when( ((io.op1_input_version ^ io.op2_input_version) === 0.U || io.op1_input_version === 0.U || io.op1_input_version === 0.U) ){
+				io.result := fu.io.out
+				io.result_version := io.op1_input_version & io.op2_input_version
+				io.result_hash := crc_dut.io.output_hash
+			}.otherwise{
+				io.result := 0.U
+				io.result_version := 0.U
+				io.result_hash := 0.U
+			}
+		}
+
+		io.result_ready := io.valid
+	}else{
+		val crc_dut = Module(new MultiCycleCRC)
+		val result_tmp = Wire(UInt(64.W))
+		val result_buf = RegEnable(result_tmp, io.valid)
+
+		val result_version_tmp = Wire(UInt(64.W))
+		val result_version_buf = RegEnable(result_version_tmp, io.valid)
+
+		crc_du.io.valid := io.valid
+		crc_dut.io.inst := io.inst
+		crc_dut.io.op1_hash := Mux(io.inst === Instructions.ENC, io.op1_input, io.op1_input_hash)
+		crc_dut.io.op2_hash := io.op2_input_hash
+		crc_dut.io.cond_hash := io.cond_input_hash
+
+		when(io.inst === Instructions.ENC){
+			result_tmp := fu.io.out
+			result_version_tmp := 0.U
+		}.elsewhen(io.inst === Instructions.CMOV){
+			when( ((io.op1_input_version ^ io.op2_input_version) === 0.U || io.op1_input_version === 0.U || io.op1_input_version === 0.U) &&
+						((io.op2_input_version ^ io.cond_input_version) === 0.U || io.op2_input_version === 0.U || io.cond_input_version === 0.U) &&
+						((io.op1_input_version ^ io.cond_input_version) === 0.U || io.op1_input_version === 0.U || io.cond_input_version === 0.U)
+						){
+				result_tmp := fu.io.out
+				result_version_tmp := Mux(io.cond, io.op1_input_version, io.op2_input_version)
+			}.otherwise{
+				result_tmp := 0.U
+				result_version_tmp := 0.U
+			}
+		}.otherwise{
+			when( ((io.op1_input_version ^ io.op2_input_version) === 0.U || io.op1_input_version === 0.U || io.op1_input_version === 0.U) ){
+				result_tmp := fu.io.out
+				result_version_tmp := io.op1_input_version & io.op2_input_version
+			}.otherwise{
+				result_tmp := 0.U
+				result_version_tmp := 0.U
+			}
+		}
+
+		io.result_hash := crc_dut.io.output_hash
+		io.result_version := result_version_buf
+		io.result := result_buf
+		io.result_ready := crc_dut.io.output_ready
+	}
 
 	if(debug){
 		when(io.valid){

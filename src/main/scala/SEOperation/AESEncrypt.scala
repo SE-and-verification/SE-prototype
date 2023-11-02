@@ -6,8 +6,10 @@ import chisel3.util._
 class EncryptIO extends Bundle{
 	val input_valid = Input(Bool())
 	val input_text= Input(Vec(Params.StateLength, UInt(8.W))) // plaintext, ciphertext, roundKey
+	val input_hash_version = Input(Vec(Params.StateLength, UInt(8.W))) // plaintext, ciphertext, roundKey
   val input_roundKeys = Input(Vec(11,Vec(Params.StateLength, UInt(8.W))))
 	val output_text = Output(Vec(Params.StateLength, UInt(8.W))) // ciphertext or plaintext
+	val output_hash_version = Output(Vec(Params.StateLength, UInt(8.W))) // ciphertext or plaintext
 
 	val output_valid = Output(Bool())
 }
@@ -22,36 +24,67 @@ class AESEncrypt(val rolled: Boolean) extends Module {
 
   val io = IO(new EncryptIO)
   if(!rolled){
- val CipherRoundARK = CipherRound("AddRoundKeyOnly", true)
-  val CipherRounds = Array.fill(Nr - 1) {
-    CipherRound("CompleteRound", true)
-  }
-  val CipherRoundNMC = CipherRound("NoMixColumns", true)
-
-  CipherRoundARK.io.input_valid := io.input_valid
-  CipherRoundARK.io.state_in := io.input_text
-  CipherRoundARK.io.roundKey := io.input_roundKeys(0)
-
-  // Cipher Nr-1 rounds
-  for (i <- 0 until (Nr - 1)) yield {
-    if (i == 0) {
-      CipherRounds(i).io.input_valid := CipherRoundARK.io.output_valid
-      CipherRounds(i).io.state_in := CipherRoundARK.io.state_out
+    val CipherRoundARK = CipherRound("AddRoundKeyOnly", true)
+    val CipherRounds = Array.fill(Nr - 1) {
+      CipherRound("CompleteRound", true)
     }
-    else {
-      CipherRounds(i).io.input_valid := CipherRounds(i - 1).io.output_valid
-      CipherRounds(i).io.state_in := CipherRounds(i - 1).io.state_out
+    val CipherRoundNMC = CipherRound("NoMixColumns", true)
+
+    CipherRoundARK.io.input_valid := io.input_valid
+    CipherRoundARK.io.state_in := io.input_text
+    CipherRoundARK.io.roundKey := io.input_roundKeys(0)
+
+    // Cipher Nr-1 rounds
+    for (i <- 0 until (Nr - 1)) yield {
+      if (i == 0) {
+        CipherRounds(i).io.input_valid := CipherRoundARK.io.output_valid
+        CipherRounds(i).io.state_in := CipherRoundARK.io.state_out
+      }
+      else {
+        CipherRounds(i).io.input_valid := CipherRounds(i - 1).io.output_valid
+        CipherRounds(i).io.state_in := CipherRounds(i - 1).io.state_out
+      }
+      CipherRounds(i).io.roundKey := io.input_roundKeys(i + 1)
     }
-    CipherRounds(i).io.roundKey := io.input_roundKeys(i + 1)
-  }
 
-  // Cipher last round
-  CipherRoundNMC.io.input_valid := CipherRounds(Nr - 1 - 1).io.output_valid
-  CipherRoundNMC.io.state_in := CipherRounds(Nr - 1 - 1).io.state_out
-  CipherRoundNMC.io.roundKey := io.input_roundKeys(Nr)
+    // Cipher last round
+    CipherRoundNMC.io.input_valid := CipherRounds(Nr - 1 - 1).io.output_valid
+    CipherRoundNMC.io.state_in := CipherRounds(Nr - 1 - 1).io.state_out
+    CipherRoundNMC.io.roundKey := io.input_roundKeys(Nr)
 
-  io.output_valid := CipherRoundNMC.io.output_valid
-  io.output_text := CipherRoundNMC.io.state_out
+    io.output_valid := CipherRoundNMC.io.output_valid
+    io.output_text := CipherRoundNMC.io.state_out
+
+    // for hash version
+    val CipherRoundARK_HV = CipherRound("AddRoundKeyOnly", true)
+    val CipherRounds_HV = Array.fill(Nr - 1) {
+      CipherRound("CompleteRound", true)
+    }
+    val CipherRoundNMC_HV = CipherRound("NoMixColumns", true)
+
+    CipherRoundARK_HV.io.input_valid := io.input_valid
+    CipherRoundARK_HV.io.state_in := io.input_hash_version
+    CipherRoundARK_HV.io.roundKey := io.input_roundKeys(0)
+
+    // Cipher Nr-1 rounds
+    for (i <- 0 until (Nr - 1)) yield {
+      if (i == 0) {
+        CipherRounds_HV(i).io.input_valid := CipherRoundARK_HV.io.output_valid
+        CipherRounds_HV(i).io.state_in := CipherRoundARK_HV.io.state_out
+      }
+      else {
+        CipherRounds_HV(i).io.input_valid := CipherRounds_HV(i - 1).io.output_valid
+        CipherRounds_HV(i).io.state_in := CipherRounds_HV(i - 1).io.state_out
+      }
+      CipherRounds_HV(i).io.roundKey := io.input_roundKeys(i + 1)
+    }
+
+    // Cipher last round
+    CipherRoundNMC_HV.io.input_valid := CipherRounds_HV(Nr - 1 - 1).io.output_valid
+    CipherRoundNMC_HV.io.state_in := CipherRounds_HV(Nr - 1 - 1).io.state_out
+    CipherRoundNMC_HV.io.roundKey := io.input_roundKeys(Nr)
+
+    io.output_hash_version := CipherRoundNMC_HV.io.state_out
   }else{
     val address = RegInit(0.U(log2Ceil(EKDepth).W))
 
@@ -64,9 +97,14 @@ class AESEncrypt(val rolled: Boolean) extends Module {
     cipher.io.start := io.input_valid
     cipher.io.plaintext := io.input_text
     cipher.io.roundKey := io.input_roundKeys(address)
-
-
     io.output_text := cipher.io.state_out
     io.output_valid := cipher.io.state_out_valid
+
+    val cipher_HV = Module(new Cipher(4, true))
+    cipher_HV.io.start := io.input_valid
+    cipher_HV.io.plaintext := io.input_hash_version
+    cipher_HV.io.roundKey := io.input_roundKeys(address)
+
+    io.output_hash_version := cipher_HV.io.state_out
   }
 }

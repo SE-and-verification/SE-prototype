@@ -44,6 +44,8 @@ class SE(val debug:Boolean, val canChangeKey: Boolean) extends Module{
 	val counterOn = RegInit(false.B)
 	val cnter = new Counter(100)
 	val rolled = false
+	val CACHE_SIZE = 16
+	val single_cycle_integrity = true
 	when(counterOn){
 		cnter.inc()
 	}
@@ -60,12 +62,11 @@ class SE(val debug:Boolean, val canChangeKey: Boolean) extends Module{
 	seoperation: the module to actually compute on decrypted plaintexts
 	key: preset expanded AES ROM key
 	*/
-	val seoperation = Module(new SEOperation(debug))
+	val seoperation = Module(new SEOperation(debug, single_cycle_integrity))
 	val aes_invcipher = Module(new AESDecrypt(rolled))
 	val aes_cipher = Module(new AESEncrypt(rolled))
 	val key = Reg(Vec(11, Vec(16,UInt(8.W))))
 	
-	val CACHE_SIZE = 16
 
 	val ciphers = Reg(Vec(CACHE_SIZE, UInt(256.W)))
 
@@ -275,7 +276,7 @@ class SE(val debug:Boolean, val canChangeKey: Boolean) extends Module{
 
 	for(i <- 0 until 128){
 		if(i >= 64){
-			if( i%2 === 0){
+			if( i%2 == 0){
 				op1_asUInt(i-64) := op1_asUInt_before_xor(i) ^ op1_hash_version_asUInt_before_xor(i)
 				op2_asUInt(i-64) := op2_asUInt_before_xor(i) ^ op2_hash_version_asUInt_before_xor(i)
 				cond_asUInt(i-64) := cond_asUInt_before_xor(i) ^ cond_hash_version_asUInt_before_xor(i)
@@ -293,7 +294,7 @@ class SE(val debug:Boolean, val canChangeKey: Boolean) extends Module{
 				cond_hash_asUInt(i-64) := cond_asUInt_before_xor(i) ^ cond_hash_version_asUInt_before_xor(i)
 			}
 		}else{
-			if( i%2 === 0){
+			if( i%2 == 0){
 				op1_version_asUInt(i) := op1_hash_version_asUInt_before_xor(i)
 				op2_version_asUInt(i) := op2_hash_version_asUInt_before_xor(i)
 				cond_version_asUInt(i) := cond_hash_version_asUInt_before_xor(i)
@@ -322,6 +323,8 @@ class SE(val debug:Boolean, val canChangeKey: Boolean) extends Module{
 	// 	printf("cond_asUInt:%x\n",cond_asUInt(127,64))
 	// 	printf("inst:%b\n",mid_inst_buffer)
 	// }
+	val seResultReady = Wire(Bool())
+	seResultReady := seoperation.io.result_ready
 
 	seoperation.io.op1_input := Mux(mid_inst_buffer(7,5) === 5.U(3.W), mid_op1_buffer(255,128),Mux(all_match&& valid_buffer, op1_val, op1_asUInt))
 	seoperation.io.op2_input := Mux(all_match&& valid_buffer, op2_val, op2_asUInt)
@@ -336,36 +339,60 @@ class SE(val debug:Boolean, val canChangeKey: Boolean) extends Module{
 	seoperation.io.cond_input_version := Mux(all_match&& valid_buffer, cond_version_val, cond_version_asUInt)
   // Once we receive the result form the seoperation, we latch the result first.
 	val result_valid_buffer = RegNext(n_result_valid_buffer)
-	n_result_valid_buffer := Mux(
-		, true.B, Mux(aes_cipher.io.input_valid, false.B, result_valid_buffer))
+	n_result_valid_buffer := Mux(seResultReady, true.B, Mux(aes_cipher.io.input_valid, false.B, result_valid_buffer))
+
 
 	// Pad with RNG
 	val bit64_randnum = PRNG(new MaxPeriodFibonacciLFSR(64, Some(scala.math.BigInt(64, scala.util.Random))))
 	val padded_result = Cat(seoperation.io.result,bit64_randnum)
-	val result_buffer = RegEnable( padded_result, seOpValid)
+	val hash_version = Cat(seoperation.io.result_hash, seoperation.io.result_version)
+
+	val padded_result_after_shuffle = Wire(UInt(128.W))
+	val hash_version_after_shuffle = Wire(UInt(128.W))
+
+	for( i <- 0 until 128){
+		if(i % 2 == 0){
+			padded_result_after_shuffle(i) := padded_result(i) ^ hash_version(i)
+			hash_version_after_shuffle(i) := hash_version(i)
+		}else{
+			padded_result_after_shuffle(i) := padded_result(i)
+			hash_version_after_shuffle(i) := padded_result(i) ^ hash_version(i)
+		}
+	}
+
+	val result_buffer = RegEnable( padded_result_after_shuffle, seResultReady)
+	val version_hash_buffer = RegEnable( hash_version_after_shuffle, seResultReady)
 	if(debug){
 		when(result_valid_buffer){
 			printf("\n-----back----\n")
 			printf("padded_result:%x\n",result_buffer )
-			printf("seoperation.io.result:%x\n",seoperation.io.result)
+			printf("version_hash_buffer:%x\n",version_hash_buffer )
 		}
 	}
-	val result_plaintext_buffer = RegInit(0.U(64.W))
-	when(seOpValid){
-		result_plaintext_buffer := seoperation.io.result
+	val result_plaintext_buffer = RegInit(0.U(256.W))
+	val version_hash_plaintext_buffer = RegInit(0.U(256.W))
+	when(result_valid_buffer){
+		result_plaintext_buffer := result_buffer
+		version_hash_plaintext_buffer := version_hash_buffer
 	}
 	// Connect the cipher
 	val aes_input = result_buffer.asTypeOf(aes_cipher.io.input_text)
 	val aes_input_reverse = Wire(Vec(Params.StateLength, UInt(8.W)))
+
+	val aes_input_hash_version = version_hash_buffer.asTypeOf(aes_cipher.io.input_text)
+	val aes_input_hash_version_reverse = Wire(Vec(Params.StateLength, UInt(8.W)))
 	for(i <- 0 until Params.StateLength){
 		aes_input_reverse(i) := aes_input(Params.StateLength-i-1)
+		aes_input_hash_version_reverse(i) := aes_input_hash_version(Params.StateLength-i-1)
 	}
+
 	aes_cipher.io.input_text := aes_input_reverse
+	aes_cipher.io.input_hash_version := aes_input_hash_version_reverse
 	aes_cipher.io.input_valid := result_valid_buffer
 	aes_cipher.io.input_roundKeys := key
 
 	// Connect the output side
-	val output_buffer = RegEnable(aes_cipher.io.output_text.do_asUInt, aes_cipher.io.output_valid)
+	val output_buffer = RegEnable( Cat(aes_cipher.io.output_text.do_asUInt, aes_cipher.io.output_hash_version.do_asUInt), aes_cipher.io.output_valid)
 	val output_valid = RegInit(false.B)
 
 	when(aes_cipher.io.output_valid){
@@ -377,33 +404,18 @@ class SE(val debug:Boolean, val canChangeKey: Boolean) extends Module{
 	io.out.result := output_buffer
 
 	when(output_valid){
-		when(result_plaintext_buffer(63) === 0.U){
-			printf("ptr_pos:%x\n",ptr_pos)
-			when(ptr_pos === (CACHE_SIZE-1).U){
-				ptr_pos := 0.U
+			printf("ptr:%x\n",ptr)
+			when(ptr === (CACHE_SIZE-1).U){
+				ptr := 0.U
 			}.otherwise{
-				ptr_pos := ptr_pos + 1.U
+				ptr := ptr + 1.U
 			}
-		}.otherwise{
-			printf("ptr_neg:%x\n",ptr_neg)
-			when(ptr_neg === (CACHE_SIZE-1).U){
-				ptr_neg := 0.U
-			}.otherwise{
-				ptr_neg := ptr_neg + 1.U
-			}
-		}
 	}
 
 	when(io.out.valid){
-		when(result_plaintext_buffer(63) === 0.U){
-			ciphers_pos(ptr_pos) := output_buffer
-			plaintexts_pos(ptr_pos) := result_plaintext_buffer
-			cache_valid_pos(ptr_pos) := true.B
-		}.otherwise{
-			ciphers_neg(ptr_neg) := output_buffer
-			plaintexts_neg(ptr_neg) := result_plaintext_buffer
-			cache_valid_neg(ptr_neg) := true.B
-		}
+			ciphers(ptr) := output_buffer
+			plaintexts(ptr) := Cat(result_plaintext_buffer, version_hash_plaintext_buffer)
+			cache_valid(ptr) := true.B
 	}
 
 
