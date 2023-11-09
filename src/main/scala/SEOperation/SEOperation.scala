@@ -2,6 +2,7 @@ package se.seoperation
 
 import chisel3._
 import chisel3.util._
+import crc._
 import FU._
 import COMP._
 import ARITH._
@@ -26,8 +27,8 @@ class SEOpIO  extends Bundle{
 	val cond_input_version = Input(UInt(64.W))
 
 	val result = Output(UInt(64.W))
-	val result_hash = Output(Int(64.W))
-	val result_version = Output(Int(64.W))
+	val result_hash = Output(UInt(64.W))
+	val result_version = Output(UInt(64.W))
 	val result_ready = Output(Bool())
 }
 
@@ -72,7 +73,7 @@ class SEOperation(val debug: Boolean, val single_cycle_integrity: Boolean) exten
 						((io.op1_input_version ^ io.cond_input_version) === 0.U || io.op1_input_version === 0.U || io.cond_input_version === 0.U)
 						){
 				io.result := fu.io.out
-				io.result_version := Mux(io.cond, io.op1_input_version, io.op2_input_version)
+				io.result_version := Mux(io.cond_input =/= 0.U, io.op1_input_version, io.op2_input_version)
 				io.result_hash := crc_dut.io.output_hash
 			}.otherwise{
 				io.result := 0.U
@@ -100,7 +101,7 @@ class SEOperation(val debug: Boolean, val single_cycle_integrity: Boolean) exten
 		val result_version_tmp = Wire(UInt(64.W))
 		val result_version_buf = RegEnable(result_version_tmp, io.valid)
 
-		crc_du.io.valid := io.valid
+		crc_dut.io.valid := io.valid
 		crc_dut.io.inst := io.inst
 		crc_dut.io.op1_hash := Mux(io.inst === Instructions.ENC, io.op1_input, io.op1_input_hash)
 		crc_dut.io.op2_hash := io.op2_input_hash
@@ -115,7 +116,7 @@ class SEOperation(val debug: Boolean, val single_cycle_integrity: Boolean) exten
 						((io.op1_input_version ^ io.cond_input_version) === 0.U || io.op1_input_version === 0.U || io.cond_input_version === 0.U)
 						){
 				result_tmp := fu.io.out
-				result_version_tmp := Mux(io.cond, io.op1_input_version, io.op2_input_version)
+				result_version_tmp := Mux(io.cond_input =/= 0.U, io.op1_input_version, io.op2_input_version)
 			}.otherwise{
 				result_tmp := 0.U
 				result_version_tmp := 0.U
