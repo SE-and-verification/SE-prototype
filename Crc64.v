@@ -1,4 +1,4 @@
-module crc (
+module Crc64 (
     input [63:0] crcIn,
     input [63:0] data,
     output [63:0] crcOut

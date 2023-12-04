@@ -14,13 +14,13 @@ out_dir    = $(base_dir)/outputs
 SBT       = sbt
 # SBT_FLAGS = -ivy $(HOME)/.ivy2 
 
-VERILATOR_FLAGS =--debug -g3 -I obj_dir -I/usr/share/verilator/include module.cpp /usr/share/verilator/include/verilated.cpp
+VERILATOR_FLAGS = -I./obj_dir -I/usr/share/verilator/include module.cpp /usr/share/verilator/include/verilated.cpp
 
 VSE.o: verilator_generate
 	cd obj_dir; make -f VSE.mk ; cd ..
 
 verilator_generate: generate
-	verilator -Wno-fatal -cc -CFLAGS -g3 $(gen_dir)/SE.v
+	verilator -cc -CFLAGS $(VERILATOR_FLAGS) $(gen_dir)/SE.v $(gen_dir)/Crc64.v
 
 # generate:
 # 	$(SBT) $(SBT_FLAGS) 'run -td $(gen_dir) -foaf se'

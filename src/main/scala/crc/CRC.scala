@@ -4,13 +4,13 @@ import chisel3._
 import chisel3.util._
 import se.seoperation._
 
-class ChiselCRC64 extends BlackBox with HasBlackBoxResource {
+class Crc64 extends BlackBox with HasBlackBoxResource {
   val io = IO(new Bundle {
     val crcIn = Input(UInt(64.W))
     val data = Input(UInt(64.W))
     val crcOut = Output(UInt(64.W))
   })
-  addResource("/crc64.v")
+  addResource("/Crc64.v")
 }
 
 class SingleCycleCRC extends Module{
@@ -22,9 +22,9 @@ class SingleCycleCRC extends Module{
     val output_hash = Output(UInt(64.W))
   })
 
-  val crc1 = Module(new ChiselCRC64)
-  val crc2 = Module(new ChiselCRC64)
-  val crc3 = Module(new ChiselCRC64)
+  val crc1 = Module(new Crc64)
+  val crc2 = Module(new Crc64)
+  val crc3 = Module(new Crc64)
 
   crc1.io.crcIn := io.inst
   crc1.io.data := io.op1_hash
@@ -47,9 +47,9 @@ class MultiCycleCRC extends Module{
     val output_ready = Output(Bool())
   })
 
-  val crc1 = Module(new ChiselCRC64)
-  val crc2 = Module(new ChiselCRC64)
-  val crc3 = Module(new ChiselCRC64)
+  val crc1 = Module(new Crc64)
+  val crc2 = Module(new Crc64)
+  val crc3 = Module(new Crc64)
 
   val inst_buf = RegEnable(io.inst, io.valid)
   val op1_hash_buf = RegEnable(io.op1_hash, io.valid)
