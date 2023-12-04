@@ -17,13 +17,13 @@ class DecryptIO extends Bundle{
   val input_cond_hash_version = Input(Vec(Params.StateLength, UInt(8.W)))
 
 	val output_op1 = Output(Vec(Params.StateLength, UInt(8.W))) // ciphertext or plaintext
-  val output_op1_hash_version = Output(Vec(Params.StateLength/2, UInt(8.W)))
+  val output_op1_hash_version = Output(Vec(Params.StateLength, UInt(8.W)))
 
 	val output_op2 = Output(Vec(Params.StateLength, UInt(8.W))) // ciphertext or plaintext
-  val output_op2_hash_version = Output(Vec(Params.StateLength/2, UInt(8.W)))
+  val output_op2_hash_version = Output(Vec(Params.StateLength, UInt(8.W)))
 
 	val output_cond = Output(Vec(Params.StateLength, UInt(8.W))) // ciphertext or plaintext
-  val output_cond_hash_version = Output(Vec(Params.StateLength/2, UInt(8.W)))
+  val output_cond_hash_version = Output(Vec(Params.StateLength, UInt(8.W)))
 
 	val output_valid = Output(Bool())
 }
@@ -95,7 +95,7 @@ class AESDecrypt(val rolled: Boolean) extends Module {
     }
 
     io.output_op1 := InvCipherRoundNMC(0).io.state_out
-    io.output_op1_hash_version := InvCipherRoundNMC(1).io.state_out()
+    io.output_op1_hash_version := InvCipherRoundNMC(1).io.state_out
 
     io.output_op2 := InvCipherRoundNMC(2).io.state_out
     io.output_op2_hash_version := InvCipherRoundNMC(3).io.state_out
@@ -103,7 +103,7 @@ class AESDecrypt(val rolled: Boolean) extends Module {
     io.output_cond := InvCipherRoundNMC(4).io.state_out
     io.output_cond_hash_version := InvCipherRoundNMC(5).io.state_out
 
-    io.output_valid := InvCipherRoundNMC(0).io.output_valid || InvCipherRoundNMC(1).io.output_valid || InvCipherRoundNMC(2).io.output_valid || || InvCipherRoundNMC(3).io.output_valid || || InvCipherRoundNMC(4).io.output_valid || InvCipherRoundNMC(5).io.output_valid
+    io.output_valid := InvCipherRoundNMC(0).io.output_valid || InvCipherRoundNMC(1).io.output_valid || InvCipherRoundNMC(2).io.output_valid || InvCipherRoundNMC(3).io.output_valid || InvCipherRoundNMC(4).io.output_valid || InvCipherRoundNMC(5).io.output_valid
   }
   else{
     val invciphers = Array.fill(6){InvCipher(4, true)}

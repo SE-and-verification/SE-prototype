@@ -22,11 +22,11 @@ class SingleCycleCRC extends Module{
     val output_hash = Output(UInt(64.W))
   })
 
-  val crc1 = Modeule(ChiselCRC64)
-  val crc2 = Modeule(ChiselCRC64)
-  val crc3 = Modeule(ChiselCRC64)
+  val crc1 = Module(new ChiselCRC64)
+  val crc2 = Module(new ChiselCRC64)
+  val crc3 = Module(new ChiselCRC64)
 
-  crc1.io.crcIn := io.inst.asUInt(64.W)
+  crc1.io.crcIn := io.inst
   crc1.io.data := io.op1_hash
   crc2.io.crcIn := crc1.io.crcOut
   crc2.io.data := io.op2_hash
@@ -47,18 +47,18 @@ class MultiCycleCRC extends Module{
     val output_ready = Output(Bool())
   })
 
-  val crc1 = Modeule(ChiselCRC64)
-  val crc2 = Modeule(ChiselCRC64)
-  val crc3 = Modeule(ChiselCRC64)
+  val crc1 = Module(new ChiselCRC64)
+  val crc2 = Module(new ChiselCRC64)
+  val crc3 = Module(new ChiselCRC64)
 
-  val inst_buf = RegEnable(io.inst.asUInt(64.W), io.valid)
+  val inst_buf = RegEnable(io.inst, io.valid)
   val op1_hash_buf = RegEnable(io.op1_hash, io.valid)
   val op2_hash_buf = RegEnable(io.op2_hash, io.valid)
   val cond_hash_buf = RegEnable(io.cond_hash, io.valid)
 
 
 
-  crc1.io.crcIn := io.inst.asUInt(64.W)
+  crc1.io.crcIn := io.inst
   crc1.io.data := io.op1_hash
 
   val stage1_hash = RegEnable(crc1.io.crcOut, io.valid)

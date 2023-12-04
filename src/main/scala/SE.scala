@@ -166,21 +166,21 @@ class SE(val debug:Boolean, val canChangeKey: Boolean) extends Module{
 	val op2_val_before_xor = plaintexts(op2_idx)
 	val cond_val_before_xor = plaintexts(cond_idx)
 
-	val op1_val = Wire(UInt(64.W))
-	val op2_val = Wire(UInt(64.W))
-	val cond_val = Wire(UInt(64.W))
+	val op1_val = Wire(Bits(64.W))
+	val op2_val = Wire(Bits(64.W))
+	val cond_val = Wire(Bits(64.W))
 
-	val op1_hash_val  = Wire(UInt(64.W))
-	val op2_hash_val  = Wire(UInt(64.W))
-	val cond_hash_val  = Wire(UInt(64.W))
+	val op1_hash_val  = Wire(Bits(64.W))
+	val op2_hash_val  = Wire(Bits(64.W))
+	val cond_hash_val  = Wire(Bits(64.W))
 
-	val op1_version_val  = Wire(UInt(64.W))
-	val op2_version_val  = Wire(UInt(64.W))
-	val cond_version_val  = Wire(UInt(64.W))
+	val op1_version_val  = Wire(Bits(64.W))
+	val op2_version_val  = Wire(Bits(64.W))
+	val cond_version_val  = Wire(Bits(64.W))
 
 	for(i <- 0 until 128){
 		if(i >= 64){
-			if( i%2 === 0){
+			if( i%2 == 0){
 				op1_val(i-64) := op1_val_before_xor(i) ^ op1_val_before_xor(i+128)
 				op2_val(i-64) := op2_val_before_xor(i) ^ op2_val_before_xor(i+128)
 				cond_val(i-64) := cond_val_before_xor(i) ^ cond_val_before_xor(i+128)
@@ -198,7 +198,7 @@ class SE(val debug:Boolean, val canChangeKey: Boolean) extends Module{
 				cond_hash_val(i-64) := cond_val_before_xor(i) ^ cond_val_before_xor(i+128)
 			}
 		}else{
-			if( i%2 === 0){
+			if( i%2 == 0){
 				op1_version_val(i) := op1_val_before_xor(i)
 				op2_version_val(i) := op2_val_before_xor(i)
 				cond_version_val(i) := cond_val_before_xor(i)
@@ -213,12 +213,12 @@ class SE(val debug:Boolean, val canChangeKey: Boolean) extends Module{
 	val all_match = op1_found && cache_valid(op1_idx)  && op2_found && cache_valid(op2_idx) && cond_found && ((inst_buffer =/= Instructions.CMOV) || cache_valid(cond_idx))
 
 	// Feed the ciphertexts into the invcipher
-	aes_invcipher.io.input_op1_secret_salt := op1_buffer(255,128).asTypeOf(aes_invcipher.io.input_op1)
-	aes_invcipher.io.input_op2_secret_salt := op2_buffer(255,128).asTypeOf(aes_invcipher.io.input_op2)
-	aes_invcipher.io.input_cond_secret_salt := cond_buffer(255,128).asTypeOf(aes_invcipher.io.input_cond)
-	aes_invcipher.io.input_op1_hash_version := op1_buffer(127,0).asTypeOf(aes_invcipher.io.input_op1)
-	aes_invcipher.io.input_op2_hash_version := op2_buffer(127,0).asTypeOf(aes_invcipher.io.input_op2)
-	aes_invcipher.io.input_cond_hash_version := cond_buffer(127,0).asTypeOf(aes_invcipher.io.input_cond)
+	aes_invcipher.io.input_op1_secret_salt := op1_buffer(255,128).asTypeOf(aes_invcipher.io.input_op1_secret_salt)
+	aes_invcipher.io.input_op2_secret_salt := op2_buffer(255,128).asTypeOf(aes_invcipher.io.input_op2_secret_salt)
+	aes_invcipher.io.input_cond_secret_salt := cond_buffer(255,128).asTypeOf(aes_invcipher.io.input_cond_secret_salt)
+	aes_invcipher.io.input_op1_hash_version := op1_buffer(127,0).asTypeOf(aes_invcipher.io.input_op1_hash_version)
+	aes_invcipher.io.input_op2_hash_version := op2_buffer(127,0).asTypeOf(aes_invcipher.io.input_op2_hash_version)
+	aes_invcipher.io.input_cond_hash_version := cond_buffer(127,0).asTypeOf(aes_invcipher.io.input_cond_hash_version)
 	aes_invcipher.io.input_roundKeys := key
 	aes_invcipher.io.input_valid := valid_buffer && (!all_match)
 	when(aes_invcipher.io.input_valid){
@@ -300,7 +300,7 @@ class SE(val debug:Boolean, val canChangeKey: Boolean) extends Module{
 				cond_version_asUInt(i) := cond_hash_version_asUInt_before_xor(i)
 			}else{
 				op1_version_asUInt(i) := op1_asUInt_before_xor(i) ^ op1_hash_version_asUInt_before_xor(i)
-				op2_version_asUInt(i) := op2_asUInt_before_xor(i) ^ op1_val_op2_hash_version_asUInt_before_xorbefore_xor(i)
+				op2_version_asUInt(i) := op2_asUInt_before_xor(i) ^ op2_hash_version_asUInt_before_xor(i)
 				cond_version_asUInt(i) := cond_val_before_xor(i) ^ cond_hash_version_asUInt_before_xor(i)
 			}
 		}
