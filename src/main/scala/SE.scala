@@ -46,6 +46,10 @@ class SE(val debug:Boolean, val canChangeKey: Boolean) extends Module{
 	val rolled = false
 	val CACHE_SIZE = 16
 	val single_cycle_integrity = true
+
+	val swizzler = Module(new BitSwizzle)
+	val unswizzlers = Array.fill(3)(Module(new BitUnswizzle).io)
+
 	when(counterOn){
 		cnter.inc()
 	}
@@ -223,13 +227,18 @@ class SE(val debug:Boolean, val canChangeKey: Boolean) extends Module{
 	seoperation.io.inst := Mux(all_match&& valid_buffer,inst_buffer ,mid_inst_buffer)
 	val seOpValid = aes_invcipher.io.output_valid || (all_match && valid_buffer)
 	seoperation.io.valid := seOpValid
-	val op1_asUInt = op1_reverse.do_asUInt
-	val op2_asUInt = op2_reverse.do_asUInt
-	val cond_asUInt = cond_reverse.do_asUInt
 
-	val op1_hash_version_asUInt = op1_hash_version_reverse.do_asUInt
-	val op2_hash_version_asUInt = op2_hash_version_reverse.do_asUInt
-	val cond_hash_version_asUInt = cond_hash_version_reverse.do_asUInt
+	unswizzlers(0).in := Cat(op1_reverse.do_asUInt, op1_hash_version_reverse.do_asUInt)
+	unswizzlers(1).in := Cat(op2_reverse.do_asUInt, op2_hash_version_reverse.do_asUInt)
+	unswizzlers(2).in := Cat(cond_reverse.do_asUInt, cond_hash_version_reverse.do_asUInt)
+
+	val op1_asUInt = unswizzlers(0).out(255,128)
+	val op2_asUInt = unswizzlers(1).out(255,128)
+	val cond_asUInt = unswizzlers(2).out(255,128)
+
+	val op1_hash_version_asUInt = unswizzlers(0).out(127,0)
+	val op2_hash_version_asUInt = unswizzlers(1).out(127,0)
+	val cond_hash_version_asUInt = unswizzlers(2).out(127,0)
 
 	// printf("op1_found: %d\n",op1_found)
 	// printf("op2_found: %d\n",op2_found)
@@ -290,7 +299,8 @@ class SE(val debug:Boolean, val canChangeKey: Boolean) extends Module{
 		version_hash_plaintext_buffer := version_hash_buffer
 	}
 	// Connect the cipher
-	val aes_input = result_buffer.asTypeOf(aes_cipher.io.input_text)
+	swizzler.io.in := result_buffer
+	val aes_input = swizzler.io.out.asTypeOf(aes_cipher.io.input_text)
 	val aes_input_reverse = Wire(Vec(Params.StateLength, UInt(8.W)))
 
 	val aes_input_hash_version = version_hash_buffer.asTypeOf(aes_cipher.io.input_text)

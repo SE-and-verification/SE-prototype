@@ -1,5 +1,6 @@
 #include <stdint.h>
 #ifndef __SE_INSTRUCTION_H
+#define __SE_INSTRUCTION_H
 
 class Instruction{
 	public:
@@ -19,5 +20,4 @@ class Instruction{
 		static uint8_t ENC();
 
 };
-#define __SE_INSTRUCTION_H
 #endif
