@@ -8,11 +8,9 @@ class DecryptIO extends Bundle{
   val input_roundKeys = Input(Vec(11,Vec(Params.StateLength, UInt(8.W))))
 	val input_op1 = Input(Vec(Params.StateLength, UInt(8.W))) // plaintext, ciphertext, roundKey
 	val input_op2 = Input(Vec(Params.StateLength, UInt(8.W))) // plaintext, ciphertext, roundKey
-	val input_cond = Input(Vec(Params.StateLength, UInt(8.W))) // plaintext, ciphertext, roundKey
 
 	val output_op1 = Output(Vec(Params.StateLength, UInt(8.W))) // ciphertext or plaintext
 	val output_op2 = Output(Vec(Params.StateLength, UInt(8.W))) // ciphertext or plaintext
-	val output_cond = Output(Vec(Params.StateLength, UInt(8.W))) // ciphertext or plaintext
 
 	val output_valid = Output(Bool())
 }
@@ -48,7 +46,6 @@ class AESDecrypt(val rolled: Boolean) extends Module {
     InvCipherRoundARK(1).io.roundKey := io.input_roundKeys(Nr)
 
     InvCipherRoundARK(2).io.input_valid := io.input_valid
-    InvCipherRoundARK(2).io.state_in := io.input_cond
     InvCipherRoundARK(2).io.roundKey := io.input_roundKeys(Nr)
     // Cipher Nr-1 rounds
     for(j <- 0 to 2){
@@ -73,7 +70,6 @@ class AESDecrypt(val rolled: Boolean) extends Module {
 
     io.output_op1 := InvCipherRoundNMC(0).io.state_out
     io.output_op2 := InvCipherRoundNMC(1).io.state_out
-    io.output_cond := InvCipherRoundNMC(2).io.state_out
     io.output_valid := InvCipherRoundNMC(0).io.output_valid || InvCipherRoundNMC(1).io.output_valid || InvCipherRoundNMC(2).io.output_valid
   }
   else{
@@ -95,12 +91,10 @@ class AESDecrypt(val rolled: Boolean) extends Module {
     invciphers(1).io.roundKey := io.input_roundKeys(address)
 
     invciphers(2).io.start := io.input_valid
-    invciphers(2).io.ciphertext := io.input_cond
     invciphers(2).io.roundKey := io.input_roundKeys(address)
 
     io.output_op1 := invciphers(0).io.state_out
     io.output_op2 := invciphers(1).io.state_out
-    io.output_cond := invciphers(2).io.state_out
     io.output_valid := invciphers(0).io.state_out_valid || invciphers(1).io.state_out_valid || invciphers(2).io.state_out_valid
   }
 }

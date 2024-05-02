@@ -31,7 +31,6 @@ import CRYPTO._
 class  FUIO extends Bundle{
     val A = Input(UInt(64.W))
     val B = Input(UInt(64.W))
-    val cond = Input(UInt(64.W))
     val fu_op = Input(UInt(3.W))
     val fu_type = Input(UInt(2.W))
     val signed = Input(Bool())
@@ -89,12 +88,12 @@ class FU(val debug: Boolean) extends Module{
       output := io.A < io.B
     }
   }.elsewhen(io.fu_type === FU_COND){
-    when(io.cond =/= 0.U){
-      if(debug) printf("Inst: cmova\n")
-      output := io.A
-    }.otherwise{
+    when(io.A =/= 0.U){
       if(debug) printf("Inst: cmovb\n")
       output := io.B
+    }.otherwise{
+      if(debug) printf("Inst: cmov0\n")
+      output := 0.U
     }
   }.otherwise{
       if(debug) printf("Inst: enc\n")
