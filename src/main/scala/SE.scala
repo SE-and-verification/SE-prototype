@@ -9,9 +9,9 @@ import chisel3.util.random._
 class SEInput(val canChangeKey: Boolean) extends Bundle{
 	val inst = Input(UInt(8.W)) // Instruction encoding is defined in SEOperation/Instructions.scala
 
-	val op1 = Input(UInt(128.W))
+	val op1 = Input(UInt(316.W)) // 60bit hash + 256 bit ciphertext
 
-	val op2 = Input(UInt(128.W))
+	val op2 = Input(UInt(316.W))
 
 	val valid = Input(Bool())
 	val ready = Output(Bool())
@@ -22,11 +22,10 @@ class SEInput(val canChangeKey: Boolean) extends Bundle{
 
 
 class SEOutput extends Bundle{
-	val result = Output(UInt(128.W))
+	val result = Output(UInt(316.W))
 	val valid = Output(Bool())
 	val ready = Input(Bool())
-	val cntr = Output(UInt(8.W))
-}
+}8
 
 class SEIO(val canChangeKey: Boolean) extends Bundle{
 	val in = new SEInput(canChangeKey)
@@ -85,6 +84,10 @@ class SE(val debug:Boolean, val canChangeKey: Boolean) extends Module{
 	val op2_buffer = RegEnable( io.in.op2, io.in.valid)
 
 	val valid_buffer = Reg(Bool())
+
+	//**
+	TODO: compute hash here, just copy key and re-instantiate a hash key for the moment. Create additional modules if needed
+	//
 
 	val n_result_valid_buffer = Wire(Bool())
 	val ready_for_input = RegInit(true.B)
@@ -156,24 +159,14 @@ class SE(val debug:Boolean, val canChangeKey: Boolean) extends Module{
 	seoperation.io.valid := seOpValid
 	val op1_asUInt = op1_reverse.do_asUInt
 	val op2_asUInt = op2_reverse.do_asUInt
-	// printf("op1_found: %d\n",op1_found)
-	// printf("op2_found: %d\n",op2_found)
-	// printf("seOpValid: %d\n",seOpValid)
-	// printf("all_match: %d\n",all_match)
-	// printf("aes_invcipher.io.output_valid: %d\n",aes_invcipher.io.output_valid)
-	// printf("aes_invcipher.io.input_valid: %d\n",aes_invcipher.io.input_valid)
 
-	// when(seOpValid ){
-	// 	printf("\n-----mid----\n")
-	// 	printf("op1_asUInt:%x\n",seoperation.io.op1_input)
-	// 	printf("op2_asUInt:%x\n",seoperation.io.op2_input)
-	// 	printf("op1_asUInt:%x\n",Mux(mid_inst_buffer(7,5) === 5.U(3.W), mid_op1_buffer(127,64),op1_asUInt(127,64)))
-	// 	printf("op2_asUInt:%x\n",op2_asUInt(127,64))
-	// 	printf("inst:%b\n",mid_inst_buffer)
-	// }
-
+	//FIXME: fix the bit selections
 	seoperation.io.op1_input := Mux(all_match&& valid_buffer, op1_val ,Mux(mid_inst_buffer(7,5) === 5.U(3.W), mid_op1_buffer(127,64),op1_asUInt(127,64)))
 	seoperation.io.op2_input := Mux(all_match&& valid_buffer, op2_val, op2_asUInt(127,64))
+
+	//**
+	TODO: reconstruct the hash and compare
+	//
 
   // Once we receive the result form the seoperation, we latech the result first.
 	val result_valid_buffer = RegNext(n_result_valid_buffer)
@@ -194,6 +187,12 @@ class SE(val debug:Boolean, val canChangeKey: Boolean) extends Module{
 	when(seOpValid){
 		result_plaintext_buffer := seoperation.io.result
 	}
+
+	//**
+	TODO: adjust input to the encryption cipher
+	//
+
+
 	// Connect the cipher
 	val aes_input = result_buffer.asTypeOf(aes_cipher.io.input_text)
 	val aes_input_reverse = Wire(Vec(Params.StateLength, UInt(8.W)))
