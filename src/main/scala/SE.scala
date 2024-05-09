@@ -32,7 +32,7 @@ class SEIO(val canChangeKey: Boolean) extends Bundle{
 	val out = new SEOutput
 }
 
-class plaintext_Connector extends Module {
+class Plaintext_Reverse_Connector extends Module {
 	// Connect 2 reversed 60-bit hash plaintext and 1 8-bit inst together
 	val io = IO(new Bundle{
 		val op1 	= Input(UInt(316.W))
@@ -101,12 +101,12 @@ class SE(val debug:Boolean, val canChangeKey: Boolean) extends Module{
 	// TODO: compute hash here, just copy key and re-instantiate a hash key for the moment. Create additional modules if needed
 	
 	// Instantiate the connector and connect reg input and reg output (without inverse)
-	val plaintext_Connector_0 = Module(new plaintext_Connector)
-	plaintext_Connector_0.io.op1 	:= op1_buffer 
-	plaintext_Connector_0.io.op2 	:= op2_buffer
-	plaintext_Connector_0.io.inst 	:= inst_buffer
+	val Plaintext_Reverse_Connector_0 = Module(new Plaintext_Reverse_Connector)
+	Plaintext_Reverse_Connector_0.io.op1 	:= op1_buffer 
+	Plaintext_Reverse_Connector_0.io.op2 	:= op2_buffer
+	Plaintext_Reverse_Connector_0.io.inst 	:= inst_buffer
 	
-	val connected_reversed_plaintext_buffer = RegEnable(plaintext_Connector_0.io.out, 0.U, io.in.valid)
+	val connected_reversed_plaintext_buffer = RegEnable(Plaintext_Reverse_Connector_0.io.out, 0.U, io.in.valid)
 	// 05/09/2024 
 
 	val n_result_valid_buffer = Wire(Bool())
