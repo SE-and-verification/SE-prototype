@@ -32,6 +32,16 @@ class SEIO(val canChangeKey: Boolean) extends Bundle{
 	val out = new SEOutput
 }
 
+class plaintext_Connector extends Module {
+	// Connect 2 60-bit hash plaintext and 1 8-bit inst together
+	val io = IO(new Bundle{
+		val op1 	= Input(UInt(316.W))
+		val op2 	= Input(UInt(316.W))
+		val inst 	= Input(UInt(8.W))
+		val out     = Output(Uint(128.W))
+	})
+	io.out := Cat(io.op1.head(60), io.op2.head(60), io.inst)
+}
 
 class SE(val debug:Boolean, val canChangeKey: Boolean) extends Module{
 	// Define the input, output ports and the control bits
@@ -81,11 +91,20 @@ class SE(val debug:Boolean, val canChangeKey: Boolean) extends Module{
 
 	val op1_buffer = RegEnable(io.in.op1, io.in.valid)
 
-	val op2_buffer = RegEnable( io.in.op2, io.in.valid)
+	val op2_buffer = RegEnable(io.in.op2, io.in.valid)
 
 	val valid_buffer = Reg(Bool())
 
 	// TODO: compute hash here, just copy key and re-instantiate a hash key for the moment. Create additional modules if needed
+	
+	// Instantiate the connector and connect reg input and reg output (without inverse)
+	val plaintext_Connector_0 = Module(new plaintext_Connector)
+	plaintext_Connector_0.io.op1 	:= op1_buffer 
+	plaintext_Connector_0.io.op2 	:= op2_buffer
+	plaintext_Connector_0.io.inst 	:= inst_buffer
+	
+	val connected_plaintext_buffer = RegEnable(plaintext_Connector_0.io.inst, 0.U, io.in.valid)
+	// 05/09/2024 
 
 	val n_result_valid_buffer = Wire(Bool())
 	val ready_for_input = RegInit(true.B)
