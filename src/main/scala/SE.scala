@@ -25,7 +25,7 @@ class SEOutput extends Bundle{
 	val result = Output(UInt(316.W))
 	val valid = Output(Bool())
 	val ready = Input(Bool())
-}8
+}
 
 class SEIO(val canChangeKey: Boolean) extends Bundle{
 	val in = new SEInput(canChangeKey)
@@ -85,9 +85,7 @@ class SE(val debug:Boolean, val canChangeKey: Boolean) extends Module{
 
 	val valid_buffer = Reg(Bool())
 
-	//**
-	TODO: compute hash here, just copy key and re-instantiate a hash key for the moment. Create additional modules if needed
-	//
+	// TODO: compute hash here, just copy key and re-instantiate a hash key for the moment. Create additional modules if needed
 
 	val n_result_valid_buffer = Wire(Bool())
 	val ready_for_input = RegInit(true.B)
@@ -160,13 +158,11 @@ class SE(val debug:Boolean, val canChangeKey: Boolean) extends Module{
 	val op1_asUInt = op1_reverse.do_asUInt
 	val op2_asUInt = op2_reverse.do_asUInt
 
-	//FIXME: fix the bit selections
+	// FIXME: fix the bit selections
 	seoperation.io.op1_input := Mux(all_match&& valid_buffer, op1_val ,Mux(mid_inst_buffer(7,5) === 5.U(3.W), mid_op1_buffer(127,64),op1_asUInt(127,64)))
 	seoperation.io.op2_input := Mux(all_match&& valid_buffer, op2_val, op2_asUInt(127,64))
 
-	//**
-	TODO: reconstruct the hash and compare
-	//
+	// TODO: reconstruct the hash and compare
 
   // Once we receive the result form the seoperation, we latech the result first.
 	val result_valid_buffer = RegNext(n_result_valid_buffer)
@@ -188,9 +184,7 @@ class SE(val debug:Boolean, val canChangeKey: Boolean) extends Module{
 		result_plaintext_buffer := seoperation.io.result
 	}
 
-	//**
-	TODO: adjust input to the encryption cipher
-	//
+	// TODO: adjust input to the encryption cipher
 
 
 	// Connect the cipher
