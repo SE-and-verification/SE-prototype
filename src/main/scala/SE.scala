@@ -33,14 +33,17 @@ class SEIO(val canChangeKey: Boolean) extends Bundle{
 }
 
 class plaintext_Connector extends Module {
-	// Connect 2 60-bit hash plaintext and 1 8-bit inst together
+	// Connect 2 reversed 60-bit hash plaintext and 1 8-bit inst together
 	val io = IO(new Bundle{
 		val op1 	= Input(UInt(316.W))
 		val op2 	= Input(UInt(316.W))
 		val inst 	= Input(UInt(8.W))
 		val out     = Output(Uint(128.W))
 	})
-	io.out := Cat(io.op1.head(60), io.op2.head(60), io.inst)
+	val op1_plaintext_reverse = Reverse(io.op1.head(60))
+	val op2_plaintext_reverse = Reverse(io.op2.head(60))
+	// TODO: Question: should we reverse io.inst? 
+	io.out := Cat(op1_plaintext_reverse, op2_plaintext_reverse, io.inst)
 }
 
 class SE(val debug:Boolean, val canChangeKey: Boolean) extends Module{
@@ -103,7 +106,7 @@ class SE(val debug:Boolean, val canChangeKey: Boolean) extends Module{
 	plaintext_Connector_0.io.op2 	:= op2_buffer
 	plaintext_Connector_0.io.inst 	:= inst_buffer
 	
-	val connected_plaintext_buffer = RegEnable(plaintext_Connector_0.io.inst, 0.U, io.in.valid)
+	val connected_reversed_plaintext_buffer = RegEnable(plaintext_Connector_0.io.out, 0.U, io.in.valid)
 	// 05/09/2024 
 
 	val n_result_valid_buffer = Wire(Bool())
@@ -183,7 +186,7 @@ class SE(val debug:Boolean, val canChangeKey: Boolean) extends Module{
 
 	// TODO: reconstruct the hash and compare
 
-  // Once we receive the result form the seoperation, we latech the result first.
+  	// Once we receive the result form the seoperation, we latech the result first.
 	val result_valid_buffer = RegNext(n_result_valid_buffer)
 	n_result_valid_buffer := Mux(seOpValid, true.B, Mux(aes_cipher.io.input_valid, false.B, result_valid_buffer))
 
