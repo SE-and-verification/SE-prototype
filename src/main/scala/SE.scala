@@ -40,10 +40,16 @@ class Plaintext_Reverse_Connector extends Module {
 		val inst 	= Input(UInt(8.W))
 		val out     = Output(Uint(128.W))
 	})
-	val op1_plaintext_reverse = Reverse(io.op1.head(60))
-	val op2_plaintext_reverse = Reverse(io.op2.head(60))
-	// TODO: Question: should we reverse io.inst? 
-	io.out := Cat(op1_plaintext_reverse, op2_plaintext_reverse, io.inst)
+	val op1_hash = io.op1.head(60)
+	val op2_hash = io.op2.head(60)
+	// Reverse the byte order so we can convert them into uint with Chisel infrastructure.
+	val op1_hash_reverse = Wire(Vec(Params.StateLength, UInt(8.W)))
+	val op2_hash_reverse = Wire(Vec(Params.StateLength, UInt(8.W)))
+	for(i <- 0 until Params.StateLength){
+		op1_hash_reverse(i) := op1_hash(Params.StateLength - i - 1)
+		op2_hash_reverse(i) := op2_hash(Params.StateLength - i - 1)
+	}
+	io.out := Cat(io.inst, op2_hash_reverse, op1_hash_reverse)
 }
 
 class SE(val debug:Boolean, val canChangeKey: Boolean) extends Module{
