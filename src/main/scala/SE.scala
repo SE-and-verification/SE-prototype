@@ -42,14 +42,13 @@ class Plaintext_Reverse_Connector extends Module {
 	})
 	val op1_hash = io.op1.head(60)
 	val op2_hash = io.op2.head(60)
+	val connect_result = Cat(op1_hash, op2_hash, io.inst)
 	// Reverse the byte order so we can convert them into uint with Chisel infrastructure.
-	val op1_hash_reverse = Wire(Vec(Params.StateLength, UInt(8.W)))
-	val op2_hash_reverse = Wire(Vec(Params.StateLength, UInt(8.W)))
+	val connect_result_reverse = Wire(Vec(Params.StateLength, UInt(8.W)))
 	for(i <- 0 until Params.StateLength){
-		op1_hash_reverse(i) := op1_hash(Params.StateLength - i - 1)
-		op2_hash_reverse(i) := op2_hash(Params.StateLength - i - 1)
+		connect_result_reverse(i) := connect_result(Params.StateLength - i - 1)
 	}
-	io.out := Cat(io.inst, op2_hash_reverse, op1_hash_reverse)
+	io.out := connect_result_reverse
 }
 
 class SE(val debug:Boolean, val canChangeKey: Boolean) extends Module{
@@ -113,7 +112,6 @@ class SE(val debug:Boolean, val canChangeKey: Boolean) extends Module{
 	Plaintext_Reverse_Connector_0.io.inst 	:= inst_buffer
 	
 	val connected_reversed_plaintext_buffer = RegEnable(Plaintext_Reverse_Connector_0.io.out, 0.U, io.in.valid)
-	// 05/09/2024 
 
 	val n_result_valid_buffer = Wire(Bool())
 	val ready_for_input = RegInit(true.B)
@@ -178,6 +176,7 @@ class SE(val debug:Boolean, val canChangeKey: Boolean) extends Module{
 
 	val mid_inst_buffer = RegEnable(inst_buffer,aes_invcipher.io.input_valid)
 	val mid_op1_buffer = RegEnable(op1_buffer,aes_invcipher.io.input_valid)
+	val mid_op2_buffer = RegEnable(op2_buffer,aes_invcipher.io.input_valid)
 
 	// Feed the decrypted values to the seoperation module. Depends on whether the data is encrypted when it comes in.
 	seoperation.io.inst := Mux(all_match&& valid_buffer,inst_buffer ,mid_inst_buffer)
@@ -188,22 +187,22 @@ class SE(val debug:Boolean, val canChangeKey: Boolean) extends Module{
 
 	// FIXME: fix the bit selections
 	seoperation.io.op1_input := Mux(all_match&& valid_buffer, op1_val ,Mux(mid_inst_buffer(7,5) === 5.U(3.W), mid_op1_buffer(127,64),op1_asUInt(127,64)))
-	seoperation.io.op2_input := Mux(all_match&& valid_buffer, op2_val, op2_asUInt(127,64))
+	seoperation.io.op2_input := Mux(all_match&& valid_buffer, op2_val ,Mux(mid_inst_buffer(7,5) === 5.U(3.W), mid_op2_buffer(127,64),op2_asUInt(127,64))) //INST encoding
 
 	// TODO: reconstruct the hash and compare
 
-  	// Once we receive the result form the seoperation, we latech the result first.
+  	// Once we receive the result from the seoperation, we latch the result first.
 	val result_valid_buffer = RegNext(n_result_valid_buffer)
 	n_result_valid_buffer := Mux(seOpValid, true.B, Mux(aes_cipher.io.input_valid, false.B, result_valid_buffer))
 
 	// Pad with RNG
 	val bit64_randnum = PRNG(new MaxPeriodFibonacciLFSR(64, Some(scala.math.BigInt(64, scala.util.Random))))
-	val padded_result = Cat(seoperation.io.result,bit64_randnum)
-	val result_buffer = RegEnable( padded_result, seOpValid)
+	val padded_result = Cat(seoperation.io.result, bit64_randnum, mid_op1_buffer, mid_op2_buffer, mid_inst_buffer)
+	val result_buffer = RegEnable(padded_result, seOpValid)
 	if(debug){
 		when(result_valid_buffer){
 			printf("\n-----back----\n")
-			printf("padded_result:%x\n",result_buffer )
+			printf("padded_result:%x\n",result_buffer)
 			printf("seoperation.io.result:%x\n",seoperation.io.result)
 		}
 	}
