@@ -130,10 +130,12 @@ class SE(val debug:Boolean, val canChangeKey: Boolean) extends Module{
 	aes_cipher_for_hash_C.io.input_roundKeys 	:= key
 
 	// latch the hash_C_original into the buffer
-	val hash_C_original_buffer = RegEnable(io.in.inst, io.in.valid /* TODO: What valid signal should I choose? Yishen Zhou */)   // buf_lv2
+	val hash_C_original_buffer = RegEnable(aes_cipher_for_hash_C.io.output_text.do_asUInt, aes_cipher_for_hash_C.io.output_valid) // buf_lv2
+	val hash_C_original_buffer_valid = RegInit(false.B) // buf_lv2
 
-
-
+	when(aes_cipher_for_hash_C.io.output_valid){
+		hash_C_original_buffer_valid := true.B
+	} 
 
 	val n_result_valid_buffer = Wire(Bool())
 	val ready_for_input = RegInit(true.B)
