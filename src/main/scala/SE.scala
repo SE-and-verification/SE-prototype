@@ -40,14 +40,20 @@ class Plaintext_Reverse_Connector extends Module {
 		val inst 	= Input(UInt(8.W))
 		val out     = Output(Uint(128.W))
 	})
+
+	// Get the highest 60 bits of two ops and connect everything together
 	val op1_hash = io.op1.head(60)
 	val op2_hash = io.op2.head(60)
 	val connect_result = Cat(op1_hash, op2_hash, io.inst)
+	
 	// Reverse the byte order so we can convert them into uint with Chisel infrastructure.
-	val connect_result_reverse = Wire(Vec(Params.StateLength, UInt(8.W)))
-	for(i <- 0 until Params.StateLength){
-		connect_result_reverse(i) := connect_result(Params.StateLength - i - 1)
+	// Here new_integrity_length = (60 + 60 + 8) / 8 = 16
+	val connect_result_reverse = Wire(Vec(Params.new_integrity_length, UInt(8.W)))
+	for(i <- 0 until Params.new_integrity_length){
+		connect_result_reverse(i) := connect_result(Params.new_integrity_length - i - 1)
 	}
+
+	// Connect the module output
 	io.out := connect_result_reverse
 }
 
@@ -63,6 +69,10 @@ class SE(val debug:Boolean, val canChangeKey: Boolean) extends Module{
 	val seoperation = Module(new SEOperation(debug))
 	val aes_invcipher = Module(new AESDecrypt(rolled))
 	val aes_cipher = Module(new AESEncrypt(rolled))
+
+	// New integrity
+	val aes_cipher_for_hash_C = Module(new AESEncrypt(rolled))
+
 	val key = Reg(Vec(11, Vec(16,UInt(8.W))))
 
 	val ciphers = Reg(Vec(32, UInt(128.W)))
@@ -95,23 +105,35 @@ class SE(val debug:Boolean, val canChangeKey: Boolean) extends Module{
 	}
 
 	// Once we receive the data, first latch them into buffers. 
-	val inst_buffer = RegEnable(io.in.inst, io.in.valid)
+	val inst_buffer = RegEnable(io.in.inst, io.in.valid) // buf_lv1
 
-	val op1_buffer = RegEnable(io.in.op1, io.in.valid)
+	val op1_buffer = RegEnable(io.in.op1, io.in.valid) // buf_lv1
 
-	val op2_buffer = RegEnable(io.in.op2, io.in.valid)
+	val op2_buffer = RegEnable(io.in.op2, io.in.valid) // buf_lv1
 
-	val valid_buffer = Reg(Bool())
+	val valid_buffer = Reg(Bool()) // buf_lv1
 
 	// TODO: compute hash here, just copy key and re-instantiate a hash key for the moment. Create additional modules if needed
 	
-	// Instantiate the connector and connect reg input and reg output (without inverse)
+	// Instantiate the connector and connect reg input and reg output
 	val Plaintext_Reverse_Connector_0 = Module(new Plaintext_Reverse_Connector)
 	Plaintext_Reverse_Connector_0.io.op1 	:= op1_buffer 
 	Plaintext_Reverse_Connector_0.io.op2 	:= op2_buffer
 	Plaintext_Reverse_Connector_0.io.inst 	:= inst_buffer
 	
-	val connected_reversed_plaintext_buffer = RegEnable(Plaintext_Reverse_Connector_0.io.out, 0.U, io.in.valid)
+	val connected_reversed_plaintext_buffer = Wire(Uint(128.W))
+	connected_reversed_plaintext_buffer := Plaintext_Reverse_Connector_0.io.out
+
+	// Encrypt the connected result
+	aes_cipher_for_hash_C.io.input_text 		:= connected_reversed_plaintext_buffer
+	aes_cipher_for_hash_C.io.input_valid 		:= io.in.valid
+	aes_cipher_for_hash_C.io.input_roundKeys 	:= key
+
+	// latch the hash_C_original into the buffer
+	val hash_C_original_buffer = RegEnable(io.in.inst, io.in.valid /* TODO: What valid signal should I choose? Yishen Zhou */)   // buf_lv2
+
+
+
 
 	val n_result_valid_buffer = Wire(Bool())
 	val ready_for_input = RegInit(true.B)
