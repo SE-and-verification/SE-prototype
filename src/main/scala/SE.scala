@@ -40,10 +40,8 @@ class Plaintext_Reverse_Connector extends Module {
 		val inst 	= Input(UInt(8.W))
 		val out     = Output(Uint(128.W))
 	})
-
-	// Get the highest 60 bits of two ops and connect everything together
-	val op1_hash = io.op1.head(60)
-	val op2_hash = io.op2.head(60)
+	val op1_hash = io.op1(315, 256)
+	val op2_hash = io.op2(315, 256)
 	val connect_result = Cat(op1_hash, op2_hash, io.inst)
 	
 	// Reverse the byte order so we can convert them into uint with Chisel infrastructure.
@@ -120,7 +118,7 @@ class SE(val debug:Boolean, val canChangeKey: Boolean) extends Module{
 	Plaintext_Reverse_Connector_0.io.op1 	:= op1_buffer 
 	Plaintext_Reverse_Connector_0.io.op2 	:= op2_buffer
 	Plaintext_Reverse_Connector_0.io.inst 	:= inst_buffer
-	
+
 	val connected_reversed_plaintext_buffer = Wire(Uint(128.W))
 	connected_reversed_plaintext_buffer := Plaintext_Reverse_Connector_0.io.out
 
@@ -137,9 +135,11 @@ class SE(val debug:Boolean, val canChangeKey: Boolean) extends Module{
 		hash_C_original_buffer_valid := true.B
 	} 
 
+	val trimmed_hash_C = hash_C_original_buffer(59, 0) // CONFUSION: TRIM METHOD TO BE DETERMINED
+
 	val n_result_valid_buffer = Wire(Bool())
 	val ready_for_input = RegInit(true.B)
-	val n_stage_valid = Wire(Bool())
+	val n_stage_valid = Wire(Bool()) //CONFUSION: n_stage_valid & valid_buffer
 	io.in.ready := ready_for_input
 
 	valid_buffer := Mux(io.in.valid && io.in.ready, true.B, Mux(n_stage_valid, false.B, valid_buffer))
@@ -180,8 +180,10 @@ class SE(val debug:Boolean, val canChangeKey: Boolean) extends Module{
 
 
 	// Feed the ciphertexts into the invcipher
-	aes_invcipher.io.input_op1 := op1_buffer.asTypeOf(aes_invcipher.io.input_op1)
-	aes_invcipher.io.input_op2 := op2_buffer.asTypeOf(aes_invcipher.io.input_op2)
+	val ciph_op1 = op1_buffer(255,0)
+	val ciph_op2 = op1_buffer(255,0)
+	aes_invcipher.io.input_op1 := ciph_op1.asTypeOf(aes_invcipher.io.input_op1)
+	aes_invcipher.io.input_op2 := ciph_op2.asTypeOf(aes_invcipher.io.input_op2)
 	aes_invcipher.io.input_roundKeys := key
 	aes_invcipher.io.input_valid := valid_buffer && (!all_match)
 	when(aes_invcipher.io.input_valid){
@@ -211,7 +213,7 @@ class SE(val debug:Boolean, val canChangeKey: Boolean) extends Module{
 
 	// FIXME: fix the bit selections
 	seoperation.io.op1_input := Mux(all_match&& valid_buffer, op1_val ,Mux(mid_inst_buffer(7,5) === 5.U(3.W), mid_op1_buffer(127,64),op1_asUInt(127,64)))
-	seoperation.io.op2_input := Mux(all_match&& valid_buffer, op2_val ,Mux(mid_inst_buffer(7,5) === 5.U(3.W), mid_op2_buffer(127,64),op2_asUInt(127,64))) //INST encoding
+	seoperation.io.op2_input := Mux(all_match&& valid_buffer, op2_val ,Mux(mid_inst_buffer(7,5) === 5.U(3.W), mid_op2_buffer(127,64),op2_asUInt(127,64))) //CONFUSION: INST encoding
 
 	// TODO: reconstruct the hash and compare
 
@@ -240,16 +242,17 @@ class SE(val debug:Boolean, val canChangeKey: Boolean) extends Module{
 
 	// Connect the cipher
 	val aes_input = result_buffer.asTypeOf(aes_cipher.io.input_text)
-	val aes_input_reverse = Wire(Vec(Params.StateLength, UInt(8.W)))
-	for(i <- 0 until Params.StateLength){
-		aes_input_reverse(i) := aes_input(Params.StateLength-i-1)
+	val aes_input_reverse = Wire(Vec(Params.CiphLength, UInt(8.W)))
+	for(i <- 0 until Params.CiphLength){
+		aes_input_reverse(i) := aes_input(Params.CiphLength-i-1)
 	}
 	aes_cipher.io.input_text := aes_input_reverse
 	aes_cipher.io.input_valid := result_valid_buffer
 	aes_cipher.io.input_roundKeys := key
 
 	// Connect the output side
-	val output_buffer = RegEnable(aes_cipher.io.output_text.do_asUInt, aes_cipher.io.output_valid)
+	val output_connect = Cat(trimmed_hash_C, aes_cipher.io.output_text.do_asUInt)
+	val output_buffer = RegEnable(output_connect, aes_cipher.io.output_valid)
 	val output_valid = RegInit(false.B)
 
 	when(aes_cipher.io.output_valid){
