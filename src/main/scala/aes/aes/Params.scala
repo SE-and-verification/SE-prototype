@@ -5,5 +5,5 @@ object Params {
   val rows: Int = 4
   val StateLength: Int = Nb * rows //CONFUSION
   val new_integrity_length: Int = 16 // Added by Yishen Zhou, temporarily hard-coded, 05/24/2024
-  val CiphLength: Int = 256
+  val CiphLength: Int = 32
 }
