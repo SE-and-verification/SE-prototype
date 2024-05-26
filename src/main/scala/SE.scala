@@ -22,9 +22,13 @@ class SEInput(val canChangeKey: Boolean) extends Bundle{
 
 
 class SEOutput extends Bundle{
-	val result = Output(UInt(316.W))
-	val valid = Output(Bool())
-	val ready = Input(Bool())
+	val result 				= Output(UInt(316.W))
+	val valid 				= Output(Bool())
+	val ready 				= Input(Bool())
+	val op1_compare 		= Output(Bool())
+	val op2_compare 		= Output(Bool())
+	val op1_compare_valid 	= Output(Bool())
+	val op2_compare_valid 	= Output(Bool())
 }
 
 class SEIO(val canChangeKey: Boolean) extends Bundle{
@@ -40,17 +44,15 @@ class Plaintext_Reverse_Connector extends Module {
 		val inst 	= Input(UInt(8.W))
 		val out     = Output(Uint(128.W))
 	})
-	val op1_hash = io.op1(315, 256)
-	val op2_hash = io.op2(315, 256)
-	val connect_result = Cat(op1_hash, op2_hash, io.inst)
-	
+	val op1_hash 		= io.op1(315, 256)
+	val op2_hash 		= io.op2(315, 256)
+	val connect_result 	= Cat(op1_hash, op2_hash, io.inst)
 	// Reverse the byte order so we can convert them into uint with Chisel infrastructure.
 	// Here new_integrity_length = (60 + 60 + 8) / 8 = 16
 	val connect_result_reverse = Wire(Vec(Params.new_integrity_length, UInt(8.W)))
 	for(i <- 0 until Params.new_integrity_length){
 		connect_result_reverse(i) := connect_result(Params.new_integrity_length - i - 1)
 	}
-
 	// Connect the module output
 	io.out := connect_result_reverse
 }
@@ -69,8 +71,9 @@ class SE(val debug:Boolean, val canChangeKey: Boolean) extends Module{
 	val aes_cipher = Module(new AESEncrypt(rolled))
 
 	// New integrity
-	val aes_cipher_for_hash_C = Module(new AESEncrypt(rolled))
-	val aes_cipher_for_op2 = Module(new AESEncrypt(rolled))
+	val aes_cipher_for_hash_C 	= Module(new AESEncrypt(rolled))
+	val aes_cipher_for_op1 		= Module(new AESEncrypt(rolled))
+	val aes_cipher_for_op2 		= Module(new AESEncrypt(rolled))
 
 	val key = Reg(Vec(11, Vec(16,UInt(8.W))))
 
@@ -78,7 +81,7 @@ class SE(val debug:Boolean, val canChangeKey: Boolean) extends Module{
 	val cache_valid = Reg(Vec(32, Bool()))
 	val plaintexts = Reg(Vec(32, UInt(64.W)))
 	val ptr = RegInit(0.U(8.W))
-	val expandedKey128 =VecInit(
+	val expandedKey128 = VecInit(
     VecInit(0x00.U(8.W), 0x01.U(8.W), 0x02.U(8.W), 0x03.U(8.W), 0x04.U(8.W), 0x05.U(8.W), 0x06.U(8.W), 0x07.U(8.W), 0x08.U(8.W), 0x09.U(8.W), 0x0a.U(8.W), 0x0b.U(8.W), 0x0c.U(8.W), 0x0d.U(8.W), 0x0e.U(8.W), 0x0f.U(8.W)),
     VecInit(0xd6.U(8.W), 0xaa.U(8.W), 0x74.U(8.W), 0xfd.U(8.W), 0xd2.U(8.W), 0xaf.U(8.W), 0x72.U(8.W), 0xfa.U(8.W), 0xda.U(8.W), 0xa6.U(8.W), 0x78.U(8.W), 0xf1.U(8.W), 0xd6.U(8.W), 0xab.U(8.W), 0x76.U(8.W), 0xfe.U(8.W)),
     VecInit(0xb6.U(8.W), 0x92.U(8.W), 0xcf.U(8.W), 0x0b.U(8.W), 0x64.U(8.W), 0x3d.U(8.W), 0xbd.U(8.W), 0xf1.U(8.W), 0xbe.U(8.W), 0x9b.U(8.W), 0xc5.U(8.W), 0x00.U(8.W), 0x68.U(8.W), 0x30.U(8.W), 0xb3.U(8.W), 0xfe.U(8.W)),
@@ -102,15 +105,14 @@ class SE(val debug:Boolean, val canChangeKey: Boolean) extends Module{
 			key := expandedKey128
 		}
 	}
-
-	// Once we receive the data, first latch them into buffers. 
-	val inst_buffer = RegEnable(io.in.inst, io.in.valid) // buf_lv1
-
-	val op1_buffer = RegEnable(io.in.op1, io.in.valid) // buf_lv1
-
-	val op2_buffer = RegEnable(io.in.op2, io.in.valid) // buf_lv1
-
-	val valid_buffer = Reg(Bool()) // buf_lv1
+ 
+	/*----------------------buf_lv1----------------------*/
+	// Once we receive the data, first latch them into buffers.
+	val inst_buffer 	= RegEnable(io.in.inst, io.in.valid)
+	val op1_buffer 		= RegEnable(io.in.op1, io.in.valid)
+	val op2_buffer 		= RegEnable(io.in.op2, io.in.valid)
+	val valid_buffer 	= Reg(Bool())
+	/*----------------------buf_lv1----------------------*/
 
 	// TODO: compute hash here, just copy key and re-instantiate a hash key for the moment. Create additional modules if needed
 	
@@ -128,17 +130,20 @@ class SE(val debug:Boolean, val canChangeKey: Boolean) extends Module{
 	aes_cipher_for_hash_C.io.input_valid 		:= io.in.valid
 	aes_cipher_for_hash_C.io.input_roundKeys 	:= key
 
+	/*----------------------buf_lv2----------------------*/
 	// latch the hash_C_original into the buffer
-	val hash_C_original_buffer = RegEnable(aes_cipher_for_hash_C.io.output_text.do_asUInt, aes_cipher_for_hash_C.io.output_valid) // buf_lv2
-	val hash_C_original_buffer_valid = RegInit(false.B) // buf_lv2
-
+	val hash_C_original_buffer 			= RegEnable(aes_cipher_for_hash_C.io.output_text.do_asUInt, aes_cipher_for_hash_C.io.output_valid)
+	val hash_C_original_buffer_valid 	= RegInit(false.B)
 	when(aes_cipher_for_hash_C.io.output_valid){
 		hash_C_original_buffer_valid := true.B
-	} 
+	}
+	/*----------------------buf_lv2----------------------*/ 
 
-	val trimmed_hash_C = hash_C_original_buffer(59, 0) // CONFUSION: TRIM METHOD TO BE DETERMINED
-	val hash_C_buffer = RegEnable(trimmed_hash_C, hash_C_buffer_valid) // buf_lv3
-	val hash_C_buffer_valid = RegInit(false.B) // buf_lv3
+	/*----------------------buf_lv3----------------------*/
+	// Trim hash_C_orig and store hash_C
+	val hash_C_buffer = RegEnable(hash_C_original_buffer(59, 0), hash_C_buffer_valid)
+	val hash_C_buffer_valid = RegInit(false.B)
+	/*----------------------buf_lv3----------------------*/
 
 	val n_result_valid_buffer = Wire(Bool())
 	val ready_for_input = RegInit(true.B)
@@ -207,10 +212,12 @@ class SE(val debug:Boolean, val canChangeKey: Boolean) extends Module{
 	val mid_op1_buffer = RegEnable(op1_buffer,aes_invcipher.io.input_valid) // buf_lv2
 	val mid_op2_buffer = RegEnable(op2_buffer,aes_invcipher.io.input_valid) // buf_lv2
 
-	val decrypted_op2_buffer = RegEnable(aes_invcipher.io.output_op2(255, 128), aes_invcipher.io.input_valid) // buf_lv2
-	val decrypted_op2_buffer_valid = RegInit(false.B) // buf_lv2
-
+	val decrypted_op1_buffer 		= RegEnable(aes_invcipher.io.output_op2(127, 0), aes_invcipher.io.input_valid) // buf_lv2
+	val decrypted_op1_buffer_valid 	= RegInit(false.B) // buf_lv2
+	val decrypted_op2_buffer 		= RegEnable(aes_invcipher.io.output_op2(255, 128), aes_invcipher.io.input_valid) // buf_lv2
+	val decrypted_op2_buffer_valid 	= RegInit(false.B) // buf_lv2
 	when(aes_invcipher.io.input_valid){
+		decrypted_op1_buffer_valid := true.B
 		decrypted_op2_buffer_valid := true.B
 	} 
 
@@ -222,24 +229,40 @@ class SE(val debug:Boolean, val canChangeKey: Boolean) extends Module{
 	val op2_asUInt = op2_reverse(255,192).do_asUInt
 
 	// FIXME: fix the bit selections
-	seoperation.io.op1_input := Mux(all_match&& valid_buffer, op1_val ,Mux(mid_inst_buffer(7,5) === 5.U(3.W), mid_op1_buffer(127,64), op1_asUInt))
-	seoperation.io.op2_input := Mux(all_match&& valid_buffer, op2_val ,Mux(mid_inst_buffer(7,5) === 5.U(3.W), mid_op2_buffer(127,64), op2_asUInt)) //CONFUSION: INST encoding. mid_op1_buffer
+	seoperation.io.op1_input := Mux(all_match&& valid_buffer, op1_val, Mux(mid_inst_buffer(7,5) === 5.U(3.W), mid_op1_buffer(127,64), op1_asUInt))
+	seoperation.io.op2_input := Mux(all_match&& valid_buffer, op2_val, Mux(mid_inst_buffer(7,5) === 5.U(3.W), mid_op2_buffer(127,64), op2_asUInt)) //CONFUSION: INST encoding. mid_op1_buffer
 
 	// TODO: reconstruct the hash and compare
 
-	// Encrypt decrypted part of op2
+	// Encrypt decrypted part of op1 and op2
+	aes_cipher_for_op1.io.input_text 		:= decrypted_op1_buffer
+	aes_cipher_for_op1.io.input_valid 		:= decrypted_op1_buffer_valid
+	aes_cipher_for_op1.io.input_roundKeys 	:= key
 	aes_cipher_for_op2.io.input_text 		:= decrypted_op2_buffer
 	aes_cipher_for_op2.io.input_valid 		:= decrypted_op2_buffer_valid
 	aes_cipher_for_op2.io.input_roundKeys 	:= key
 
+	val trimmed_rehashed_op1 = aes_cipher_for_op1.io.output_text(59, 0) // CONFUSION: TRIM METHOD TO BE DETERMINED
+	val op1_compare_result = (trimmed_rehashed_op1 === mid_op1_buffer(315, 256))
 	val trimmed_rehashed_op2 = aes_cipher_for_op2.io.output_text(59, 0) // CONFUSION: TRIM METHOD TO BE DETERMINED
 	val op2_compare_result = (trimmed_rehashed_op2 === mid_op2_buffer(315, 256))
-	val op2_compare_result_buffer = RegEnable(op2_compare_result, aes_cipher_for_op2.io.output_valid) // buf_lv4
-	val op2_compare_result_buffer_valid = RegInit(false.B)
 	
+	/*----------------------buf_lv4----------------------*/
+	val next_op1_compare_result_buffer_valid = Wire(Bool())
+	val next_op2_compare_result_buffer_valid = Wire(Bool())
+
+	val op1_compare_result_buffer 		= RegEnable(op1_compare_result, aes_cipher_for_op1.io.output_valid)
+	val op1_compare_result_buffer_valid = RegNext(next_op1_compare_result_buffer_valid)
+	when(aes_cipher_for_op1.io.output_valid){
+		next_op1_compare_result_buffer_valid := true.B
+	}
+
+	val op2_compare_result_buffer 		= RegEnable(op2_compare_result, aes_cipher_for_op2.io.output_valid)
+	val op2_compare_result_buffer_valid = RegNext(next_op2_compare_result_buffer_valid)
 	when(aes_cipher_for_op2.io.output_valid){
-		op2_compare_result_buffer_valid := true.B
-	} 
+		next_op2_compare_result_buffer_valid := true.B
+	}
+	/*----------------------buf_lv4----------------------*/ 
 
   	// Once we receive the result from the seoperation, we latch the result first.
 	val result_valid_buffer = RegNext(n_result_valid_buffer)
@@ -284,8 +307,12 @@ class SE(val debug:Boolean, val canChangeKey: Boolean) extends Module{
 	}.elsewhen(io.out.valid && io.out.ready){
 		output_valid := false.B
 	}
-	io.out.valid := output_valid
-	io.out.result := output_buffer
+	io.out.valid 				:= output_valid
+	io.out.result 				:= output_buffer
+	io.out.op1_compare 			:= op1_compare_result_buffer
+	io.out.op2_compare 			:= op2_compare_result_buffer
+	io.out.op1_compare_valid 	:= op1_compare_result_buffer_valid
+	io.out.op2_compare_valid 	:= op2_compare_result_buffer_valid
 
 	when(output_valid){
 		printf("ptr:%x\n",ptr)
