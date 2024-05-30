@@ -311,7 +311,6 @@ class SE(val debug:Boolean, val canChangeKey: Boolean) extends Module{
 
 	// TODO: adjust input to the encryption cipher
 
-
 	// Connect the cipher
 	val aes_input_reverse = Wire(Vec(Params.CiphLength, UInt(8.W)))
 	for(i <- 0 until Params.CiphLength){
@@ -331,17 +330,17 @@ class SE(val debug:Boolean, val canChangeKey: Boolean) extends Module{
 	val output_valid = RegInit(false.B)
 
 	// Output valid when encryption for ciph_C result valid and two compare results high
-	when((aes_cipher_firsthlf.io.output_valid && aes_cipher_secondhlf.io.output_valid) && (op1_compare_result_buffer && op1_compare_result_buffer) && (op2_compare_result_buffer && op2_compare_result_buffer)){
+	when((aes_cipher_firsthlf.io.output_valid && aes_cipher_secondhlf.io.output_valid) && (op1_compare_result_buffer && op1_compare_result_buffer_valid) && (op2_compare_result_buffer && op2_compare_result_buffer_valid)){
 		output_valid := true.B
-	}.elsewhen(io.out.valid && io.out.ready){
+	}.elsewhen(io.out.valid && io.out.ready) {
 		output_valid := false.B
 	}
 
 	// C output is 0 when either of compare results is false
-	when((op1_compare_result_buffer && op1_compare_result_buffer) && (op2_compare_result_buffer && op2_compare_result_buffer)){
+	when((op1_compare_result_buffer && op1_compare_result_buffer_valid) && (op2_compare_result_buffer && op2_compare_result_buffer_valid)){
 		output_buffer := output_connect
-	}.else{
-		output_buffer := 0
+	}.otherwise {
+		output_buffer := 0.U
 	}
 
 	io.out.valid 				:= output_valid
