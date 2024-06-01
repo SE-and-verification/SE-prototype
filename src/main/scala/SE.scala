@@ -42,7 +42,7 @@ class Plaintext_Reverse_Connector extends Module {
 		val op1 	= Input(UInt(316.W))
 		val op2 	= Input(UInt(316.W))
 		val inst 	= Input(UInt(8.W))
-		val out     = Output(Uint(128.W))
+		val out     = Output(UInt(128.W))
 	})
 	val op1_hash 		= io.op1(315, 256)
 	val op2_hash 		= io.op2(315, 256)
@@ -126,7 +126,7 @@ class SE(val debug:Boolean, val canChangeKey: Boolean) extends Module{
 	Plaintext_Reverse_Connector_0.io.op2 	:= op2_buffer
 	Plaintext_Reverse_Connector_0.io.inst 	:= inst_buffer
 
-	val connected_reversed_plaintext_buffer = Wire(Uint(128.W))
+	val connected_reversed_plaintext_buffer = Wire(UInt(128.W))
 	connected_reversed_plaintext_buffer := Plaintext_Reverse_Connector_0.io.out
 
 	// Encrypt the connected result
