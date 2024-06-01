@@ -246,8 +246,8 @@ class SE(val debug:Boolean, val canChangeKey: Boolean) extends Module{
 	val op1_asUInt 			= op1_reverse_bit(127, 64).do_asUInt // get plain_A
 	val op2_asUInt 			= op2_reverse_bit(127, 64).do_asUInt // get plain_B
 
-	seoperation.io.op1_input := Mux(all_match&& valid_buffer, op1_val, Mux(mid_inst_buffer(7,5) === 5.U(3.W), mid_op1_buffer(127,64), op1_asUInt))
-	seoperation.io.op2_input := Mux(all_match&& valid_buffer, op2_val, Mux(mid_inst_buffer(7,5) === 5.U(3.W), mid_op2_buffer(127,64), op2_asUInt))
+	seoperation.io.op1_input := Mux(all_match&& valid_buffer, op1_val, Mux(mid_inst_buffer(7,5) === 5.U(3.W), aes_invcipher_firsthlf.io.output_op1, op1_asUInt)) // FIXME: input for ENC is aes_invcipher_firsthlf.io.output_op1 ? 
+	seoperation.io.op2_input := Mux(all_match&& valid_buffer, op2_val, Mux(mid_inst_buffer(7,5) === 5.U(3.W), aes_invcipher_firsthlf.io.output_op2, op2_asUInt))
 
 
 	// TODO: reconstruct the hash and compare
@@ -269,7 +269,7 @@ class SE(val debug:Boolean, val canChangeKey: Boolean) extends Module{
 
   	// Once we receive the result from the seoperation, we latch the result first.
 	val result_valid_buffer = RegNext(n_result_valid_buffer)
-	n_result_valid_buffer := Mux(seOpValid, true.B, Mux(aes_cipher_firsthlf.io.input_valid, false.B, result_valid_buffer)) //FIXME: Use which signal to replace aes_cipher.io.input_valid?
+	n_result_valid_buffer := Mux(seOpValid, true.B, Mux(aes_cipher_firsthlf.io.input_valid, false.B, result_valid_buffer))
 
 	// Pad with RNG
 	val bit64_randnum = PRNG(new MaxPeriodFibonacciLFSR(64, Some(scala.math.BigInt(64, scala.util.Random))))
