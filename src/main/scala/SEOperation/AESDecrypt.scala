@@ -25,10 +25,12 @@ class AESDecrypt(val rolled: Boolean) extends Module {
   print(s"rolled: ${rolled}\n")
   val io = IO(new DecryptIO)
   if(!rolled){
-    val InvCipherRoundARK = Array.fill(3){
+    // val InvCipherRoundARK = Array.fill(3){
+    val InvCipherRoundARK = Array.fill(2){
       InvCipherRound("AddRoundKeyOnly", true)
       }
-    val InvCipherRounds = Array.fill(3){ 
+    // val InvCipherRounds = Array.fill(3){
+    val InvCipherRounds = Array.fill(2){ 
       Array.fill(Nr - 1) {
         InvCipherRound("CompleteRound", true)
       }
@@ -45,10 +47,11 @@ class AESDecrypt(val rolled: Boolean) extends Module {
     InvCipherRoundARK(1).io.state_in := io.input_op2
     InvCipherRoundARK(1).io.roundKey := io.input_roundKeys(Nr)
 
-    InvCipherRoundARK(2).io.input_valid := io.input_valid
-    InvCipherRoundARK(2).io.roundKey := io.input_roundKeys(Nr)
+    // InvCipherRoundARK(2).io.input_valid := io.input_valid
+    // InvCipherRoundARK(2).io.roundKey := io.input_roundKeys(Nr)
     // Cipher Nr-1 rounds
-    for(j <- 0 to 2){
+    // for(j <- 0 to 2){
+    for(j <- 0 to 1){
       for (i <- 0 until (Nr - 1)){
         if (i == 0) {
           InvCipherRounds(j)(i).io.input_valid := InvCipherRoundARK(j).io.output_valid
@@ -62,7 +65,8 @@ class AESDecrypt(val rolled: Boolean) extends Module {
       }
   }
     // Cipher last round
-    for(j <- 0 to 2){
+    // for(j <- 0 to 2){
+    for(j <- 0 to 1){
       InvCipherRoundNMC(j).io.input_valid := InvCipherRounds(j)(Nr - 1 - 1).io.output_valid
       InvCipherRoundNMC(j).io.state_in := InvCipherRounds(j)(Nr - 1 - 1).io.state_out
       InvCipherRoundNMC(j).io.roundKey := io.input_roundKeys(0)
@@ -70,10 +74,11 @@ class AESDecrypt(val rolled: Boolean) extends Module {
 
     io.output_op1 := InvCipherRoundNMC(0).io.state_out
     io.output_op2 := InvCipherRoundNMC(1).io.state_out
-    io.output_valid := InvCipherRoundNMC(0).io.output_valid || InvCipherRoundNMC(1).io.output_valid || InvCipherRoundNMC(2).io.output_valid
+    io.output_valid := InvCipherRoundNMC(0).io.output_valid || InvCipherRoundNMC(1).io.output_valid // || InvCipherRoundNMC(2).io.output_valid
   }
   else{
-    val invciphers = Array.fill(3){InvCipher(4, true)}
+    // val invciphers = Array.fill(3){InvCipher(4, true)}
+    val invciphers = Array.fill(2){InvCipher(4, true)}
 
     val address = RegInit(0.U(log2Ceil(EKDepth).W))
 
@@ -90,11 +95,11 @@ class AESDecrypt(val rolled: Boolean) extends Module {
     invciphers(1).io.ciphertext := io.input_op2
     invciphers(1).io.roundKey := io.input_roundKeys(address)
 
-    invciphers(2).io.start := io.input_valid
-    invciphers(2).io.roundKey := io.input_roundKeys(address)
+    // invciphers(2).io.start := io.input_valid
+    // invciphers(2).io.roundKey := io.input_roundKeys(address)
 
     io.output_op1 := invciphers(0).io.state_out
     io.output_op2 := invciphers(1).io.state_out
-    io.output_valid := invciphers(0).io.state_out_valid || invciphers(1).io.state_out_valid || invciphers(2).io.state_out_valid
+    io.output_valid := invciphers(0).io.state_out_valid || invciphers(1).io.state_out_valid // || invciphers(2).io.state_out_valid
   }
 }
