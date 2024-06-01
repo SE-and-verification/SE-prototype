@@ -44,9 +44,12 @@ class Plaintext_Reverse_Connector extends Module {
 		val inst 	= Input(UInt(8.W))
 		val out     = Output(Vec(Params.StateLength, UInt(8.W)))
 	})
-	val op1_hash 		= io.op1(315, 256)
-	val op2_hash 		= io.op2(315, 256)
-	val connect_result 	= Cat(op1_hash, op2_hash, io.inst)
+	val op1_hash 		= Wire(UInt(60.W))
+	op1_hash           := io.op1(315, 256)
+	val op2_hash 		= Wire(UInt(60.W))
+	op2_hash           := io.op2(315, 256)
+	val connect_result 	= Wire(UInt(128.W))
+	connect_result 	   := Cat(op1_hash, op2_hash, io.inst)
 	// Reverse the byte order so we can convert them into uint with Chisel infrastructure.
 	// Here new_integrity_length = (60 + 60 + 8) / 8 = 16
 	val connect_result_reverse = Wire(Vec(Params.new_integrity_length, UInt(8.W)))
@@ -188,12 +191,15 @@ class SE(val debug:Boolean, val canChangeKey: Boolean) extends Module{
 	val op1_val = plaintexts(op1_idx)
 	val op2_val = plaintexts(op2_idx)
 
-	val all_match = op1_found && op2_found && cache_valid(op1_idx) && cache_valid(op2_idx)
+	val all_match = Wire(Bool())
+	all_match := op1_found && op2_found && cache_valid(op1_idx) && cache_valid(op2_idx)
 
 
 	// Feed the ciphertexts into the invcipher
-	val ciph_op1 = op1_buffer(255,0)
-	val ciph_op2 = op1_buffer(255,0)
+	val ciph_op1 = Wire(UInt(256.W))
+	ciph_op1 := op1_buffer(255,0)
+	val ciph_op2 = Wire(UInt(256.W))
+	ciph_op2 := op2_buffer(255,0)
 
 	aes_invcipher_firsthlf.io.input_op1 := ciph_op1(127, 0).asTypeOf(aes_invcipher_firsthlf.io.input_op1) // Firsthlf -> ALU part
 	aes_invcipher_firsthlf.io.input_op2 := ciph_op2(127, 0).asTypeOf(aes_invcipher_firsthlf.io.input_op2)
@@ -261,11 +267,15 @@ class SE(val debug:Boolean, val canChangeKey: Boolean) extends Module{
 	aes_cipher_for_op2.io.input_roundKeys 	:= key
 
 	val rehashed_op1_bit 		= Cat(aes_cipher_for_op1.io.output_text)
-	val trimmed_rehashed_op1 	= rehashed_op1_bit(59, 0)
-	val op1_compare_result 		= (trimmed_rehashed_op1 === mid_op1_buffer(315, 256))
+	val trimmed_rehashed_op1 	= Wire(UInt(60.W))
+	trimmed_rehashed_op1       := rehashed_op1_bit(59, 0)
+	val op1_compare_result 		= Wire(Bool())
+	op1_compare_result 		   := (trimmed_rehashed_op1 === mid_op1_buffer(315, 256))
 	val rehashed_op2_bit 		= Cat(aes_cipher_for_op2.io.output_text)
-	val trimmed_rehashed_op2 	= rehashed_op2_bit(59, 0)
-	val op2_compare_result 		= (trimmed_rehashed_op2 === mid_op2_buffer(315, 256))
+	val trimmed_rehashed_op2 	= Wire(UInt(60.W))
+	trimmed_rehashed_op2       := rehashed_op2_bit(59, 0)
+	val op2_compare_result 		= Wire(Bool())
+	op2_compare_result 		   := (trimmed_rehashed_op2 === mid_op2_buffer(315, 256))
 
   	// Once we receive the result from the seoperation, we latch the result first.
 	val result_valid_buffer = RegNext(n_result_valid_buffer)
