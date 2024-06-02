@@ -44,12 +44,9 @@ class Plaintext_Reverse_Connector extends Module {
 		val inst 	= Input(UInt(8.W))
 		val out     = Output(Vec(Params.StateLength, UInt(8.W)))
 	})
-	val op1_hash 		= Wire(UInt(60.W))
-	op1_hash           := io.op1(315, 256)
-	val op2_hash 		= Wire(UInt(60.W))
-	op2_hash           := io.op2(315, 256)
-	val connect_result 	= Wire(UInt(128.W))
-	connect_result 	   := Cat(op1_hash, op2_hash, io.inst)
+	val op1_hash 		= io.op1(315, 256)
+	val op2_hash 		= io.op2(315, 256)
+	val connect_result 	= Cat(op1_hash, op2_hash, io.inst)
 	// Reverse the byte order so we can convert them into uint with Chisel infrastructure.
 	// Here new_integrity_length = (60 + 60 + 8) / 8 = 16
 	val connect_result_reverse = Wire(Vec(Params.new_integrity_length, UInt(8.W)))
@@ -191,15 +188,12 @@ class SE(val debug:Boolean, val canChangeKey: Boolean) extends Module{
 	val op1_val = plaintexts(op1_idx)
 	val op2_val = plaintexts(op2_idx)
 
-	val all_match = Wire(Bool())
-	all_match := op1_found && op2_found && cache_valid(op1_idx) && cache_valid(op2_idx)
+	val all_match = op1_found && op2_found && cache_valid(op1_idx) && cache_valid(op2_idx)
 
 
 	// Feed the ciphertexts into the invcipher
-	val ciph_op1 = Wire(UInt(256.W))
-	ciph_op1 := op1_buffer(255,0)
-	val ciph_op2 = Wire(UInt(256.W))
-	ciph_op2 := op2_buffer(255,0)
+	val ciph_op1 = op1_buffer(255,0)
+	val ciph_op2 = op1_buffer(255,0)
 
 	aes_invcipher_firsthlf.io.input_op1 := ciph_op1(127, 0).asTypeOf(aes_invcipher_firsthlf.io.input_op1) // Firsthlf -> ALU part
 	aes_invcipher_firsthlf.io.input_op2 := ciph_op2(127, 0).asTypeOf(aes_invcipher_firsthlf.io.input_op2)
@@ -247,10 +241,8 @@ class SE(val debug:Boolean, val canChangeKey: Boolean) extends Module{
 	seoperation.io.inst 	:= Mux(all_match && valid_buffer, inst_buffer, mid_inst_buffer)
 	val seOpValid 			= (aes_invcipher_firsthlf.io.output_valid && aes_invcipher_secondhlf.io.output_valid) || (all_match && valid_buffer)
 	seoperation.io.valid 	:= seOpValid
-	val op1_reverse_bit 	= Wire(UInt(128.W))
-	op1_reverse_bit        := Cat(op1_reverse)
-	val op2_reverse_bit 	= Wire(UInt(128.W))
-	op2_reverse_bit        := Cat(op2_reverse)
+	val op1_reverse_bit 	= Cat(op1_reverse)
+	val op2_reverse_bit 	= Cat(op2_reverse)
 	val op1_asUInt 			= op1_reverse_bit(127, 64).do_asUInt // get plain_A
 	val op2_asUInt 			= op2_reverse_bit(127, 64).do_asUInt // get plain_B
 
@@ -268,18 +260,12 @@ class SE(val debug:Boolean, val canChangeKey: Boolean) extends Module{
 	aes_cipher_for_op2.io.input_valid 		:= decrypted_op2_buffer_valid
 	aes_cipher_for_op2.io.input_roundKeys 	:= key
 
-	val rehashed_op1_bit 		= Wire(UInt(128.W))
-	rehashed_op1_bit           := Cat(aes_cipher_for_op1.io.output_text)
-	val trimmed_rehashed_op1 	= Wire(UInt(60.W))
-	trimmed_rehashed_op1       := rehashed_op1_bit(59, 0)
-	val op1_compare_result 		= Wire(Bool())
-	op1_compare_result 		   := (trimmed_rehashed_op1 === mid_op1_buffer(315, 256))
-	val rehashed_op2_bit 		= Wire(UInt(128.W))
-	rehashed_op2_bit           := Cat(aes_cipher_for_op2.io.output_text)
-	val trimmed_rehashed_op2 	= Wire(UInt(60.W))
-	trimmed_rehashed_op2       := rehashed_op2_bit(59, 0)
-	val op2_compare_result 		= Wire(Bool())
-	op2_compare_result 		   := (trimmed_rehashed_op2 === mid_op2_buffer(315, 256))
+	val rehashed_op1_bit 		= Cat(aes_cipher_for_op1.io.output_text)
+	val trimmed_rehashed_op1 	= rehashed_op1_bit(59, 0)
+	val op1_compare_result 		= (trimmed_rehashed_op1 === mid_op1_buffer(315, 256))
+	val rehashed_op2_bit 		= Cat(aes_cipher_for_op2.io.output_text)
+	val trimmed_rehashed_op2 	= rehashed_op2_bit(59, 0)
+	val op2_compare_result 		= (trimmed_rehashed_op2 === mid_op2_buffer(315, 256))
 
   	// Once we receive the result from the seoperation, we latch the result first.
 	val result_valid_buffer = RegNext(n_result_valid_buffer)
@@ -287,16 +273,15 @@ class SE(val debug:Boolean, val canChangeKey: Boolean) extends Module{
 
 	// Pad with RNG
 	val bit64_randnum = PRNG(new MaxPeriodFibonacciLFSR(64, Some(scala.math.BigInt(64, scala.util.Random))))
-	val padded_result = Wire(UInt(256.W))
-	padded_result := Cat(seoperation.io.result, bit64_randnum, mid_op1_buffer, mid_op2_buffer, mid_inst_buffer)
+	val padded_result = Cat(seoperation.io.result, bit64_randnum, mid_op1_buffer, mid_op2_buffer, mid_inst_buffer)
 	val result_buffer = RegEnable(padded_result, seOpValid) // buf_lv3
-	// if(debug){
-	// 	when(result_valid_buffer){
-	// 		printf("\n-----back----\n")
-	// 		printf("padded_result:%x\n",result_buffer)
-	// 		printf("seoperation.io.result:%x\n",seoperation.io.result)
-	// 	}
-	// }
+	if(debug){
+		when(result_valid_buffer){
+			printf("\n-----back----\n")
+			printf("padded_result:%x\n",result_buffer)
+			printf("seoperation.io.result:%x\n",seoperation.io.result)
+		}
+	}
 	val result_plaintext_buffer = RegInit(0.U(64.W))
 	when(seOpValid){
 		result_plaintext_buffer := seoperation.io.result
@@ -309,8 +294,7 @@ class SE(val debug:Boolean, val canChangeKey: Boolean) extends Module{
 	for(i <- 0 until Params.CiphLength){
 		aes_input_reverse(i) := result_buffer(Params.CiphLength-i-1)
 	}
-	val aes_input_reverse_bit = Wire(UInt(256.W))
-	aes_input_reverse_bit := Cat(aes_input_reverse)
+	val aes_input_reverse_bit = Cat(aes_input_reverse)
 	aes_cipher_firsthlf.io.input_text := aes_input_reverse_bit(127, 0).asTypeOf(aes_cipher_firsthlf.io.input_text)
 	aes_cipher_firsthlf.io.input_valid := result_valid_buffer
 	aes_cipher_firsthlf.io.input_roundKeys := key
@@ -320,8 +304,7 @@ class SE(val debug:Boolean, val canChangeKey: Boolean) extends Module{
 	aes_cipher_secondhlf.io.input_roundKeys := key
 
 	// Connect the output side
-	val output_connect = Wire(UInt(316.W))
-	output_connect := Cat(hash_C_buffer, aes_cipher_firsthlf.io.output_text.do_asUInt, aes_cipher_secondhlf.io.output_text.do_asUInt)
+	val output_connect = Cat(hash_C_buffer, aes_cipher_firsthlf.io.output_text.do_asUInt, aes_cipher_secondhlf.io.output_text.do_asUInt)
 	val output_buffer = RegInit(0.U(316.W)) // buf_lv4
 	val output_valid = RegInit(false.B)
 
