@@ -255,7 +255,10 @@ void SE::reset(){
 // 	tick();
 // }
 
-__uint128_t SE::SECompute(__uint128_t op1, __uint128_t op2, __uint128_t cond, 
+// uint8_t op1[40];
+// uint8_t op2[40];
+
+__uint128_t SE::SECompute(uint8_t * op1, uint8_t * op2, __uint128_t cond, 
 			uint8_t inst){
 	while (!SE::module->io_in_ready)
 	{
@@ -266,8 +269,9 @@ __uint128_t SE::SECompute(__uint128_t op1, __uint128_t op2, __uint128_t cond,
 	SE::module->io_out_ready = true;
 	SE::module->io_in_inst = inst;
 
-	memcpy(&SE::module->io_in_op1, &op1, sizeof(op1));
-	memcpy(&SE::module->io_in_op2, &op2, sizeof(op2));
+	// std::cout << "DEBUG " << sizeof(SE::module->io_in_op1) << std::endl;
+	memcpy(&SE::module->io_in_op1, op1, sizeof(op1));
+	memcpy(&SE::module->io_in_op2, op2, sizeof(op2));
 	memcpy(&SE::module->io_in_cond, &cond, sizeof(cond));
 	SE::tick();
 	SE::real_tickcount ++;
@@ -278,7 +282,7 @@ __uint128_t SE::SECompute(__uint128_t op1, __uint128_t op2, __uint128_t cond,
 		SE::tick();
 		SE::real_tickcount ++;
 	}
-	__uint128_t result = 0;
+	uint8_t result[40];
 	memcpy(&result, &SE::module->io_out_result, sizeof(SE::module->io_out_result));
 	uint8_t num_cycle = 0;
 	memcpy(&num_cycle, &SE::module->io_out_cntr, sizeof(SE::module->io_out_cntr));

@@ -8,8 +8,8 @@
 class SE{
 	public:
 		SE(void);
-		static __uint128_t SECompute(__uint128_t op1= 0, __uint128_t op2= 0, __uint128_t cond= 0, 
-			uint8_t inst= 0);
+		static __uint128_t SECompute(uint8_t * op1 = nullptr, uint8_t * op2 = nullptr, __uint128_t cond = 0, 
+			uint8_t inst = 0);
 		static unsigned int tickcount;
 		static unsigned int real_tickcount;
 		static VSE *module;
