@@ -290,9 +290,11 @@ class SE(val debug:Boolean, val canChangeKey: Boolean) extends Module{
 	// TODO: adjust input to the encryption cipher
 
 	// Connect the cipher
+	val result_buffer_vectorized = Wire(Vec(Params.CiphLength, UInt(8.W))) // turn it into vector for reversing
+	result_buffer_vectorized:= VecInit(Seq.tabulate(Params.CiphLength)(i => result_buffer((i + 1) * 8 - 1, i * 8)))
 	val aes_input_reverse = Wire(Vec(Params.CiphLength, UInt(8.W)))
 	for(i <- 0 until Params.CiphLength){
-		aes_input_reverse(i) := result_buffer(Params.CiphLength-i-1)
+		aes_input_reverse(i) := result_buffer_vectorized(Params.CiphLength-i-1)
 	}
 	val aes_input_reverse_bit = Cat(aes_input_reverse)
 	aes_cipher_firsthlf.io.input_text := aes_input_reverse_bit(127, 0).asTypeOf(aes_cipher_firsthlf.io.input_text)
