@@ -255,9 +255,13 @@ void SE::reset(){
 // 	tick();
 // }
 
-std::vector<uint8_t> SE::SECompute(uint8_t* op1, uint8_t* op2, uint128_t cond, uint8_t inst) {
-	// self looping
-	while(!SE::module->io_in_ready) {
+// bit316_t op1;
+// bit316_t op2;
+
+bit316_t SE::SECompute(bit316_t op1, bit316_t op2, __uint128_t cond, uint8_t inst){
+	while (!SE::module->io_in_ready)
+	{
+			// std::cout<<"looping"<<std::endl;
 		SE::tick();
 	}
 	SE::module->io_in_valid = true;
@@ -268,9 +272,9 @@ std::vector<uint8_t> SE::SECompute(uint8_t* op1, uint8_t* op2, uint128_t cond, u
 	// uint8_t op1[40]
 	// uint8_t op2[40]
 	// 316 bits -> 39.5 bytes -> 40 bytes
-	constexpr size_t op_n_size = 40;
-	memcpy(&SE::module->io_in_op1, op1, op_n_size);
-	memcpy(&SE::module->io_in_op2, op2, op_n_size);
+	// constexpr size_t op_n_size = 40;
+	memcpy(&SE::module->io_in_op1, op1.value, sizeof(op1.value));
+	memcpy(&SE::module->io_in_op2, op2.value, sizeof(op2.value));
 	memcpy(&SE::module->io_in_cond, &cond, sizeof(cond));
 
 	// Simulate and calculate the time
@@ -283,16 +287,15 @@ std::vector<uint8_t> SE::SECompute(uint8_t* op1, uint8_t* op2, uint128_t cond, u
 		SE::tick();
 		SE::real_tickcount++;
 	}
-
-	// Grab the results and assign it to a vector
-	uint8_t result[40] = {0};
-	memcpy(result, &SE::module->io_out_result, sizeof(SE::module->io_out_result));
+	bit316_t result;
+	memcpy(result.value, &SE::module->io_out_result, sizeof(SE::module->io_out_result));
 	uint8_t num_cycle = 0;
 	memcpy(&num_cycle, &SE::module->io_out_cntr, sizeof(SE::module->io_out_cntr));
-	std::vector<uint8_t> result_vector;
-	result_vector.assign(result, result + (sizeof(result) / sizeof(result[0])));
+	// std::vector<uint8_t> result_vector;
+	// result_vector.assign(result, result + (sizeof(result) / sizeof(result[0])));
 
 	// Output the simulation result and return the vector
 	std::cout << "number cycles: "<< std::dec << (int) num_cycle << std::endl;
-	return result_vector;
+	// return result_vector;
+	return result;
 }
