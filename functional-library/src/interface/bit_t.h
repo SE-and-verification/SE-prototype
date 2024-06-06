@@ -315,11 +315,11 @@ typedef struct bit316_t{
 
 public: //SHOULD BE PRIVATE
     uint8_t value[40]; 
-    /* THE bit316_t class stores values according to the following structure: 
-    *
-    * value[40] = [0/bit 0-3] [1-7/bit 4-63] [8-23/bit 64-191] [24-39/bit 192-319]
-    *                  0       hash            ciphtext_lower    ciphtext_upper
-    */
+    // The bit316_t class stores values according to the following structure:
+    // value[0]              : 4 dummy bits, should be 0       <- MSB
+    // value[1]  - value[7]  : 60-bit hash 
+    // value[8]  - value[23] : 128-bit upper half cypher_text
+    // value[24] - value[39] : 128-bit lower half cypher_text  <- LSB
 
 private:
     // char bit_str[129]; //128 bit-characters, followed by '\0'
@@ -379,20 +379,20 @@ public:
     }
 
     /******** VALUE ACCESS FUNCTIONS ********/
-    __uint128_t getUpperCiph_128b(){
-        __uint128_t upper_128_bits = 0;
-        for (int i = 0; i < 16; i++) {
-            upper_128_bits = (upper_128_bits << 8) | value[24 + i];
-        }
-        return upper_128_bits;        
-    }
-
     __uint128_t getLowerCiph_128b(){
         __uint128_t lower_128_bits = 0;
         for (int i = 0; i < 16; i++) {
-            lower_128_bits = (lower_128_bits << 8) | value[8 + i];
+            lower_128_bits = (lower_128_bits << 8) | value[24 + i];
         }
         return lower_128_bits;        
+    }
+
+    __uint128_t getUpperCiph_128b() {
+        __uint128_t upper_128_bits = 0;
+        for (int i = 0; i < 16; i++) {
+            upper_128_bits = (upper_128_bits << 8) | value[8 + i];
+        }
+        return upper_128_bits;        
     }
 
     uint64_t getHashValue_64b(){
