@@ -2,6 +2,7 @@
 #define _UINT128_T_H
 #include <stdlib.h> 
 #include <bitset>
+#include <cstdint>
 #include <string.h>
 #include <iostream>
 
@@ -327,12 +328,12 @@ private:
 
 public:
     /******** CONSTRUCTORS ********/
-    bit316_t(){
-        for(int i=0; i<39; i++){
+    bit316_t() {
+        for(int i = 0; i < 39; i++) {
             value[i] = 0x00; //0000 0000
         } 
     }
-    bit316_t(_uint128_t ciphtext_upper, _uint128_t ciphtext_lower, uint64_t hash){
+    bit316_t(__uint128_t ciphtext_upper, __uint128_t ciphtext_lower, uint64_t hash) {
         init(ciphtext_upper, ciphtext_lower, hash);
     }
     // bit128_t(uint8_t upper_value, uint8_t* lower_pad){
@@ -359,17 +360,18 @@ public:
     //     return result;
     // }
     void init(__uint128_t ciphtext_upper, __uint128_t ciphtext_lower, uint64_t hash){
-        /* Break and store ciphtext in 8-bit segments */
-        for (int i = 39; i >= 24; i--) {
-            value[i] = (ciphtext_upper) & 0xFF;
-            ciphtext_upper = ciphtext_upper >> 8;
-        }
-        for (int i = 23; i >= 8; i--) {
+        // Store lower half into LS 128 bits
+        for(int i = 39; i >= 24; i--) {
             value[i] = (ciphtext_lower) & 0xFF;
             ciphtext_lower = ciphtext_lower >> 8;
         }
-        /* Break and store hash in 8-bit segments */
-        for (int i = 7; i >= 1; i--) {
+        // Store upper half into middle 128 bits 
+        for(int i = 23; i >= 8; i--) {
+            value[i] = (ciphtext_upper) & 0xFF;
+            ciphtext_upper = ciphtext_upper >> 8;
+        }
+        // Store hash into MS 60 (64) bits
+        for(int i = 7; i >= 1; i--) {
             value[i] = (hash) & 0xFF;
             hash = hash >> 8;
         }
