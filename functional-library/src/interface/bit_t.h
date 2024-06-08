@@ -389,6 +389,10 @@ public:
         return hash_value; 
     }
 
+    uint8_t * get_value(){
+        return this->value;
+    }
+
     // ***Print Utilities*** 
     char* get_bit_cstr() {
         // Update and return bit_str

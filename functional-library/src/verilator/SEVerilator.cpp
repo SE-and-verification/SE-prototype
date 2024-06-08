@@ -273,9 +273,9 @@ bit316_t SE::SECompute(bit316_t op1, bit316_t op2, __uint128_t cond, uint8_t ins
 	// uint8_t op2[40]
 	// 316 bits -> 39.5 bytes -> 40 bytes
 	// constexpr size_t op_n_size = 40;
-	memcpy(&SE::module->io_in_op1, op1.value, sizeof(op1.value));
-	memcpy(&SE::module->io_in_op2, op2.value, sizeof(op2.value));
-	memcpy(&SE::module->io_in_cond, &cond, sizeof(cond));
+	memcpy(&SE::module->io_in_op1, op1.get_value(), sizeof(&SE::module->io_in_op1));
+	memcpy(&SE::module->io_in_op2, op2.get_value(), sizeof(&SE::module->io_in_op1));
+	// memcpy(&SE::module->io_in_cond, &cond, sizeof(cond));
 
 	// Simulate and calculate the time
 	SE::tick();
@@ -287,15 +287,16 @@ bit316_t SE::SECompute(bit316_t op1, bit316_t op2, __uint128_t cond, uint8_t ins
 		SE::tick();
 		SE::real_tickcount++;
 	}
-	bit316_t result;
-	memcpy(result.value, &SE::module->io_out_result, sizeof(SE::module->io_out_result));
-	uint8_t num_cycle = 0;
-	memcpy(&num_cycle, &SE::module->io_out_cntr, sizeof(SE::module->io_out_cntr));
+	uint8_t result_value[40] = {0}; 
+	memcpy(result_value, &SE::module->io_out_result, sizeof(SE::module->io_out_result));
+	bit316_t result(result_value);
+	// uint8_t num_cycle = 0;
+	// memcpy(&num_cycle, &SE::module->io_out_cntr, sizeof(SE::module->io_out_cntr));
 	// std::vector<uint8_t> result_vector;
 	// result_vector.assign(result, result + (sizeof(result) / sizeof(result[0])));
 
 	// Output the simulation result and return the vector
-	std::cout << "number cycles: "<< std::dec << (int) num_cycle << std::endl;
+	// std::cout << "number cycles: "<< std::dec << (int) num_cycle << std::endl;
 	// return result_vector;
 	return result;
 }

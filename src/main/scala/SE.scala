@@ -355,7 +355,7 @@ class SE(val debug:Boolean, val canChangeKey: Boolean) extends Module{
 	}
 
 	io.out.valid 				:= output_valid
-	io.out.ready                := io.in.ready // FIXME
+	// io.out.ready                := output_valid // FIXME
 	io.out.result 				:= output_buffer
 	io.out.op1_compare 			:= op1_compare_result_buffer
 	io.out.op2_compare 			:= op2_compare_result_buffer

@@ -89,7 +89,7 @@ int main(){
 	// print128(l3.ciphertext.convert_to_128());
 	// printf("ticks: %d\n", SE::real_tickcount);
 
-	bit316_t l3_SE = SE::SECompute(opA.value, opB.value, 0, Instruction::ADD());
+	bit316_t l3_SE = SE::SECompute(opA, opB, 0, Instruction::ADD());
 	// print128(l3_SE);
 	// print128dec(l3_SE);
 	print316(l3_SE);
