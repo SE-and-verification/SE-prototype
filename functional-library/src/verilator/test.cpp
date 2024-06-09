@@ -72,8 +72,8 @@ int main(){
 	enc_lib::enc_int l3 = l1+l2;
 	// enc_lib::enc_int l6 = l2*l3;
 
-	bit316_t opA(l1.ciphertext, 0, 0);
-	bit316_t opB(l2.ciphertext, 0, 0);
+	bit316_t opA(l1.value, 0, 0);
+	bit316_t opB(l2.value, 0, 0);
 	
 
 	// __uint128_t l3_veri = SE::SECompute(l1.ciphertext.convert_to_128(), l2.ciphertext.convert_to_128(), 0, Instruction::ADD())

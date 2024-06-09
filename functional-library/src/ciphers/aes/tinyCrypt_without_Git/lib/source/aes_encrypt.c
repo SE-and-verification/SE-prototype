@@ -98,6 +98,7 @@ int tc_aes128_set_encrypt_key(TCAesKeySched_t s, const uint8_t *k)
 		}
 		s->words[i] = s->words[i-Nk] ^ t;
 	}
+	printf("try")
 	return TC_CRYPTO_SUCCESS;
 }
 

@@ -15,6 +15,7 @@ struct tc_aes_key_sched_struct s_g;
 void aes128_set_key(bit128_t key){
 	printf("Setting AES keys\n");
  	tc_aes128_set_encrypt_key(&s_g, SECRET_KEY.value);
+	printf("Setting AES keys finished.\n");
 }
 
 
