@@ -118,6 +118,8 @@ class SE(val debug:Boolean, val canChangeKey: Boolean) extends Module{
 	val valid_buffer 	= Reg(Bool())
 	/*----------------------buf_lv1----------------------*/
 
+	val output_valid = RegInit(false.B)
+
 	// TODO: compute hash here, just copy key and re-instantiate a hash key for the moment. Create additional modules if needed
 	
 	// Instantiate the connector and connect reg input and reg output
@@ -139,7 +141,8 @@ class SE(val debug:Boolean, val canChangeKey: Boolean) extends Module{
 	val next_hash_C_original_buffer_valid 	= Wire(Bool())
 	val hash_C_original_buffer 				= RegEnable(aes_cipher_for_hash_C.io.output_text.do_asUInt, aes_cipher_for_hash_C.io.output_valid)
 	val hash_C_original_buffer_valid 		= RegInit(false.B)
-	hash_C_original_buffer_valid        	:= Mux(aes_cipher_for_hash_C.io.output_valid, true.B, Mux(output_valid, false.B, hash_C_original_buffer_valid))
+	next_hash_C_original_buffer_valid      := Mux(aes_cipher_for_hash_C.io.output_valid, true.B, Mux(output_valid, false.B, hash_C_original_buffer_valid))
+	hash_C_original_buffer_valid           := RegNext(next_hash_C_original_buffer_valid)
 	/*----------------------buf_lv2----------------------*/ 
 
 	/*----------------------buf_lv3----------------------*/
@@ -147,7 +150,8 @@ class SE(val debug:Boolean, val canChangeKey: Boolean) extends Module{
 	val next_hash_C_buffer_valid 	= Wire(Bool())
 	val hash_C_buffer_valid 		= RegInit(false.B)
 	val hash_C_buffer 				= RegEnable(hash_C_original_buffer(59, 0), hash_C_buffer_valid)
-	hash_C_buffer_valid             := Mux(hash_C_original_buffer_valid, true.B, Mux(output_valid, false.B, hash_C_buffer_valid))
+	next_hash_C_buffer_valid       := Mux(hash_C_original_buffer_valid, true.B, Mux(output_valid, false.B, hash_C_buffer_valid))
+	hash_C_buffer_valid            := RegNext(next_hash_C_buffer_valid)
 	/*----------------------buf_lv3----------------------*/
 
 	val n_result_valid_buffer = Wire(Bool())
@@ -320,7 +324,6 @@ class SE(val debug:Boolean, val canChangeKey: Boolean) extends Module{
 	// Connect the output side
 	val output_connect = Cat(hash_C_buffer, aes_cipher_firsthlf.io.output_text.do_asUInt, aes_cipher_secondhlf.io.output_text.do_asUInt)
 	val output_buffer = RegInit(0.U(316.W)) // buf_lv4
-	val output_valid = RegInit(false.B)
 
 	/*----------------------buf_lv4----------------------*/
 	val next_op1_compare_result_buffer_valid = Wire(Bool())
