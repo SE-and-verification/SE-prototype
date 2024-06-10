@@ -136,17 +136,18 @@ class SE(val debug:Boolean, val canChangeKey: Boolean) extends Module{
 
 	/*----------------------buf_lv2----------------------*/
 	// latch the hash_C_original into the buffer
-	val hash_C_original_buffer 			= RegEnable(aes_cipher_for_hash_C.io.output_text.do_asUInt, aes_cipher_for_hash_C.io.output_valid)
-	val hash_C_original_buffer_valid 	= RegInit(false.B)
-	when(aes_cipher_for_hash_C.io.output_valid){
-		hash_C_original_buffer_valid := true.B
-	}
+	val next_hash_C_original_buffer_valid 	= Wire(Bool())
+	val hash_C_original_buffer 				= RegEnable(aes_cipher_for_hash_C.io.output_text.do_asUInt, aes_cipher_for_hash_C.io.output_valid)
+	val hash_C_original_buffer_valid 		= RegInit(false.B)
+	hash_C_original_buffer_valid        	:= Mux(aes_cipher_for_hash_C.io.output_valid, true.B, Mux(output_valid, false.B, hash_C_original_buffer_valid))
 	/*----------------------buf_lv2----------------------*/ 
 
 	/*----------------------buf_lv3----------------------*/
 	// Trim hash_C_orig and store hash_C
-	val hash_C_buffer_valid = RegInit(false.B)
-	val hash_C_buffer = RegEnable(hash_C_original_buffer(59, 0), hash_C_buffer_valid)
+	val next_hash_C_buffer_valid 	= Wire(Bool())
+	val hash_C_buffer_valid 		= RegInit(false.B)
+	val hash_C_buffer 				= RegEnable(hash_C_original_buffer(59, 0), hash_C_buffer_valid)
+	hash_C_buffer_valid             := Mux(hash_C_original_buffer_valid, true.B, Mux(output_valid, false.B, hash_C_buffer_valid))
 	/*----------------------buf_lv3----------------------*/
 
 	val n_result_valid_buffer = Wire(Bool())
