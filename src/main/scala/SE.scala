@@ -329,11 +329,11 @@ class SE(val debug:Boolean, val canChangeKey: Boolean) extends Module{
 	val next_op1_compare_result_buffer_valid = Wire(Bool())
 	val next_op2_compare_result_buffer_valid = Wire(Bool())
 
-	val op1_compare_result_buffer 		= RegEnable(op1_compare_result, aes_cipher_for_op1.io.output_valid)
+	val op1_compare_result_buffer 		= RegEnable(op1_compare_result, next_op1_compare_result_buffer_valid)
 	val op1_compare_result_buffer_valid = RegInit(false.B)
 	op1_compare_result_buffer_valid 	:= RegNext(next_op1_compare_result_buffer_valid)
 
-	val op2_compare_result_buffer 		= RegEnable(op2_compare_result, aes_cipher_for_op2.io.output_valid)
+	val op2_compare_result_buffer 		= RegEnable(op2_compare_result, next_op1_compare_result_buffer_valid)
 	val op2_compare_result_buffer_valid = RegInit(false.B)
 	op2_compare_result_buffer_valid 	:= RegNext(next_op2_compare_result_buffer_valid)
  
@@ -353,12 +353,16 @@ class SE(val debug:Boolean, val canChangeKey: Boolean) extends Module{
 		next_op2_compare_result_buffer_valid := op2_compare_result_buffer_valid
 	}
 
-	when(op1_compare_result && aes_cipher_for_op1.io.output_valid){ // FIXME: op1_compare_result and aes_cipher_for_op1.io.output_valid are not 1 at the same time
-		printf("op1_compare_result: %x\n", op1_compare_result);
-		printf("aes_cipher_for_op1.io.output_valid:%x\n", aes_cipher_for_op1.io.output_valid)
-		printf("op1_compare_result_buffer:%x\n", op1_compare_result_buffer)
-		printf("op1_compare_result_buffer_valid:%x\n", op1_compare_result_buffer_valid)
-	}
+	// when(op1_compare_result_buffer){
+	// 	printf("op1_compare_result_buffer: %x\n", op1_compare_result_buffer)
+	// }
+
+	// when(op1_compare_result && aes_cipher_for_op1.io.output_valid){ // FIXME: op1_compare_result and aes_cipher_for_op1.io.output_valid are not 1 at the same time
+	// 	printf("op1_compare_result: %x\n", op1_compare_result);
+	// 	printf("aes_cipher_for_op1.io.output_valid:%x\n", aes_cipher_for_op1.io.output_valid)
+	// 	printf("op1_compare_result_buffer:%x\n", op1_compare_result_buffer)
+	// 	printf("op1_compare_result_buffer_valid:%x\n", op1_compare_result_buffer_valid)
+	// }
 	// when(op1_compare_result){
 	// 	printf("op1_compare_result: %x\n", op1_compare_result);
 	// 	printf("aes_cipher_for_op1.io.output_valid:%x\n", aes_cipher_for_op1.io.output_valid)

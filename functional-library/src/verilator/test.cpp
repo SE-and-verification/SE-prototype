@@ -30,13 +30,13 @@ int print316(bit316_t dec){
 
 	uint64_t upper_high = (uint64_t)(print_item_upper >> 64);
     uint64_t upper_low = (uint64_t)(print_item_upper & 0xFFFFFFFFFFFFFFFF);
-    printf("0x%016lx%016lx", upper_high, upper_low);
+    printf("%b %b\n", upper_high, upper_low);
 
 	uint64_t lower_high = (uint64_t)(print_item_lower >> 64);
     uint64_t lower_low = (uint64_t)(print_item_lower & 0xFFFFFFFFFFFFFFFF);
-    printf("0x%016lx%016lx", lower_high, lower_low);
+    printf("%b %b\n", lower_high, lower_low);
 
-	printf("Value3: 0x%016lx\n", print_hash);
+	printf("Hash: %b\n", print_hash);
 	return 0;
 }
 
@@ -47,13 +47,13 @@ int print316dec(bit316_t dec){
 
 	uint64_t upper_high = (uint64_t)(print_item_upper >> 64);
     uint64_t upper_low = (uint64_t)(print_item_upper & 0xFFFFFFFFFFFFFFFF);
-    printf("0x%016lx%016lx", upper_high, upper_low);
+    printf("%b %b\n", upper_high, upper_low);
 
 	uint64_t lower_high = (uint64_t)(print_item_lower >> 64);
     uint64_t lower_low = (uint64_t)(print_item_lower & 0xFFFFFFFFFFFFFFFF);
-    printf("0x%016lx%016lx", lower_high, lower_low);
+    printf("%b %b\n", lower_high, lower_low);
 
-	printf("Value3: 0x%016lx\n", print_hash);
+	printf("Hash: %b\n", print_hash);
 	return 0;
 }
 
