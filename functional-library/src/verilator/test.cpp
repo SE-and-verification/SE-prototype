@@ -66,14 +66,17 @@ int print316dec(bit316_t dec){
 
 int main(){
 	setParameters();
+	printf("setParameters finished\n");
 	SE se_simulator;
+	printf("SE compiled\n");
 	enc_lib::enc_int l1 = 1;
 	enc_lib::enc_int l2 = 2;
 	enc_lib::enc_int l3 = l1+l2;
 	// enc_lib::enc_int l6 = l2*l3;
-
+	printf("enc_int l1 l2 l3 instatiated\n");
 	bit316_t opA(l1.ciphertext.convert_to_128(), 0, 0);
 	bit316_t opB(l2.ciphertext.convert_to_128(), 0, 0);
+	printf("bit316_t opA opB instatiated\n");
 	
 
 	// __uint128_t l3_veri = SE::SECompute(l1.ciphertext.convert_to_128(), l2.ciphertext.convert_to_128(), 0, Instruction::ADD())
@@ -90,10 +93,13 @@ int main(){
 	// printf("ticks: %d\n", SE::real_tickcount);
 
 	bit316_t l3_SE = SE::SECompute(opA, opB, 0, Instruction::ADD());
+	printf("SECompute finished\n");
 	// print128(l3_SE);
 	// print128dec(l3_SE);
 	print316(l3_SE);
+	printf("l3_SE printed\n");
 	print316dec(l3_SE);
+	printf("decrypted l3_SE printed\n");
 
 	// // print128(l6.ciphertext.convert_to_128());
 	// printf("ticks: %d\n", SE::real_tickcount);

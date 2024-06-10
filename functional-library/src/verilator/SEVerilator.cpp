@@ -276,6 +276,7 @@ bit316_t SE::SECompute(bit316_t op1, bit316_t op2, __uint128_t cond, uint8_t ins
 	memcpy(&SE::module->io_in_op1, op1.get_value(), sizeof(&SE::module->io_in_op1));
 	memcpy(&SE::module->io_in_op2, op2.get_value(), sizeof(&SE::module->io_in_op1));
 	// memcpy(&SE::module->io_in_cond, &cond, sizeof(cond));
+	printf("memcpy done\n");
 
 	// Simulate and calculate the time
 	SE::tick();
@@ -286,10 +287,13 @@ bit316_t SE::SECompute(bit316_t op1, bit316_t op2, __uint128_t cond, uint8_t ins
 	while(!SE::module->io_out_valid) {
 		SE::tick();
 		SE::real_tickcount++;
+		printf("SE::module->io_out_valid %d\n", SE::module->io_out_valid);
 	}
+	printf("io_out_valid\n");
 	uint8_t result_value[40] = {0}; 
 	memcpy(result_value, &SE::module->io_out_result, sizeof(SE::module->io_out_result));
 	bit316_t result(result_value);
+	printf("result_value assigned\n");
 	// uint8_t num_cycle = 0;
 	// memcpy(&num_cycle, &SE::module->io_out_cntr, sizeof(SE::module->io_out_cntr));
 	// std::vector<uint8_t> result_vector;
