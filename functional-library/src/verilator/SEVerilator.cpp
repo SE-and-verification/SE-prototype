@@ -287,7 +287,7 @@ bit316_t SE::SECompute(bit316_t op1, bit316_t op2, __uint128_t cond, uint8_t ins
 	while(!SE::module->io_out_valid) {
 		SE::tick();
 		SE::real_tickcount++;
-		printf("SE::module->io_out_valid %d\n", SE::module->io_out_valid);
+		// printf("SE::module->io_out_valid %d\n", SE::module->io_out_valid); // 0 all time
 	}
 	printf("io_out_valid\n");
 	uint8_t result_value[40] = {0}; 
