@@ -284,6 +284,9 @@ bit316_t SE::SECompute(bit316_t op1, bit316_t op2, __uint128_t cond, uint8_t ins
 	SE::module->io_in_valid = false;
 	SE::tick();
 	SE::real_tickcount++;
+	
+	// Waiting for output
+	printf("Waiting for output...\n");
 	while(!SE::module->io_out_valid) {
 		SE::tick();
 		SE::real_tickcount++;

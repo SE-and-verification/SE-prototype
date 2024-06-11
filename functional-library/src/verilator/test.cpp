@@ -3,6 +3,7 @@
 #include <string.h>
 #include <iomanip>
 #include <iostream>
+#include <inttypes.h>
 #include "SEVerilator.h"
 #include "VSE.h"
 #include "verilated.h"
@@ -23,20 +24,23 @@ int print128dec(__uint128_t dec){
 	return 0;
 }
 
-int print316(bit316_t dec){
-	__uint128_t print_item_upper = dec.getUpperCiph_128b();
-	__uint128_t print_item_lower = dec.getLowerCiph_128b();
-	uint64_t print_hash = dec.getHashValue_64b();
+int print316(bit316_t dec) {
+	// Get the original value to print
+	__uint128_t print_item_upper 	= dec.getUpperCiph_128b();
+	__uint128_t print_item_lower 	= dec.getLowerCiph_128b();
+	uint64_t print_hash 			= dec.getHashValue_64b();
+	
+	// Split them into uint64_t type values
+	uint64_t upper_high = (uint64_t) (print_item_upper >> 64);
+    uint64_t upper_low  = (uint64_t) (print_item_upper & 0xFFFFFFFFFFFFFFFF);
+	uint64_t lower_high = (uint64_t) (print_item_lower >> 64);
+    uint64_t lower_low  = (uint64_t) (print_item_lower & 0xFFFFFFFFFFFFFFFF);
 
-	uint64_t upper_high = (uint64_t)(print_item_upper >> 64);
-    uint64_t upper_low = (uint64_t)(print_item_upper & 0xFFFFFFFFFFFFFFFF);
-    printf("%016lb %016lb\n", upper_high, upper_low);
-
-	uint64_t lower_high = (uint64_t)(print_item_lower >> 64);
-    uint64_t lower_low = (uint64_t)(print_item_lower & 0xFFFFFFFFFFFFFFFF);
-    printf("%016lb %016lb\n", lower_high, lower_low);
-
-	printf("Hash: %016lb\n", print_hash);
+	// Print the values
+	printf("%016" PRIx64 " %016" PRIx64 "\n", upper_high, upper_low);
+    printf("%016" PRIx64 " %016" PRIx64 "\n", lower_high, lower_low);
+	printf("Hash: %016" PRIx64 "\n", print_hash);
+	
 	return 0;
 }
 
