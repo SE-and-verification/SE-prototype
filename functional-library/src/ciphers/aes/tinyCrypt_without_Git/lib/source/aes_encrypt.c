@@ -36,6 +36,7 @@
 #include <tinycrypt/aes.h>
 #include <tinycrypt/utils.h>
 #include <tinycrypt/constants.h>
+#include <stdio.h>
 
 
 static const uint8_t sbox[256] = {
@@ -98,7 +99,7 @@ int tc_aes128_set_encrypt_key(TCAesKeySched_t s, const uint8_t *k)
 		}
 		s->words[i] = s->words[i-Nk] ^ t;
 	}
-	printf("try")
+	printf("try");
 	return TC_CRYPTO_SUCCESS;
 }
 
