@@ -273,8 +273,8 @@ bit316_t SE::SECompute(bit316_t op1, bit316_t op2, __uint128_t cond, uint8_t ins
 	// uint8_t op2[40]
 	// 316 bits -> 39.5 bytes -> 40 bytes
 	constexpr size_t op_n_size = 40;
-	memcpy(&SE::module->io_in_op1, op1.get_value(), op_n_size*sizeof(uint8_t));
-	memcpy(&SE::module->io_in_op2, op2.get_value(), op_n_size*sizeof(uint8_t));
+	memcpy(&SE::module->io_in_op1, op1.get_value(), op_n_size);
+	memcpy(&SE::module->io_in_op2, op2.get_value(), op_n_size);
 	// memcpy(&SE::module->io_in_cond, &cond, sizeof(cond));
 	printf("memcpy done\n");
 
