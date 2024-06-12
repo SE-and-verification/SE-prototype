@@ -294,7 +294,7 @@ bit316_t SE::SECompute(bit316_t op1, bit316_t op2, __uint128_t cond, uint8_t ins
 	}
 	printf("io_out_valid\n");
 	uint8_t result_value[40] = {0}; 
-	memcpy(result_value, SE::module->io_out_result, op_n_size*sizeof(uint8_t));
+	memcpy(result_value, SE::module->io_out_result, op_n_size);
 	bit316_t result(result_value);
 	printf("result_value assigned\n");
 	// uint8_t num_cycle = 0;
