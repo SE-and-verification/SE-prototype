@@ -44,20 +44,23 @@ int print316(bit316_t dec) {
 	return 0;
 }
 
-int print316dec(bit316_t dec){
-	__uint128_t print_item_upper = aes128_decrypt_128(bit128_t(dec.getUpperCiph_128b())).convert_to_128();
-	__uint128_t print_item_lower = aes128_decrypt_128(bit128_t(dec.getLowerCiph_128b())).convert_to_128();
-	uint64_t print_hash = dec.getHashValue_64b();
+int print316dec(bit316_t dec) {
+	// Get the original value to print
+	__uint128_t print_item_upper 	= aes128_decrypt_128(bit128_t(dec.getUpperCiph_128b())).convert_to_128();
+	__uint128_t print_item_lower 	= aes128_decrypt_128(bit128_t(dec.getLowerCiph_128b())).convert_to_128();
+	uint64_t print_hash 			= dec.getHashValue_64b();
 
+	// Split them into uint64_t type values
 	uint64_t upper_high = (uint64_t)(print_item_upper >> 64);
     uint64_t upper_low = (uint64_t)(print_item_upper & 0xFFFFFFFFFFFFFFFF);
-    printf("%016lb %016lb\n", upper_high, upper_low);
-
 	uint64_t lower_high = (uint64_t)(print_item_lower >> 64);
     uint64_t lower_low = (uint64_t)(print_item_lower & 0xFFFFFFFFFFFFFFFF);
-    printf("%016lb %016lb\n", lower_high, lower_low);
 
-	printf("Hash: %016lb\n", print_hash);
+	// Print the values
+	printf("%016" PRIx64 " %016" PRIx64 "\n", upper_high, upper_low);
+    printf("%016" PRIx64 " %016" PRIx64 "\n", lower_high, lower_low);
+	printf("Hash: %016" PRIx64 "\n", print_hash);
+
 	return 0;
 }
 
@@ -68,21 +71,32 @@ int print316dec(bit316_t dec){
 // 	return 0;
 // }
 
-int main(){
+int main() {
 	setParameters();
-	printf("setParameters finished\n");
+	printf("setParameters finished.\n");
 	SE se_simulator;
-	printf("SE compiled\n");
+	printf("SE simulator generated.\n");
 	enc_lib::enc_int l1 = 1;
 	enc_lib::enc_int l2 = 2;
-	enc_lib::enc_int l3 = l1+l2;
-	// enc_lib::enc_int l6 = l2*l3;
-	printf("enc_int l1 l2 l3 instatiated\n");
-	bit316_t opA(l1.ciphertext.convert_to_128(), 0, 0);
-	bit316_t opB(l2.ciphertext.convert_to_128(), 0, 0);
-	printf("bit316_t opA opB instatiated\n");
-	
-
+	enc_lib::enc_int l3 = l1 + l2;
+	// enc_lib::enc_int l6 = l2 * l3;
+	printf("enc_int l1 l2 l3 instatiated.\n");
+	uint8_t plaintext_A[16] = {0x2c, 0x1c, 0xa7, 0x76, 0xab, 0x19, 0x4b, 0x70, 0x3e, 0xee, 0xf2, 0x9a, 0x45, 0xfa, 0x99, 0x99};
+	uint8_t plaintext_B[16] = {0x3a, 0x9b, 0xcb, 0xda, 0x01, 0xa9, 0xd7, 0x3e, 0xdd, 0x95, 0x02, 0x90, 0x1c, 0x5f, 0xdb, 0x25};
+	bit128_t plaintext_A_bit128t(plaintext_A);
+	bit128_t plaintext_B_bit128t(plaintext_B);
+	bit128_t init_A = aes128_encrypt_128(plaintext_A_bit128t);
+	bit128_t init_B = aes128_encrypt_128(plaintext_B_bit128t);
+	printf("initial cypher and hash generated.\n");
+	__uint128_t init_A_uint128 = 0;
+	__uint128_t init_B_uint128 = 0;
+    for(int i = 0; i < 16; ++i) {
+        init_A_uint128 = (init_A_uint128 << 8) | init_A.value[i];
+		init_B_uint128 = (init_B_uint128 << 8) | init_B.value[i];
+    }
+	bit316_t opA(l1.ciphertext.convert_to_128(), init_A_uint128, (uint64_t) (init_A_uint128 >> 68));
+	bit316_t opB(l2.ciphertext.convert_to_128(), init_B_uint128, (uint64_t) (init_B_uint128 >> 68));
+	printf("bit316_t opA opB instatiated.\n");
 	// __uint128_t l3_veri = SE::SECompute(l1.ciphertext.convert_to_128(), l2.ciphertext.convert_to_128(), 0, Instruction::ADD())
 
 	// printf("%d\n",decrypt_128_64( l3_veri));
@@ -97,13 +111,11 @@ int main(){
 	// printf("ticks: %d\n", SE::real_tickcount);
 
 	bit316_t l3_SE = SE::SECompute(opA, opB, 0, Instruction::ADD());
-	printf("SECompute finished\n");
-	// print128(l3_SE);
-	// print128dec(l3_SE);
+	printf("SECompute finished.\n");
 	print316(l3_SE);
-	printf("l3_SE printed\n");
+	printf("l3_SE printed.\n");
 	print316dec(l3_SE);
-	printf("decrypted l3_SE printed\n");
+	printf("decrypted l3_SE printed.\n");
 
 	// // print128(l6.ciphertext.convert_to_128());
 	// printf("ticks: %d\n", SE::real_tickcount);
