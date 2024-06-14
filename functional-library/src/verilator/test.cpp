@@ -37,9 +37,10 @@ int print316(bit316_t dec) {
     uint64_t lower_low  = (uint64_t) (print_item_lower & 0xFFFFFFFFFFFFFFFF);
 
 	// Print the values
-	printf("%016" PRIx64 " %016" PRIx64 "\n", upper_high, upper_low);
-    printf("%016" PRIx64 " %016" PRIx64 "\n", lower_high, lower_low);
-	printf("Hash: %016" PRIx64 "\n", print_hash);
+	printf("Ciphertext:\n");
+	printf("\tUpper 128 bits: %016" PRIx64 " %016" PRIx64 "\n", upper_high, upper_low);
+    printf("\tLower 128 bits: %016" PRIx64 " %016" PRIx64 "\n", lower_high, lower_low);
+	printf("\tHash: %016" PRIx64 "\n", print_hash);
 	
 	return 0;
 }
@@ -57,9 +58,10 @@ int print316dec(bit316_t dec) {
     uint64_t lower_low = (uint64_t)(print_item_lower & 0xFFFFFFFFFFFFFFFF);
 
 	// Print the values
-	printf("%016" PRIx64 " %016" PRIx64 "\n", upper_high, upper_low);
-    printf("%016" PRIx64 " %016" PRIx64 "\n", lower_high, lower_low);
-	printf("Hash: %016" PRIx64 "\n", print_hash);
+	printf("Plaintext:\n");
+	printf("\tUpper 128 bits: %016" PRIx64 " %016" PRIx64 "\n", upper_high, upper_low);
+    printf("\tLower 128 bits: %016" PRIx64 " %016" PRIx64 "\n", lower_high, lower_low);
+	printf("\tHash: %016" PRIx64 "\n", print_hash);
 
 	return 0;
 }
@@ -113,9 +115,15 @@ int main() {
 	bit316_t l3_SE = SE::SECompute(opA, opB, 0, Instruction::ADD());
 	printf("SECompute finished.\n");
 	print316(l3_SE);
-	printf("l3_SE printed.\n");
 	print316dec(l3_SE);
-	printf("decrypted l3_SE printed.\n");
+	printf("Result printing finished.\n");
+	if(l3.ciphertext.convert_to_128() == l3_SE.getLowerCiph_128b()) {
+		printf("The computation part is correct!\n");
+	} else {
+		printf("The computation part is incorrect!\n");
+	}
+
+	printf("Comparison finished.\n");
 
 	// // print128(l6.ciphertext.convert_to_128());
 	// printf("ticks: %d\n", SE::real_tickcount);
