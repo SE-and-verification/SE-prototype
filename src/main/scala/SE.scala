@@ -159,12 +159,19 @@ class SE(val debug:Boolean, val canChangeKey: Boolean) extends Module{
 	val n_stage_valid = Wire(Bool())
 	io.in.ready := ready_for_input
 
-	valid_buffer := Mux(io.in.valid && io.in.ready, true.B, Mux(n_stage_valid, false.B, valid_buffer))
+	// valid_buffer := Mux(io.in.valid && io.in.ready, true.B, Mux(n_stage_valid, false.B, valid_buffer))
+
+	when(io.in.valid && io.in.ready) {
+		valid_buffer := true.B
+	}.elsewhen(n_stage_valid) {
+		output_valid := false.B
+	}
 
 	// printf("valid buffer: %x\n", valid_buffer);
 	// when(valid_buffer){
 	// 	printf("valid_buffer: %x\n", valid_buffer);
-	// 	// printf("io.in.ready: %x\n", io.in.ready);
+	// 	printf("io.in.ready: %x\n", io.in.ready);
+	// 	printf("io.in.valid: %x\n", io.in.valid);
 	// }
 	
 	when(io.in.valid && io.in.ready){
@@ -173,24 +180,24 @@ class SE(val debug:Boolean, val canChangeKey: Boolean) extends Module{
 		ready_for_input := true.B
 	}
 
-	if(debug){
-		when(reset.asBool){
-			printf("resetting\n")
-		}
-		when(io.in.valid && io.in.ready){
-			printf("changed to false\n")
-		}.elsewhen(io.out.valid && io.out.ready){
-			printf("changed to true\n")
-		}
-	}
-	if(debug){
-		when(valid_buffer){
-			printf("\n-----front----\n")
-			printf("op1 buffer:%x\n",op1_buffer)
-			printf("op2 buffer:%x\n",op2_buffer)
-			printf("inst:%b\n",inst_buffer)
-		}
-	}
+	// if(debug){
+	// 	when(reset.asBool){
+	// 		printf("resetting\n")
+	// 	}
+	// 	when(io.in.valid && io.in.ready){
+	// 		printf("changed to false\n")
+	// 	}.elsewhen(io.out.valid && io.out.ready){
+	// 		printf("changed to true\n")
+	// 	}
+	// }
+	// if(debug){
+	// 	when(valid_buffer){
+	// 		printf("\n-----front----\n")
+	// 		printf("op1 buffer:%x\n",op1_buffer)
+	// 		printf("op2 buffer:%x\n",op2_buffer)
+	// 		printf("inst:%b\n",inst_buffer)
+	// 	}
+	// }
 
 	val op1_found = ciphers.contains(op1_buffer)
 	val op2_found = ciphers.contains(op2_buffer)
@@ -353,16 +360,31 @@ class SE(val debug:Boolean, val canChangeKey: Boolean) extends Module{
 		next_op2_compare_result_buffer_valid := op2_compare_result_buffer_valid
 	}
 
-	// when(op1_compare_result_buffer){
-	// 	printf("op1_compare_result_buffer: %x\n", op1_compare_result_buffer)
+	// when(aes_cipher_for_op1.io.output_valid){
+	// 	printf("trimmed_rehashed_op1: %x\n: ", trimmed_rehashed_op1)
+	// 	printf("mid_op1_buffer(315, 256): %x\n", mid_op1_buffer(315, 256))
+	// 	printf("www-op1_compare_result: %x\n", op1_compare_result)
+	// 	printf("www-aes_cipher_for_op1.io.output_valid: %x\n", aes_cipher_for_op1.io.output_valid)
+	// 	printf("www-next_op1_compare_result_buffer_valid: %x\n", next_op1_compare_result_buffer_valid)
+	// }
+	when(op1_compare_result){ //FIXME: op1_compare_result is 0 when aes_cipher_for_op1.io.output_valid is 1
+		printf("trimmed_rehashed_op1: %x\n: ", trimmed_rehashed_op1)
+		printf("mid_op1_buffer(315, 256): %x\n", mid_op1_buffer(315, 256))
+		printf("op1_compare_result: %x\n", op1_compare_result)
+		printf("aes_cipher_for_op1.io.output_valid: %x\n", aes_cipher_for_op1.io.output_valid)
+		printf("next_op1_compare_result_buffer_valid: %x\n", next_op1_compare_result_buffer_valid)
+	}
+	// when(aes_cipher_for_op1.io.output_valid){
+	// 	printf("mmm-op1_compare_result: %x\n", op1_compare_result)
+	// 	printf("mmm-aes_cipher_for_op1.io.output_valid: %x\n", aes_cipher_for_op1.io.output_valid)
+	// 	printf("mmm-next_op1_compare_result_buffer_valid: %x\n", next_op1_compare_result_buffer_valid)
+
+	// }
+	// when(next_op1_compare_result_buffer_valid){
+	// 	printf("next_op1_compare_result_buffer_valid: %x\n", next_op1_compare_result_buffer_valid)
 	// }
 
-	// when(op1_compare_result && aes_cipher_for_op1.io.output_valid){ // FIXME: op1_compare_result and aes_cipher_for_op1.io.output_valid are not 1 at the same time
-	// 	printf("op1_compare_result: %x\n", op1_compare_result);
-	// 	printf("aes_cipher_for_op1.io.output_valid:%x\n", aes_cipher_for_op1.io.output_valid)
-	// 	printf("op1_compare_result_buffer:%x\n", op1_compare_result_buffer)
-	// 	printf("op1_compare_result_buffer_valid:%x\n", op1_compare_result_buffer_valid)
-	// }
+
 	// when(op1_compare_result){
 	// 	printf("op1_compare_result: %x\n", op1_compare_result);
 	// 	printf("aes_cipher_for_op1.io.output_valid:%x\n", aes_cipher_for_op1.io.output_valid)
@@ -381,14 +403,14 @@ class SE(val debug:Boolean, val canChangeKey: Boolean) extends Module{
 
 	// Output valid when encryption for ciph_C result valid and two compare results high
 
-	// when(aes_cipher_firsthlf.io.output_valid){
-	// 	printf("\naes_cipher_firsthlf-----%x----\n", aes_cipher_firsthlf.io.output_valid)
-	// 	printf("\naes_cipher_secondhlf-----%x----\n", aes_cipher_secondhlf.io.output_valid) // 0 all time
-	// 	printf("\nop1_compare_result_buffer-----%x----\n", op1_compare_result_buffer) // 0 all time
-	// 	printf("\nop1_compare_result_buffer_valid-----%x----\n", op1_compare_result_buffer_valid)
-	// 	printf("\nop2_compare_result_buffer-----%x----\n", op2_compare_result_buffer) // 0 all time
-	// 	printf("\nop2_compare_result_buffer_valid-----%x----\n", op2_compare_result_buffer_valid)
-	// }
+	when(op1_compare_result_buffer){
+		printf("\naes_cipher_firsthlf-----%x----\n", aes_cipher_firsthlf.io.output_valid)
+		printf("\naes_cipher_secondhlf-----%x----\n", aes_cipher_secondhlf.io.output_valid) 
+		printf("\nop1_compare_result_buffer-----%x----\n", op1_compare_result_buffer) // 0 all time
+		printf("\nop1_compare_result_buffer_valid-----%x----\n", op1_compare_result_buffer_valid)
+		printf("\nop2_compare_result_buffer-----%x----\n", op2_compare_result_buffer) // 0 all time
+		printf("\nop2_compare_result_buffer_valid-----%x----\n", op2_compare_result_buffer_valid)
+	}
 	// when(aes_cipher_secondhlf.io.output_valid){
 	// 	printf("\naes_cipher_secondhlf-----%x----\n", aes_cipher_secondhlf.io.output_valid) // 0 all time
 	// }
