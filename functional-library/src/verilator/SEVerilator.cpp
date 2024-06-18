@@ -258,10 +258,10 @@ void SE::reset(){
 // bit316_t op1;
 // bit316_t op2;
 
-bit316_t SE::SECompute(bit316_t op1, bit316_t op2, __uint128_t cond, uint8_t inst){
-	while (!SE::module->io_in_ready)
-	{
-			// std::cout<<"looping"<<std::endl;
+bit316_t SE::SECompute(bit316_t &op1, bit316_t &op2, __uint128_t cond, uint8_t inst) {
+	printf("[[[[----------Enter SE::SECompute()----------]]]]\n");
+	// Waiting io_in_ready signal
+	while(!SE::module->io_in_ready) {
 		SE::tick();
 	}
 	SE::module->io_in_valid = true;
@@ -272,9 +272,39 @@ bit316_t SE::SECompute(bit316_t op1, bit316_t op2, __uint128_t cond, uint8_t ins
 	// uint8_t op1[40]
 	// uint8_t op2[40]
 	// 316 bits -> 39.5 bytes -> 40 bytes
+	// The bit316_t class stores vectorized values according to the following structure:
+    // value[0]              : 4 dummy bits, should be 0       <- MSB
+    // value[1]  - value[7]  : 60-bit hash 
+    // value[8]  - value[23] : 128-bit upper half cypher_text
+    // value[24] - value[39] : 128-bit lower half cypher_text  <- LSB
 	constexpr size_t op_n_size = 40;
 	memcpy(SE::module->io_in_op1, op1.get_value(), op_n_size * sizeof(uint8_t));
 	memcpy(SE::module->io_in_op2, op2.get_value(), op_n_size * sizeof(uint8_t));
+	// Check input
+	uint8_t* check_op1_input 	= op1.get_value();
+	uint8_t* check_op2_input 	= op2.get_value();
+	unsigned int* check_op1 	= SE::module->io_in_op1;
+	unsigned int* check_op2 	= SE::module->io_in_op2;
+	printf("op1.get_value() is: ");
+	for(int i = 0; i < 40; i++) {
+        printf("%x", check_op1_input[i]);
+    }
+    printf("\n");
+	printf("SE::module->io_in_op1 is: ");
+	for(int i = 0; i < 40; i++) {
+        printf("%x", check_op1[i]);
+    }
+    printf("\n");
+	printf("op2.get_value() is: ");
+	for(int i = 0; i < 40; i++) {
+        printf("%x", check_op2_input[i]);
+    }
+    printf("\n");
+	printf("SE::module->io_in_op2 is: ");
+	for(int i = 0; i < 40; i++) {
+        printf("%x", check_op2[i]);
+    }
+    printf("\n");
 	// memcpy(&SE::module->io_in_cond, &cond, sizeof(cond));
 	printf("memcpy done\n");
 
@@ -297,6 +327,7 @@ bit316_t SE::SECompute(bit316_t op1, bit316_t op2, __uint128_t cond, uint8_t ins
 	memcpy(result_value, SE::module->io_out_result, op_n_size * sizeof(uint8_t));
 	bit316_t result(result_value);
 	printf("result_value assigned\n");
+	printf("[[[[----------Leave SE::SECompute()----------]]]]\n");
 	// uint8_t num_cycle = 0;
 	// memcpy(&num_cycle, &SE::module->io_out_cntr, sizeof(SE::module->io_out_cntr));
 	// std::vector<uint8_t> result_vector;

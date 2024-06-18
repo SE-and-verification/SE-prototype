@@ -74,6 +74,7 @@ int print316dec(bit316_t dec) {
 // }
 
 int main() {
+	printf("[[[[----------TESTING----------]]]]\n");
 	setParameters();
 	printf("setParameters finished.\n");
 	SE se_simulator;
