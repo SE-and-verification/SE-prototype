@@ -29,9 +29,9 @@ extern "C" {
 #endif
 
 /*
- * Maximum number you can get from rand().
+ * Maximum number you can get from rand(): 2147483647
  */
-#define RAND_MAX INT32_MAX
+// #define RAND_MAX INT32_MAX
 
 /*
  * Initialize the number generator with given seed.
