@@ -291,8 +291,8 @@ bit316_t SE::SECompute(bit316_t &op1, bit316_t &op2, __uint128_t cond, uint8_t i
 		}
 		temp_1 = temp_1 + check_op1_input[i * 4 + 3];
 		temp_2 = temp_2 + check_op2_input[i * 4 + 3];
-        op1_uint_temp[10 - i] = temp_1;
-		op2_uint_temp[10 - i] = temp_2;
+        op1_uint_temp[9 - i] = temp_1;
+		op2_uint_temp[9 - i] = temp_2;
     }
 	memcpy(SE::module->io_in_op1, op1_uint_temp, op_n_size * sizeof(uint8_t));
 	memcpy(SE::module->io_in_op2, op2_uint_temp, op_n_size * sizeof(uint8_t));
