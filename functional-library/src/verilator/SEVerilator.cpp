@@ -280,35 +280,43 @@ bit316_t SE::SECompute(bit316_t &op1, bit316_t &op2, __uint128_t cond, uint8_t i
 	constexpr size_t op_n_size = 40;
 	uint8_t* check_op1_input 		= op1.get_value();
 	uint8_t* check_op2_input 		= op2.get_value();
-	unsigned int op1_uint_temp[40] 	= {0};
-	unsigned int op2_uint_temp[40] 	= {0};
-	for(int i = 0; i < 40; i++) {
-        op1_uint_temp[i] = (unsigned int) check_op1_input[i];
-		op2_uint_temp[i] = (unsigned int) check_op2_input[i];
+	unsigned int op1_uint_temp[10] 	= {0};
+	unsigned int op2_uint_temp[10] 	= {0};
+	for(int i = 0; i < 10; i++) {
+		unsigned int temp_1 = 0U;
+		unsigned int temp_2 = 0U;
+		for(int j = 0; j < 3; j++) {
+			temp_1 = (temp_1 + check_op1_input[i * 4 + j]) << 8;
+			temp_2 = (temp_2 + check_op2_input[i * 4 + j]) << 8;
+		}
+		temp_1 = temp_1 + check_op1_input[i * 4 + 3];
+		temp_2 = temp_2 + check_op2_input[i * 4 + 3];
+        op1_uint_temp[i] = temp_1;
+		op2_uint_temp[i] = temp_2;
     }
-	memcpy(SE::module->io_in_op1, op1_uint_temp, op_n_size * sizeof(unsigned int));
-	memcpy(SE::module->io_in_op2, op2_uint_temp, op_n_size * sizeof(unsigned int));
+	memcpy(SE::module->io_in_op1, op1_uint_temp, op_n_size * sizeof(uint8_t));
+	memcpy(SE::module->io_in_op2, op2_uint_temp, op_n_size * sizeof(uint8_t));
 	// Check input
 	unsigned int* check_op1 		= SE::module->io_in_op1;
 	unsigned int* check_op2 		= SE::module->io_in_op2;
-	printf("op1.get_value() is: ");
+	printf("\top1.get_value() is: ");
 	for(int i = 0; i < 40; i++) {
         printf("%02x", check_op1_input[i]);
     }
     printf("\n");
-	printf("SE::module->io_in_op1 is: ");
-	for(int i = 0; i < 40; i++) {
-        printf("%02x", check_op1[i]);
+	printf("\tSE::module->io_in_op1 is: ");
+	for(int i = 0; i < 10; i++) {
+        printf("%08x", check_op1[i]);
     }
     printf("\n");
-	printf("op2.get_value() is: ");
+	printf("\top2.get_value() is: ");
 	for(int i = 0; i < 40; i++) {
         printf("%02x", check_op2_input[i]);
     }
     printf("\n");
-	printf("SE::module->io_in_op2 is: ");
-	for(int i = 0; i < 40; i++) {
-        printf("%02x", check_op2[i]);
+	printf("\tSE::module->io_in_op2 is: ");
+	for(int i = 0; i < 10; i++) {
+        printf("%08x", check_op2[i]);
     }
     printf("\n");
 	// memcpy(&SE::module->io_in_cond, &cond, sizeof(cond));
@@ -329,18 +337,18 @@ bit316_t SE::SECompute(bit316_t &op1, bit316_t &op2, __uint128_t cond, uint8_t i
 		// printf("SE::module->io_out_valid %d\n", SE::module->io_out_valid); // 0 all time
 	}
 	printf("io_out_valid\n");
-	unsigned int result_value[40] = {0}; 
-	memcpy(result_value, SE::module->io_out_result, op_n_size * sizeof(unsigned int));
+	unsigned int result_value[10] = {0}; 
+	memcpy(result_value, SE::module->io_out_result, op_n_size * sizeof(uint8_t));
 	// Check output
 	unsigned int* check_output = SE::module->io_out_result;
-	printf("SE::module->io_out_result is: ");
-	for(int i = 0; i < 40; i++) {
-        printf("%02x", check_output[i]);
+	printf("\tSE::module->io_out_result is: ");
+	for(int i = 0; i < 10; i++) {
+        printf("%08x", check_output[i]);
     }
     printf("\n");
-	printf("result_value is: ");
-	for(int i = 0; i < 40; i++) {
-        printf("%02x", result_value[i]);
+	printf("\tresult_value is: ");
+	for(int i = 0; i < 10; i++) {
+        printf("%08x", result_value[i]);
     }
     printf("\n");
 	printf("result_value assigned\n");
