@@ -358,6 +358,14 @@ public:
         } 
     }
 
+
+    bit316_t(const std::vector<uint8_t> &full_value) {
+        // Convert from vector
+        for(int i = 0; i < 40; i++) {
+            value[i] = full_value[i];
+        } 
+    }
+    
     bit316_t(const unsigned int* full_value) {
         // Convert from unsigned int array 
         for(int i = 0; i < 10; i++) {
@@ -365,13 +373,6 @@ public:
             value[i * 4 + 1] = (full_value[i] >> 16) && 0xFF;
             value[i * 4 + 2] = (full_value[i] >> 8) && 0xFF;
             value[i * 4 + 3] = full_value[i] && 0xFF;
-        } 
-    }
-
-    bit316_t(const std::vector<uint8_t> &full_value) {
-        // Convert from vector
-        for(int i = 0; i < 40; i++) {
-            value[i] = full_value[i];
         } 
     }
 
