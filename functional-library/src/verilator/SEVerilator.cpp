@@ -278,10 +278,10 @@ bit316_t SE::SECompute(bit316_t &op1, bit316_t &op2, __uint128_t cond, uint8_t i
     // value[8]  - value[23] : 128-bit upper half cypher_text
     // value[24] - value[39] : 128-bit lower half cypher_text  <- LSB
 	constexpr size_t op_n_size = 40;
-	uint8_t* check_op1_input 	= op1.get_value();
-	uint8_t* check_op2_input 	= op2.get_value();
-	unsigned int op1_uint_temp[40] = {0};
-	unsigned int op2_uint_temp[40] = {0};
+	uint8_t* check_op1_input 		= op1.get_value();
+	uint8_t* check_op2_input 		= op2.get_value();
+	unsigned int op1_uint_temp[40] 	= {0};
+	unsigned int op2_uint_temp[40] 	= {0};
 	for(int i = 0; i < 40; i++) {
         op1_uint_temp[i] = (unsigned int) check_op1_input[i];
 		op2_uint_temp[i] = (unsigned int) check_op2_input[i];
@@ -289,26 +289,26 @@ bit316_t SE::SECompute(bit316_t &op1, bit316_t &op2, __uint128_t cond, uint8_t i
 	memcpy(SE::module->io_in_op1, op1_uint_temp, op_n_size * sizeof(unsigned int));
 	memcpy(SE::module->io_in_op2, op2_uint_temp, op_n_size * sizeof(unsigned int));
 	// Check input
-	unsigned int* check_op1 	= SE::module->io_in_op1;
-	unsigned int* check_op2 	= SE::module->io_in_op2;
+	unsigned int* check_op1 		= SE::module->io_in_op1;
+	unsigned int* check_op2 		= SE::module->io_in_op2;
 	printf("op1.get_value() is: ");
 	for(int i = 0; i < 40; i++) {
-        printf("%x", check_op1_input[i]);
+        printf("%02x", check_op1_input[i]);
     }
     printf("\n");
 	printf("SE::module->io_in_op1 is: ");
 	for(int i = 0; i < 40; i++) {
-        printf("%x", check_op1[i]);
+        printf("%02x", check_op1[i]);
     }
     printf("\n");
 	printf("op2.get_value() is: ");
 	for(int i = 0; i < 40; i++) {
-        printf("%x", check_op2_input[i]);
+        printf("%02x", check_op2_input[i]);
     }
     printf("\n");
 	printf("SE::module->io_in_op2 is: ");
 	for(int i = 0; i < 40; i++) {
-        printf("%x", check_op2[i]);
+        printf("%02x", check_op2[i]);
     }
     printf("\n");
 	// memcpy(&SE::module->io_in_cond, &cond, sizeof(cond));
@@ -329,10 +329,22 @@ bit316_t SE::SECompute(bit316_t &op1, bit316_t &op2, __uint128_t cond, uint8_t i
 		// printf("SE::module->io_out_valid %d\n", SE::module->io_out_valid); // 0 all time
 	}
 	printf("io_out_valid\n");
-	uint8_t result_value[40] = {0}; 
-	memcpy(result_value, SE::module->io_out_result, op_n_size * sizeof(uint8_t));
-	bit316_t result(result_value);
+	unsigned int result_value[40] = {0}; 
+	memcpy(result_value, SE::module->io_out_result, op_n_size * sizeof(unsigned int));
+	// Check output
+	unsigned int* check_output = SE::module->io_out_result;
+	printf("SE::module->io_out_result is: ");
+	for(int i = 0; i < 40; i++) {
+        printf("%02x", check_output[i]);
+    }
+    printf("\n");
+	printf("result_value is: ");
+	for(int i = 0; i < 40; i++) {
+        printf("%02x", result_value[i]);
+    }
+    printf("\n");
 	printf("result_value assigned\n");
+	bit316_t result(result_value);
 	printf("[[[[----------Leave SE::SECompute()----------]]]]\n");
 	// uint8_t num_cycle = 0;
 	// memcpy(&num_cycle, &SE::module->io_out_cntr, sizeof(SE::module->io_out_cntr));
