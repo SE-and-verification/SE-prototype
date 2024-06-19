@@ -74,23 +74,63 @@ int print316dec(bit316_t dec) {
 // }
 
 int main() {
-	printf("[[[[----------TESTING----------]]]]\n");
+	printf("----------TESTING----------\n");
+	printf("Begin setting parameters.\n");
 	setParameters();
-	printf("setParameters finished.\n");
+	printf("Finish setting parameters.\n---\n");
+	printf("Begin generating SE simulator.\n");
 	SE se_simulator;
-	printf("SE simulator generated.\n");
+	printf("Finish generating SE simulator.\n---\n");
+	printf("Begin generating enc_int l1, l2 and l3.\n");
 	enc_lib::enc_int l1 = 1;
 	enc_lib::enc_int l2 = 2;
 	enc_lib::enc_int l3 = l1 + l2;
 	// enc_lib::enc_int l6 = l2 * l3;
-	printf("enc_int l1 l2 l3 instatiated.\n");
+	printf("Finish generating enc_int l1, l2 and l3.\n---\n");
+	printf("Begin calculating initial cyphertext.\n");
+	// Generating plaintext array
+	// Structure: [rtsni'][Y_hsh][X_hsh] (old)
 	uint8_t plaintext_A[16] = {0x2c, 0x1c, 0xa7, 0x76, 0xab, 0x19, 0x4b, 0x70, 0x3e, 0xee, 0xf2, 0x9a, 0x45, 0xfa, 0x99, 0x99};
 	uint8_t plaintext_B[16] = {0x3a, 0x9b, 0xcb, 0xda, 0x01, 0xa9, 0xd7, 0x3e, 0xdd, 0x95, 0x02, 0x90, 0x1c, 0x5f, 0xdb, 0x25};
+	// Convert to bit128_t
 	bit128_t plaintext_A_bit128t(plaintext_A);
 	bit128_t plaintext_B_bit128t(plaintext_B);
+	// software ENCrypt
 	bit128_t init_A = aes128_encrypt_128(plaintext_A_bit128t);
 	bit128_t init_B = aes128_encrypt_128(plaintext_B_bit128t);
-	printf("initial cypher and hash generated.\n");
+	printf("Finish calculating initial cyphertext.\n---\n");
+	printf("Begin software decryption self checking.\n");
+	// software DECrypt and compare
+	bit128_t test_A = aes128_decrypt_128(init_A);
+	bit128_t test_B = aes128_decrypt_128(init_B);
+	printf("\tplaintext_A: ");
+	for(int i = 0; i < 16; ++i) {
+        printf("%02x", plaintext_A_bit128t.value[i]);
+    }
+	printf("\n");
+	printf("\tsoftwareDeA: ");
+	for(int i = 0; i < 16; ++i) {
+        printf("%02x", test_A.value[i]);
+    }
+	printf("\n");
+	printf("\tplaintext_B: ");
+	for(int i = 0; i < 16; ++i) {
+        printf("%02x", plaintext_B_bit128t.value[i]);
+    }
+	printf("\n");
+	printf("\tsoftwareDeB: ");
+	for(int i = 0; i < 16; ++i) {
+        printf("%02x", test_B.value[i]);
+    }
+	printf("\n");
+	for(int i = 0; i < 16; ++i) {
+        if((plaintext_A_bit128t.value[i] != test_A.value[i]) || (plaintext_B_bit128t.value[i] != test_B.value[i])) {
+			printf("Finish software decryption self checking. Error found!\n");
+			exit(1);
+		}
+    }
+	printf("Finish software decryption self checking.\n---\n");
+	printf("Begin instantiating bit316_t opA and opB.\n");
 	__uint128_t init_A_uint128 = 0;
 	__uint128_t init_B_uint128 = 0;
     for(int i = 0; i < 16; ++i) {
@@ -99,7 +139,7 @@ int main() {
     }
 	bit316_t opA(l1.ciphertext.convert_to_128(), init_A_uint128, (uint64_t) (init_A_uint128 >> 68));
 	bit316_t opB(l2.ciphertext.convert_to_128(), init_B_uint128, (uint64_t) (init_B_uint128 >> 68));
-	printf("bit316_t opA opB instatiated.\n");
+	printf("Finish instantiating bit316_t opA and opB.\n---\n");
 	// __uint128_t l3_veri = SE::SECompute(l1.ciphertext.convert_to_128(), l2.ciphertext.convert_to_128(), 0, Instruction::ADD())
 
 	// printf("%d\n",decrypt_128_64( l3_veri));
@@ -113,18 +153,19 @@ int main() {
 	// print128(l3.ciphertext.convert_to_128());
 	// printf("ticks: %d\n", SE::real_tickcount);
 
+	printf("Begin SECompute.\n");
 	bit316_t l3_SE = SE::SECompute(opA, opB, 0, Instruction::ADD());
-	printf("SECompute finished.\n");
+	printf("Finish SECompute.\n---\n");
+	printf("Begin comparison.\n");
 	print316(l3_SE);
 	print316dec(l3_SE);
-	printf("Result printing finished.\n");
 	if(l3.ciphertext.convert_to_128() == l3_SE.getLowerCiph_128b()) {
-		printf("The computation part is correct!\n");
+		printf("\tThe computation part is correct!\n");
 	} else {
-		printf("The computation part is incorrect!\n");
+		printf("\tThe computation part is incorrect!\n");
 	}
-
-	printf("Comparison finished.\n");
+	printf("Finish comparison.\n");
+	printf("------------END------------\n");
 
 	// // print128(l6.ciphertext.convert_to_128());
 	// printf("ticks: %d\n", SE::real_tickcount);
