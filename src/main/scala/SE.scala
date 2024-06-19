@@ -367,9 +367,11 @@ class SE(val debug:Boolean, val canChangeKey: Boolean) extends Module{
 	// 	printf("www-aes_cipher_for_op1.io.output_valid: %x\n", aes_cipher_for_op1.io.output_valid)
 	// 	printf("www-next_op1_compare_result_buffer_valid: %x\n", next_op1_compare_result_buffer_valid)
 	// }
-	when(op1_compare_result){ //FIXME: op1_compare_result is 0 when aes_cipher_for_op1.io.output_valid is 1
-		printf("trimmed_rehashed_op1: %x\n: ", trimmed_rehashed_op1)
-		printf("mid_op1_buffer(315, 256): %x\n", mid_op1_buffer(315, 256))
+	when(aes_cipher_for_op1.io.output_valid){ //FIXME: op1_compare_result is 0 when aes_cipher_for_op1.io.output_valid is 1
+		printf("rehashed_op1_bit: %x\n", rehashed_op1_bit)
+		printf("mid_op1_buffer: %x\n", mid_op1_buffer)
+		printf("io.in.op1: %x\n", io.in.op1)
+		printf("decrypted_op1_buffer: %x\n", Cat(decrypted_op1_buffer))
 		printf("op1_compare_result: %x\n", op1_compare_result)
 		printf("aes_cipher_for_op1.io.output_valid: %x\n", aes_cipher_for_op1.io.output_valid)
 		printf("next_op1_compare_result_buffer_valid: %x\n", next_op1_compare_result_buffer_valid)
