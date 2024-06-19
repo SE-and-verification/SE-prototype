@@ -98,6 +98,16 @@ int main() {
 	// software ENCrypt
 	bit128_t init_A = aes128_encrypt_128(plaintext_A_bit128t);
 	bit128_t init_B = aes128_encrypt_128(plaintext_B_bit128t);
+	printf("\tciphtext_A: ");
+	for(int i = 0; i < 16; ++i) {
+        printf("%02x", init_A.value[i]);
+    }
+	printf("\n");
+	printf("\tciphtext_B: ");
+	for(int i = 0; i < 16; ++i) {
+        printf("%02x", init_B.value[i]);
+    }
+	printf("\n");
 	printf("Finish calculating initial cyphertext.\n---\n");
 	printf("Begin software decryption self checking.\n");
 	// software DECrypt and compare
