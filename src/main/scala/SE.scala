@@ -247,9 +247,9 @@ class SE(val debug:Boolean, val canChangeKey: Boolean) extends Module{
 	val mid_op2_buffer = RegEnable(op2_buffer, aes_invcipher_firsthlf.io.input_valid) // buf_lv2
 
 	// decrypted hashing part of op for verification
-	val decrypted_op1_buffer 		= RegEnable(aes_invcipher_secondhlf.io.output_op1, aes_invcipher_secondhlf.io.input_valid) // buf_lv2
+	val decrypted_op1_buffer 		= RegEnable(aes_invcipher_secondhlf.io.output_op1, aes_invcipher_secondhlf.io.output_valid) // buf_lv2
 	val decrypted_op1_buffer_valid 	= RegInit(false.B) // buf_lv2
-	val decrypted_op2_buffer 		= RegEnable(aes_invcipher_secondhlf.io.output_op2, aes_invcipher_secondhlf.io.input_valid) // buf_lv2
+	val decrypted_op2_buffer 		= RegEnable(aes_invcipher_secondhlf.io.output_op2, aes_invcipher_secondhlf.io.output_valid) // buf_lv2
 	val decrypted_op2_buffer_valid 	= RegInit(false.B) // buf_lv2
 	when(aes_invcipher_firsthlf.io.input_valid){
 		decrypted_op1_buffer_valid := true.B
