@@ -212,7 +212,7 @@ class SE(val debug:Boolean, val canChangeKey: Boolean) extends Module{
 
 	// Feed the ciphertexts into the invcipher
 	val ciph_op1 = op1_buffer(255,0)
-	val ciph_op2 = op1_buffer(255,0)
+	val ciph_op2 = op2_buffer(255,0)
 
 	aes_invcipher_firsthlf.io.input_op1 := ciph_op1(127, 0).asTypeOf(aes_invcipher_firsthlf.io.input_op1) // Firsthlf -> ALU part
 	aes_invcipher_firsthlf.io.input_op2 := ciph_op2(127, 0).asTypeOf(aes_invcipher_firsthlf.io.input_op2)
