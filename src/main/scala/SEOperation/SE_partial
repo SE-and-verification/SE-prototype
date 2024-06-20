@@ -153,9 +153,9 @@ class SE(val debug : Boolean, val canChangeKey: Boolean) extends Module{
     // CONFUSED: function of n_stage_valid - Yishen Zhou
 
     // ----------buf_lv2----------
-	val lv2_inst_buffer                     = RegEnable(inst_buffer, aes_invcipher_firsthlf.io.input_valid) // [inst]
-	val lv2_op1_buffer                      = RegEnable(op1_buffer, aes_invcipher_firsthlf.io.input_valid) // [hsh_A][Ciph_A]
-	val lv2_op2_buffer                      = RegEnable(op2_buffer, aes_invcipher_firsthlf.io.input_valid) // [hsh_B][Ciph_B]
+	// val lv2_inst_buffer                     = RegEnable(inst_buffer, aes_invcipher_firsthlf.io.output_valid) // [inst]
+	val lv2_op1_buffer                      = RegEnable(op1_buffer, aes_invcipher_firsthlf.io.output_valid) // [hsh_A][Ciph_A]
+	val lv2_op2_buffer                      = RegEnable(op2_buffer, aes_invcipher_firsthlf.io.output_valid) // [hsh_B][Ciph_B]
 	val hash_C_original_buffer 				= RegEnable(aes_cipher_for_hash_C.io.output_text.do_asUInt, aes_cipher_for_hash_C.io.output_valid)
 	val hash_C_original_buffer_valid 		= RegInit(false.B)
     val decrypted_op1_val_buffer	        = RegEnable(aes_invcipher_firsthlf.io.output_op1, aes_invcipher_firsthlf.io.output_valid) // [muNdR][A_nialp]
@@ -187,14 +187,20 @@ class SE(val debug : Boolean, val canChangeKey: Boolean) extends Module{
 	decrypted_op1_hash_buffer_valid             := RegNext(next_decrypted_op1_hash_buffer_valid)
 	decrypted_op2_hash_buffer_valid             := RegNext(next_decrypted_op2_hash_buffer_valid)
 
-    // Reverse the byte order of decrypted plaintext so we can convert them into uint with Chisel infrastructure.
-    // Structure: [][]
-	val op1_reverse = Wire(Vec(Params.StateLength, UInt(8.W)))
-	val op2_reverse = Wire(Vec(Params.StateLength, UInt(8.W)))
-	for(i <- 0 until Params.StateLength) {
-		op1_reverse(i) := aes_invcipher_firsthlf.io.output_op1(Params.StateLength - i - 1)
-		op2_reverse(i) := aes_invcipher_firsthlf.io.output_op2(Params.StateLength - i - 1)
-	}
+    // Reverse the byte order of decrypted plaintext (using Cat()) so we can convert them into uint with Chisel infrastructure.
+    // Feed the decrypted values to the seoperation module. Depends on whether the data is encrypted when it comes in.
+	// seoperation.io.inst 	:= Mux(all_match && lv1ok_buffer, inst_buffer, mid_inst_buffer)
+    seoperation.io.inst         := inst_buffer
+	seoperation.io.valid 	    := (aes_invcipher_firsthlf.io.output_valid && aes_invcipher_secondhlf.io.output_valid) // || (all_match && lv1ok_buffer)
+    val seOpValid 			    = (aes_invcipher_firsthlf.io.output_valid && aes_invcipher_secondhlf.io.output_valid)
+	val op1_bit 	            = Cat(aes_invcipher_firsthlf.io.output_op1) // Structure: [muNdR][A_nialp] -> [plain_A][RdNum]
+	val op2_bit 	            = Cat(aes_invcipher_firsthlf.io.output_op2) // Structure: [muNdR][B_nialp] -> [plain_B][RdNum]
+	val op1_bit_asUInt		    = op1_bit(127, 64).do_asUInt // plain_A
+	val op2_bit_asUInt		    = op2_bit(127, 64).do_asUInt // plain_B
+	// seoperation.io.op1_input := Mux(all_match && lv1ok_buffer, op1_val, Mux(mid_inst_buffer(7,5) === 5.U(3.W), Cat(aes_invcipher_firsthlf.io.output_op1), op1_asUInt)) // FIXME: input for ENC is aes_invcipher_firsthlf.io.output_op1 ? 
+	// seoperation.io.op2_input := Mux(all_match && lv1ok_buffer, op2_val, Mux(mid_inst_buffer(7,5) === 5.U(3.W), Cat(aes_invcipher_firsthlf.io.output_op2), op2_asUInt))
+    seoperation.io.op1_input    := Mux(mid_inst_buffer(7,5) === 5.U(3.W), op1_bit, op1_bit_asUInt)
+	seoperation.io.op2_input    := Mux(mid_inst_buffer(7,5) === 5.U(3.W), op2_bit, op2_bit_asUInt)
 
 
 

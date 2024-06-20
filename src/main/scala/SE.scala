@@ -212,13 +212,28 @@ class SE(val debug:Boolean, val canChangeKey: Boolean) extends Module{
 
 	// Feed the ciphertexts into the invcipher
 	val ciph_op1 = op1_buffer(255,0)
+	val ciph_op1_calc = ciph_op1(127, 0)
+	val ciph_op1_calc_vec = Wire(Vec(16, UInt(8.W)))
+	val ciph_op1_comp = ciph_op1(255, 128)
+	val ciph_op1_comp_vec = Wire(Vec(16, UInt(8.W)))
 	val ciph_op2 = op2_buffer(255,0)
+	val ciph_op2_calc = ciph_op2(127, 0)
+	val ciph_op2_calc_vec = Wire(Vec(16, UInt(8.W)))
+	val ciph_op2_comp = ciph_op2(255, 128)
+	val ciph_op2_comp_vec = Wire(Vec(16, UInt(8.W)))
 
-	aes_invcipher_firsthlf.io.input_op1 := ciph_op1(127, 0).asTypeOf(aes_invcipher_firsthlf.io.input_op1) // Firsthlf -> ALU part
-	aes_invcipher_firsthlf.io.input_op2 := ciph_op2(127, 0).asTypeOf(aes_invcipher_firsthlf.io.input_op2)
+	for (i <- 0 until 16) {
+		ciph_op1_calc_vec(i) := ciph_op1_calc((15 - i) * 8 + 7, (15 - i) * 8)
+		ciph_op1_comp_vec(i) := ciph_op1_comp((15 - i) * 8 + 7, (15 - i) * 8)
+		ciph_op2_calc_vec(i) := ciph_op2_calc((15 - i) * 8 + 7, (15 - i) * 8)
+		ciph_op2_comp_vec(i) := ciph_op2_comp((15 - i) * 8 + 7, (15 - i) * 8)
+	}
 
-	aes_invcipher_secondhlf.io.input_op1 := ciph_op1(255, 128).asTypeOf(aes_invcipher_secondhlf.io.input_op1) // Secondhlf -> Comparison part
-	aes_invcipher_secondhlf.io.input_op2 := ciph_op2(255, 128).asTypeOf(aes_invcipher_secondhlf.io.input_op2)
+	aes_invcipher_firsthlf.io.input_op1 := ciph_op1_calc_vec // Firsthlf -> ALU part
+	aes_invcipher_firsthlf.io.input_op2 := ciph_op2_calc_vec
+
+	aes_invcipher_secondhlf.io.input_op1 := ciph_op1_comp_vec // Secondhlf -> Comparison part
+	aes_invcipher_secondhlf.io.input_op2 := ciph_op2_comp_vec 
 
     aes_invcipher_firsthlf.io.input_roundKeys := key
 	aes_invcipher_secondhlf.io.input_roundKeys := key
@@ -231,15 +246,6 @@ class SE(val debug:Boolean, val canChangeKey: Boolean) extends Module{
 	// 	printf("op2_buffer: %x\n",op2_buffer)
 	// }
 	n_stage_valid := all_match || valid_buffer
-
-	// Reverse the byte order of decrypted plaintext so we can convert them into uint with Chisel infrastructure.
-	val op1_reverse = Wire(Vec(Params.StateLength, UInt(8.W)))
-	val op2_reverse = Wire(Vec(Params.StateLength, UInt(8.W)))
-
-	for(i <- 0 until Params.StateLength){
-		op1_reverse(i) := aes_invcipher_firsthlf.io.output_op1(Params.StateLength-i-1)
-		op2_reverse(i) := aes_invcipher_firsthlf.io.output_op2(Params.StateLength-i-1)
-	}
 
 	// use aes_invcipher_firsthlf.io.input_valid for simplicity
 	val mid_inst_buffer = RegEnable(inst_buffer, aes_invcipher_firsthlf.io.input_valid) // buf_lv2
@@ -257,16 +263,17 @@ class SE(val debug:Boolean, val canChangeKey: Boolean) extends Module{
 	} 
 
 	// Feed the decrypted values to the seoperation module. Depends on whether the data is encrypted when it comes in.
+	// Reverse the byte order of decrypted plaintext so we can convert them into uint with Chisel infrastructure.
 	seoperation.io.inst 	:= Mux(all_match && valid_buffer, inst_buffer, mid_inst_buffer)
 	val seOpValid 			= (aes_invcipher_firsthlf.io.output_valid && aes_invcipher_secondhlf.io.output_valid) || (all_match && valid_buffer)
 	seoperation.io.valid 	:= seOpValid
-	val op1_reverse_bit 	= Cat(op1_reverse)
-	val op2_reverse_bit 	= Cat(op2_reverse)
-	val op1_asUInt 			= op1_reverse_bit(127, 64).do_asUInt // get plain_A
-	val op2_asUInt 			= op2_reverse_bit(127, 64).do_asUInt // get plain_B
+	val op1_bit 			= Cat(aes_invcipher_secondhlf.io.output_op1)
+	val op2_bit 			= Cat(aes_invcipher_secondhlf.io.output_op2)
+	val op1_asUInt 			= op1_bit(127, 64).do_asUInt // get plain_A
+	val op2_asUInt 			= op2_bit(127, 64).do_asUInt // get plain_B
 
-	seoperation.io.op1_input := Mux(all_match&& valid_buffer, op1_val, Mux(mid_inst_buffer(7,5) === 5.U(3.W), Cat(aes_invcipher_firsthlf.io.output_op1), op1_asUInt)) // FIXME: input for ENC is aes_invcipher_firsthlf.io.output_op1 ? 
-	seoperation.io.op2_input := Mux(all_match&& valid_buffer, op2_val, Mux(mid_inst_buffer(7,5) === 5.U(3.W), Cat(aes_invcipher_firsthlf.io.output_op2), op2_asUInt))
+	seoperation.io.op1_input := Mux(all_match && valid_buffer, op1_val, Mux(mid_inst_buffer(7,5) === 5.U(3.W), op1_bit, op1_asUInt))
+	seoperation.io.op2_input := Mux(all_match && valid_buffer, op2_val, Mux(mid_inst_buffer(7,5) === 5.U(3.W), op2_bit, op2_asUInt))
 
 
 	// TODO: reconstruct the hash and compare
@@ -368,13 +375,18 @@ class SE(val debug:Boolean, val canChangeKey: Boolean) extends Module{
 	// 	printf("www-next_op1_compare_result_buffer_valid: %x\n", next_op1_compare_result_buffer_valid)
 	// }
 	when(aes_cipher_for_op1.io.output_valid){ //FIXME: op1_compare_result is 0 when aes_cipher_for_op1.io.output_valid is 1
+		printf("io.in.op1: %x\n", io.in.op1)
 		printf("rehashed_op1_bit: %x\n", rehashed_op1_bit)
 		printf("mid_op1_buffer: %x\n", mid_op1_buffer)
-		printf("io.in.op1: %x\n", io.in.op1)
 		printf("decrypted_op1_buffer: %x\n", Cat(decrypted_op1_buffer))
-		printf("op1_compare_result: %x\n", op1_compare_result)
-		printf("aes_cipher_for_op1.io.output_valid: %x\n", aes_cipher_for_op1.io.output_valid)
-		printf("next_op1_compare_result_buffer_valid: %x\n", next_op1_compare_result_buffer_valid)
+		printf("ciph_op1(255, 128): %x\n", ciph_op1(255, 128))
+		printf("aes_invcipher_secondhlf.io.input_op1: %x\n", Cat(aes_invcipher_secondhlf.io.input_op1))
+		printf("aes_invcipher_secondhlf.io.output_op1: %x\n", Cat(aes_invcipher_secondhlf.io.output_op1))
+		printf("aes_cipher_for_op1.io.input_text: %x\n", Cat(aes_cipher_for_op1.io.input_text))
+		// printf("op1_compare_result: %x\n", op1_compare_result)
+		// printf("aes_cipher_for_op1.io.output_valid: %x\n", aes_cipher_for_op1.io.output_valid)
+		// printf("next_op1_compare_result_buffer_valid: %x\n", next_op1_compare_result_buffer_valid)
+		// Sample: 6abd05df8d9a5e1_6abd05df8d9a5e10efbe4c68a468e0a2de99be30bdaaa370ae07abe46a9a1813
 	}
 	// when(aes_cipher_for_op1.io.output_valid){
 	// 	printf("mmm-op1_compare_result: %x\n", op1_compare_result)
