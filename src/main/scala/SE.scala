@@ -300,7 +300,7 @@ class SE(val debug:Boolean, val canChangeKey: Boolean) extends Module{
 
 	// Pad with RNG
 	val bit64_randnum = PRNG(new MaxPeriodFibonacciLFSR(64, Some(scala.math.BigInt(64, scala.util.Random))))
-	val padded_result = Cat(seoperation.io.result, bit64_randnum, mid_op1_buffer.(315, 256), mid_op2_buffer.(315, 256), mid_inst_buffer)
+	val padded_result = Cat(seoperation.io.result, bit64_randnum, mid_op1_buffer(315, 256), mid_op2_buffer(315, 256), mid_inst_buffer)
 	val result_buffer = RegEnable(padded_result, seOpValid) // buf_lv3
 	if(debug){
 		when(result_valid_buffer){
