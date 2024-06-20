@@ -224,7 +224,8 @@ class SE(val debug:Boolean, val canChangeKey: Boolean) extends Module{
 
 	for (i <- 0 until 16) {
 		ciph_op1_calc_vec(i) := ciph_op1_calc((15 - i) * 8 + 7, (15 - i) * 8)
-		ciph_op1_comp_vec(i) := ciph_op1_comp((15 - i) * 8 + 7, (15 - i) * 8)
+		// ciph_op1_comp_vec(i) := ciph_op1_comp((15 - i) * 8 + 7, (15 - i) * 8)
+		ciph_op1_comp_vec(i) := ciph_op1_comp((i + 1) * 8 - 1, i * 8)
 		ciph_op2_calc_vec(i) := ciph_op2_calc((15 - i) * 8 + 7, (15 - i) * 8)
 		ciph_op2_comp_vec(i) := ciph_op2_comp((15 - i) * 8 + 7, (15 - i) * 8)
 	}
@@ -299,7 +300,7 @@ class SE(val debug:Boolean, val canChangeKey: Boolean) extends Module{
 
 	// Pad with RNG
 	val bit64_randnum = PRNG(new MaxPeriodFibonacciLFSR(64, Some(scala.math.BigInt(64, scala.util.Random))))
-	val padded_result = Cat(seoperation.io.result, bit64_randnum, mid_op1_buffer, mid_op2_buffer, mid_inst_buffer)
+	val padded_result = Cat(seoperation.io.result, bit64_randnum, mid_op1_buffer.(315, 256), mid_op2_buffer.(315, 256), mid_inst_buffer)
 	val result_buffer = RegEnable(padded_result, seOpValid) // buf_lv3
 	if(debug){
 		when(result_valid_buffer){
@@ -374,7 +375,7 @@ class SE(val debug:Boolean, val canChangeKey: Boolean) extends Module{
 	// 	printf("www-aes_cipher_for_op1.io.output_valid: %x\n", aes_cipher_for_op1.io.output_valid)
 	// 	printf("www-next_op1_compare_result_buffer_valid: %x\n", next_op1_compare_result_buffer_valid)
 	// }
-	when(aes_cipher_for_op1.io.output_valid){ //FIXME: op1_compare_result is 0 when aes_cipher_for_op1.io.output_valid is 1
+	when(aes_invcipher_secondhlf.io.output_valid){ //FIXME: op1_compare_result is 0 when aes_cipher_for_op1.io.output_valid is 1
 		printf("io.in.op1: %x\n", io.in.op1)
 		printf("rehashed_op1_bit: %x\n", rehashed_op1_bit)
 		printf("mid_op1_buffer: %x\n", mid_op1_buffer)
