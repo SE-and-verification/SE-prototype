@@ -67,8 +67,8 @@ class SE(val debug:Boolean, val canChangeKey: Boolean) extends Module{
 	key: preset expanded AES ROM key
 	*/
 	val seoperation = Module(new SEOperation(debug))
-	val aes_invcipher_firsthlf = Module(new AESDecrypt(rolled)) // get RDNUM + PLAINTEXT 
-	val aes_invcipher_secondhlf = Module(new AESDecrypt(rolled)) // get INST + HASH * 2
+	val aes_invcipher_firsthlf = Module(new AESDecrypt(rolled, 1)) // get RDNUM + PLAINTEXT 
+	val aes_invcipher_secondhlf = Module(new AESDecrypt(rolled, 3)) // get INST + HASH * 2
 
 	// For ciph_C
 	val aes_cipher_firsthlf = Module(new AESEncrypt(rolled))
@@ -224,8 +224,8 @@ class SE(val debug:Boolean, val canChangeKey: Boolean) extends Module{
 
 	for (i <- 0 until 16) {
 		ciph_op1_calc_vec(i) := ciph_op1_calc((15 - i) * 8 + 7, (15 - i) * 8)
-		// ciph_op1_comp_vec(i) := ciph_op1_comp((15 - i) * 8 + 7, (15 - i) * 8)
-		ciph_op1_comp_vec(i) := ciph_op1_comp((i + 1) * 8 - 1, i * 8)
+		ciph_op1_comp_vec(i) := ciph_op1_comp((15 - i) * 8 + 7, (15 - i) * 8)
+		// ciph_op1_comp_vec(i) := ciph_op1_comp((i + 1) * 8 - 1, i * 8)
 		ciph_op2_calc_vec(i) := ciph_op2_calc((15 - i) * 8 + 7, (15 - i) * 8)
 		ciph_op2_comp_vec(i) := ciph_op2_comp((15 - i) * 8 + 7, (15 - i) * 8)
 	}

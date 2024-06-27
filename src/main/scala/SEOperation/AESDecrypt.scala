@@ -17,12 +17,14 @@ class DecryptIO extends Bundle{
 // implements wrapper for AES cipher and inverse cipher
 // change Nk=4 for AES128, NK=6 for AES192, Nk=8 for AES256
 // change expandedKeyMemType= ROM, Mem, SyncReadMem
-class AESDecrypt(val rolled: Boolean) extends Module {
+class AESDecrypt(val rolled: Boolean, index:Int) extends Module {
   val KeyLength: Int = 4 * Params.rows
   val Nr: Int = 10 // 10, 12, 14 rounds
   val Nrplus1: Int = Nr + 1 // 10+1, 12+1, 14+1
   val EKDepth: Int = 16 // enough memory for any expanded key
   print(s"rolled: ${rolled}\n")
+  print(s"aes decrypt index: ${index}\n")
+
   val io = IO(new DecryptIO)
   if(!rolled){
     // val InvCipherRoundARK = Array.fill(3){
@@ -78,7 +80,8 @@ class AESDecrypt(val rolled: Boolean) extends Module {
   }
   else{
     // val invciphers = Array.fill(3){InvCipher(4, true)}
-    val invciphers = Array.fill(2){InvCipher(4, true)}
+    val invcipher_A = InvCipher(4, true, index )
+    val invcipher_B = InvCipher(4, true, index+1 )
 
     val address = RegInit(0.U(log2Ceil(EKDepth).W))
 
@@ -87,19 +90,19 @@ class AESDecrypt(val rolled: Boolean) extends Module {
     }.elsewhen(address =/= 0.U){
       address := address - 1.U
     }
-    invciphers(0).io.start := io.input_valid
-    invciphers(0).io.ciphertext := io.input_op1
-    invciphers(0).io.roundKey := io.input_roundKeys(address)
+    invcipher_A.io.start := io.input_valid
+    invcipher_A.io.ciphertext := io.input_op1
+    invcipher_A.io.roundKey := io.input_roundKeys(address)
 
-    invciphers(1).io.start := io.input_valid
-    invciphers(1).io.ciphertext := io.input_op2
-    invciphers(1).io.roundKey := io.input_roundKeys(address)
+    invcipher_B.io.start := io.input_valid
+    invcipher_B.io.ciphertext := io.input_op2
+    invcipher_B.io.roundKey := io.input_roundKeys(address)
 
     // invciphers(2).io.start := io.input_valid
     // invciphers(2).io.roundKey := io.input_roundKeys(address)
 
-    io.output_op1 := invciphers(0).io.state_out
-    io.output_op2 := invciphers(1).io.state_out
-    io.output_valid := invciphers(0).io.state_out_valid || invciphers(1).io.state_out_valid // || invciphers(2).io.state_out_valid
+    io.output_op1 := invcipher_A.io.state_out
+    io.output_op2 := invcipher_B.io.state_out
+    io.output_valid := invcipher_A.io.state_out_valid || invcipher_B.io.state_out_valid // || invciphers(2).io.state_out_valid
   }
 }

@@ -26,7 +26,7 @@ class AES(Nk: Int, unrolled: Int, SubBytes_SCD: Boolean, InvSubBytes_SCD: Boolea
 
   // Instantiate module objects
   val CipherModule = Cipher(Nk, SubBytes_SCD)
-  val InvCipherModule = InvCipher(Nk, InvSubBytes_SCD)
+  val InvCipherModule = InvCipher(Nk, InvSubBytes_SCD, 0)
 
   // A roundKey is Params.StateLength bytes, and 1+(10/12/14) (< EKDepth) of them are needed
   // Mem = combinational/asynchronous-read, sequential/synchronous-write = register banks
