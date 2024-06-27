@@ -16,7 +16,7 @@ SBT       = sbt
 
 VERILATOR_FLAGS =--debug -g3 -I obj_dir -I/usr/share/verilator/include module.cpp /usr/share/verilator/include/verilated.cpp
 
-VSE.o: verilator_generate clean
+VSE.o: verilator_generate
 	cd obj_dir; make -f VSE.mk ; cd ..
 
 verilator_generate: generate
