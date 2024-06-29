@@ -336,6 +336,8 @@ bit316_t SE::SECompute(bit316_t &op1, bit316_t &op2, __uint128_t cond, uint8_t i
 		SE::real_tickcount++;
 		// printf("SE::module->io_out_valid %d\n", SE::module->io_out_valid); // 0 all time
 	}
+	SE::tick();
+	SE::tick();
 	printf("io_out_valid\n");
 	unsigned int result_value[10] = {0}; 
 	memcpy(result_value, SE::module->io_out_result, op_n_size * sizeof(uint8_t));

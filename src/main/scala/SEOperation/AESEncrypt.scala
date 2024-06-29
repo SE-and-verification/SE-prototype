@@ -55,9 +55,11 @@ class AESEncrypt(val rolled: Boolean) extends Module {
   }else{
     val address = RegInit(0.U(log2Ceil(EKDepth).W))
 
-    when(io.input_valid) {
+    val tmp = RegInit(false.B)
+    when(io.input_valid && ~tmp) {
       address := 0.U
-    }.elsewhen(address =/= 0.U){
+      tmp     := true.B
+    }.elsewhen(address =/= Nr.U){
       address := address + 1.U
     }
     val cipher = Module(new Cipher(4, true))

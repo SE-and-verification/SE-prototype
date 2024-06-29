@@ -76,7 +76,7 @@ class AESDecrypt(val rolled: Boolean, index:Int) extends Module {
 
     io.output_op1 := InvCipherRoundNMC(0).io.state_out
     io.output_op2 := InvCipherRoundNMC(1).io.state_out
-    io.output_valid := InvCipherRoundNMC(0).io.output_valid || InvCipherRoundNMC(1).io.output_valid // || InvCipherRoundNMC(2).io.output_valid
+    io.output_valid := InvCipherRoundNMC(0).io.output_valid && InvCipherRoundNMC(1).io.output_valid // || InvCipherRoundNMC(2).io.output_valid
   }
   else{
     // val invciphers = Array.fill(3){InvCipher(4, true)}
@@ -84,9 +84,11 @@ class AESDecrypt(val rolled: Boolean, index:Int) extends Module {
     val invcipher_B = InvCipher(4, true, index+1 )
 
     val address = RegInit(0.U(log2Ceil(EKDepth).W))
-
-    when(io.input_valid) {
+    
+    val tmp = RegInit(false.B)
+    when(io.input_valid && ~tmp) {
       address := Nr.U
+      tmp     := true.B
     }.elsewhen(address =/= 0.U){
       address := address - 1.U
     }

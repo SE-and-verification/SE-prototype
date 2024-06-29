@@ -156,15 +156,17 @@ class SE(val debug:Boolean, val canChangeKey: Boolean) extends Module{
 
 	val n_result_valid_buffer = Wire(Bool())
 	val ready_for_input = RegInit(true.B)
-	val n_stage_valid = Wire(Bool())
+	// val n_stage_valid = Wire(Bool())
 	io.in.ready := ready_for_input
 
 	// valid_buffer := Mux(io.in.valid && io.in.ready, true.B, Mux(n_stage_valid, false.B, valid_buffer))
 
-	when(io.in.valid && io.in.ready) {
+	val tmp = RegInit(false.B)
+	when(io.in.valid && io.in.ready && ~tmp) {
 		valid_buffer := true.B
-	}.elsewhen(n_stage_valid) {
-		output_valid := false.B
+		tmp := true.B
+	}.otherwise{
+		valid_buffer := false.B
 	}
 
 	// printf("valid buffer: %x\n", valid_buffer);
@@ -180,25 +182,6 @@ class SE(val debug:Boolean, val canChangeKey: Boolean) extends Module{
 		ready_for_input := true.B
 	}
 
-	// if(debug){
-	// 	when(reset.asBool){
-	// 		printf("resetting\n")
-	// 	}
-	// 	when(io.in.valid && io.in.ready){
-	// 		printf("changed to false\n")
-	// 	}.elsewhen(io.out.valid && io.out.ready){
-	// 		printf("changed to true\n")
-	// 	}
-	// }
-	// if(debug){
-	// 	when(valid_buffer){
-	// 		printf("\n-----front----\n")
-	// 		printf("op1 buffer:%x\n",op1_buffer)
-	// 		printf("op2 buffer:%x\n",op2_buffer)
-	// 		printf("inst:%b\n",inst_buffer)
-	// 	}
-	// }
-
 	val op1_found = ciphers.contains(op1_buffer)
 	val op2_found = ciphers.contains(op2_buffer)
 	val op1_idx = ciphers.indexWhere(e => (e===op1_buffer))
@@ -208,7 +191,6 @@ class SE(val debug:Boolean, val canChangeKey: Boolean) extends Module{
 	val op2_val = plaintexts(op2_idx)
 
 	val all_match = op1_found && op2_found && cache_valid(op1_idx) && cache_valid(op2_idx)
-
 
 	// Feed the ciphertexts into the invcipher
 	val ciph_op1 = op1_buffer(255,0)
@@ -241,12 +223,8 @@ class SE(val debug:Boolean, val canChangeKey: Boolean) extends Module{
 
 	aes_invcipher_firsthlf.io.input_valid := valid_buffer && (!all_match)
 	aes_invcipher_secondhlf.io.input_valid := valid_buffer && (!all_match)
-
-	// when(aes_invcipher.io.input_valid){
-	// 	printf("op1_buffer: %x\n",op1_buffer)
-	// 	printf("op2_buffer: %x\n",op2_buffer)
-	// }
-	n_stage_valid := all_match || valid_buffer
+	
+	// n_stage_valid := all_match || valid_buffer
 
 	// use aes_invcipher_firsthlf.io.input_valid for simplicity
 	val mid_inst_buffer = RegEnable(inst_buffer, aes_invcipher_firsthlf.io.input_valid) // buf_lv2
@@ -258,14 +236,20 @@ class SE(val debug:Boolean, val canChangeKey: Boolean) extends Module{
 	val decrypted_op1_buffer_valid 	= RegInit(false.B) // buf_lv2
 	val decrypted_op2_buffer 		= RegEnable(aes_invcipher_secondhlf.io.output_op2, aes_invcipher_secondhlf.io.output_valid) // buf_lv2
 	val decrypted_op2_buffer_valid 	= RegInit(false.B) // buf_lv2
-	when(aes_invcipher_firsthlf.io.input_valid){
+
+	val tmp2 = RegInit(false.B)
+	when(aes_invcipher_firsthlf.io.output_valid && ~tmp2){
 		decrypted_op1_buffer_valid := true.B
 		decrypted_op2_buffer_valid := true.B
-	} 
+		tmp2 := true.B
+	}.otherwise{
+		decrypted_op1_buffer_valid := false.B
+		decrypted_op2_buffer_valid := false.B
+	}
 
 	// Feed the decrypted values to the seoperation module. Depends on whether the data is encrypted when it comes in.
 	// Reverse the byte order of decrypted plaintext so we can convert them into uint with Chisel infrastructure.
-	seoperation.io.inst 	:= Mux(all_match && valid_buffer, inst_buffer, mid_inst_buffer)
+	seoperation.io.inst 	:= Mux(valid_buffer, inst_buffer, mid_inst_buffer)
 	val seOpValid 			= (aes_invcipher_firsthlf.io.output_valid && aes_invcipher_secondhlf.io.output_valid) || (all_match && valid_buffer)
 	seoperation.io.valid 	:= seOpValid
 	val op1_bit 			= Cat(aes_invcipher_secondhlf.io.output_op1)
@@ -277,7 +261,7 @@ class SE(val debug:Boolean, val canChangeKey: Boolean) extends Module{
 	seoperation.io.op2_input := Mux(all_match && valid_buffer, op2_val, Mux(mid_inst_buffer(7,5) === 5.U(3.W), op2_bit, op2_asUInt))
 
 
-	// TODO: reconstruct the hash and compare
+	// Reconstruct the hash and compare
 
 	// Encrypt decrypted part of op1 and op2
 	aes_cipher_for_op1.io.input_text 		:= decrypted_op1_buffer
@@ -288,10 +272,10 @@ class SE(val debug:Boolean, val canChangeKey: Boolean) extends Module{
 	aes_cipher_for_op2.io.input_roundKeys 	:= key
 
 	val rehashed_op1_bit 		= Cat(aes_cipher_for_op1.io.output_text)
-	val trimmed_rehashed_op1 	= rehashed_op1_bit(59, 0)
+	val trimmed_rehashed_op1 	= rehashed_op1_bit(127, 68)
 	val op1_compare_result 		= (trimmed_rehashed_op1 === mid_op1_buffer(315, 256))
 	val rehashed_op2_bit 		= Cat(aes_cipher_for_op2.io.output_text)
-	val trimmed_rehashed_op2 	= rehashed_op2_bit(59, 0)
+	val trimmed_rehashed_op2 	= rehashed_op2_bit(127, 68)
 	val op2_compare_result 		= (trimmed_rehashed_op2 === mid_op2_buffer(315, 256))
 
   	// Once we receive the result from the seoperation, we latch the result first.
@@ -327,10 +311,6 @@ class SE(val debug:Boolean, val canChangeKey: Boolean) extends Module{
 	aes_cipher_firsthlf.io.input_text := aes_input_reverse_bit(127, 0).asTypeOf(aes_cipher_firsthlf.io.input_text)
 	aes_cipher_firsthlf.io.input_valid := result_valid_buffer
 	aes_cipher_firsthlf.io.input_roundKeys := key
-	
-	// when(result_valid_buffer){
-	// 	printf("result_valid_buffer : %x\n", result_valid_buffer)
-	// }
 
 	aes_cipher_secondhlf.io.input_text := aes_input_reverse_bit(255, 128).asTypeOf(aes_cipher_secondhlf.io.input_text)
 	aes_cipher_secondhlf.io.input_valid := result_valid_buffer
@@ -369,26 +349,26 @@ class SE(val debug:Boolean, val canChangeKey: Boolean) extends Module{
 	}
 
 	// when(aes_cipher_for_op1.io.output_valid){
-	// 	printf("trimmed_rehashed_op1: %x\n: ", trimmed_rehashed_op1)
+	// 	printf("decrypted_op1_buffer: %x\n", Cat(decrypted_op1_buffer))
+	// 	printf("trimmed_rehashed_op1: %x\n", trimmed_rehashed_op1)
 	// 	printf("mid_op1_buffer(315, 256): %x\n", mid_op1_buffer(315, 256))
-	// 	printf("www-op1_compare_result: %x\n", op1_compare_result)
-	// 	printf("www-aes_cipher_for_op1.io.output_valid: %x\n", aes_cipher_for_op1.io.output_valid)
-	// 	printf("www-next_op1_compare_result_buffer_valid: %x\n", next_op1_compare_result_buffer_valid)
+	// 	printf("op1_compare_result: %x\n", op1_compare_result)
+	// 	printf("aes_cipher_for_op1.io.output_valid: %x\n", aes_cipher_for_op1.io.output_valid)
+	// 	printf("next_op1_compare_result_buffer_valid: %x\n", next_op1_compare_result_buffer_valid)
 	// }
-	when(aes_invcipher_secondhlf.io.output_valid){ //FIXME: op1_compare_result is 0 when aes_cipher_for_op1.io.output_valid is 1
-		printf("io.in.op1: %x\n", io.in.op1)
-		printf("rehashed_op1_bit: %x\n", rehashed_op1_bit)
-		printf("mid_op1_buffer: %x\n", mid_op1_buffer)
-		printf("decrypted_op1_buffer: %x\n", Cat(decrypted_op1_buffer))
-		printf("ciph_op1(255, 128): %x\n", ciph_op1(255, 128))
-		printf("aes_invcipher_secondhlf.io.input_op1: %x\n", Cat(aes_invcipher_secondhlf.io.input_op1))
-		printf("aes_invcipher_secondhlf.io.output_op1: %x\n", Cat(aes_invcipher_secondhlf.io.output_op1))
-		printf("aes_cipher_for_op1.io.input_text: %x\n", Cat(aes_cipher_for_op1.io.input_text))
-		// printf("op1_compare_result: %x\n", op1_compare_result)
-		// printf("aes_cipher_for_op1.io.output_valid: %x\n", aes_cipher_for_op1.io.output_valid)
-		// printf("next_op1_compare_result_buffer_valid: %x\n", next_op1_compare_result_buffer_valid)
-		// Sample: 6abd05df8d9a5e1_6abd05df8d9a5e10efbe4c68a468e0a2de99be30bdaaa370ae07abe46a9a1813
-	}
+	// when(aes_invcipher_secondhlf.io.output_valid){
+	// 	printf("io.in.op1: %x\n", io.in.op1)
+	// 	printf("rehashed_op1_bit: %x\n", rehashed_op1_bit)
+	// 	printf("mid_op1_buffer: %x\n", mid_op1_buffer)
+	// 	printf("decrypted_op1_buffer: %x\n", Cat(decrypted_op1_buffer))
+	// 	printf("ciph_op1(255, 128): %x\n", ciph_op1(255, 128))
+	//  printf("aes_invcipher_secondhlf.io.input_op1: %x\n", Cat(aes_invcipher_secondhlf.io.input_op1))
+	//  printf("aes_invcipher_secondhlf.io.output_op1: %x\n", Cat(aes_invcipher_secondhlf.io.output_op1))
+	// 	printf("aes_cipher_for_op1.io.input_text: %x\n", Cat(aes_cipher_for_op1.io.input_text))
+	// 	printf("op1_compare_result: %x\n", op1_compare_result)
+	// 	printf("aes_cipher_for_op1.io.output_valid: %x\n", aes_cipher_for_op1.io.output_valid)
+	// 	printf("next_op1_compare_result_buffer_valid: %x\n", next_op1_compare_result_buffer_valid)
+	// }
 	// when(aes_cipher_for_op1.io.output_valid){
 	// 	printf("mmm-op1_compare_result: %x\n", op1_compare_result)
 	// 	printf("mmm-aes_cipher_for_op1.io.output_valid: %x\n", aes_cipher_for_op1.io.output_valid)
@@ -418,39 +398,49 @@ class SE(val debug:Boolean, val canChangeKey: Boolean) extends Module{
 
 	// Output valid when encryption for ciph_C result valid and two compare results high
 
-	when(op1_compare_result_buffer){
-		printf("\naes_cipher_firsthlf-----%x----\n", aes_cipher_firsthlf.io.output_valid)
-		printf("\naes_cipher_secondhlf-----%x----\n", aes_cipher_secondhlf.io.output_valid) 
-		printf("\nop1_compare_result_buffer-----%x----\n", op1_compare_result_buffer) // 0 all time
-		printf("\nop1_compare_result_buffer_valid-----%x----\n", op1_compare_result_buffer_valid)
-		printf("\nop2_compare_result_buffer-----%x----\n", op2_compare_result_buffer) // 0 all time
-		printf("\nop2_compare_result_buffer_valid-----%x----\n", op2_compare_result_buffer_valid)
-	}
+	// when(op1_compare_result_buffer){
+	// 	printf("\naes_cipher_firsthlf-----%x----\n", aes_cipher_firsthlf.io.output_valid)
+	// 	printf("\naes_cipher_secondhlf-----%x----\n", aes_cipher_secondhlf.io.output_valid) 
+	// 	printf("\nop1_compare_result_buffer-----%x----\n", op1_compare_result_buffer) // 0 all time
+	// 	printf("\nop1_compare_result_buffer_valid-----%x----\n", op1_compare_result_buffer_valid)
+	// 	printf("\nop2_compare_result_buffer-----%x----\n", op2_compare_result_buffer) // 0 all time
+	// 	printf("\nop2_compare_result_buffer_valid-----%x----\n", op2_compare_result_buffer_valid)
+	// }
 	// when(aes_cipher_secondhlf.io.output_valid){
-	// 	printf("\naes_cipher_secondhlf-----%x----\n", aes_cipher_secondhlf.io.output_valid) // 0 all time
+	// 	printf("\naes_cipher_secondhlf-----%x----\n", aes_cipher_secondhlf.io.output_valid) 
+	// 	printf("\naes_cipher_firsthlf-----%x----\n", aes_cipher_firsthlf.io.output_valid) 
+	// 	printf("\nop1_compare_result_buffer-----%x----\n", op1_compare_result_buffer)
+	// 	printf("\nop1_compare_result_buffer_valid-----%x----\n", op1_compare_result_buffer_valid)
+	// 	printf("\nop2_compare_result_buffer-----%x----\n", op2_compare_result_buffer)
+	// 	printf("\nop2_compare_result_buffer_valid-----%x----\n", op2_compare_result_buffer_valid)
 	// }
 	// when(op1_compare_result_buffer){
-	// 	printf("\nop1_compare_result_buffer-----%x----\n", op1_compare_result_buffer) // 0 all time
+	// 	printf("\naes_cipher_secondhlf-----%x----\n", aes_cipher_secondhlf.io.output_valid) 
+	// 	printf("\naes_cipher_firsthlf-----%x----\n", aes_cipher_firsthlf.io.output_valid) 
+	// 	printf("\nop1_compare_result_buffer-----%x----\n", op1_compare_result_buffer)
+	// 	printf("\nop1_compare_result_buffer_valid-----%x----\n", op1_compare_result_buffer_valid)
+	// 	printf("\nop2_compare_result_buffer-----%x----\n", op2_compare_result_buffer)
+	// 	printf("\nop2_compare_result_buffer_valid-----%x----\n", op2_compare_result_buffer_valid)
 	// }
 	// when(op2_compare_result_buffer){
 	// 	printf("\nop2_compare_result_buffer-----%x----\n", op2_compare_result_buffer) // 0 all time
+	// 	printf("\nop2_compare_result_buffer_valid-----%x----\n", op2_compare_result_buffer_valid) // 0 all time
+
 	// }
 	
-	when((aes_cipher_firsthlf.io.output_valid && aes_cipher_secondhlf.io.output_valid) && (op1_compare_result_buffer && op1_compare_result_buffer_valid) && (op2_compare_result_buffer && op2_compare_result_buffer_valid)) {
+	when((op1_compare_result_buffer && op1_compare_result_buffer_valid) && (op2_compare_result_buffer && op2_compare_result_buffer_valid)) {
 		output_valid := true.B
 	}.elsewhen(io.out.valid && io.out.ready) {
 		output_valid := false.B
 	}
 
 	// C output is 0 when either of compare results is false
-	when((op1_compare_result_buffer && op1_compare_result_buffer_valid) && (op2_compare_result_buffer && op2_compare_result_buffer_valid)){
+	// FIXME: Changed output logic
+	when(aes_cipher_firsthlf.io.output_valid && aes_cipher_secondhlf.io.output_valid){
 		output_buffer := output_connect
-	}.otherwise {
-		output_buffer := 0.U
 	}
 
 	io.out.valid 				:= output_valid
-	// io.out.ready                := output_valid // FIXME
 	io.out.result 				:= output_buffer
 	io.out.op1_compare 			:= op1_compare_result_buffer
 	io.out.op2_compare 			:= op2_compare_result_buffer
