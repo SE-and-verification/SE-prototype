@@ -53,7 +53,7 @@ bit128_t encrypt_64_128(uint64_t* value) {
     // uint64_t pad = 0x313198a2e0370734;    //Pad for AES TEST
     // uint64_t pad = 0x6572732064657363;      //Pad for Simon Test
     bit128_t plaintext(*value, pad);
-    // printf("PLA:"); plaintext.print_hex();
+    // printf("encrypt_64_128_plaintext:"); plaintext.print_hex();
 
     switch(CIPHER) {
         case AES128:

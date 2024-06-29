@@ -24,6 +24,13 @@ bit128_t aes128_encrypt_128(bit128_t plaintext){
 	uint8_t temp_ciphertext[NUM_OF_NIST_KEYS];
 	tc_aes_encrypt(temp_ciphertext, plaintext.value, &s_g);
 
+	// printf("temp_ciphertext array elements:\n");
+    // for (int i = 0; i < NUM_OF_NIST_KEYS; i++) {
+    //     printf("%x ", temp_ciphertext[i]);
+    // }
+    // printf("\n");
+	// printf("bit128_t(temp_ciphertext):"); bit128_t(temp_ciphertext).print_hex();
+	// printf("\n");
     return bit128_t(temp_ciphertext);
 }
 

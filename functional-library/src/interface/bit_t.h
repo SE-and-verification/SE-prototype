@@ -242,76 +242,6 @@ public:
 
 } bit128_t;
 
-
-// typedef struct bit64_t{
-//     uint8_t value[8]; //Index 0 contains LSB
-//     char str[65]; //LSB stoerd at index 64
-
-// public:
-//     //Constructors
-//     bit64_t(){
-//         for(int i=0; i<8; i++){
-//             value[i] = 0x00;
-//         } 
-//     }
-//     bit64_t(uint64_t upper, uint8_t lower){
-//         initByte(upper, lower);
-//     }
-
-//     void initByte(uint64_t upper, uint8_t lower){
-//         value[0] = lower;
-//         for(int i=1; i<7; i++){ //Skip MSB of Upper!
-//             value[i] = upper & 0xFF;
-//             upper = upper >> 8;
-//         } 
-//     }
-
-//     void init(uint64_t upper, uint64_t lower){
-//         for(int i=0; i<8; i++){
-//             value[i] = lower & 0xFF ;
-//             lower = lower >> 8;
-//         }
-//         for(int i=8; i<16; i++){
-//             value[i] = upper & 0xFF;
-//             upper = upper >> 8;
-//         } 
-//     }
-
-//     char* c_str(){
-//         for(int i=0; i<8; i++){
-//             const char* i_str = std::bitset<8>(value[i]).to_string().c_str(); //LSB stored at index 7
-//             for (int j=0; j<8; j++){
-//                 str[(8*(8-i-1)) +j] = i_str[j];
-//             }
-//         }  
-//         str[64] = '\0';
-//         return str;
-//     }
-
-//     // uint64_t getLower(){
-//     //     uint64_t ret = 0;
-//     //     for(int i=0; i<8; i++){
-//     //         if(i != 0){ret = ret << 8;} //Shift previous addition
-//     //         ret = ret + ((uint64_t)value[8-i-1]); 
-//     //     }
-//     //     return ret;
-//     // }
-
-//     uint8_t getLowerByte(){
-//         return value[0];
-//     }
-
-//     // uint64_t getUpper(){
-//     //     uint64_t ret = 0;
-//     //     for(int i=8; i<16; i++){
-//     //         ret = ret + value[i];
-//     //         ret = ret << 8;
-//     //     }
-//     //     return ret;
-//     // }
-
-// } bit64_t;
-
 class bit316_t {
 
 private:
@@ -358,7 +288,6 @@ public:
         } 
     }
 
-
     bit316_t(const std::vector<uint8_t> &full_value) {
         // Convert from vector
         for(int i = 0; i < 40; i++) {
@@ -369,11 +298,11 @@ public:
     bit316_t(const unsigned int* full_value) {
         // Convert from unsigned int array 
         for(int i = 0; i < 10; i++) {
-            value[i * 4] = (full_value[i] >> 24) && 0xFF;
-            value[i * 4 + 1] = (full_value[i] >> 16) && 0xFF;
-            value[i * 4 + 2] = (full_value[i] >> 8) && 0xFF;
-            value[i * 4 + 3] = full_value[i] && 0xFF;
-        } 
+            value[i * 4] = (uint8_t)((full_value[i] >> 24) & 0xFF);
+            value[i * 4 + 1] = (uint8_t)(full_value[i] >> 16) & 0xFF;
+            value[i * 4 + 2] = (uint8_t)(full_value[i] >> 8) & 0xFF;
+            value[i * 4 + 3] = (uint8_t)full_value[i] & 0xFF;
+        }
     }
 
     // ***Value Access***
