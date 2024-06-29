@@ -63,22 +63,30 @@ public:
         /* Store full_value in 8-bit segments */
         memcpy(this->value, &full_value, sizeof(this->value));
     }
-    __uint128_t convert_to_128(){
+    __uint128_t convert_to_128() {
+        // Warning: convert_to_128() will inverse the order of array elements.
+        // value: [11][22][33][44][55][66][77][88][99][00][aa][bb][cc][dd][ee][ff]
+        // result: ffeeddccbbaa00998877665544332211
         __uint128_t result = 0;
         memcpy(&result, this->value, sizeof(this->value));
         return result;
     }
-    void init(uint64_t upper_value, uint64_t lower_pad){
-        /* Break and store upper_value in 8-bit segments */
-        for(int i=7; i>=0; i--){
-            value[i] = upper_value & 0xFF ; 
+
+    void init(uint64_t upper_value, uint64_t lower_pad) {
+        // Break and store upper_value and lower_pad in 8-bit segments
+        // Byte Order:
+        // upper_value: 0x1122334455667788
+        // lower_pad: 0x9900aabbccddeeff
+        // result: [11][22][33][44][55][66][77][88][99][00][aa][bb][cc][dd][ee][ff]
+        //      MSB *                                                        LSB *
+        // value[0][XX]                                               value[15][XX]
+
+        for(int i = 7; i >= 0; i--) {
+            value[i] = upper_value & 0xFF;
+            value[i + 8] = lower_pad & 0xFF; 
             upper_value = upper_value >> 8;
-        }
-        /* Break and store lower_pad in 8-bit segments */
-        for(int i=15; i>=8; i--){
-            value[i] = lower_pad & 0xFF;
             lower_pad = lower_pad >> 8;
-        } 
+        }
     }
 
     /******** VALUE ACCESS FUNCTIONS ********/
