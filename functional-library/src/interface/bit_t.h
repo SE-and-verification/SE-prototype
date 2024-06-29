@@ -138,9 +138,9 @@ public:
 
     void print_hex(){
         char* to_print = get_hex_cstr();
-        printf("\t0x");
+        // printf("\t0x");
         for(int i=0; i<32; i+=2){
-            printf(" %c%c", to_print[i], to_print[i+1]);
+            printf("%c%c ", to_print[i], to_print[i+1]);
         }
         printf("\n");
     }
