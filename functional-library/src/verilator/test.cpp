@@ -67,6 +67,14 @@ int main() {
 	setParameters();
 	printf("Finish setting parameters.\n---\n");
 	
+	// Test Zone
+	printf("Testing Output Zone Begins.\n\n");
+	// uint8_t test_array[16] = {0x2c, 0x1c, 0xa7, 0x76, 0xab, 0x19, 0x4b, 0x70, 0x3e, 0xee, 0xf2, 0x9a, 0x45, 0xfa, 0x99, 0x99};
+	// bit128_t test_12345(test_array);
+	// __uint128_t num_12345 = test_12345.convert_to_128();
+	// printf("%x\n", (unsigned int) (num_12345 & 0xFF));
+	printf("Testing Output Zone Ends.\n---\n");
+	
 	// generate SE simulator
 	printf("Begin generating SE simulator.\n");
 	SE se_simulator;
@@ -77,11 +85,11 @@ int main() {
 	enc_lib::enc_int l1 = 1;
 	enc_lib::enc_int l2 = 2;
 	printf("\t(l1) Ciphertext_A (lower 128 bits): ");
-	l1.ciphertext.print_hex();
+	l1.ciphertext.print_hex(); // result: 13 18 9a 6a e4 ab 07 ae 70 a3 aa bd 30 be 99 de
 	printf("\t(l1) Plaintext_A (lower 128 bits): ");
 	printf("%x\n", l1.GET_DECRYPTED_VALUE());
 	printf("\t(l2) Ciphertext_B (lower 128 bits): ");
-	l2.ciphertext.print_hex();
+	l2.ciphertext.print_hex(); // result: c7 6e 8f cf 7a d0 fe 9b 39 e0 83 73 9c be 26 c2
 	printf("\t(l2) Plaintext_B (lower 128 bits): ");
 	printf("%x\n\n", l2.GET_DECRYPTED_VALUE());
 	printf("Finish generating enc_int.\n---\n");
@@ -91,9 +99,7 @@ int main() {
 	// Generating plaintext array
 	// Structure: [rtsni'][Y_hsh][X_hsh] (old)
 	uint8_t plaintext_A[16] = {0x2c, 0x1c, 0xa7, 0x76, 0xab, 0x19, 0x4b, 0x70, 0x3e, 0xee, 0xf2, 0x9a, 0x45, 0xfa, 0x99, 0x99};
-	// uint8_t plaintext_A[16] = {0x99, 0x99, 0xfa, 0x45, 0x9a, 0xf2, 0xee, 0x3e, 0x70, 0x4b, 0x19, 0xab, 0x76, 0xa7, 0x1c, 0x0c};
 	uint8_t plaintext_B[16] = {0x3a, 0x9b, 0xcb, 0xda, 0x01, 0xa9, 0xd7, 0x3e, 0xdd, 0x95, 0x02, 0x90, 0x1c, 0x5f, 0xdb, 0x25};
-	// uint8_t plaintext_B[16] = {0x25, 0xdb, 0x5f, 0x1c, 0x90, 0x02, 0x95, 0xdd, 0x3e, 0xd7, 0xa9, 0x01, 0xda, 0xcb, 0x9b, 0x0a};
 	// Convert to bit128_t
 	bit128_t plaintext_A_bit128t(plaintext_A);
 	bit128_t plaintext_B_bit128t(plaintext_B);
@@ -129,8 +135,16 @@ int main() {
         init_A_uint128 = (init_A_uint128 << 8) | init_A.value[i];
 		init_B_uint128 = (init_B_uint128 << 8) | init_B.value[i];
     }
-	bit316_t opA(l1.ciphertext.convert_to_128(), init_A_uint128, (uint64_t) (init_A_uint128 >> 68));
-	bit316_t opB(l2.ciphertext.convert_to_128(), init_B_uint128, (uint64_t) (init_B_uint128 >> 68));
+	uint8_t temp_trans_l1[16] = {0};
+	uint8_t temp_trans_l2[16] = {0};
+	for(int i = 0; i < 16; ++i) {
+		temp_trans_l1[i] = l1.ciphertext.value[15 - i];
+		temp_trans_l2[i] = l2.ciphertext.value[15 - i];
+	}
+	bit128_t trans_l1_temp(temp_trans_l1);
+	bit128_t trans_l2_temp(temp_trans_l2);
+	bit316_t opA(trans_l1_temp.convert_to_128(), init_A_uint128, (uint64_t) (init_A_uint128 >> 68));
+	bit316_t opB(trans_l2_temp.convert_to_128(), init_B_uint128, (uint64_t) (init_B_uint128 >> 68));
 	uint8_t* ptr_A = opA.get_value();
 	uint8_t* ptr_B = opB.get_value();
 	printf("\t(l1) opA input:\n");
