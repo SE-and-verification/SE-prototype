@@ -218,7 +218,26 @@ int main() {
 
 	// Print hardware-generated value
 	printf("> Hardware-generated value:\n\n");
-	// TODO:
+	printf("\tCiphertext of result (lower 128 bits): ");
+	for(int i = 0; i < 16; ++i) {
+        printf("%02x ", ptr_C[i + 24]);
+    }
+	printf("\n");
+	printf("\tPlaintext of result (lower 128 bits): ");
+	uint8_t l_128_arr[16] = {0};
+	for(int i = 0; i < 16; ++i) {
+        l_128_arr[i] = ptr_C[i + 24];
+    }
+	// uint8_t l_128_arr[16] = {0x90, 0xcb, 0x45, 0x61, 0x1c, 0x31, 0x05, 0xc8, 0x46, 0x24, 0xb2, 0xac, 0x12, 0xcb, 0x5b, 0x74};
+	bit128_t l_128_temp(l_128_arr);
+	int l3_SE_l128_plaintext = (int) decrypt_128_64(l_128_temp);
+	printf("%d\n\n", l3_SE_l128_plaintext);
+	printf("> Result:\n\n");
+	if(l3.GET_DECRYPTED_VALUE() == l3_SE_l128_plaintext) {
+		printf("\tThe ALU computation part is correct!\n\n");
+	} else {
+		printf("\tThe ALU computation part is incorrect!\n\n");
+	}
 	printf("Finish ALU computation part (lower 128 bits) check.\n\n");
 
 	printf("------------END------------\n");
