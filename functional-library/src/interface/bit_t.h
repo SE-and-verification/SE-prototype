@@ -272,12 +272,29 @@ public:
     }
 
     bit316_t(__uint128_t ciphtext_lower, __uint128_t ciphtext_upper, uint64_t hash) {
-        // Store lower half into LS 128 bits
+        // Store lower half into lower 128 bits
         for(int i = 39; i >= 24; i--) {
             value[i] = (ciphtext_lower) & 0xFF;
             ciphtext_lower = ciphtext_lower >> 8;
         }
-        // Store upper half into middle 128 bits 
+        // Store upper half into upper 128 bits 
+        for(int i = 23; i >= 8; i--) {
+            value[i] = (ciphtext_upper) & 0xFF;
+            ciphtext_upper = ciphtext_upper >> 8;
+        }
+        // Store hash into MS 60 (64) bits
+        for(int i = 7; i >= 0; i--) {
+            value[i] = (hash) & 0xFF;
+            hash = hash >> 8;
+        }
+    }
+
+    bit316_t(uint8_t* ciphtext_lower, __uint128_t ciphtext_upper, uint64_t hash) {
+        // Store lower half into lower 128 bits
+        for(int i = 0; i < 16; ++i) {
+            value[i + 24] = ciphtext_lower[i];
+        }
+        // Store upper half into upper 128 bits 
         for(int i = 23; i >= 8; i--) {
             value[i] = (ciphtext_upper) & 0xFF;
             ciphtext_upper = ciphtext_upper >> 8;
