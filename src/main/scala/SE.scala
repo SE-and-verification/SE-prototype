@@ -47,14 +47,26 @@ class Plaintext_Reverse_Connector extends Module {
 	val op1_hash 		= io.op1(315, 256)
 	val op2_hash 		= io.op2(315, 256)
 	val connect_result 	= Cat(op1_hash, op2_hash, io.inst)
+	val integrityWire = Wire(Vec(Params.new_integrity_length, UInt(8.W)))
+
+  	// Split the 128-bit connect_result into 16 8-bit chunks
+  	for (i <- 0 until Params.new_integrity_length) {
+    	integrityWire(i) := connect_result((i+1)*8-1, i*8)
+  	}
 	// Reverse the byte order so we can convert them into uint with Chisel infrastructure.
 	// Here new_integrity_length = (60 + 60 + 8) / 8 = 16
 	val connect_result_reverse = Wire(Vec(Params.new_integrity_length, UInt(8.W)))
 	for(i <- 0 until Params.new_integrity_length){
-		connect_result_reverse(i) := connect_result(Params.new_integrity_length - i - 1)
+		connect_result_reverse(i) := integrityWire(Params.new_integrity_length - i - 1)
 	}
 	// Connect the module output
-	io.out := connect_result_reverse
+	io.out := integrityWire
+
+	// printf("op1_hash: %x\n", op1_hash)
+	// printf("op2_hash: %x\n", op2_hash)
+	// printf("inst: %x\n", io.inst)
+	// printf("connect_result: %x\n", connect_result)
+	// printf("integrityWire: %x\n", Cat(integrityWire))
 }
 
 class SE(val debug:Boolean, val canChangeKey: Boolean) extends Module{
@@ -131,10 +143,26 @@ class SE(val debug:Boolean, val canChangeKey: Boolean) extends Module{
 	val connected_reversed_plaintext_buffer = Wire(Vec(Params.StateLength, UInt(8.W)))
 	connected_reversed_plaintext_buffer := Plaintext_Reverse_Connector_0.io.out
 
+	val hash_C_input_valid = Reg(Bool())
+	val tmp3 = RegInit(false.B)
+	when(io.in.valid && io.in.ready && ~tmp3) {
+		hash_C_input_valid := true.B
+		tmp3 := true.B
+	}.otherwise{
+		hash_C_input_valid := false.B
+	}
+
+	when(hash_C_input_valid){ //FIXME: SEEMS PROBLEM WITH CIPHER_C
+		printf("aes_cipher_for_hash_C.io.input_text: %x\n", Cat(aes_cipher_for_hash_C.io.input_text))
+	}
+	when(aes_cipher_for_hash_C.io.output_valid){
+		printf("aes_cipher_for_hash_C.io.output_text: %x\n", Cat(aes_cipher_for_hash_C.io.output_text))
+	}
+
 	// Encrypt the connected result
 	aes_cipher_for_hash_C.io.input_text 		:= connected_reversed_plaintext_buffer
-	aes_cipher_for_hash_C.io.input_valid 		:= io.in.valid
 	aes_cipher_for_hash_C.io.input_roundKeys 	:= key
+	aes_cipher_for_hash_C.io.input_valid 		:= hash_C_input_valid
 
 	/*----------------------buf_lv2----------------------*/
 	// latch the hash_C_original into the buffer
@@ -250,16 +278,24 @@ class SE(val debug:Boolean, val canChangeKey: Boolean) extends Module{
 	// Feed the decrypted values to the seoperation module. Depends on whether the data is encrypted when it comes in.
 	// Reverse the byte order of decrypted plaintext so we can convert them into uint with Chisel infrastructure.
 	seoperation.io.inst 	:= Mux(valid_buffer, inst_buffer, mid_inst_buffer)
-	val seOpValid 			= (aes_invcipher_firsthlf.io.output_valid && aes_invcipher_secondhlf.io.output_valid) || (all_match && valid_buffer)
+	val seOpValid 			= aes_invcipher_firsthlf.io.output_valid // || (all_match && valid_buffer)
 	seoperation.io.valid 	:= seOpValid
-	val op1_bit 			= Cat(aes_invcipher_secondhlf.io.output_op1)
-	val op2_bit 			= Cat(aes_invcipher_secondhlf.io.output_op2)
+	val op1_bit 			= Cat(aes_invcipher_firsthlf.io.output_op1)
+	val op2_bit 			= Cat(aes_invcipher_firsthlf.io.output_op2)
 	val op1_asUInt 			= op1_bit(127, 64).do_asUInt // get plain_A
 	val op2_asUInt 			= op2_bit(127, 64).do_asUInt // get plain_B
 
 	seoperation.io.op1_input := Mux(all_match && valid_buffer, op1_val, Mux(mid_inst_buffer(7,5) === 5.U(3.W), op1_bit, op1_asUInt))
 	seoperation.io.op2_input := Mux(all_match && valid_buffer, op2_val, Mux(mid_inst_buffer(7,5) === 5.U(3.W), op2_bit, op2_asUInt))
 
+	// when(seOpValid){
+	// 		printf("op1_bit:%x\n", op1_bit)
+	// 		printf("op2_bit:%x\n", op2_bit)
+	// 		printf("op1_asUInt:%x\n", op1_asUInt)
+	// 		printf("op2_asUInt:%x\n", op2_asUInt)
+	// 		printf("seoperation.io.op1_input:%x\n", seoperation.io.op1_input)
+	// 		printf("seoperation.io.op2_input:%x\n", seoperation.io.op2_input)
+	// }
 
 	// Reconstruct the hash and compare
 
@@ -286,13 +322,11 @@ class SE(val debug:Boolean, val canChangeKey: Boolean) extends Module{
 	val bit64_randnum = PRNG(new MaxPeriodFibonacciLFSR(64, Some(scala.math.BigInt(64, scala.util.Random))))
 	val padded_result = Cat(seoperation.io.result, bit64_randnum, mid_op1_buffer(315, 256), mid_op2_buffer(315, 256), mid_inst_buffer)
 	val result_buffer = RegEnable(padded_result, seOpValid) // buf_lv3
-	if(debug){
-		when(result_valid_buffer){
-			printf("\n-----back----\n")
-			printf("padded_result:%x\n",result_buffer)
-			printf("seoperation.io.result:%x\n",seoperation.io.result)
-		}
+		
+	when(seOpValid){
+		printf("seoperation.io.result:%x\n",seoperation.io.result)
 	}
+
 	val result_plaintext_buffer = RegInit(0.U(64.W))
 	when(seOpValid){
 		result_plaintext_buffer := seoperation.io.result

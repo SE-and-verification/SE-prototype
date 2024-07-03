@@ -354,7 +354,6 @@ bit316_t SE::SECompute(bit316_t &op1, bit316_t &op2, __uint128_t cond, uint8_t i
     printf("\n");
 	printf("result_value assigned\n");
 	bit316_t result(result_value);
-	result.print_hex();
 	printf("[[[[----------Leave SE::SECompute()----------]]]]\n");
 	// uint8_t num_cycle = 0;
 	// memcpy(&num_cycle, &SE::module->io_out_cntr, sizeof(SE::module->io_out_cntr));
