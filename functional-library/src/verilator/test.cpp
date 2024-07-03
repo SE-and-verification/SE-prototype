@@ -82,6 +82,10 @@ int main() {
 	
 	// Test Zone
 	printf("Testing Output Zone Begins.\n\n");
+	// uint8_t test[16] = {0x13, 0x18, 0x9a, 0x6a, 0xe4, 0xab, 0x07, 0xae, 0x70, 0xa3, 0xaa, 0xbd, 0x30, 0xbe, 0x99, 0xde};
+	// bit128_t test_1234(test);
+	// bit128_t te = aes128_decrypt_128(test_1234);
+	// print_bit(te.value, 0, 16, false);
 	
 	printf("Testing Output Zone Ends.\n---\n");
 	
@@ -94,12 +98,12 @@ int main() {
 	printf("Begin generating enc_int for ALU computation part (lower 128 bits).\n\n");
 	enc_lib::enc_int l1 = 1;
 	enc_lib::enc_int l2 = 2;
-	printf("\t(l1) Ciphertext_A (lower 128 bits): ");
-	l1.ciphertext.print_hex(); // result: 13 18 9a 6a e4 ab 07 ae 70 a3 aa bd 30 be 99 de
+	// printf("\t(l1) Ciphertext_A (lower 128 bits): ");
+	// l1.ciphertext.print_hex(); // result: 13 18 9a 6a e4 ab 07 ae 70 a3 aa bd 30 be 99 de
 	printf("\t(l1) Plaintext_A (lower 128 bits): ");
 	printf("%x\n", l1.GET_DECRYPTED_VALUE());
-	printf("\t(l2) Ciphertext_B (lower 128 bits): ");
-	l2.ciphertext.print_hex(); // result: c7 6e 8f cf 7a d0 fe 9b 39 e0 83 73 9c be 26 c2
+	// printf("\t(l2) Ciphertext_B (lower 128 bits): ");
+	// l2.ciphertext.print_hex(); // result: c7 6e 8f cf 7a d0 fe 9b 39 e0 83 73 9c be 26 c2
 	printf("\t(l2) Plaintext_B (lower 128 bits): ");
 	printf("%x\n\n", l2.GET_DECRYPTED_VALUE());
 	printf("Finish generating enc_int.\n---\n");
@@ -139,22 +143,26 @@ int main() {
 	printf("Finish generating initial cyphertext for comparison part (upper 128 bits).\n---\n");
 	
 	printf("Begin generating bit316_t opA and opB.\n\n");
-	__uint128_t init_A_uint128 = 0;
-	__uint128_t init_B_uint128 = 0;
+	__uint128_t init_A_uint128 = 0; // for upper 128 bits
+	__uint128_t init_B_uint128 = 0; // for upper 128 bits
+	uint8_t op1_lo_128_rev[16] = {0};
+	uint8_t op2_lo_128_rev[16] = {0};
+	bit128_t op1_plain_lo_128 = aes128_decrypt_128(l1.ciphertext);
+	bit128_t op2_plain_lo_128 = aes128_decrypt_128(l2.ciphertext);
+	for(int i = 0; i < 16; ++i) {
+		op1_lo_128_rev[i] = op1_plain_lo_128.value[15 - i];
+		op2_lo_128_rev[i] = op2_plain_lo_128.value[15 - i];
+	}
     for(int i = 0; i < 16; ++i) {
         init_A_uint128 = (init_A_uint128 << 8) | init_A.value[i];
 		init_B_uint128 = (init_B_uint128 << 8) | init_B.value[i];
     }
-	uint8_t temp_trans_l1[16] = {0};
-	uint8_t temp_trans_l2[16] = {0};
-	for(int i = 0; i < 16; ++i) {
-		temp_trans_l1[i] = l1.ciphertext.value[15 - i];
-		temp_trans_l2[i] = l2.ciphertext.value[15 - i];
-	}
-	bit128_t trans_l1_temp(temp_trans_l1);
-	bit128_t trans_l2_temp(temp_trans_l2);
-	bit316_t opA(trans_l1_temp.convert_to_128(), init_A_uint128, (uint64_t) (init_A_uint128 >> 68));
-	bit316_t opB(trans_l2_temp.convert_to_128(), init_B_uint128, (uint64_t) (init_B_uint128 >> 68));
+	bit128_t op1_lo_128_rev_bit128(op1_lo_128_rev);
+	bit128_t op2_lo_128_rev_bit128(op2_lo_128_rev);
+	bit128_t op1_lo_128_rev_ciph = aes128_encrypt_128(op1_lo_128_rev_bit128);
+	bit128_t op2_lo_128_rev_ciph = aes128_encrypt_128(op2_lo_128_rev_bit128);
+	bit316_t opA(op1_lo_128_rev_ciph.value, init_A_uint128, (uint64_t) (init_A_uint128 >> 68));
+	bit316_t opB(op2_lo_128_rev_ciph.value, init_B_uint128, (uint64_t) (init_B_uint128 >> 68));
 	uint8_t* ptr_A = opA.get_value();
 	uint8_t* ptr_B = opB.get_value();
 	printf("\t(l1) opA input:\n");
@@ -188,18 +196,20 @@ int main() {
 	printf("Finish generating bit316_t opA and opB.\n---\n");
 	
 	// Generating software-based SE intermediate signal
-	printf("Begin printing correct intermediate signals. ([MSB] -> [LSB])\n\n");
+	printf("Begin printing correct intermediate signals. (Based on input, [MSB] -> [LSB])\n\n");
 	// Before buf_lv1
 	printf("\t> Before buf_lv1\n");
 	printf("\tinst_buffer: %x\n", 0b00100000);
 	printf("\top1_buffer: ");
-	print_bit(ptr_A, 0, 39, true);
+	printf("%x", (ptr_A[0] & 0x0f));
+	print_bit(ptr_A, 1, 39, true);
 	printf("\n");
 	printf("\top2_buffer: ");
-	print_bit(ptr_B, 0, 39, true);
+	printf("%x", (ptr_B[0] & 0x0f));
+	print_bit(ptr_B, 1, 39, true);
 	printf("\n");
 	// buf_lv1 -> buf_lv2
-	printf("\n\t> buf_lv1 -> buf_lv2\n");
+	printf("\n\t> buf_lv1 -> buf_lv2\n\t[NOTE: val ~ first half ~ lower 128 bits]\n\t[NOTE: hash ~ second half ~ upper 128 bits]\n");
 	uint8_t hash_C_original_input[16] = {0};
 	for(int i = 0; i < 7; ++i) {
 		hash_C_original_input[15 - i] = (uint8_t) (((ptr_A[i] << 4) & 0xf0) + ((ptr_A[i + 1] >> 4) & 0x0f));
@@ -208,18 +218,55 @@ int main() {
 	hash_C_original_input[8] = (uint8_t) (((ptr_A[7] << 4) & 0xf0) + ((ptr_B[0]) & 0x0f));
 	hash_C_original_input[0] = (uint8_t) 0b00100000;
 	bit128_t hash_C_original_bit128(hash_C_original_input);
-	bit128_t hash_C_original = aes128_encrypt_128(hash_C_original_bit128);
+	bit128_t hash_C_original_result = aes128_encrypt_128(hash_C_original_bit128);
 	printf("\thash_C_original: ");
-	print_bit(hash_C_original.value, 0, 15, true);
+	print_bit(hash_C_original_result.value, 0, 15, true);
 	printf("\n");
-	printf("\t[NOTE: val ~ first half ~ lower 128 bits]\n\t[NOTE: hash ~ second half ~ upper 128 bits]\n");
-	printf("\tdecrypted_op1_val_buffer: ");
+	uint8_t op1_val[16] = {0};
+	uint8_t op1_hash[16] = {0};
+	uint8_t op2_val[16] = {0};
+	uint8_t op2_hash[16] = {0};
+	for(int i = 0; i < 16; ++i) {
+		op1_val[i] = ptr_A[i + 24];
+		op1_hash[i] = ptr_A[i + 8];
+		op2_val[i] = ptr_B[i + 24];
+		op2_hash[i] = ptr_B[i + 8];
+	}
+	bit128_t op1_val_bit128(op1_val);
+	bit128_t op1_hash_bit128(op1_hash);
+	bit128_t op2_val_bit128(op2_val);
+	bit128_t op2_hash_bit128(op2_hash);
+	bit128_t decrypted_op1_val_buffer = aes128_decrypt_128(op1_val_bit128);
+	bit128_t decrypted_op1_hash_buffer = aes128_decrypt_128(op1_hash_bit128);
+	bit128_t decrypted_op2_val_buffer = aes128_decrypt_128(op2_val_bit128);
+	bit128_t decrypted_op2_hash_buffer = aes128_decrypt_128(op2_hash_bit128);
+	printf("\tdecrypted_op1_val_buffer ([muNdR][A_nialp]): ");
+	print_bit(decrypted_op1_val_buffer.value, 0, 15, true);
 	printf("\n");
 	printf("\tdecrypted_op1_hash_buffer: ");
+	print_bit(decrypted_op1_hash_buffer.value, 0, 15, true);
 	printf("\n");
-	printf("\tdecrypted_op2_val_buffer: ");
+	printf("\tdecrypted_op2_val_buffer ([muNdR][B_nialp]): ");
+	print_bit(decrypted_op2_val_buffer.value, 0, 15, true);
 	printf("\n");
 	printf("\tdecrypted_op2_hash_buffer: ");
+	print_bit(decrypted_op2_hash_buffer.value, 0, 15, true);
+	printf("\n");
+	printf("\n\t> buf_lv2 -> buf_lv3\n");
+	uint64_t op1_value = 0;
+	uint64_t op2_value = 0;
+	for(int i = 0; i < 8; ++i) {
+		op1_value = op1_value + (uint64_t) decrypted_op1_val_buffer.value[7 + i]; // reverse
+		op2_value = op2_value + (uint64_t) decrypted_op2_val_buffer.value[7 + i]; // reverse
+	}
+	unsigned int result_buffer = op1_value + op2_value;
+	printf("\t(SE operation) result_buffer: %x\n", result_buffer);
+	printf("\thash_C_buffer: ");
+	print_bit(hash_C_original_result.value, 0, 6, true);
+	printf("%x\n", (hash_C_original_result.value[7] >> 4) & 0x0f);
+	printf("\n\t> buf_lv3 -> buf_lv4\n");
+	// TODO:
+	printf("\t(ciph_C) output_buffer: TODO");
 	printf("\n\n");
 	printf("Finish printing correct intermediate signals.\n---\n");
 
