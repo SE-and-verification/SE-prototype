@@ -10,6 +10,19 @@
 #include "Instruction.h"
 #include "enc_lib.h"
 
+// Given a uint8_t array arr, print all elements between (including) arr[begin_index] and arr[end_index]
+// Print without whitespace between each element if dense is TRUE
+void print_bit(uint8_t* arr, int begin_index, int end_index, bool dense) { 
+	for(int i = begin_index; i < end_index; ++i) {
+		printf("%02x", arr[i]);
+		if(!dense) {
+			printf(" ");
+		}
+	}
+	printf("%02x", arr[end_index]);
+	return;
+}
+
 int print316(bit316_t &dec) {
 	// Get the original value to print
 	__uint128_t print_item_upper 	= aes128_decrypt_128(bit128_t(dec.getUpperCiph_128b())).convert_to_128();
@@ -69,10 +82,7 @@ int main() {
 	
 	// Test Zone
 	printf("Testing Output Zone Begins.\n\n");
-	// uint8_t test_array[16] = {0x2c, 0x1c, 0xa7, 0x76, 0xab, 0x19, 0x4b, 0x70, 0x3e, 0xee, 0xf2, 0x9a, 0x45, 0xfa, 0x99, 0x99};
-	// bit128_t test_12345(test_array);
-	// __uint128_t num_12345 = test_12345.convert_to_128();
-	// printf("%x\n", (unsigned int) (num_12345 & 0xFF));
+	
 	printf("Testing Output Zone Ends.\n---\n");
 	
 	// generate SE simulator
@@ -177,6 +187,43 @@ int main() {
 	printf("\n\n");
 	printf("Finish generating bit316_t opA and opB.\n---\n");
 	
+	// Generating software-based SE intermediate signal
+	printf("Begin printing correct intermediate signals. ([MSB] -> [LSB])\n\n");
+	// Before buf_lv1
+	printf("\t> Before buf_lv1\n");
+	printf("\tinst_buffer: %x\n", 0b00100000);
+	printf("\top1_buffer: ");
+	print_bit(ptr_A, 0, 39, true);
+	printf("\n");
+	printf("\top2_buffer: ");
+	print_bit(ptr_B, 0, 39, true);
+	printf("\n");
+	// buf_lv1 -> buf_lv2
+	printf("\n\t> buf_lv1 -> buf_lv2\n");
+	uint8_t hash_C_original_input[16] = {0};
+	for(int i = 0; i < 7; ++i) {
+		hash_C_original_input[15 - i] = (uint8_t) (((ptr_A[i] << 4) & 0xf0) + ((ptr_A[i + 1] >> 4) & 0x0f));
+		hash_C_original_input[7 - i] = ptr_B[i + 1];
+	}
+	hash_C_original_input[8] = (uint8_t) (((ptr_A[7] << 4) & 0xf0) + ((ptr_B[0]) & 0x0f));
+	hash_C_original_input[0] = (uint8_t) 0b00100000;
+	bit128_t hash_C_original_bit128(hash_C_original_input);
+	bit128_t hash_C_original = aes128_encrypt_128(hash_C_original_bit128);
+	printf("\thash_C_original: ");
+	print_bit(hash_C_original.value, 0, 15, true);
+	printf("\n");
+	printf("\t[NOTE: val ~ first half ~ lower 128 bits]\n\t[NOTE: hash ~ second half ~ upper 128 bits]\n");
+	printf("\tdecrypted_op1_val_buffer: ");
+	printf("\n");
+	printf("\tdecrypted_op1_hash_buffer: ");
+	printf("\n");
+	printf("\tdecrypted_op2_val_buffer: ");
+	printf("\n");
+	printf("\tdecrypted_op2_hash_buffer: ");
+	printf("\n\n");
+	printf("Finish printing correct intermediate signals.\n---\n");
+
+	// Hardware SE compute
 	printf("Begin SECompute.\n\n");
 	bit316_t l3_SE = SE::SECompute(opA, opB, 0, Instruction::ADD());
 	uint8_t* ptr_C = l3_SE.get_value();
