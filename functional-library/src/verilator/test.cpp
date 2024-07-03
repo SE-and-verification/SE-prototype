@@ -211,19 +211,19 @@ int main() {
 	enc_lib::enc_int l3 = l1 + l2;
 	// Print software-generated value
 	printf("> Software-generated value:\n\n");
-	printf("\tCiphertext of result (lower 128 bits): ");
+	printf("\t(l3) Ciphertext of result (lower 128 bits): ");
 	l3.ciphertext.print_hex();
-	printf("\tPlaintext of result (lower 128 bits): ");
-	printf("%x\n\n", l3.GET_DECRYPTED_VALUE());
+	printf("\t(l3) Plaintext of result (lower 128 bits): ");
+	printf("%d\n\n", l3.GET_DECRYPTED_VALUE());
 
 	// Print hardware-generated value
 	printf("> Hardware-generated value:\n\n");
-	printf("\tCiphertext of result (lower 128 bits): ");
+	printf("\t(l3_SE) Ciphertext of result (lower 128 bits): ");
 	for(int i = 0; i < 16; ++i) {
         printf("%02x ", ptr_C[i + 24]);
     }
 	printf("\n");
-	printf("\tPlaintext of result (lower 128 bits): ");
+	printf("\t(l3_SE) Plaintext of result (lower 128 bits): ");
 	uint8_t l_128_arr[16] = {0};
 	for(int i = 0; i < 16; ++i) {
         l_128_arr[i] = ptr_C[i + 24];
