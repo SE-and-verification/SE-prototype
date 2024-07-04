@@ -80,13 +80,13 @@ int main() {
 	setParameters();
 	printf("Finish setting parameters.\n---\n");
 	
-	// Test Zone
+	// Test Zone: Enter the value manually
 	printf("Testing Output Zone Begins.\n\n");
-	// uint8_t test[16] = {0x13, 0x18, 0x9a, 0x6a, 0xe4, 0xab, 0x07, 0xae, 0x70, 0xa3, 0xaa, 0xbd, 0x30, 0xbe, 0x99, 0xde};
+	// uint8_t test[16] = {/* HERE */};
 	// bit128_t test_1234(test);
 	// bit128_t te = aes128_decrypt_128(test_1234);
 	// print_bit(te.value, 0, 16, false);
-	
+	// printf("\n\n");
 	printf("Testing Output Zone Ends.\n---\n");
 	
 	// generate SE simulator

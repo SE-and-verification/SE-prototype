@@ -1,0 +1,20 @@
+> Before buf_lv1
+inst_buffer: 20
+op1_buffer: 6abd05df8d9a5e16abd05df8d9a5e10efbe4c68a468e0a25f2c80d352d3e8fcb4aea438188d77c8
+op2_buffer: 8c692b8bb472a288c692b8bb472a28d778a2a6bb10aca60dd1e229c70e39e4396e4db65624ce5ea
+
+> buf_lv1 -> buf_lv2
+[NOTE: val ~ first half ~ lower 128 bits]
+[NOTE: hash ~ second half ~ upper 128 bits]
+hash_C_original: ad05d4904fd7a738046736dcf9fe0552
+decrypted_op1_val_buffer ([muNdR][A_nialp]): 00000000000000000100000000000000
+decrypted_op1_hash_buffer: 2c1ca776ab194b703eeef29a45fa9999
+decrypted_op2_val_buffer ([muNdR][B_nialp]): 00000000000000000200000000000000
+decrypted_op2_hash_buffer: 3a9bcbda01a9d73edd9502901c5fdb25
+
+> buf_lv2 -> buf_lv3
+(SE operation) result_buffer: 3
+hash_C_buffer: ad05d4904fd7a73
+
+> buf_lv3 -> buf_lv4
+(ciph_C) output_buffer: TODO
