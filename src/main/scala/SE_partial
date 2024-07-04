@@ -49,10 +49,10 @@ class Plaintext_Reverse_Connector extends Module {
 	val connect_result 	= Cat(op1_hash, op2_hash, io.inst) // Structure: [op1_hsh][op2_hsh][inst]
 
 	// Reverse the byte order so we can convert them into uint with Chisel infrastructure.
-	val connect_result_reverse = Wire(Vec(Params.StateLength, UInt(8.W)))
 	// Structure: [op1_hsh][op2_hsh][inst] -> [tsni][hsh_2po][hsh_1po]
+	val connect_result_reverse = Wire(Vec(Params.StateLength, UInt(8.W)))
     for(i <- 0 until Params.StateLength) {
-		connect_result_reverse(i) := connect_result(Params.new_integrity_length - i - 1)
+		connect_result_reverse(i) := connect_result((i + 1) * 8 - 1, i * 8)
 	}
 	
 	// Connect the module output
@@ -73,8 +73,8 @@ class SE(val debug : Boolean, val canChangeKey: Boolean) extends Module{
     // Two DECryptors:
     // Firsthlf: get RdNum + Plaintext (Lower 128 bits of Ciph_X) -> ALU part
 	// Secondhlf: get Inst + Hash * 2 (Upper 128 bits of Ciph_X) -> Comparison part
-    val aes_invcipher_firsthlf  = Module(new AESDecrypt(rolled))
-	val aes_invcipher_secondhlf = Module(new AESDecrypt(rolled))
+    val aes_invcipher_firsthlf  = Module(new AESDecrypt(rolled, 1))
+	val aes_invcipher_secondhlf = Module(new AESDecrypt(rolled, 3))
 
     // Five ENCryptors:
     // Firsthlf: get RdNum + Plaintext (Lower 128 bits of Ciph_X) -> ALU part
@@ -124,7 +124,7 @@ class SE(val debug : Boolean, val canChangeKey: Boolean) extends Module{
 	val output_valid = RegInit(false.B) // Set high when the final result is ready
 
 	// Level_1 buffer debug
-	printf("[Stage: Input -> Level_1 Buffer]")
+	printf("[Stage: Input -> Level_1 Buffer]\n")
 
 	// ----------buf_lv1----------
 	val inst_buffer 	= RegEnable(io.in.inst, io.in.valid)
@@ -147,7 +147,7 @@ class SE(val debug : Boolean, val canChangeKey: Boolean) extends Module{
 	lv1ok_buffer 			:= RegNext(next_lv1ok_buffer) 
     
 	// Level_1 buffer debug
-	when(lv1ok_buffer && !lv2ok_buffer) {
+	when(lv1ok_buffer) {
 		printf("\tinst_buffer: %x\n", inst_buffer)
 		printf("\top1_buffer: %x\n", op1_buffer)
 		printf("\top2_buffer: %x\n", op2_buffer)
@@ -156,7 +156,7 @@ class SE(val debug : Boolean, val canChangeKey: Boolean) extends Module{
 	}
 
 	// Level_2 buffer debug
-	printf("[Stage: Level_1 Buffer -> Level_2 Buffer]")
+	printf("[Stage: Level_1 Buffer -> Level_2 Buffer]\n")
 
     // Connect reg input and reg output
     PRC_0.io.op1 	                        := op1_buffer 
@@ -177,12 +177,16 @@ class SE(val debug : Boolean, val canChangeKey: Boolean) extends Module{
 	val ciph_op2_comp 		= ciph_op2(255, 128)
 	val ciph_op2_comp_vec 	= Wire(Vec(16, UInt(8.W)))
 	val lv2_AES_valid       = RegInit(false.B) // local reg, only components between lv1 and lv2 need it
+	val tmp_1 				= RegInit(false.B)
 
 	// lv2_AES_valid logic
 	// Set low one cycle after being set high
 	val next_lv2_AES_valid  = Wire(Bool())
-	next_lv2_AES_valid 		:= // TODO: Finish the FSM
+	val next_tmp_1 			= Wire(Bool())
+	next_lv2_AES_valid 		:= Mux((lv1ok_buffer && !tmp_1), true.B, false.B)
+	next_tmp_1 				:= Mux((lv1ok_buffer && !lv2_AES_valid), true.B, Mux(output_valid, false.B, tmp_1))
 	lv2_AES_valid 			:= RegNext(next_lv2_AES_valid)
+	tmp_1 					:= RegNext(next_tmp_1)
 
 	// Match the input type 
 	for (i <- 0 until 16) {
@@ -227,15 +231,6 @@ class SE(val debug : Boolean, val canChangeKey: Boolean) extends Module{
 	val lv2ok_buffer 						= RegInit(false.B) 
 	// ----------buf_lv2----------
 
-	// Level_2 buffer debug
-	when(lv2ok_buffer) {
-		printf("\thash_C_original_buffer: %x\n", hash_C_original_buffer)
-	}
-	
-	
-	// Level_3 buffer debug
-	printf("[Stage: Level_2 Buffer -> Level_3 Buffer]")
-
     // Original Hash_C valid logic
     val next_hash_C_original_buffer_valid 	= Wire(Bool())
     next_hash_C_original_buffer_valid       := Mux(aes_cipher_for_hash_C.io.output_valid, true.B, Mux(output_valid, false.B, hash_C_original_buffer_valid))
@@ -255,7 +250,50 @@ class SE(val debug : Boolean, val canChangeKey: Boolean) extends Module{
 	decrypted_op1_hash_buffer_valid             := RegNext(next_decrypted_op1_hash_buffer_valid)
 	decrypted_op2_hash_buffer_valid             := RegNext(next_decrypted_op2_hash_buffer_valid)
 
-    // Reverse the byte order of decrypted plaintext (using Cat()) so we can convert them into uint with Chisel infrastructure.
+	// lv2ok_buffer logic
+	val next_lv2ok_buffer 	= Wire(Bool())
+	next_lv2ok_buffer     	:= Mux((aes_invcipher_firsthlf.io.output_valid && aes_invcipher_secondhlf.io.output_valid && aes_cipher_for_hash_C.io.output_valid), true.B, Mux(output_valid, false.B, lv2ok_buffer))
+	lv2ok_buffer 			:= RegNext(next_lv2ok_buffer)
+	
+	// Level_2 buffer debug
+	when(lv2ok_buffer) {
+		printf("\tconnected_reversed_plaintext_buffer: ")
+		for(i <- 0 until 16) {
+			printf("%x", connected_reversed_plaintext_buffer(i))
+		}
+		printf("\n")
+		printf("\thash_C_original_buffer: %x\n", hash_C_original_buffer)
+		printf("\tciph_op1_calc: %x\n", ciph_op1_calc)
+		printf("\tciph_op1_comp: %x\n", ciph_op1_comp)
+		printf("\tciph_op2_calc: %x\n", ciph_op2_calc)
+		printf("\tciph_op2_comp: %x\n", ciph_op2_comp)
+		printf("\tdecrypted_op1_val_buffer: ")
+		for(i <- 0 until 16) {
+			printf("%x", decrypted_op1_val_buffer(i))
+		}
+		printf("\n")
+		printf("\tdecrypted_op1_hash_buffer: ")
+		for(i <- 0 until 16) {
+			printf("%x", decrypted_op1_hash_buffer(i))
+		}
+		printf("\n")
+		printf("\tdecrypted_op2_val_buffer: ")
+		for(i <- 0 until 16) {
+			printf("%x", decrypted_op2_val_buffer(i))
+		}
+		printf("\n")
+		printf("\tdecrypted_op2_hash_buffer: ")
+		for(i <- 0 until 16) {
+			printf("%x", decrypted_op2_hash_buffer(i))
+		}
+		printf("\n")
+		printf("\tlv2ok_buffer: %x\n", lv2ok_buffer);
+	}
+
+	// Level_3 buffer debug
+	printf("[Stage: Level_2 Buffer -> Level_3 Buffer]\n")
+    
+	// Reverse the byte order of decrypted plaintext (using Cat()) so we can convert them into uint with Chisel infrastructure.
     // Feed the decrypted values to the seoperation module. Depends on whether the data is encrypted when it comes in.
 	// seoperation.io.inst 	:= Mux(all_match && lv1ok_buffer, inst_buffer, mid_inst_buffer)
     seoperation.io.inst         := inst_buffer

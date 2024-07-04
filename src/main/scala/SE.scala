@@ -177,7 +177,7 @@ class SE(val debug:Boolean, val canChangeKey: Boolean) extends Module{
 	// Trim hash_C_orig and store hash_C
 	val next_hash_C_buffer_valid 	= Wire(Bool())
 	val hash_C_buffer_valid 		= RegInit(false.B)
-	val hash_C_buffer 				= RegEnable(hash_C_original_buffer(59, 0), hash_C_buffer_valid)
+	val hash_C_buffer 				= RegEnable(hash_C_original_buffer(127, 68), hash_C_buffer_valid)
 	next_hash_C_buffer_valid       := Mux(hash_C_original_buffer_valid, true.B, Mux(output_valid, false.B, hash_C_buffer_valid))
 	hash_C_buffer_valid            := RegNext(next_hash_C_buffer_valid)
 	/*----------------------buf_lv3----------------------*/
@@ -324,6 +324,7 @@ class SE(val debug:Boolean, val canChangeKey: Boolean) extends Module{
 	val result_buffer = RegEnable(padded_result, seOpValid) // buf_lv3
 		
 	when(seOpValid){
+		printf("hash_C_original_buffer: %x\n", hash_C_original_buffer)
 		printf("bit64_randnum:%x\n", bit64_randnum)
 		printf("padded_result:%x\n", padded_result)
 		printf("seoperation.io.result:%x\n",seoperation.io.result)
