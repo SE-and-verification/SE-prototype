@@ -293,20 +293,20 @@ class SE(val debug : Boolean, val canChangeKey: Boolean) extends Module{
 	// Level_3 buffer debug
 	printf("[Stage: Level_2 Buffer -> Level_3 Buffer]\n")
     
-	// Reverse the byte order of decrypted plaintext (using Cat()) so we can convert them into uint with Chisel infrastructure.
+	// Reverse the byte order of decrypted plaintext so we can convert them into uint with Chisel infrastructure.
     // Feed the decrypted values to the seoperation module. Depends on whether the data is encrypted when it comes in.
 	// seoperation.io.inst 	:= Mux(all_match && lv1ok_buffer, inst_buffer, mid_inst_buffer)
     seoperation.io.inst         := inst_buffer
     val seOpValid 			    = lv2ok_buffer
 	seoperation.io.valid 	    := seOpValid // || (all_match && lv1ok_buffer)
-	val op1_bit 	            = Cat(aes_invcipher_firsthlf.io.output_op1) // Structure: [muNdR][A_nialp] -> [plain_A][RdNum]
-	val op2_bit 	            = Cat(aes_invcipher_firsthlf.io.output_op2) // Structure: [muNdR][B_nialp] -> [plain_B][RdNum]
-	val op1_bit_asUInt		    = op1_bit(127, 64).asUInt // plain_A
-	val op2_bit_asUInt		    = op2_bit(127, 64).asUInt // plain_B
+	val op1_bit 	            = decrypted_op1_val_buffer.asUInt // Structure: [muNdR][A_nialp] -> [plain_A][RdNum]
+	val op2_bit 	            = decrypted_op2_val_buffer.asUInt // Structure: [muNdR][B_nialp] -> [plain_B][RdNum]
+	val op1_plaintext_64		= op1_bit(127, 64) // [plain_A]
+	val op2_plaintext_64		= op2_bit(127, 64) // [plain_B]
 	// seoperation.io.op1_input := Mux(all_match && lv1ok_buffer, op1_val, Mux(mid_inst_buffer(7,5) === 5.U(3.W), Cat(aes_invcipher_firsthlf.io.output_op1), op1_asUInt)) // FIXME: input for ENC is aes_invcipher_firsthlf.io.output_op1 ? 
 	// seoperation.io.op2_input := Mux(all_match && lv1ok_buffer, op2_val, Mux(mid_inst_buffer(7,5) === 5.U(3.W), Cat(aes_invcipher_firsthlf.io.output_op2), op2_asUInt))
-    seoperation.io.op1_input    := Mux(inst_buffer(7,5) === 5.U(3.W), op1_bit, op1_bit_asUInt)
-	seoperation.io.op2_input    := Mux(inst_buffer(7,5) === 5.U(3.W), op2_bit, op2_bit_asUInt)
+    seoperation.io.op1_input    := op1_plaintext_64 // Currently hardcoded (TEMP)
+	seoperation.io.op2_input    := op2_plaintext_64 // Currently hardcoded (TEMP)
 
 	// Once we receive the result from the seoperation, we pad the result with RNG and latch them first.
 	// Note that ALU may need 3 to 4 clock cycles (after seOpValid being set high) to calculate the result
@@ -320,6 +320,7 @@ class SE(val debug : Boolean, val canChangeKey: Boolean) extends Module{
 	// val result_plaintext_buffer = RegInit(0.U(64.W)) // cache ptr
 	val hash_C_buffer_valid 	= RegInit(false.B)
 	val hash_C_buffer 			= RegEnable(hash_C_original_buffer(59, 0), hash_C_buffer_valid)
+	val lv3ok_buffer 			= RegInit(false.B)
 	// ----------buf_lv3----------
 
 	// when(seOpValid) {
@@ -336,11 +337,26 @@ class SE(val debug : Boolean, val canChangeKey: Boolean) extends Module{
 	n_result_valid_buffer := Mux(seOpValid, true.B, Mux(output_valid, false.B, result_valid_buffer))
 	result_valid_buffer := RegNext(n_result_valid_buffer)
 
+	// lv3ok_buffer logic
+	val next_lv3ok_buffer 	= Wire(Bool())
+	next_lv3ok_buffer     	:= Mux((result_valid_buffer && hash_C_buffer_valid), true.B, Mux(output_valid, false.B, lv3ok_buffer))
+	lv3ok_buffer 			:= RegNext(next_lv3ok_buffer) 
+
 	// Level_3 buffer debug
-	when(result_valid_buffer) {
-		printf("\tresult_buffer: %x\n", result_buffer)
+	when(lv3ok_buffer) {
+		printf("\tresult_buffer: %x %x (<- RdNum, ignore) %x\n", result_buffer(255, 192), result_buffer(191, 128), result_buffer(127, 0))
 		printf("\thash_C_buffer: %x\n", hash_C_buffer)
+		printf("\top1_plaintext_64: %x\n", op1_plaintext_64)
+		printf("\top2_plaintext_64: %x\n", op2_plaintext_64)
+		printf("\tseoperation.io.op1_input: %x\n", seoperation.io.op1_input)
+		printf("\tseoperation.io.op2_input: %x\n", seoperation.io.op2_input)
+		printf("\tSE Computation Result: %x\n", Cat(seoperation.io.result))
+		printf("\tRdNum: %x\n", Cat(bit64_randnum))
+		printf("\tlv3ok_buffer: %x\n", lv3ok_buffer);
 	}
+
+	// Level_4 buffer debug
+	printf("[Stage: Level_3 Buffer -> Level_4 Buffer]\n")
 
 	// Connect result_buffer: [Plain_C][RdNum][hsh_A][hsh_B][inst] to the cipher
 	val result_buffer_vectorized 	= Wire(Vec(Params.CiphLength, UInt(8.W)))
