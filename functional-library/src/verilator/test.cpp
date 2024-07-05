@@ -114,12 +114,15 @@ int main() {
 	// Structure: [rtsni'][Y_hsh][X_hsh] (old)
 	uint8_t plaintext_A[16] = {0x2c, 0x1c, 0xa7, 0x76, 0xab, 0x19, 0x4b, 0x70, 0x3e, 0xee, 0xf2, 0x9a, 0x45, 0xfa, 0x99, 0x99};
 	uint8_t plaintext_B[16] = {0x3a, 0x9b, 0xcb, 0xda, 0x01, 0xa9, 0xd7, 0x3e, 0xdd, 0x95, 0x02, 0x90, 0x1c, 0x5f, 0xdb, 0x25};
+	uint8_t plaintext_C[16] = {0x20, 0x28, 0x2a, 0x47, 0xbb, 0xb8, 0x92, 0xc6, 0x18, 0x5e, 0x9a, 0x8d, 0xdf, 0x05, 0xbd, 0x6a};
 	// Convert to bit128_t
 	bit128_t plaintext_A_bit128t(plaintext_A);
 	bit128_t plaintext_B_bit128t(plaintext_B);
+	bit128_t plaintext_C_bit128t(plaintext_C);
 	// software ENCrypt
 	bit128_t init_A = aes128_encrypt_128(plaintext_A_bit128t);
 	bit128_t init_B = aes128_encrypt_128(plaintext_B_bit128t);
+	bit128_t init_C = aes128_encrypt_128(plaintext_C_bit128t);
 	printf("\t(l1) plaintext_A (upper 128 bits): ");
 	for(int i = 0; i < 16; ++i) {
         printf("%02x ", plaintext_A_bit128t.value[i]);
@@ -139,32 +142,53 @@ int main() {
 	for(int i = 0; i < 16; ++i) {
         printf("%02x ", init_B.value[i]);
     }
+	printf("\n");
+	printf("\t(l3) plaintext_C (upper 128 bits): ");
+	for(int i = 0; i < 16; ++i) {
+        printf("%02x ", plaintext_C_bit128t.value[i]);
+    }
+	printf("\n");
+	printf("\t(l3) ciphtext_C (upper 128 bits): ");
+	for(int i = 0; i < 16; ++i) {
+        printf("%02x ", init_C.value[i]);
+    }
 	printf("\n\n");
 	printf("Finish generating initial cyphertext for comparison part (upper 128 bits).\n---\n");
 	
 	printf("Begin generating bit316_t opA and opB.\n\n");
+	enc_lib::enc_int l3 = l1 + l2;
+
 	__uint128_t init_A_uint128 = 0; // for upper 128 bits
 	__uint128_t init_B_uint128 = 0; // for upper 128 bits
+	__uint128_t init_C_uint128 = 0; // for upper 128 bits
 	uint8_t op1_lo_128_rev[16] = {0};
 	uint8_t op2_lo_128_rev[16] = {0};
+	uint8_t op3_lo_128_rev[16] = {0};
 	bit128_t op1_plain_lo_128 = aes128_decrypt_128(l1.ciphertext);
 	bit128_t op2_plain_lo_128 = aes128_decrypt_128(l2.ciphertext);
+	bit128_t op3_plain_lo_128 = aes128_decrypt_128(l3.ciphertext);
 	for(int i = 0; i < 16; ++i) {
 		op1_lo_128_rev[i] = op1_plain_lo_128.value[15 - i];
 		op2_lo_128_rev[i] = op2_plain_lo_128.value[15 - i];
+		op3_lo_128_rev[i] = op3_plain_lo_128.value[15 - i];
 	}
     for(int i = 0; i < 16; ++i) {
         init_A_uint128 = (init_A_uint128 << 8) | init_A.value[i];
 		init_B_uint128 = (init_B_uint128 << 8) | init_B.value[i];
+		init_C_uint128 = (init_C_uint128 << 8) | init_C.value[i];
     }
 	bit128_t op1_lo_128_rev_bit128(op1_lo_128_rev);
 	bit128_t op2_lo_128_rev_bit128(op2_lo_128_rev);
+	bit128_t op3_lo_128_rev_bit128(op3_lo_128_rev);
 	bit128_t op1_lo_128_rev_ciph = aes128_encrypt_128(op1_lo_128_rev_bit128);
 	bit128_t op2_lo_128_rev_ciph = aes128_encrypt_128(op2_lo_128_rev_bit128);
+	bit128_t op3_lo_128_rev_ciph = aes128_encrypt_128(op3_lo_128_rev_bit128);
 	bit316_t opA(op1_lo_128_rev_ciph.value, init_A_uint128, (uint64_t) (init_A_uint128 >> 68));
 	bit316_t opB(op2_lo_128_rev_ciph.value, init_B_uint128, (uint64_t) (init_B_uint128 >> 68));
+	bit316_t opC(op3_lo_128_rev_ciph.value, init_C_uint128, (uint64_t) (init_C_uint128 >> 68));
 	uint8_t* ptr_A = opA.get_value();
 	uint8_t* ptr_B = opB.get_value();
+	uint8_t* ptr_D = opC.get_value();
 	printf("\t(l1) opA input:\n");
 	printf("\thash: ");
 	for(int i = 0; i < 8; ++i) {
@@ -191,6 +215,20 @@ int main() {
 	printf("\n\tlower 128 bits: ");
 	for(int i = 0; i < 16; ++i) {
         printf("%02x ", ptr_B[i + 24]);
+    }
+	printf("\n");
+	printf("\t(l3) opC input:\n");
+	printf("\thash: ");
+	for(int i = 0; i < 8; ++i) {
+        printf("%02x ", ptr_D[i]);
+    }
+	printf("\n\tupper 128 bits: ");
+	for(int i = 0; i < 16; ++i) {
+        printf("%02x ", ptr_D[i + 8]);
+    }
+	printf("\n\tlower 128 bits: ");
+	for(int i = 0; i < 16; ++i) {
+        printf("%02x ", ptr_D[i + 24]);
     }
 	printf("\n\n");
 	printf("Finish generating bit316_t opA and opB.\n---\n");
@@ -302,7 +340,7 @@ int main() {
 	printf("Finish Hash comparison part (upper 128 bits) check.\n---\n");
 	
 	printf("Begin ALU computation part (lower 128 bits) check.\n\n");
-	enc_lib::enc_int l3 = l1 + l2;
+	// enc_lib::enc_int l3 = l1 + l2;
 	// Print software-generated value
 	printf("> Software-generated value:\n\n");
 	printf("\t(l3) Ciphertext of result (lower 128 bits): ");

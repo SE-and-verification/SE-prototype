@@ -167,7 +167,7 @@ class SE(val debug:Boolean, val canChangeKey: Boolean) extends Module{
 	/*----------------------buf_lv2----------------------*/
 	// latch the hash_C_original into the buffer
 	val next_hash_C_original_buffer_valid 	= Wire(Bool())
-	val hash_C_original_buffer 				= RegEnable(aes_cipher_for_hash_C.io.output_text.do_asUInt, aes_cipher_for_hash_C.io.output_valid)
+	val hash_C_original_buffer 				= RegEnable(Cat(aes_cipher_for_hash_C.io.output_text), aes_cipher_for_hash_C.io.output_valid)
 	val hash_C_original_buffer_valid 		= RegInit(false.B)
 	next_hash_C_original_buffer_valid      := Mux(aes_cipher_for_hash_C.io.output_valid, true.B, Mux(output_valid, false.B, hash_C_original_buffer_valid))
 	hash_C_original_buffer_valid           := RegNext(next_hash_C_original_buffer_valid)
@@ -329,7 +329,8 @@ class SE(val debug:Boolean, val canChangeKey: Boolean) extends Module{
 
 	// Pad with RNG
 	val bit64_randnum = PRNG(new MaxPeriodFibonacciLFSR(64, Some(scala.math.BigInt(64, scala.util.Random))))
-	val padded_result = Cat(seoperation.io.result, bit64_randnum, mid_op1_buffer(315, 256), mid_op2_buffer(315, 256), mid_inst_buffer)
+	val bit64_zero = 0.U(64.W)
+	val padded_result = Cat(seoperation.io.result, bit64_zero, mid_op1_buffer(315, 256), mid_op2_buffer(315, 256), mid_inst_buffer)
 	val result_buffer = RegEnable(padded_result, seOpValid) // buf_lv3
 		
 	when(seOpValid){
@@ -353,11 +354,11 @@ class SE(val debug:Boolean, val canChangeKey: Boolean) extends Module{
 		aes_input_reverse(i) := result_buffer_vectorized(Params.CiphLength-i-1)
 	}
 	val aes_input_reverse_bit = Cat(aes_input_reverse)
-	aes_cipher_firsthlf.io.input_text := aes_input_reverse_bit(255, 128).asTypeOf(aes_cipher_firsthlf.io.input_text)
+	aes_cipher_firsthlf.io.input_text := aes_input_reverse_bit(127, 0).asTypeOf(aes_cipher_firsthlf.io.input_text)
 	aes_cipher_firsthlf.io.input_valid := result_valid_buffer
 	aes_cipher_firsthlf.io.input_roundKeys := key
 
-	aes_cipher_secondhlf.io.input_text := aes_input_reverse_bit(127, 0).asTypeOf(aes_cipher_secondhlf.io.input_text)
+	aes_cipher_secondhlf.io.input_text := aes_input_reverse_bit(255, 128).asTypeOf(aes_cipher_secondhlf.io.input_text)
 	aes_cipher_secondhlf.io.input_valid := result_valid_buffer
 	aes_cipher_secondhlf.io.input_roundKeys := key
 
