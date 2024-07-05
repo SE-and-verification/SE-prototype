@@ -280,22 +280,27 @@ class SE(val debug:Boolean, val canChangeKey: Boolean) extends Module{
 	seoperation.io.inst 	:= Mux(valid_buffer, inst_buffer, mid_inst_buffer)
 	val seOpValid 			= aes_invcipher_firsthlf.io.output_valid // || (all_match && valid_buffer)
 	seoperation.io.valid 	:= seOpValid
-	val op1_bit 			= Cat(aes_invcipher_firsthlf.io.output_op1)
-	val op2_bit 			= Cat(aes_invcipher_firsthlf.io.output_op2)
-	val op1_asUInt 			= op1_bit(127, 64).do_asUInt // get plain_A
-	val op2_asUInt 			= op2_bit(127, 64).do_asUInt // get plain_B
+
+	val reversedOutputOp1 = VecInit(aes_invcipher_firsthlf.io.output_op1.reverse)
+    val reversedOutputOp2 = VecInit(aes_invcipher_firsthlf.io.output_op2.reverse)
+
+    val op1_bit                     = Cat(reversedOutputOp1)
+    val op2_bit                     = Cat(reversedOutputOp2)
+    val op1_asUInt                  = op1_bit(127, 64).do_asUInt // get plain_A
+    val op2_asUInt                  = op2_bit(127, 64).do_asUInt // get plain_B
+
 
 	seoperation.io.op1_input := Mux(all_match && valid_buffer, op1_val, Mux(mid_inst_buffer(7,5) === 5.U(3.W), op1_bit, op1_asUInt))
 	seoperation.io.op2_input := Mux(all_match && valid_buffer, op2_val, Mux(mid_inst_buffer(7,5) === 5.U(3.W), op2_bit, op2_asUInt))
 
-	// when(seOpValid){
-	// 		printf("op1_bit:%x\n", op1_bit)
-	// 		printf("op2_bit:%x\n", op2_bit)
-	// 		printf("op1_asUInt:%x\n", op1_asUInt)
-	// 		printf("op2_asUInt:%x\n", op2_asUInt)
-	// 		printf("seoperation.io.op1_input:%x\n", seoperation.io.op1_input)
-	// 		printf("seoperation.io.op2_input:%x\n", seoperation.io.op2_input)
-	// }
+	when(seOpValid){
+			printf("op1_bit:%x\n", op1_bit)
+			printf("op2_bit:%x\n", op2_bit)
+			printf("op1_asUInt:%x\n", op1_asUInt)
+			printf("op2_asUInt:%x\n", op2_asUInt)
+			printf("seoperation.io.op1_input:%x\n", seoperation.io.op1_input)
+			printf("seoperation.io.op2_input:%x\n", seoperation.io.op2_input)
+	}
 
 	// Reconstruct the hash and compare
 
