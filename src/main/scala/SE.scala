@@ -152,7 +152,7 @@ class SE(val debug:Boolean, val canChangeKey: Boolean) extends Module{
 		hash_C_input_valid := false.B
 	}
 
-	when(hash_C_input_valid){ //FIXME: SEEMS PROBLEM WITH CIPHER_C
+	when(hash_C_input_valid){
 		printf("aes_cipher_for_hash_C.io.input_text: %x\n", Cat(aes_cipher_for_hash_C.io.input_text))
 	}
 	when(aes_cipher_for_hash_C.io.output_valid){
@@ -171,6 +171,10 @@ class SE(val debug:Boolean, val canChangeKey: Boolean) extends Module{
 	val hash_C_original_buffer_valid 		= RegInit(false.B)
 	next_hash_C_original_buffer_valid      := Mux(aes_cipher_for_hash_C.io.output_valid, true.B, Mux(output_valid, false.B, hash_C_original_buffer_valid))
 	hash_C_original_buffer_valid           := RegNext(next_hash_C_original_buffer_valid)
+
+	// when(hash_C_original_buffer_valid){
+	// 	printf("hash_C_original_buffer: %x\n", hash_C_original_buffer) //hash_C_original_buffer working
+	// }
 	/*----------------------buf_lv2----------------------*/ 
 
 	/*----------------------buf_lv3----------------------*/
@@ -329,7 +333,6 @@ class SE(val debug:Boolean, val canChangeKey: Boolean) extends Module{
 	val result_buffer = RegEnable(padded_result, seOpValid) // buf_lv3
 		
 	when(seOpValid){
-		printf("hash_C_original_buffer: %x\n", hash_C_original_buffer)
 		printf("bit64_randnum:%x\n", bit64_randnum)
 		printf("padded_result:%x\n", padded_result)
 		printf("seoperation.io.result:%x\n",seoperation.io.result)
@@ -350,11 +353,11 @@ class SE(val debug:Boolean, val canChangeKey: Boolean) extends Module{
 		aes_input_reverse(i) := result_buffer_vectorized(Params.CiphLength-i-1)
 	}
 	val aes_input_reverse_bit = Cat(aes_input_reverse)
-	aes_cipher_firsthlf.io.input_text := aes_input_reverse_bit(127, 0).asTypeOf(aes_cipher_firsthlf.io.input_text)
+	aes_cipher_firsthlf.io.input_text := aes_input_reverse_bit(255, 128).asTypeOf(aes_cipher_firsthlf.io.input_text)
 	aes_cipher_firsthlf.io.input_valid := result_valid_buffer
 	aes_cipher_firsthlf.io.input_roundKeys := key
 
-	aes_cipher_secondhlf.io.input_text := aes_input_reverse_bit(255, 128).asTypeOf(aes_cipher_secondhlf.io.input_text)
+	aes_cipher_secondhlf.io.input_text := aes_input_reverse_bit(127, 0).asTypeOf(aes_cipher_secondhlf.io.input_text)
 	aes_cipher_secondhlf.io.input_valid := result_valid_buffer
 	aes_cipher_secondhlf.io.input_roundKeys := key
 
@@ -368,7 +371,7 @@ class SE(val debug:Boolean, val canChangeKey: Boolean) extends Module{
 		printf("aes_cipher_secondhlf.io.output_text:%x\n", Cat(aes_cipher_secondhlf.io.output_text))
 	}
 	// Connect the output side
-	val output_connect = Cat(hash_C_buffer, Cat(aes_cipher_firsthlf.io.output_text), Cat(aes_cipher_secondhlf.io.output_text)) //FIXME: Cat(aes_cipher_firsthlf.io.output_text) OR doasUINT? 
+	val output_connect = Cat(hash_C_buffer, Cat(aes_cipher_firsthlf.io.output_text), Cat(aes_cipher_secondhlf.io.output_text)) //FIXME: Cat(aes_cipher_firsthlf.io.output_text) OR doasUINT? -> REVERSE of each other
 	val output_buffer = RegInit(0.U(316.W)) // buf_lv4
 	when(aes_cipher_firsthlf.io.output_valid){
 		printf("output_connect:%x\n", output_connect)
