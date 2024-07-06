@@ -180,9 +180,9 @@ int main() {
 	bit128_t op1_lo_128_rev_bit128(op1_lo_128_rev);
 	bit128_t op2_lo_128_rev_bit128(op2_lo_128_rev);
 	bit128_t op3_lo_128_rev_bit128(op3_lo_128_rev);
-	bit128_t op1_lo_128_rev_ciph = aes128_encrypt_128(op1_lo_128_rev_bit128);
-	bit128_t op2_lo_128_rev_ciph = aes128_encrypt_128(op2_lo_128_rev_bit128);
-	bit128_t op3_lo_128_rev_ciph = aes128_encrypt_128(op3_lo_128_rev_bit128);
+	bit128_t op1_lo_128_rev_ciph = aes128_encrypt_128(op1_plain_lo_128);
+	bit128_t op2_lo_128_rev_ciph = aes128_encrypt_128(op2_plain_lo_128);
+	bit128_t op3_lo_128_rev_ciph = aes128_encrypt_128(op3_plain_lo_128);
 	bit316_t opA(op1_lo_128_rev_ciph.value, init_A_uint128, (uint64_t) (init_A_uint128 >> 68));
 	bit316_t opB(op2_lo_128_rev_ciph.value, init_B_uint128, (uint64_t) (init_B_uint128 >> 68));
 	bit316_t opC(op3_lo_128_rev_ciph.value, init_C_uint128, (uint64_t) (init_C_uint128 >> 68));
@@ -231,6 +231,22 @@ int main() {
         printf("%02x ", ptr_D[i + 24]);
     }
 	printf("\n\n");
+
+	printf("\t(l3) Ciphertext of bit316_t l3 (lower 128 bits): ");
+	for(int i = 0; i < 16; ++i) {
+        printf("%02x ", ptr_D[i + 24]);
+    }
+	printf("\n");
+	printf("\t(l3) Plaintext of bit316_t l3 (lower 128 bits): ");
+	uint8_t d[16] = {0};
+	for(int i = 0; i < 16; ++i) {
+        d[i] = ptr_D[i + 24];
+    }
+	// uint8_t l_128_arr[16] = {0x90, 0xcb, 0x45, 0x61, 0x1c, 0x31, 0x05, 0xc8, 0x46, 0x24, 0xb2, 0xac, 0x12, 0xcb, 0x5b, 0x74};
+	bit128_t n(d);
+	int m = (int) decrypt_128_64(n);
+	printf("%d\n\n", m);
+
 	printf("Finish generating bit316_t opA and opB.\n---\n");
 	
 	// Generating software-based SE intermediate signal
