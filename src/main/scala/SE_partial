@@ -59,6 +59,27 @@ class Plaintext_Reverse_Connector extends Module {
 	io.out := connect_result_reverse
 }
 
+class Hash_Compare extends Module {
+	// Given the original 60 bit "hash_orig" and a 128 bit "hash_regenerated", judge whether hash_orig(58, 0) === hash_regenerated(126, 68)
+	// Combinational logic
+	val io = IO(new Bundle {
+		val hash_orig 			= Input(UInt(60.W))
+		val hash_regenerated 	= Input(Uint(128.W))
+		val valid_in 			= Input(Bool())
+		val valid_out 			= Output(Bool())
+		val compare_result 		= Output(Bool())
+	})
+	
+	val is_valid 		= Wire(Bool())
+	val comp_result 	= Wire(Bool())
+
+	is_valid 			:= Mux(io.valid_in, true.B, false.B) 
+	comp_result 		:= hash_orig(58, 0) === hash_regenerated(126, 68)
+
+	io.valid_out 		:= is_valid
+	io.compare_result 	:= comp_result
+}
+
 class SE(val debug : Boolean, val canChangeKey: Boolean) extends Module{
 	// IO ports and control bits
 	val io      = IO(new SEIO(canChangeKey))
