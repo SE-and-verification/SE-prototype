@@ -64,7 +64,7 @@ class Hash_Compare extends Module {
 	// Combinational logic
 	val io = IO(new Bundle {
 		val hash_orig 			= Input(UInt(60.W))
-		val hash_regenerated 	= Input(Uint(128.W))
+		val hash_regenerated 	= Input(UInt(128.W))
 		val valid_in 			= Input(Bool())
 		val valid_out 			= Output(Bool())
 		val compare_result 		= Output(Bool())
@@ -74,7 +74,7 @@ class Hash_Compare extends Module {
 	val comp_result 	= Wire(Bool())
 
 	is_valid 			:= Mux(io.valid_in, true.B, false.B) 
-	comp_result 		:= hash_orig(58, 0) === hash_regenerated(126, 68)
+	comp_result 		:= io.hash_orig(58, 0) === io.hash_regenerated(126, 68)
 
 	io.valid_out 		:= is_valid
 	io.compare_result 	:= comp_result
@@ -320,8 +320,8 @@ class SE(val debug : Boolean, val canChangeKey: Boolean) extends Module{
     seoperation.io.inst         := inst_buffer
     val seOpValid 			    = lv2ok_buffer
 	seoperation.io.valid 	    := seOpValid // || (all_match && lv1ok_buffer)
-	val op1_bit 	            = decrypted_op1_val_buffer.asUInt // Structure: [muNdR][A_nialp] -> [plain_A][RdNum]
-	val op2_bit 	            = decrypted_op2_val_buffer.asUInt // Structure: [muNdR][B_nialp] -> [plain_B][RdNum]
+	val op1_bit 	            = Cat(decrypted_op1_val_buffer) // Structure: [muNdR][A_nialp] -> [plain_A][RdNum]
+	val op2_bit 	            = Cat(decrypted_op2_val_buffer) // Structure: [muNdR][B_nialp] -> [plain_B][RdNum]
 	val op1_plaintext_64		= op1_bit(127, 64) // [plain_A]
 	val op2_plaintext_64		= op2_bit(127, 64) // [plain_B]
 	// seoperation.io.op1_input := Mux(all_match && lv1ok_buffer, op1_val, Mux(mid_inst_buffer(7,5) === 5.U(3.W), Cat(aes_invcipher_firsthlf.io.output_op1), op1_asUInt)) // FIXME: input for ENC is aes_invcipher_firsthlf.io.output_op1 ? 
@@ -367,8 +367,8 @@ class SE(val debug : Boolean, val canChangeKey: Boolean) extends Module{
 	when(lv3ok_buffer) {
 		printf("\tresult_buffer: %x %x (<- RdNum, ignore) %x\n", result_buffer(255, 192), result_buffer(191, 128), result_buffer(127, 0))
 		printf("\thash_C_buffer: %x\n", hash_C_buffer)
-		printf("\top1_plaintext_64: %x\n", op1_plaintext_64)
-		printf("\top2_plaintext_64: %x\n", op2_plaintext_64)
+		printf("\top1_bit: %x\n", op1_bit)
+		printf("\top2_bit: %x\n", op2_bit)
 		printf("\tseoperation.io.op1_input: %x\n", seoperation.io.op1_input)
 		printf("\tseoperation.io.op2_input: %x\n", seoperation.io.op2_input)
 		printf("\tSE Computation Result: %x\n", Cat(seoperation.io.result))

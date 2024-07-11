@@ -36,6 +36,27 @@ class SEIO(val canChangeKey: Boolean) extends Bundle{
 	val out = new SEOutput
 }
 
+class Hash_Compare extends Module {
+	// Given the original 60 bit "hash_orig" and a 128 bit "hash_regenerated", judge whether hash_orig(59, 0) === hash_regenerated(127, 68)
+	// Combinational logic
+	val io = IO(new Bundle {
+		val hash_orig 			= Input(UInt(60.W))
+		val hash_regenerated 	= Input(UInt(128.W))
+		val valid_in 			= Input(Bool())
+		val valid_out 			= Output(Bool())
+		val compare_result 		= Output(Bool())
+	})
+	
+	val is_valid 		= Wire(Bool())
+	val comp_result 	= Wire(Bool())
+
+	is_valid 			:= Mux(io.valid_in, true.B, false.B) 
+	comp_result 		:= io.hash_orig(59, 0) === io.hash_regenerated(127, 68)
+
+	io.valid_out 		:= is_valid
+	io.compare_result 	:= comp_result
+}
+
 class Plaintext_Reverse_Connector extends Module {
 	// Connect 2 reversed 60-bit hash plaintext and 1 8-bit inst together
 	val io = IO(new Bundle{
