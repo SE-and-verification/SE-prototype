@@ -347,12 +347,32 @@ int main() {
 	printf("Begin Hash comparison part (upper 128 bits) check.\n\n");
 	// Print software-generated value
 	printf("> Software-generated value:\n\n");
-	// TODO:
+	printf("\t(l3) Ciphertext of result (upper 128 bits): ");
+	print_bit(hash_C_original_result.value, 0, 15, false);
+	printf("\n\n");
 
 	// Print hardware-generated value
 	printf("> Hardware-generated value:\n\n");
-	// TODO:
+	printf("\t(l3_SE) Ciphertext of result (upper 128 bits): ");
+	for(int i = 0; i < 16; ++i) {
+        printf("%02x ", ptr_C[i + 8]);
+    }
+	printf("\n\n");
 
+	// Judge the result
+	printf("> Result:\n\n");
+	bool flag = true;
+	for(int i = 0; i < 16; ++i) {
+        if(hash_C_original_result.value[i] != ptr_C[i + 8]) {
+			flag = false;
+			break;
+		}
+    }
+	if(flag) {
+		printf("\tThe Hash computation part is correct!\n\n");
+	} else {
+		printf("\tThe Hash computation part is incorrect!\n\n");
+	}
 	printf("Finish Hash comparison part (upper 128 bits) check.\n---\n");
 	
 	printf("Begin ALU computation part (lower 128 bits) check.\n\n");
@@ -380,6 +400,8 @@ int main() {
 	bit128_t l_128_temp(l_128_arr);
 	int l3_SE_l128_plaintext = (int) decrypt_128_64(l_128_temp);
 	printf("%d\n\n", l3_SE_l128_plaintext);
+	
+	// Judge the result
 	printf("> Result:\n\n");
 	if(l3.GET_DECRYPTED_VALUE() == l3_SE_l128_plaintext) {
 		printf("\tThe ALU computation part is correct!\n\n");
