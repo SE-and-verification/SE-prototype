@@ -112,7 +112,7 @@ class SE(val debug : Boolean, val canChangeKey: Boolean) extends Module{
 	// val ciphers 		= Reg(Vec(32, UInt(128.W)))
 	// val cache_valid 	= Reg(Vec(32, Bool()))
 	// val plaintexts 		= Reg(Vec(32, UInt(64.W)))
-	// val ptr 			= RegInit(0.U(8.W))
+	val ptr 			= RegInit(0.U(8.W))
 	val expandedKey128 	= VecInit(
     VecInit(0x00.U(8.W), 0x01.U(8.W), 0x02.U(8.W), 0x03.U(8.W), 0x04.U(8.W), 0x05.U(8.W), 0x06.U(8.W), 0x07.U(8.W), 0x08.U(8.W), 0x09.U(8.W), 0x0a.U(8.W), 0x0b.U(8.W), 0x0c.U(8.W), 0x0d.U(8.W), 0x0e.U(8.W), 0x0f.U(8.W)),
     VecInit(0xd6.U(8.W), 0xaa.U(8.W), 0x74.U(8.W), 0xfd.U(8.W), 0xd2.U(8.W), 0xaf.U(8.W), 0x72.U(8.W), 0xfa.U(8.W), 0xda.U(8.W), 0xa6.U(8.W), 0x78.U(8.W), 0xf1.U(8.W), 0xd6.U(8.W), 0xab.U(8.W), 0x76.U(8.W), 0xfe.U(8.W)),
@@ -128,6 +128,10 @@ class SE(val debug : Boolean, val canChangeKey: Boolean) extends Module{
 
     // PRC: Plaintext Reverse Connector
     val PRC_0 = Module(new Plaintext_Reverse_Connector)
+
+	// HC: Hash Compare Module
+	// val HC_op1 = Module(new Hash_Compare)
+	// val HC_op2 = Module(new Hash_Compare)
 
     // Key changing logic
 	if(canChangeKey) {
@@ -145,14 +149,20 @@ class SE(val debug : Boolean, val canChangeKey: Boolean) extends Module{
 	val output_valid = RegInit(false.B) // Set high when the final result is ready
 
 	// Level_1 buffer debug
-	printf("[Stage: Input -> Level_1 Buffer]\n")
+	printf("[Stage:          Input -> Level_1 Buffer]\n")
 
+	// ----------4ok_reg----------
+	val lv1ok_buffer 	= RegInit(false.B)
+	val lv2ok_buffer 	= RegInit(false.B)
+	val lv3ok_buffer 	= RegInit(false.B)
+	val lv4ok_buffer 	= RegInit(false.B)
+	// ----------4ok_reg----------
+	
 	// ----------buf_lv1----------
 	val inst_buffer 	= RegEnable(io.in.inst, io.in.valid)
 	val op1_buffer 		= RegEnable(io.in.op1, io.in.valid) // [hsh_A][Ciph_A]
 	val op2_buffer 		= RegEnable(io.in.op2, io.in.valid) // [hsh_B][Ciph_B]
 	val ready_for_input = RegInit(true.B)
-	val lv1ok_buffer 	= RegInit(false.B)
 	// ----------buf_lv1----------
 
 	io.in.ready := ready_for_input
@@ -168,7 +178,7 @@ class SE(val debug : Boolean, val canChangeKey: Boolean) extends Module{
 	lv1ok_buffer 			:= RegNext(next_lv1ok_buffer) 
     
 	// Level_1 buffer debug
-	when(lv1ok_buffer) {
+	when(lv1ok_buffer && !lv2ok_buffer && !lv3ok_buffer && !lv4ok_buffer) {
 		printf("\tinst_buffer: %x\n", inst_buffer)
 		printf("\top1_buffer: %x\n", op1_buffer)
 		printf("\top2_buffer: %x\n", op2_buffer)
@@ -185,8 +195,8 @@ class SE(val debug : Boolean, val canChangeKey: Boolean) extends Module{
 	PRC_0.io.inst 	                        := inst_buffer
     val connected_reversed_plaintext_buffer = Wire(Vec(Params.StateLength, UInt(8.W)))
 	connected_reversed_plaintext_buffer     := PRC_0.io.out
-
-    // Feed the ciphertexts into the invcipher
+	
+	// Feed the ciphertexts into the invcipher
 	val ciph_op1 			= op1_buffer(255,0) // [Ciph_A]
 	val ciph_op1_calc 		= ciph_op1(127, 0)
 	val ciph_op1_calc_vec 	= Wire(Vec(16, UInt(8.W)))
@@ -200,15 +210,6 @@ class SE(val debug : Boolean, val canChangeKey: Boolean) extends Module{
 	val lv2_AES_valid       = RegInit(false.B) // local reg, only components between lv1 and lv2 need it
 	val tmp_1 				= RegInit(false.B)
 
-	// lv2_AES_valid logic
-	// Set low one cycle after being set high
-	val next_lv2_AES_valid  = Wire(Bool())
-	val next_tmp_1 			= Wire(Bool())
-	next_lv2_AES_valid 		:= Mux((lv1ok_buffer && !tmp_1), true.B, false.B)
-	next_tmp_1 				:= Mux((lv1ok_buffer && !lv2_AES_valid), true.B, Mux(output_valid, false.B, tmp_1))
-	lv2_AES_valid 			:= RegNext(next_lv2_AES_valid)
-	tmp_1 					:= RegNext(next_tmp_1)
-
 	// Match the input type 
 	for (i <- 0 until 16) {
 		// Solve type mismatch (as type of aes_invcipher_XXXhlf.io.input_opX)
@@ -217,6 +218,15 @@ class SE(val debug : Boolean, val canChangeKey: Boolean) extends Module{
 		ciph_op2_calc_vec(i) := ciph_op2_calc((15 - i) * 8 + 7, (15 - i) * 8)
 		ciph_op2_comp_vec(i) := ciph_op2_comp((15 - i) * 8 + 7, (15 - i) * 8)
 	}
+
+	// lv2_AES_valid logic
+	// Set low one cycle after being set high
+	val next_lv2_AES_valid  = Wire(Bool())
+	val next_tmp_1 			= Wire(Bool())
+	next_lv2_AES_valid 		:= Mux((lv1ok_buffer && !tmp_1), true.B, false.B)
+	next_tmp_1 				:= Mux((lv1ok_buffer && !lv2_AES_valid), true.B, Mux(output_valid, false.B, tmp_1))
+	lv2_AES_valid 			:= RegNext(next_lv2_AES_valid)
+	tmp_1 					:= RegNext(next_tmp_1)
 
 	// Two DECs and one ENC
     aes_invcipher_firsthlf.io.input_op1         := ciph_op1_calc_vec
@@ -248,9 +258,11 @@ class SE(val debug : Boolean, val canChangeKey: Boolean) extends Module{
     val decrypted_op2_val_buffer	        = RegEnable(aes_invcipher_firsthlf.io.output_op2, aes_invcipher_firsthlf.io.output_valid) // [muNdR][B_nialp]
 	val decrypted_op2_val_buffer_valid      = RegInit(false.B)
     val decrypted_op2_hash_buffer	        = RegEnable(aes_invcipher_secondhlf.io.output_op2, aes_invcipher_secondhlf.io.output_valid) // [''tsni][Q_hsh][P_hsh]
-    val decrypted_op2_hash_buffer_valid     = RegInit(false.B)
-	val lv2ok_buffer 						= RegInit(false.B) 
+    val decrypted_op2_hash_buffer_valid     = RegInit(false.B) 
 	// ----------buf_lv2----------
+
+	val lv3_AES_valid       = RegInit(false.B) // local reg, only components between lv2 and lv3 need it
+	val tmp_2 				= RegInit(false.B)
 
     // Original Hash_C valid logic
     val next_hash_C_original_buffer_valid 	= Wire(Bool())
@@ -275,9 +287,18 @@ class SE(val debug : Boolean, val canChangeKey: Boolean) extends Module{
 	val next_lv2ok_buffer 	= Wire(Bool())
 	next_lv2ok_buffer     	:= Mux((aes_invcipher_firsthlf.io.output_valid && aes_invcipher_secondhlf.io.output_valid && aes_cipher_for_hash_C.io.output_valid), true.B, Mux(output_valid, false.B, lv2ok_buffer))
 	lv2ok_buffer 			:= RegNext(next_lv2ok_buffer)
-	
+
+	// lv3_AES_valid logic
+	// Set low one cycle after being set high
+	val next_lv3_AES_valid  = Wire(Bool())
+	val next_tmp_2 			= Wire(Bool())
+	next_lv3_AES_valid 		:= Mux((lv2ok_buffer && !tmp_2), true.B, false.B)
+	next_tmp_2 				:= Mux((lv2ok_buffer && !lv3_AES_valid), true.B, Mux(output_valid, false.B, tmp_2))
+	lv3_AES_valid 			:= RegNext(next_lv3_AES_valid)
+	tmp_2 					:= RegNext(next_tmp_2)
+
 	// Level_2 buffer debug
-	when(lv2ok_buffer) {
+	when(lv2ok_buffer && !lv3ok_buffer && !lv4ok_buffer) {
 		printf("\tconnected_reversed_plaintext_buffer: ")
 		for(i <- 0 until 16) {
 			printf("%x", connected_reversed_plaintext_buffer(i))
@@ -288,11 +309,7 @@ class SE(val debug : Boolean, val canChangeKey: Boolean) extends Module{
 		printf("\tciph_op1_comp: %x\n", ciph_op1_comp)
 		printf("\tciph_op2_calc: %x\n", ciph_op2_calc)
 		printf("\tciph_op2_comp: %x\n", ciph_op2_comp)
-		printf("\tdecrypted_op1_val_buffer: ")
-		for(i <- 0 until 16) {
-			printf("%x", decrypted_op1_val_buffer(i))
-		}
-		printf("\n")
+		printf("\tdecrypted_op1_val_buffer: %x\n", Cat(decrypted_op1_val_buffer))
 		printf("\tdecrypted_op1_hash_buffer: ")
 		for(i <- 0 until 16) {
 			printf("%x", decrypted_op1_hash_buffer(i))
@@ -320,8 +337,8 @@ class SE(val debug : Boolean, val canChangeKey: Boolean) extends Module{
     seoperation.io.inst         := inst_buffer
     val seOpValid 			    = lv2ok_buffer
 	seoperation.io.valid 	    := seOpValid // || (all_match && lv1ok_buffer)
-	val op1_bit 	            = Cat(decrypted_op1_val_buffer) // Structure: [muNdR][A_nialp] -> [plain_A][RdNum]
-	val op2_bit 	            = Cat(decrypted_op2_val_buffer) // Structure: [muNdR][B_nialp] -> [plain_B][RdNum]
+	val op1_bit 	            = Cat(decrypted_op1_val_buffer) // [plain_A][RdNum]
+	val op2_bit 	            = Cat(decrypted_op2_val_buffer) // [plain_B][RdNum]
 	val op1_plaintext_64		= op1_bit(127, 64) // [plain_A]
 	val op2_plaintext_64		= op2_bit(127, 64) // [plain_B]
 	// seoperation.io.op1_input := Mux(all_match && lv1ok_buffer, op1_val, Mux(mid_inst_buffer(7,5) === 5.U(3.W), Cat(aes_invcipher_firsthlf.io.output_op1), op1_asUInt)) // FIXME: input for ENC is aes_invcipher_firsthlf.io.output_op1 ? 
@@ -334,19 +351,37 @@ class SE(val debug : Boolean, val canChangeKey: Boolean) extends Module{
 	val bit64_randnum = PRNG(new MaxPeriodFibonacciLFSR(64, Some(scala.math.BigInt(64, scala.util.Random))))
 	val padded_result = Cat(seoperation.io.result, bit64_randnum, lv2_op1_buffer(315, 256), lv2_op2_buffer(315, 256), inst_buffer) // [Plain_C][RdNum][hsh_A][hsh_B][inst]
 
+	// Two ENCs: Reconstruct the hash
+	aes_cipher_for_op1.io.input_text 		:= decrypted_op1_hash_buffer
+	aes_cipher_for_op1.io.input_valid 		:= lv3_AES_valid
+	aes_cipher_for_op1.io.input_roundKeys 	:= key
+	aes_cipher_for_op2.io.input_text 		:= decrypted_op2_hash_buffer
+	aes_cipher_for_op2.io.input_valid 		:= lv3_AES_valid
+	aes_cipher_for_op2.io.input_roundKeys 	:= key
 
     // ----------buf_lv3----------
-	val result_buffer 			= RegEnable(padded_result, seOpValid)
-	val result_valid_buffer 	= RegInit(false.B)
+	val result_buffer 					= RegEnable(padded_result, seOpValid)
+	val result_valid_buffer 			= RegInit(false.B)
 	// val result_plaintext_buffer = RegInit(0.U(64.W)) // cache ptr
-	val hash_C_buffer_valid 	= RegInit(false.B)
-	val hash_C_buffer 			= RegEnable(hash_C_original_buffer(59, 0), hash_C_buffer_valid)
-	val lv3ok_buffer 			= RegInit(false.B)
+	val hash_C_buffer_valid 			= RegInit(false.B)
+	val hash_C_buffer 					= RegEnable(hash_C_original_buffer(127, 68), hash_C_buffer_valid)
+	val op1_rehash_result_buffer_valid 	= RegInit(false.B)
+	val op1_rehash_result_buffer 		= RegEnable(aes_cipher_for_op1.io.output_text, aes_cipher_for_op1.io.output_valid)
+	val op2_rehash_result_buffer_valid 	= RegInit(false.B)
+	val op2_rehash_result_buffer 		= RegEnable(aes_cipher_for_op2.io.output_text, aes_cipher_for_op2.io.output_valid)
 	// ----------buf_lv3----------
 
 	// when(seOpValid) {
 	// 	result_plaintext_buffer := seoperation.io.result
 	// }
+
+	// Compare valid logic
+	val next_op1_rehash_result_buffer_valid 	= Wire(Bool())
+	val next_op2_rehash_result_buffer_valid 	= Wire(Bool())
+	next_op1_rehash_result_buffer_valid 		:= Mux(aes_cipher_for_op1.io.output_valid, true.B, Mux(output_valid, false.B, op1_rehash_result_buffer_valid))
+	next_op2_rehash_result_buffer_valid 		:= Mux(aes_cipher_for_op2.io.output_valid, true.B, Mux(output_valid, false.B, op2_rehash_result_buffer_valid))
+	op1_rehash_result_buffer_valid 				:= RegNext(next_op1_rehash_result_buffer_valid)
+	op2_rehash_result_buffer_valid 				:= RegNext(next_op2_rehash_result_buffer_valid)
 
 	// hash_C valid buffer logic
 	val next_hash_C_buffer_valid 	= Wire(Bool())
@@ -360,11 +395,11 @@ class SE(val debug : Boolean, val canChangeKey: Boolean) extends Module{
 
 	// lv3ok_buffer logic
 	val next_lv3ok_buffer 	= Wire(Bool())
-	next_lv3ok_buffer     	:= Mux((result_valid_buffer && hash_C_buffer_valid), true.B, Mux(output_valid, false.B, lv3ok_buffer))
+	next_lv3ok_buffer     	:= Mux((result_valid_buffer && hash_C_buffer_valid && op1_rehash_result_buffer_valid && op2_rehash_result_buffer_valid), true.B, Mux(output_valid, false.B, lv3ok_buffer))
 	lv3ok_buffer 			:= RegNext(next_lv3ok_buffer) 
 
 	// Level_3 buffer debug
-	when(lv3ok_buffer) {
+	when(lv3ok_buffer && !lv4ok_buffer) {
 		printf("\tresult_buffer: %x %x (<- RdNum, ignore) %x\n", result_buffer(255, 192), result_buffer(191, 128), result_buffer(127, 0))
 		printf("\thash_C_buffer: %x\n", hash_C_buffer)
 		printf("\top1_bit: %x\n", op1_bit)
@@ -373,6 +408,8 @@ class SE(val debug : Boolean, val canChangeKey: Boolean) extends Module{
 		printf("\tseoperation.io.op2_input: %x\n", seoperation.io.op2_input)
 		printf("\tSE Computation Result: %x\n", Cat(seoperation.io.result))
 		printf("\tRdNum: %x\n", Cat(bit64_randnum))
+		printf("\top1_rehash_result_buffer: %x\n", Cat(op1_rehash_result_buffer));
+		printf("\top2_rehash_result_buffer: %x\n", Cat(op2_rehash_result_buffer));
 		printf("\tlv3ok_buffer: %x\n", lv3ok_buffer);
 	}
 
@@ -380,82 +417,116 @@ class SE(val debug : Boolean, val canChangeKey: Boolean) extends Module{
 	printf("[Stage: Level_3 Buffer -> Level_4 Buffer]\n")
 
 	// Connect result_buffer: [Plain_C][RdNum][hsh_A][hsh_B][inst] to the cipher
-	val result_buffer_vectorized 	= Wire(Vec(Params.CiphLength, UInt(8.W)))
-	result_buffer_vectorized		:= VecInit(Seq.tabulate(Params.CiphLength)(i => result_buffer((i + 1) * 8 - 1, i * 8)))
-	val aes_input_reverse 			= Wire(Vec(Params.CiphLength, UInt(8.W)))
-	for(i <- 0 until Params.CiphLength) {
-		aes_input_reverse(i) := result_buffer_vectorized(Params.CiphLength-i-1)
+	// Reverse the result and feed the plaintexts into the cipher
+	val result_buffer_vectorized 			= Wire(Vec(Params.CiphLength, UInt(8.W)))
+	result_buffer_vectorized				:= VecInit(Seq.tabulate(Params.CiphLength)(i => result_buffer((i + 1) * 8 - 1, i * 8)))
+	val aes_input_reverse_bit 				= Cat(result_buffer_vectorized)
+	val plain_out_calc 						= aes_input_reverse_bit(127, 0) // [muNdR][C_nialp]
+	val plain_out_calc_vec 					= Wire(Vec(16, UInt(8.W)))
+	val plain_out_comp 						= aes_input_reverse_bit(255, 128) // [tsni][B_hsh][A_hsh]
+	val plain_out_comp_vec 					= Wire(Vec(16, UInt(8.W)))
+
+	// Match the input type 
+	for (i <- 0 until 16) {
+		// Solve type mismatch (as type of aes_cipher_XXXhlf.io.input_text)
+		plain_out_calc_vec(i) := plain_out_calc((15 - i) * 8 + 7, (15 - i) * 8)
+		plain_out_comp_vec(i) := plain_out_comp((15 - i) * 8 + 7, (15 - i) * 8)
 	}
-	val aes_input_reverse_bit 				= Cat(aes_input_reverse)
-	aes_cipher_firsthlf.io.input_text 		:= aes_input_reverse_bit(127, 0).asTypeOf(aes_cipher_firsthlf.io.input_text)
-	aes_cipher_firsthlf.io.input_valid 		:= result_valid_buffer
+
+	val lv4_AES_valid       = RegInit(false.B) // local reg, only components between lv3 and lv4 need it
+	val tmp_3 				= RegInit(false.B)
+
+	// lv4_AES_valid logic
+	// Set low one cycle after being set high
+	val next_lv4_AES_valid  = Wire(Bool())
+	val next_tmp_3 			= Wire(Bool())
+	next_lv4_AES_valid 		:= Mux((lv3ok_buffer && !tmp_3), true.B, false.B)
+	next_tmp_3 				:= Mux((lv3ok_buffer && !lv4_AES_valid), true.B, Mux(output_valid, false.B, tmp_3))
+	lv4_AES_valid 			:= RegNext(next_lv4_AES_valid)
+	tmp_3 					:= RegNext(next_tmp_3)
+	
+	// Two ENCs: Encrypt the padded result to get the final output
+	aes_cipher_firsthlf.io.input_text 		:= plain_out_calc_vec
+	aes_cipher_firsthlf.io.input_valid 		:= lv4_AES_valid
 	aes_cipher_firsthlf.io.input_roundKeys 	:= key
-	aes_cipher_secondhlf.io.input_text 		:= aes_input_reverse_bit(255, 128).asTypeOf(aes_cipher_secondhlf.io.input_text)
-	aes_cipher_secondhlf.io.input_valid 	:= result_valid_buffer
+	aes_cipher_secondhlf.io.input_text 		:= plain_out_comp_vec
+	aes_cipher_secondhlf.io.input_valid 	:= lv4_AES_valid
 	aes_cipher_secondhlf.io.input_roundKeys := key
 
-	// Reconstruct the hash
-	aes_cipher_for_op1.io.input_text 		:= decrypted_op1_hash_buffer
-	aes_cipher_for_op1.io.input_valid 		:= decrypted_op1_hash_buffer_valid
-	aes_cipher_for_op1.io.input_roundKeys 	:= key
-	aes_cipher_for_op2.io.input_text 		:= decrypted_op2_hash_buffer
-	aes_cipher_for_op2.io.input_valid 		:= decrypted_op2_hash_buffer_valid
-	aes_cipher_for_op2.io.input_roundKeys 	:= key
-
-	val rehashed_op1_bit 		= Cat(aes_cipher_for_op1.io.output_text)
-	val trimmed_rehashed_op1 	= rehashed_op1_bit(59, 0)
-	val op1_compare_result 		= (trimmed_rehashed_op1 === lv2_op1_buffer(315, 256))
-	val rehashed_op2_bit 		= Cat(aes_cipher_for_op2.io.output_text)
-	val trimmed_rehashed_op2 	= rehashed_op2_bit(59, 0)
-	val op2_compare_result 		= (trimmed_rehashed_op2 === lv2_op2_buffer(315, 256))
-
 	// ----------buf_lv4----------
+	val output_buffer_lo 				= RegEnable(aes_cipher_firsthlf.io.output_text, aes_cipher_firsthlf.io.output_valid)
+	val output_buffer_lo_valid			= RegInit(false.B)
+	val output_buffer_up 				= RegEnable(aes_cipher_secondhlf.io.output_text, aes_cipher_firsthlf.io.output_valid)
+	val output_buffer_up_valid			= RegInit(false.B)
 	val output_buffer 					= RegInit(0.U(316.W))
-	val op1_compare_result_buffer_valid = RegInit(false.B)
-	val op1_compare_result_buffer 		= RegEnable(op1_compare_result, op1_compare_result_buffer_valid)
-	val op2_compare_result_buffer_valid = RegInit(false.B)
-	val op2_compare_result_buffer 		= RegEnable(op2_compare_result, op2_compare_result_buffer_valid)
+	val hash_compare_result_op1 		= RegInit(false.B)
+	val hash_compare_result_op1_valid	= RegInit(true.B) // Should be RegInit(false.B), modified just for testing other parts - Yishen Zhou
+	val hash_compare_result_op2 		= RegInit(false.B)
+	val hash_compare_result_op2_valid	= RegInit(true.B) // Should be RegInit(false.B), modified just for testing other parts - Yishen Zhou
 	// ----------buf_lv4----------
 
-	// Compare valid logic
-	val next_op1_compare_result_buffer_valid 	= Wire(Bool())
-	val next_op2_compare_result_buffer_valid 	= Wire(Bool())
-	next_op1_compare_result_buffer_valid 		:= Mux(aes_cipher_for_op1.io.output_valid, true.B, Mux(output_valid, false.B, op1_compare_result_buffer_valid))
-	next_op2_compare_result_buffer_valid 		:= Mux(aes_cipher_for_op2.io.output_valid, true.B, Mux(output_valid, false.B, op2_compare_result_buffer_valid))
-	op1_compare_result_buffer_valid 			:= RegNext(next_op1_compare_result_buffer_valid)
-	op2_compare_result_buffer_valid 			:= RegNext(next_op2_compare_result_buffer_valid)
+	// output_buffer_XX_valid logic
+	val next_output_buffer_lo_valid 			= Wire(Bool())
+	val next_output_buffer_up_valid 			= Wire(Bool())
+	next_output_buffer_lo_valid     			:= Mux(aes_cipher_firsthlf.io.output_valid, true.B, Mux(output_valid, false.B, output_buffer_lo_valid))
+	next_output_buffer_up_valid     			:= Mux(aes_cipher_secondhlf.io.output_valid, true.B, Mux(output_valid, false.B, output_buffer_up_valid))
+	output_buffer_lo_valid 						:= RegNext(next_output_buffer_lo_valid)
+	output_buffer_up_valid 						:= RegNext(next_output_buffer_up_valid)
 
-	when(aes_cipher_firsthlf.io.output_valid && aes_cipher_secondhlf.io.output_valid && op1_compare_result_buffer_valid && op2_compare_result_buffer_valid) {
+	// lv4ok_buffer logic
+	val next_lv4ok_buffer 	= Wire(Bool())
+	next_lv4ok_buffer     	:= Mux((output_buffer_lo_valid && output_buffer_up_valid && hash_compare_result_op1_valid && hash_compare_result_op2_valid), true.B, Mux(output_valid, false.B, lv4ok_buffer))
+	lv4ok_buffer 			:= RegNext(next_lv4ok_buffer)
+
+	when(lv4ok_buffer) {
 		output_valid := true.B
 	}.elsewhen(io.out.valid && io.out.ready) {
 		output_valid := false.B
 	}
 
 	// Connect the output side
-	// C output part set 0 when any compare result is false
-	val output_connect = Cat(hash_C_buffer, aes_cipher_firsthlf.io.output_text.asUInt, aes_cipher_secondhlf.io.output_text.asUInt)
-	when((op1_compare_result_buffer && op1_compare_result_buffer_valid) && (op2_compare_result_buffer && op2_compare_result_buffer_valid)){
+	// Output part set 0 when any compare result is false
+	val output_connect = Cat(hash_C_buffer, Cat(output_buffer_up), Cat(output_buffer_lo))
+	// TODO: Finish 2 HC_opx, need another 2 "next" signals
+	// HC_op1.io.hash_orig := lv2_op1_buffer(315, 256)
+	// HC_op1.io.hash_regenerated := lv2_op1_buffer(315, 256)
+	// HC_op2.io.hash_orig := lv2_op2_buffer(315, 256)
+	// HC_op2.io.hash_regenerated := lv2_op1_buffer(315, 256)
+
+	when(hash_compare_result_op1 && hash_compare_result_op1_valid && hash_compare_result_op2 && hash_compare_result_op2_valid) {
 		output_buffer := output_connect
 	}.otherwise {
-		output_buffer := 0.U
+		output_buffer := output_connect // Should be 0.U, modified just for testing other parts - Yishen Zhou
+	}
+
+	// Level_4 buffer debug
+	when(lv4ok_buffer) {
+		printf("\taes_input_reverse_bit: %x\n", aes_input_reverse_bit);
+		printf("\tplain_out_calc_vec: %x\n", Cat(plain_out_calc_vec));
+		printf("\toutput_buffer_lo: %x\n", Cat(output_buffer_lo));
+		printf("\tplain_out_comp_vec: %x\n", Cat(plain_out_comp_vec));
+		printf("\toutput_buffer_up: %x\n", Cat(output_buffer_up));
+		printf("\toutput_connect: %x\n", output_connect);
+		printf("\toutput_buffer: %x\n", output_buffer);
+		printf("\tlv4ok_buffer: %x\n", lv4ok_buffer);
 	}
 
 	io.out.valid 				:= output_valid
 	// io.out.ready                := true.B // INPUT: CANNOT BE HARDCODED HERE
 	io.out.result 				:= output_buffer
-	io.out.op1_compare 			:= op1_compare_result_buffer
-	io.out.op2_compare 			:= op2_compare_result_buffer
-	io.out.op1_compare_valid 	:= op1_compare_result_buffer_valid
-	io.out.op2_compare_valid 	:= op2_compare_result_buffer_valid
+	io.out.op1_compare 			:= hash_compare_result_op1
+	io.out.op2_compare 			:= hash_compare_result_op2
+	io.out.op1_compare_valid 	:= hash_compare_result_op1_valid
+	io.out.op2_compare_valid 	:= hash_compare_result_op2_valid
 
-	// when(output_valid){
-	// 	printf("ptr:%x\n",ptr)
-	// 	when(ptr === 31.U){
-	// 		ptr := 0.U
-	// 	}.otherwise{
-	// 		ptr := ptr + 1.U
-	// 	}
-	// }
+	when(output_valid) {
+		// printf("ptr:%x\n",ptr)
+		when(ptr === 31.U) {
+			ptr := 0.U
+		}.otherwise {
+			ptr := ptr + 1.U
+		}
+	}
 	when(reset.asBool){
 		key := expandedKey128
 		// for(i <- 0 until 32){
