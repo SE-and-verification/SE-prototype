@@ -398,7 +398,11 @@ int main() {
     }
 	// uint8_t l_128_arr[16] = {0x90, 0xcb, 0x45, 0x61, 0x1c, 0x31, 0x05, 0xc8, 0x46, 0x24, 0xb2, 0xac, 0x12, 0xcb, 0x5b, 0x74};
 	bit128_t l_128_temp(l_128_arr);
-	int l3_SE_l128_plaintext = (int) decrypt_128_64(l_128_temp);
+	bit128_t muNdR_Cnialp = aes128_decrypt_128(l_128_temp);
+	int l3_SE_l128_plaintext = 0;
+	for(int i = 0; i < 8; ++i) {
+        l3_SE_l128_plaintext = l3_SE_l128_plaintext + muNdR_Cnialp.value[i + 8];
+    }
 	printf("%d\n\n", l3_SE_l128_plaintext);
 	
 	// Judge the result
