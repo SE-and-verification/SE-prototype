@@ -382,7 +382,7 @@ class SE(val debug:Boolean, val canChangeKey: Boolean) extends Module{
 	aes_cipher_firsthlf.io.input_valid := result_valid_buffer
 	aes_cipher_firsthlf.io.input_roundKeys := key
 
-	aes_cipher_secondhlf.io.input_text := aes_input_reverse_bit(127, 0).asTypeOf(aes_cipher_secondhlf.io.input_text)
+	aes_cipher_secondhlf.io.input_text := result_buffer(255, 128).asTypeOf(aes_cipher_secondhlf.io.input_text)
 	aes_cipher_secondhlf.io.input_valid := result_valid_buffer
 	aes_cipher_secondhlf.io.input_roundKeys := key
 

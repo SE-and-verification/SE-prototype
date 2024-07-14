@@ -336,7 +336,7 @@ class SE(val debug : Boolean, val canChangeKey: Boolean) extends Module{
 	// seoperation.io.inst 	:= Mux(all_match && lv1ok_buffer, inst_buffer, mid_inst_buffer)
     seoperation.io.inst         := inst_buffer
     val seOpValid 			    = lv2ok_buffer
-	seoperation.io.valid 	    := seOpValid // || (all_match && lv1ok_buffer)
+	seoperation.io.in_valid 	    := seOpValid // || (all_match && lv1ok_buffer)
 	val op1_bit 	            = Cat(decrypted_op1_val_buffer) // [plain_A][RdNum]
 	val op2_bit 	            = Cat(decrypted_op2_val_buffer) // [plain_B][RdNum]
 	val op1_plaintext_64		= op1_bit(127, 64) // [plain_A]
@@ -360,7 +360,7 @@ class SE(val debug : Boolean, val canChangeKey: Boolean) extends Module{
 	aes_cipher_for_op2.io.input_roundKeys 	:= key
 
     // ----------buf_lv3----------
-	val result_buffer 					= RegEnable(padded_result, seOpValid)
+	val result_buffer 					= RegEnable(padded_result, seoperation.io.out_valid)
 	val result_valid_buffer 			= RegInit(false.B)
 	// val result_plaintext_buffer = RegInit(0.U(64.W)) // cache ptr
 	val hash_C_buffer_valid 			= RegInit(false.B)
