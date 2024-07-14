@@ -304,7 +304,7 @@ class SE(val debug:Boolean, val canChangeKey: Boolean) extends Module{
 	// Reverse the byte order of decrypted plaintext so we can convert them into uint with Chisel infrastructure.
 	seoperation.io.inst 	:= Mux(valid_buffer, inst_buffer, mid_inst_buffer)
 	val seOpValid 			= aes_invcipher_firsthlf.io.output_valid // || (all_match && valid_buffer)
-	seoperation.io.valid 	:= seOpValid
+	seoperation.io.in_valid 	:= seOpValid
 
     val op1_bit                     = Cat(aes_invcipher_firsthlf.io.output_op1)
     val op2_bit                     = Cat(aes_invcipher_firsthlf.io.output_op2)
@@ -349,9 +349,15 @@ class SE(val debug:Boolean, val canChangeKey: Boolean) extends Module{
 	val bit64_randnum = PRNG(new MaxPeriodFibonacciLFSR(64, Some(scala.math.BigInt(64, scala.util.Random))))
 	// val bit64_zero = 0.U(64.W)
 	val padded_result = Cat(seoperation.io.result, bit64_randnum, mid_op1_buffer(315, 256), mid_op2_buffer(315, 256), mid_inst_buffer)
-	val result_buffer = RegEnable(padded_result, seOpValid) // buf_lv3
+	
+	
+	val result_buffer = RegEnable(padded_result, seoperation.io.out_valid) // buf_lv3
 		
 	when(seOpValid){
+		printf("mid_op1_buffer:%x\n", mid_op1_buffer)
+		printf("mid_op2_buffer:%x\n", mid_op2_buffer)
+		printf("mid_inst_buffer:%x\n", mid_inst_buffer)
+
 		printf("bit64_randnum:%x\n", bit64_randnum)
 		printf("padded_result:%x\n", padded_result)
 		printf("seoperation.io.result:%x\n",seoperation.io.result)
@@ -372,7 +378,7 @@ class SE(val debug:Boolean, val canChangeKey: Boolean) extends Module{
 		aes_input_reverse(i) := result_buffer_vectorized(Params.CiphLength-i-1)
 	}
 	val aes_input_reverse_bit = aes_input_reverse.do_asUInt
-	aes_cipher_firsthlf.io.input_text := aes_input_reverse_bit(255, 128).asTypeOf(aes_cipher_firsthlf.io.input_text)
+	aes_cipher_firsthlf.io.input_text := result_buffer(127, 0).asTypeOf(aes_cipher_firsthlf.io.input_text)
 	aes_cipher_firsthlf.io.input_valid := result_valid_buffer
 	aes_cipher_firsthlf.io.input_roundKeys := key
 
@@ -390,7 +396,7 @@ class SE(val debug:Boolean, val canChangeKey: Boolean) extends Module{
 		printf("aes_cipher_secondhlf.io.output_text:%x\n", Cat(aes_cipher_secondhlf.io.output_text))
 	}
 	// Connect the output side
-	val output_connect = Cat(hash_C_buffer, Cat(aes_cipher_firsthlf.io.output_text), Cat(aes_cipher_secondhlf.io.output_text)) //FIXME: Cat(aes_cipher_firsthlf.io.output_text) OR doasUINT? -> REVERSE of each other
+	val output_connect = Cat(hash_C_buffer, Cat(aes_cipher_firsthlf.io.output_text), Cat(aes_cipher_secondhlf.io.output_text))
 	val output_buffer = RegInit(0.U(316.W)) // buf_lv4
 	when(aes_cipher_firsthlf.io.output_valid){
 		printf("output_connect:%x\n", output_connect)

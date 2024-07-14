@@ -11,7 +11,7 @@ import COND._
 
 class SEOpIO  extends Bundle{
 	val inst = Input(UInt(8.W))
-	val valid = Input(Bool())
+	val in_valid = Input(Bool())
 
 	val op1_input = Input(UInt(64.W))
 
@@ -19,6 +19,7 @@ class SEOpIO  extends Bundle{
 
 
 	val result = Output(UInt(64.W))
+	val out_valid = Output(Bool())
 }
 
 
@@ -42,9 +43,9 @@ class SEOperation(val debug: Boolean) extends Module{
 	fu.io.fu_type := decode.io.fu_type
 	fu.io.signed := decode.io.signed
 	io.result := fu.io.out
-
+	io.out_valid := io.in_valid
 	if(debug){
-		when(io.valid){
+		when(io.in_valid){
 			printf("\n------fu-----\n")
 			printf("fu op1: %x\n",op1)
 			printf("fu op2: %x\n",op2)
@@ -54,3 +55,4 @@ class SEOperation(val debug: Boolean) extends Module{
 		}
 	}
 }
+// valid signal 
