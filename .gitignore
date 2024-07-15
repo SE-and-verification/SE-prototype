@@ -3,5 +3,4 @@
 obj_dir/*
 project/*
 target/*
-generated-src/*
 functional-library/src/verilator/test
