@@ -130,8 +130,8 @@ class SE(val debug : Boolean, val canChangeKey: Boolean) extends Module{
     val PRC_0 = Module(new Plaintext_Reverse_Connector)
 
 	// HC: Hash Compare Module
-	// val HC_op1 = Module(new Hash_Compare)
-	// val HC_op2 = Module(new Hash_Compare)
+	val HC_op1 = Module(new Hash_Compare)
+	val HC_op2 = Module(new Hash_Compare)
 
     // Key changing logic
 	if(canChangeKey) {
@@ -459,10 +459,10 @@ class SE(val debug : Boolean, val canChangeKey: Boolean) extends Module{
 	val output_buffer_up 				= RegEnable(aes_cipher_secondhlf.io.output_text, aes_cipher_firsthlf.io.output_valid)
 	val output_buffer_up_valid			= RegInit(false.B)
 	val output_buffer 					= RegInit(0.U(316.W))
-	val hash_compare_result_op1 		= RegInit(false.B)
-	val hash_compare_result_op1_valid	= RegInit(true.B) // Should be RegInit(false.B), modified just for testing other parts - Yishen Zhou
-	val hash_compare_result_op2 		= RegInit(false.B)
-	val hash_compare_result_op2_valid	= RegInit(true.B) // Should be RegInit(false.B), modified just for testing other parts - Yishen Zhou
+	val hash_compare_result_op1 		= RegEnable(HC_op1.io.compare_result, HC_op1.io.valid_out) // Test: RegInit(false.B) 
+	val hash_compare_result_op1_valid	= RegInit(false.B)
+	val hash_compare_result_op2 		= RegEnable(HC_op2.io.compare_result, HC_op2.io.valid_out) // Test: RegInit(false.B) 
+	val hash_compare_result_op2_valid	= RegInit(false.B)
 	// ----------buf_lv4----------
 
 	// output_buffer_XX_valid logic
@@ -484,19 +484,30 @@ class SE(val debug : Boolean, val canChangeKey: Boolean) extends Module{
 		output_valid := false.B
 	}
 
+	// HC logic
+	val next_hash_compare_result_op1_valid 	= Wire(Bool())
+	val next_hash_compare_result_op2_valid 	= Wire(Bool())
+	next_hash_compare_result_op1_valid 		:= Mux(HC_op1.io.valid_out, true.B, Mux(output_valid, false.B, hash_compare_result_op1_valid))
+	next_hash_compare_result_op2_valid 		:= Mux(HC_op2.io.valid_out, true.B, Mux(output_valid, false.B, hash_compare_result_op2_valid))
+	hash_compare_result_op1_valid 			:= RegNext(next_hash_compare_result_op1_valid)
+	hash_compare_result_op2_valid 			:= RegNext(next_hash_compare_result_op2_valid)
+
 	// Connect the output side
 	// Output part set 0 when any compare result is false
-	val output_connect = Cat(hash_C_buffer, Cat(output_buffer_up), Cat(output_buffer_lo))
-	// TODO: Finish 2 HC_opx, need another 2 "next" signals
-	// HC_op1.io.hash_orig := lv2_op1_buffer(315, 256)
-	// HC_op1.io.hash_regenerated := lv2_op1_buffer(315, 256)
-	// HC_op2.io.hash_orig := lv2_op2_buffer(315, 256)
-	// HC_op2.io.hash_regenerated := lv2_op1_buffer(315, 256)
+	val output_connect 			= Cat(hash_C_buffer, Cat(output_buffer_up), Cat(output_buffer_lo))
+	val op1_rehash_result_bit 	= Cat(op1_rehash_result_buffer)
+	val op2_rehash_result_bit 	= Cat(op2_rehash_result_buffer)
+	HC_op1.io.hash_orig 		:= lv2_op1_buffer(315, 256)
+	HC_op1.io.hash_regenerated 	:= op1_rehash_result_bit
+	HC_op1.io.valid_in 			:= op1_rehash_result_buffer_valid
+	HC_op2.io.hash_orig 		:= lv2_op2_buffer(315, 256)
+	HC_op2.io.hash_regenerated 	:= op2_rehash_result_bit
+	HC_op2.io.valid_in 			:= op2_rehash_result_buffer_valid
 
 	when(hash_compare_result_op1 && hash_compare_result_op1_valid && hash_compare_result_op2 && hash_compare_result_op2_valid) {
 		output_buffer := output_connect
 	}.otherwise {
-		output_buffer := output_connect // Should be 0.U, modified just for testing other parts - Yishen Zhou
+		output_buffer := 0.U
 	}
 
 	// Level_4 buffer debug
@@ -508,16 +519,18 @@ class SE(val debug : Boolean, val canChangeKey: Boolean) extends Module{
 		printf("\toutput_buffer_up: %x\n", Cat(output_buffer_up));
 		printf("\toutput_connect: %x\n", output_connect);
 		printf("\toutput_buffer: %x\n", output_buffer);
+		printf("\thash_compare_result_op1: %x\n", hash_compare_result_op1)
+		printf("\thash_compare_result_op2: %x\n", hash_compare_result_op2)
 		printf("\tlv4ok_buffer: %x\n", lv4ok_buffer);
 	}
 
 	io.out.valid 				:= output_valid
 	// io.out.ready                := true.B // INPUT: CANNOT BE HARDCODED HERE
 	io.out.result 				:= output_buffer
-	io.out.op1_compare 			:= hash_compare_result_op1
-	io.out.op2_compare 			:= hash_compare_result_op2
-	io.out.op1_compare_valid 	:= hash_compare_result_op1_valid
-	io.out.op2_compare_valid 	:= hash_compare_result_op2_valid
+	io.out.op1_compare 			:= HC_op1.io.compare_result
+	io.out.op2_compare 			:= HC_op2.io.compare_result
+	io.out.op1_compare_valid 	:= HC_op1.io.valid_out
+	io.out.op2_compare_valid 	:= HC_op2.io.valid_out
 
 	when(output_valid) {
 		// printf("ptr:%x\n",ptr)
