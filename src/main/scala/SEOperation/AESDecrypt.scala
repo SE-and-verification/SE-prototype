@@ -6,18 +6,22 @@ import chisel3.util._
 class DecryptIO extends Bundle{
 	val input_valid = Input(Bool())
   val input_roundKeys = Input(Vec(11,Vec(Params.StateLength, UInt(8.W))))
-	val input_op1 = Input(Vec(Params.StateLength, UInt(8.W))) // plaintext, ciphertext, roundKey
-	val input_op2 = Input(Vec(Params.StateLength, UInt(8.W))) // plaintext, ciphertext, roundKey
+  val input_op1 = Input(UInt(128.W))
+  val input_op2 = Input(UInt(128.W))
+	// val input_op1 = Input(Vec(Params.StateLength, UInt(8.W))) // plaintext, ciphertext, roundKey
+	// val input_op2 = Input(Vec(Params.StateLength, UInt(8.W))) // plaintext, ciphertext, roundKey
 
-	val output_op1 = Output(Vec(Params.StateLength, UInt(8.W))) // ciphertext or plaintext
-	val output_op2 = Output(Vec(Params.StateLength, UInt(8.W))) // ciphertext or plaintext
+  val output_op1 = Output(UInt(128.W))
+  val output_op2 = Output(UInt(128.W))
+	// val output_op1 = Output(Vec(Params.StateLength, UInt(8.W))) // ciphertext or plaintext
+	// val output_op2 = Output(Vec(Params.StateLength, UInt(8.W))) // ciphertext or plaintext
 
 	val output_valid = Output(Bool())
 }
 // implements wrapper for AES cipher and inverse cipher
 // change Nk=4 for AES128, NK=6 for AES192, Nk=8 for AES256
 // change expandedKeyMemType= ROM, Mem, SyncReadMem
-class AESDecrypt(val rolled: Boolean, index:Int) extends Module {
+class AESDecrypt(val rolled: Boolean, val index:Int = 0) extends Module {
   val KeyLength: Int = 4 * Params.rows
   val Nr: Int = 10 // 10, 12, 14 rounds
   val Nrplus1: Int = Nr + 1 // 10+1, 12+1, 14+1
@@ -26,6 +30,8 @@ class AESDecrypt(val rolled: Boolean, index:Int) extends Module {
   print(s"aes decrypt index: ${index}\n")
 
   val io = IO(new DecryptIO)
+
+
   if(!rolled){
     // val InvCipherRoundARK = Array.fill(3){
     val InvCipherRoundARK = Array.fill(2){
@@ -42,11 +48,11 @@ class AESDecrypt(val rolled: Boolean, index:Int) extends Module {
     }
 
     InvCipherRoundARK(0).io.input_valid := io.input_valid
-    InvCipherRoundARK(0).io.state_in := io.input_op1
+    InvCipherRoundARK(0).io.state_in := io.input_op1.asTypeOf(Vec(Params.StateLength, UInt(8.W)))
     InvCipherRoundARK(0).io.roundKey := io.input_roundKeys(Nr)
 
     InvCipherRoundARK(1).io.input_valid := io.input_valid
-    InvCipherRoundARK(1).io.state_in := io.input_op2
+    InvCipherRoundARK(1).io.state_in :=  io.input_op2.asTypeOf(Vec(Params.StateLength, UInt(8.W)))
     InvCipherRoundARK(1).io.roundKey := io.input_roundKeys(Nr)
 
     // InvCipherRoundARK(2).io.input_valid := io.input_valid
@@ -65,17 +71,15 @@ class AESDecrypt(val rolled: Boolean, index:Int) extends Module {
         }
         InvCipherRounds(j)(i).io.roundKey := io.input_roundKeys(Nr - i - 1)
       }
-  }
-    // Cipher last round
-    // for(j <- 0 to 2){
-    for(j <- 0 to 1){
+        // last round
       InvCipherRoundNMC(j).io.input_valid := InvCipherRounds(j)(Nr - 1 - 1).io.output_valid
       InvCipherRoundNMC(j).io.state_in := InvCipherRounds(j)(Nr - 1 - 1).io.state_out
       InvCipherRoundNMC(j).io.roundKey := io.input_roundKeys(0)
-    }
+  }
 
-    io.output_op1 := InvCipherRoundNMC(0).io.state_out
-    io.output_op2 := InvCipherRoundNMC(1).io.state_out
+
+    io.output_op1 := InvCipherRoundNMC(0).io.state_out.asUInt
+    io.output_op2 := InvCipherRoundNMC(1).io.state_out.asUInt
     io.output_valid := InvCipherRoundNMC(0).io.output_valid && InvCipherRoundNMC(1).io.output_valid // || InvCipherRoundNMC(2).io.output_valid
   }
   else{
@@ -93,18 +97,18 @@ class AESDecrypt(val rolled: Boolean, index:Int) extends Module {
       address := address - 1.U
     }
     invcipher_A.io.start := io.input_valid
-    invcipher_A.io.ciphertext := io.input_op1
+    invcipher_A.io.ciphertext := io.input_op1.asTypeOf(Vec(Params.StateLength, UInt(8.W)))
     invcipher_A.io.roundKey := io.input_roundKeys(address)
 
     invcipher_B.io.start := io.input_valid
-    invcipher_B.io.ciphertext := io.input_op2
+    invcipher_B.io.ciphertext := io.input_op2.asTypeOf(Vec(Params.StateLength, UInt(8.W)))
     invcipher_B.io.roundKey := io.input_roundKeys(address)
 
     // invciphers(2).io.start := io.input_valid
     // invciphers(2).io.roundKey := io.input_roundKeys(address)
 
-    io.output_op1 := invcipher_A.io.state_out
-    io.output_op2 := invcipher_B.io.state_out
+    io.output_op1 := invcipher_A.io.state_out.asUInt
+    io.output_op2 := invcipher_B.io.state_out.asUInt
     io.output_valid := invcipher_A.io.state_out_valid || invcipher_B.io.state_out_valid // || invciphers(2).io.state_out_valid
   }
 }
