@@ -431,8 +431,12 @@ class SE(val debug : Boolean, val canChangeKey: Boolean) extends Module{
 	aes_cipher.io.input_valid 		:= lv4_AES_valid
 	aes_cipher.io.input_roundKeys 	:= key
 	aes_cipher.io.input_op2		:= plain_out_comp
-	aes_cipher.io.input_valid 	:= lv4_AES_valid
-	aes_cipher.io.input_roundKeys := key
+	// when(lv4_AES_valid){
+	// 	printf("Enc input: %x %x\n", plain_out_calc, plain_out_comp)
+	// }
+	// when(aes_cipher.io.output_valid){
+	// 	printf("Enc output: %x %x\n", aes_cipher.io.output_op1, aes_cipher.io.output_op2)
+	// }
 
 	// ----------buf_lv4----------
 	val output_buffer_lo 				= RegEnable(aes_cipher.io.output_op1, aes_cipher.io.output_valid)
@@ -447,16 +451,13 @@ class SE(val debug : Boolean, val canChangeKey: Boolean) extends Module{
 	// ----------buf_lv4----------
 
 	// output_buffer_XX_valid logic
-	val next_output_buffer_lo_valid 			= Wire(Bool())
-	val next_output_buffer_up_valid 			= Wire(Bool())
-	next_output_buffer_lo_valid     			:= Mux(aes_cipher.io.output_valid, true.B, Mux(output_valid, false.B, output_buffer_lo_valid))
-	next_output_buffer_up_valid     			:= Mux(aes_cipher.io.output_valid, true.B, Mux(output_valid, false.B, output_buffer_up_valid))
+	val next_output_buffer_lo_valid   = Mux(aes_cipher.io.output_valid, true.B, Mux(output_valid, false.B, output_buffer_lo_valid))
+	val next_output_buffer_up_valid   = Mux(aes_cipher.io.output_valid, true.B, Mux(output_valid, false.B, output_buffer_up_valid))
 	output_buffer_lo_valid 						:= RegNext(next_output_buffer_lo_valid)
 	output_buffer_up_valid 						:= RegNext(next_output_buffer_up_valid)
 
 	// lv4ok_buffer logic
-	val next_lv4ok_buffer 	= Wire(Bool())
-	next_lv4ok_buffer     	:= Mux((output_buffer_lo_valid && output_buffer_up_valid && hash_compare_result_op1_valid && hash_compare_result_op2_valid), true.B, Mux(output_valid, false.B, lv4ok_buffer))
+	val next_lv4ok_buffer     = Mux((output_buffer_lo_valid && output_buffer_up_valid && hash_compare_result_op1_valid && hash_compare_result_op2_valid), true.B, Mux(output_valid, false.B, lv4ok_buffer))
 	lv4ok_buffer 			:= RegNext(next_lv4ok_buffer)
 
 	when(lv4ok_buffer) {
