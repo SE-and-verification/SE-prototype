@@ -324,8 +324,8 @@ class SE(val debug : Boolean, val canChangeKey: Boolean) extends Module{
     seoperation.io.inst         := inst_buffer
     val seOpValid 			    = lv2ok_buffer
 	seoperation.io.in_valid 	    := seOpValid // || (all_match && lv1ok_buffer)
-	val op1_bit 	            = Cat(decrypted_op1_val_buffer) // [plain_A][RdNum]
-	val op2_bit 	            = Cat(decrypted_op2_val_buffer) // [plain_B][RdNum]
+	val op1_bit 	            = Cat(decrypted_op1_val_buffer) // [plain_A][RdNum][verID_A]
+	val op2_bit 	            = Cat(decrypted_op2_val_buffer) // [plain_B][RdNum][verID_B]
 	val op1_plaintext_64		= op1_bit(127, 64) // [plain_A]
 	val op2_plaintext_64		= op2_bit(127, 64) // [plain_B]
 	// seoperation.io.op1_input := Mux(all_match && lv1ok_buffer, op1_val, Mux(mid_inst_buffer(7,5) === 5.U(3.W), Cat(aes_invcipher_op1.io.output_op1), op1_asUInt)) // FIXME: input for ENC is aes_invcipher_op1.io.output_op1 ? 
@@ -333,12 +333,17 @@ class SE(val debug : Boolean, val canChangeKey: Boolean) extends Module{
     seoperation.io.op1_input    := op1_plaintext_64 // Currently hardcoded (TEMP)
 	seoperation.io.op2_input    := op2_plaintext_64 // Currently hardcoded (TEMP)
 
+	// TODO: Compute version_id
+	val verID_A = op1_bit(15, 0)
+	val verID_A = op2_bit(15, 0)
+	val verID_C;
+	
 	// Once we receive the result from the seoperation, we pad the result with RNG and latch them first.
 	// Note that ALU may need 3 to 4 clock cycles (after seOpValid being set high) to calculate the result
-	// val bit64_randnum = PRNG(new MaxPeriodFibonacciLFSR(64, Some(scala.math.BigInt(64, scala.util.Random))))
-	val bit64_randnum = 0.U(64.W)
+	// val bit48_randnum = PRNG(new MaxPeriodFibonacciLFSR(64, Some(scala.math.BigInt(64, scala.util.Random))))
+	val bit48_randnum = 0.U(48.W)
 
-	val padded_result = Cat(seoperation.io.result, bit64_randnum, lv2_op1_buffer(315, 256), lv2_op2_buffer(315, 256), inst_buffer) // [Plain_C][RdNum][hsh_A][hsh_B][inst]
+	val padded_result = Cat(seoperation.io.result, bit48_randnum, verID_C, lv2_op1_buffer(315, 256), lv2_op2_buffer(315, 256), inst_buffer) // [Plain_C][RdNum][hsh_A][hsh_B][inst]
 
 	// Two ENCs: Reconstruct the hash
 	aes_cipher_for_op1.io.input_text 		:= decrypted_op1_hash_buffer
@@ -396,7 +401,7 @@ class SE(val debug : Boolean, val canChangeKey: Boolean) extends Module{
 	// 	printf("\tseoperation.io.op1_input: %x\n", seoperation.io.op1_input)
 	// 	printf("\tseoperation.io.op2_input: %x\n", seoperation.io.op2_input)
 	// 	printf("\tSE Computation Result: %x\n", Cat(seoperation.io.result))
-	// 	printf("\tRdNum: %x\n", Cat(bit64_randnum))
+	// 	printf("\tRdNum: %x\n", Cat(bit48_randnum))
 	// 	printf("\top1_rehash_result_buffer: %x\n", Cat(op1_rehash_result_buffer));
 	// 	printf("\top2_rehash_result_buffer: %x\n", Cat(op2_rehash_result_buffer));
 	// 	printf("\tlv3ok_buffer: %x\n", lv3ok_buffer);
