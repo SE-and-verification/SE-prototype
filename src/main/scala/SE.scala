@@ -218,12 +218,10 @@ class SE(val debug : Boolean, val canChangeKey: Boolean) extends Module{
 	tmp_1 					:= RegNext(next_tmp_1)
 
 	// Two DECs and one ENC
-    aes_invcipher_op1.io.input_op1         := ciph_op1_val
-	aes_invcipher_op1.io.input_op2         := ciph_op1_hash
+    aes_invcipher_op1.io.input_text         := Cat(ciph_op1_val, ciph_op1_hash)
     aes_invcipher_op1.io.input_roundKeys   := key
     aes_invcipher_op1.io.input_valid       := lv2_AES_valid // && (!all_match)
-	aes_invcipher_op2.io.input_op1        := ciph_op2_val
-	aes_invcipher_op2.io.input_op2        := ciph_op1_hash
+	aes_invcipher_op2.io.input_text        := Cat(ciph_op2_val, ciph_op2_hash)
 	aes_invcipher_op2.io.input_roundKeys  := key
 	aes_invcipher_op2.io.input_valid      := lv2_AES_valid // && (!all_match)
 	aes_cipher_for_hash_C.io.input_text 		:= connected_reversed_plaintext_buffer.asUInt
@@ -240,13 +238,13 @@ class SE(val debug : Boolean, val canChangeKey: Boolean) extends Module{
 	val lv2_op2_buffer                      = RegEnable(op2_buffer, aes_invcipher_op1.io.output_valid) // [hsh_B][Ciph_B]
 	val hash_C_original_buffer 				= RegEnable(Cat(aes_cipher_for_hash_C.io.output_text), aes_cipher_for_hash_C.io.output_valid)
 	val hash_C_original_buffer_valid 		= RegInit(false.B)
-    val decrypted_op1_val_buffer	        = RegEnable(aes_invcipher_op1.io.output_op1, aes_invcipher_op1.io.output_valid) // [muNdR][A_nialp]
+    val decrypted_op1_val_buffer	        = RegEnable(aes_invcipher_op1.io.output_text(255,128), aes_invcipher_op1.io.output_valid) // [muNdR][A_nialp]
     val decrypted_op1_val_buffer_valid      = RegInit(false.B)
-    val decrypted_op1_hash_buffer	        = RegEnable(aes_invcipher_op1.io.output_op2, aes_invcipher_op1.io.output_valid) // ['tsni][Y_hsh][X_hsh]
+    val decrypted_op1_hash_buffer	        = RegEnable(aes_invcipher_op1.io.output_text(127,0), aes_invcipher_op1.io.output_valid) // ['tsni][Y_hsh][X_hsh]
 	val decrypted_op1_hash_buffer_valid     = RegInit(false.B)
-    val decrypted_op2_val_buffer	        = RegEnable(aes_invcipher_op2.io.output_op1, aes_invcipher_op2.io.output_valid) // [muNdR][B_nialp]
+    val decrypted_op2_val_buffer	        = RegEnable(aes_invcipher_op2.io.output_text(255,128), aes_invcipher_op2.io.output_valid) // [muNdR][B_nialp]
 	val decrypted_op2_val_buffer_valid      = RegInit(false.B)
-    val decrypted_op2_hash_buffer	        = RegEnable(aes_invcipher_op2.io.output_op2, aes_invcipher_op2.io.output_valid) // [''tsni][Q_hsh][P_hsh]
+    val decrypted_op2_hash_buffer	        = RegEnable(aes_invcipher_op2.io.output_text(127,0), aes_invcipher_op2.io.output_valid) // [''tsni][Q_hsh][P_hsh]
     val decrypted_op2_hash_buffer_valid     = RegInit(false.B) 
 	// ----------buf_lv2----------
 
@@ -299,15 +297,15 @@ class SE(val debug : Boolean, val canChangeKey: Boolean) extends Module{
 	// 	printf("\tciph_op2_calc: %x\n", ciph_op2_calc)
 	// 	printf("\tciph_op2_comp: %x\n", ciph_op2_comp)
 	// 	printf("\tdecrypted_op1_val_buffer: %x\n", Cat(decrypted_op1_val_buffer))
-	// 	printf("\tdecrypted_op1_hash_buffer: ")
-	// 	for(i <- 0 until 16) {
-	// 		printf("%x", decrypted_op1_hash_buffer(i))
-	// 	}
-	// 	printf("\n")
-	// 	printf("\tdecrypted_op2_val_buffer: ")
-	// 	for(i <- 0 until 16) {
-	// 		printf("%x", decrypted_op2_val_buffer(i))
-	// 	}
+		// printf("\tdecrypted_op1_hash_buffer: ")
+		// for(i <- 0 until 16) {
+		// 	printf("%x", decrypted_op1_hash_buffer(i))
+		// }
+		// printf("\n")
+		// printf("\tdecrypted_op2_val_buffer: ")
+		// for(i <- 0 until 16) {
+		// 	printf("%x", decrypted_op2_val_buffer(i))
+		// }
 	// 	printf("\n")
 	// 	printf("\tdecrypted_op2_hash_buffer: ")
 	// 	for(i <- 0 until 16) {
@@ -337,7 +335,9 @@ class SE(val debug : Boolean, val canChangeKey: Boolean) extends Module{
 
 	// Once we receive the result from the seoperation, we pad the result with RNG and latch them first.
 	// Note that ALU may need 3 to 4 clock cycles (after seOpValid being set high) to calculate the result
-	val bit64_randnum = PRNG(new MaxPeriodFibonacciLFSR(64, Some(scala.math.BigInt(64, scala.util.Random))))
+	// val bit64_randnum = PRNG(new MaxPeriodFibonacciLFSR(64, Some(scala.math.BigInt(64, scala.util.Random))))
+	val bit64_randnum = 0.U(64.W)
+
 	val padded_result = Cat(seoperation.io.result, bit64_randnum, lv2_op1_buffer(315, 256), lv2_op2_buffer(315, 256), inst_buffer) // [Plain_C][RdNum][hsh_A][hsh_B][inst]
 
 	// Two ENCs: Reconstruct the hash
@@ -439,10 +439,8 @@ class SE(val debug : Boolean, val canChangeKey: Boolean) extends Module{
 	// }
 
 	// ----------buf_lv4----------
-	val output_buffer_lo 				= RegEnable(aes_cipher.io.output_op1, aes_cipher.io.output_valid)
-	val output_buffer_lo_valid			= RegInit(false.B)
-	val output_buffer_up 				= RegEnable(aes_cipher.io.output_op2, aes_cipher.io.output_valid)
-	val output_buffer_up_valid			= RegInit(false.B)
+	val output_buffer_enc_valid			= RegInit(false.B)
+	val output_buffer_enc 				= RegEnable(aes_cipher.io.output_text, aes_cipher.io.output_valid)
 	val output_buffer 					= RegInit(0.U(316.W))
 	val hash_compare_result_op1 		= RegEnable(HC_op1.io.compare_result, HC_op1.io.valid_out) // Test: RegInit(false.B) 
 	val hash_compare_result_op1_valid	= RegInit(false.B)
@@ -451,13 +449,11 @@ class SE(val debug : Boolean, val canChangeKey: Boolean) extends Module{
 	// ----------buf_lv4----------
 
 	// output_buffer_XX_valid logic
-	val next_output_buffer_lo_valid   = Mux(aes_cipher.io.output_valid, true.B, Mux(output_valid, false.B, output_buffer_lo_valid))
-	val next_output_buffer_up_valid   = Mux(aes_cipher.io.output_valid, true.B, Mux(output_valid, false.B, output_buffer_up_valid))
-	output_buffer_lo_valid 						:= RegNext(next_output_buffer_lo_valid)
-	output_buffer_up_valid 						:= RegNext(next_output_buffer_up_valid)
+	val next_output_buffer_enc_valid   = Mux(aes_cipher.io.output_valid, true.B, Mux(output_valid, false.B, output_buffer_enc_valid))
+	output_buffer_enc_valid 						:= RegNext(next_output_buffer_enc_valid)
 
 	// lv4ok_buffer logic
-	val next_lv4ok_buffer     = Mux((output_buffer_lo_valid && output_buffer_up_valid && hash_compare_result_op1_valid && hash_compare_result_op2_valid), true.B, Mux(output_valid, false.B, lv4ok_buffer))
+	val next_lv4ok_buffer     = Mux((output_buffer_enc_valid && hash_compare_result_op1_valid && hash_compare_result_op2_valid), true.B, Mux(output_valid, false.B, lv4ok_buffer))
 	lv4ok_buffer 			:= RegNext(next_lv4ok_buffer)
 
 	when(lv4ok_buffer) {
@@ -476,7 +472,7 @@ class SE(val debug : Boolean, val canChangeKey: Boolean) extends Module{
 
 	// Connect the output side
 	// Output part set 0 when any compare result is false
-	val output_connect 			= Cat(hash_C_buffer, Cat(output_buffer_up), Cat(output_buffer_lo))
+	val output_connect 			= Cat(hash_C_buffer, output_buffer_enc)
 	val op1_rehash_result_bit 	= Cat(op1_rehash_result_buffer)
 	val op2_rehash_result_bit 	= Cat(op2_rehash_result_buffer)
 	HC_op1.io.hash_orig 		:= lv2_op1_buffer(315, 256)

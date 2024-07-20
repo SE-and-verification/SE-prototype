@@ -9,8 +9,7 @@ class Encrypt256IO extends Bundle{
 	val input_op2 =  Input(UInt(128.W))
 
   val input_roundKeys = Input(Vec(11,Vec(Params.StateLength, UInt(8.W))))
-	val output_op1 = Output(UInt(128.W))
-	val output_op2 = Output(UInt(128.W))
+	val output_text = Output(UInt(256.W))
 
 	val output_valid = Output(Bool())
 }
@@ -25,7 +24,12 @@ class AESEncrypt256(val rolled: Boolean) extends Module {
 
   val io = IO(new Encrypt256IO)
 
-
+  val input_text_vec1 	= Wire(Vec(16, UInt(8.W)))
+  val input_text_vec2 	= Wire(Vec(16, UInt(8.W)))
+  for (i <- 0 until 16) {
+    input_text_vec1(i) := io.input_op1((15 - i) * 8 + 7, (15 - i) * 8)
+    input_text_vec2(i) := io.input_op2((15 - i) * 8 + 7, (15 - i) * 8)
+  }
   // val input_op1_vec = Wire(Vec(Params.StateLength, UInt(8.W)))
   // val input_op2_vec = Wire(Vec(Params.StateLength, UInt(8.W)))
 
@@ -46,11 +50,11 @@ class AESEncrypt256(val rolled: Boolean) extends Module {
     val CipherRoundNMC =Array.fill(2){ CipherRound("NoMixColumns", true)}
 
     CipherRoundARK(0).io.input_valid := io.input_valid
-    CipherRoundARK(0).io.state_in := io.input_op1.asTypeOf(Vec(Params.StateLength, UInt(8.W)))
+    CipherRoundARK(0).io.state_in := input_text_vec1
     CipherRoundARK(0).io.roundKey := io.input_roundKeys(0)
 
     CipherRoundARK(1).io.input_valid := io.input_valid
-    CipherRoundARK(1).io.state_in := io.input_op2.asTypeOf(Vec(Params.StateLength, UInt(8.W)))
+    CipherRoundARK(1).io.state_in := input_text_vec2
     CipherRoundARK(1).io.roundKey := io.input_roundKeys(0)
 
     // Cipher Nr-1 rounds
@@ -77,8 +81,7 @@ class AESEncrypt256(val rolled: Boolean) extends Module {
 
     io.output_valid := CipherRoundNMC(0).io.output_valid && CipherRoundNMC(1).io.output_valid
 
-    io.output_op1 := CipherRoundNMC(0).io.state_out.asUInt
-    io.output_op2 := CipherRoundNMC(1).io.state_out.asUInt
+    io.output_text := Cat( Cat(CipherRoundNMC(1).io.state_out), Cat(CipherRoundNMC(0).io.state_out))
   }else{
     val address = RegInit(0.U(log2Ceil(EKDepth).W))
 
@@ -94,15 +97,15 @@ class AESEncrypt256(val rolled: Boolean) extends Module {
 
     cipher_A.io.start := io.input_valid
     cipher_B.io.start := io.input_valid
-    cipher_A.io.plaintext := io.input_op1.asTypeOf(Vec(Params.StateLength, UInt(8.W)))
-    cipher_B.io.plaintext := io.input_op2.asTypeOf(Vec(Params.StateLength, UInt(8.W)))
+    cipher_A.io.plaintext := input_text_vec1
+    cipher_B.io.plaintext := input_text_vec2
     cipher_A.io.roundKey := io.input_roundKeys(address)
     cipher_B.io.roundKey := io.input_roundKeys(address)
 
 
-    io.output_op1 := cipher_A.io.state_out.asUInt
-    io.output_op2 := cipher_B.io.state_out.asUInt
+    io.output_text := Cat( Cat(cipher_B.io.state_out), Cat(cipher_A.io.state_out))
     io.output_valid := cipher_A.io.state_out_valid && cipher_B.io.state_out_valid
+
   }
 }
 
@@ -125,6 +128,10 @@ class AESEncrypt(val rolled: Boolean) extends Module {
   val EKDepth: Int = 16 // enough memory for any expanded key
 
   val io = IO(new EncryptIO)
+  val input_text_vec 	= Wire(Vec(16, UInt(8.W)))
+  for (i <- 0 until 16) {
+    input_text_vec(i) := io.input_text((15 - i) * 8 + 7, (15 - i) * 8)
+  }
   if(!rolled){
  val CipherRoundARK = CipherRound("AddRoundKeyOnly", true)
   val CipherRounds = Array.fill(Nr - 1) {
@@ -133,7 +140,7 @@ class AESEncrypt(val rolled: Boolean) extends Module {
   val CipherRoundNMC = CipherRound("NoMixColumns", true)
 
   CipherRoundARK.io.input_valid := io.input_valid
-  CipherRoundARK.io.state_in := io.input_text
+  CipherRoundARK.io.state_in := input_text_vec
   CipherRoundARK.io.roundKey := io.input_roundKeys(0)
 
   // Cipher Nr-1 rounds
@@ -155,7 +162,7 @@ class AESEncrypt(val rolled: Boolean) extends Module {
   CipherRoundNMC.io.roundKey := io.input_roundKeys(Nr)
 
   io.output_valid := CipherRoundNMC.io.output_valid
-  io.output_text := CipherRoundNMC.io.state_out
+  io.output_text := CipherRoundNMC.io.state_out.asUInt
   }else{
     val address = RegInit(0.U(log2Ceil(EKDepth).W))
 
@@ -168,11 +175,11 @@ class AESEncrypt(val rolled: Boolean) extends Module {
     }
     val cipher = Module(new Cipher(4, true))
     cipher.io.start := io.input_valid
-    cipher.io.plaintext := io.input_text.asTypeOf(Vec(Params.StateLength, UInt(8.W)))
+    cipher.io.plaintext := input_text_vec
     cipher.io.roundKey := io.input_roundKeys(address)
 
 
-    io.output_text := cipher.io.state_out.asUInt
+    io.output_text := Cat(cipher.io.state_out)
     io.output_valid := cipher.io.state_out_valid
   }
 }
