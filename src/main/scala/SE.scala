@@ -372,8 +372,7 @@ class SE(val debug : Boolean, val canChangeKey: Boolean) extends Module{
 	
 	// Once we receive the result from the seoperation, we pad the result with RNG and latch them first.
 	// Note that ALU may need 3 to 4 clock cycles (after seOpValid being set high) to calculate the result
-	// val bit48_randnum = PRNG(new MaxPeriodFibonacciLFSR(64, Some(scala.math.BigInt(64, scala.util.Random))))
-	val bit48_randnum = 0.U(48.W)
+	val bit48_randnum = PRNG(new MaxPeriodFibonacciLFSR(48, Some(scala.math.BigInt(64, scala.util.Random))))
 
 	val padded_result = Cat(seoperation.io.result, bit48_randnum, verID_C, lv2_op1_buffer(315, 256), lv2_op2_buffer(315, 256), inst_buffer) // [Plain_C][RdNum][hsh_A][hsh_B][inst]
 
