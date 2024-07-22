@@ -365,7 +365,7 @@ class SE(val debug : Boolean, val canChangeKey: Boolean) extends Module{
 	val pub_prv_bit = Wire(Bool())
 	pub_prv_bit 	:= lv2_op1_buffer(315) & lv2_op2_buffer(315)
 	
-	// TODO: Compute version_id
+	// Compute version_id
 	val verID_A = op1_bit(15, 0)
 	val verID_B = op2_bit(15, 0)
 	val verID_C = 0.U(16.W);
