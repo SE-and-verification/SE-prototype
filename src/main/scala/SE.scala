@@ -96,7 +96,7 @@ class Pub_Prv_Compare extends Module {
 	val comp_result 	= Wire(Bool())
 
 	is_valid 			:= Mux(io.valid_in, true.B, false.B) 
-	comp_result 		:= hash_4_test === (test_bit_X & test_bit_Y)
+	comp_result 		:= io.hash_4_test === (io.test_bit_X & io.test_bit_Y)
 
 	io.valid_out 		:= is_valid
 	io.compare_result 	:= comp_result
@@ -207,16 +207,16 @@ class SE(val debug : Boolean, val canChangeKey: Boolean) extends Module{
 	lv1ok_buffer 			:= RegNext(next_lv1ok_buffer) 
     
 	// Level_1 buffer debug
-	// when(lv1ok_buffer && !lv2ok_buffer && !lv3ok_buffer && !lv4ok_buffer) {
-	// 	printf("\tinst_buffer: %x\n", inst_buffer)
-	// 	printf("\top1_buffer: %x\n", op1_buffer)
-	// 	printf("\top2_buffer: %x\n", op2_buffer)
-	// 	printf("\tready_for_input: %x\n", ready_for_input)
-	// 	printf("\tlv1ok_buffer: %x\n", lv1ok_buffer);
-	// }
+	when(lv1ok_buffer && !lv2ok_buffer && !lv3ok_buffer && !lv4ok_buffer) {
+		printf("\tinst_buffer: %x\n", inst_buffer)
+		printf("\top1_buffer: %x\n", op1_buffer)
+		printf("\top2_buffer: %x\n", op2_buffer)
+		printf("\tready_for_input: %x\n", ready_for_input)
+		printf("\tlv1ok_buffer: %x\n", lv1ok_buffer);
+	}
 
 	// Level_2 buffer debug
-	// printf("[Stage: Level_1 Buffer -> Level_2 Buffer]\n")
+	printf("[Stage: Level_1 Buffer -> Level_2 Buffer]\n")
 
     // Connect reg input and reg output
     PRC_0.io.op1 	                        := op1_buffer 
@@ -254,7 +254,7 @@ class SE(val debug : Boolean, val canChangeKey: Boolean) extends Module{
 	aes_invcipher_op2.io.input_valid      		:= lv2_AES_valid // && (!all_match)
 	aes_cipher_for_hash_C.io.input_text 		:= connected_reversed_plaintext_buffer.asUInt
 	aes_cipher_for_hash_C.io.input_valid 		:= lv2_AES_valid
-	aes_cipher_for_hash_C.io.input_roundKeys 	= key
+	aes_cipher_for_hash_C.io.input_roundKeys 	:= key
 
 	val n_stage_valid 	= Wire(Bool())
 	n_stage_valid 		:= lv1ok_buffer // || all_match 
@@ -313,38 +313,38 @@ class SE(val debug : Boolean, val canChangeKey: Boolean) extends Module{
 	tmp_2 					:= RegNext(next_tmp_2)
 
 	// Level_2 buffer debug
-	// when(lv2ok_buffer && !lv3ok_buffer && !lv4ok_buffer) {
-	// 	printf("\tconnected_reversed_plaintext_buffer: ")
-	// 	for(i <- 0 until 16) {
-	// 		printf("%x", connected_reversed_plaintext_buffer(i))
-	// 	}
-	// 	printf("\n")
-	// 	printf("\thash_C_original_buffer: %x\n", hash_C_original_buffer)
-	// 	printf("\tciph_op1_calc: %x\n", ciph_op1_calc)
-	// 	printf("\tciph_op1_comp: %x\n", ciph_op1_comp)
-	// 	printf("\tciph_op2_calc: %x\n", ciph_op2_calc)
-	// 	printf("\tciph_op2_comp: %x\n", ciph_op2_comp)
-	// 	printf("\tdecrypted_op1_val_buffer: %x\n", Cat(decrypted_op1_val_buffer))
-		// printf("\tdecrypted_op1_hash_buffer: ")
-		// for(i <- 0 until 16) {
-		// 	printf("%x", decrypted_op1_hash_buffer(i))
-		// }
-		// printf("\n")
-		// printf("\tdecrypted_op2_val_buffer: ")
-		// for(i <- 0 until 16) {
-		// 	printf("%x", decrypted_op2_val_buffer(i))
-		// }
-	// 	printf("\n")
-	// 	printf("\tdecrypted_op2_hash_buffer: ")
-	// 	for(i <- 0 until 16) {
-	// 		printf("%x", decrypted_op2_hash_buffer(i))
-	// 	}
-	// 	printf("\n")
-	// 	printf("\tlv2ok_buffer: %x\n", lv2ok_buffer);
-	// }
+	when(lv2ok_buffer && !lv3ok_buffer && !lv4ok_buffer) {
+		printf("\tconnected_reversed_plaintext_buffer: ")
+		for(i <- 0 until 16) {
+			printf("%x", connected_reversed_plaintext_buffer(i))
+		}
+		printf("\n")
+		printf("\thash_C_original_buffer: %x\n", hash_C_original_buffer)
+		// printf("\tciph_op1_calc: %x\n", ciph_op1_calc)
+		// printf("\tciph_op1_comp: %x\n", ciph_op1_comp)
+		// printf("\tciph_op2_calc: %x\n", ciph_op2_calc)
+		// printf("\tciph_op2_comp: %x\n", ciph_op2_comp)
+		printf("\tdecrypted_op1_val_buffer: %x\n", Cat(decrypted_op1_val_buffer))
+		printf("\tdecrypted_op1_hash_buffer: ")
+		for(i <- 0 until 16) {
+			printf("%x", decrypted_op1_hash_buffer(i))
+		}
+		printf("\n")
+		printf("\tdecrypted_op2_val_buffer: ")
+		for(i <- 0 until 16) {
+			printf("%x", decrypted_op2_val_buffer(i))
+		}
+		printf("\n")
+		printf("\tdecrypted_op2_hash_buffer: ")
+		for(i <- 0 until 16) {
+			printf("%x", decrypted_op2_hash_buffer(i))
+		}
+		printf("\n")
+		printf("\tlv2ok_buffer: %x\n", lv2ok_buffer);
+	}
 
 	// Level_3 buffer debug
-	// printf("[Stage: Level_2 Buffer -> Level_3 Buffer]\n")
+	printf("[Stage: Level_2 Buffer -> Level_3 Buffer]\n")
     
 	// Reverse the byte order of decrypted plaintext so we can convert them into uint with Chisel infrastructure.
     // Feed the decrypted values to the seoperation module. Depends on whether the data is encrypted when it comes in.
@@ -363,16 +363,38 @@ class SE(val debug : Boolean, val canChangeKey: Boolean) extends Module{
 
 	// "Public & Private" check
 	val pub_prv_bit = Wire(Bool())
-	pub_prv_bit 	:= lv2_op1_buffer(315) & lv2_op1_buffer(315)
+	pub_prv_bit 	:= lv2_op1_buffer(315) & lv2_op2_buffer(315)
 	
 	// TODO: Compute version_id
 	val verID_A = op1_bit(15, 0)
-	val verID_A = op2_bit(15, 0)
-	val verID_C;
+	val verID_B = op2_bit(15, 0)
+	val verID_C = 0.U(16.W);
+
+	val opA_pub_priv = lv2_op1_buffer(315)
+	val opB_pub_priv = lv2_op2_buffer(315)
+	if(opA_pub_priv == 0){
+		if(opB_pub_priv == 0){
+			if(verID_A == verID_B){
+				verID_C := verID_A
+			}
+			else{
+				verID_C := Fill(16, 1.U)
+			}
+		}else{
+			verID_C := verID_A
+		}
+	}else{
+		if(opB_pub_priv == 0){
+			verID_C := verID_B
+		}
+		// else{
+		// 	verID_C := DC(0) // BY DEAFAULT
+		// }
+	}
 	
 	// Once we receive the result from the seoperation, we pad the result with RNG and latch them first.
 	// Note that ALU may need 3 to 4 clock cycles (after seOpValid being set high) to calculate the result
-	val bit48_randnum = PRNG(new MaxPeriodFibonacciLFSR(48, Some(scala.math.BigInt(64, scala.util.Random))))
+	val bit48_randnum = PRNG(new MaxPeriodFibonacciLFSR(48, Some(scala.math.BigInt(48, scala.util.Random))))
 
 	val padded_result = Cat(seoperation.io.result, bit48_randnum, verID_C, lv2_op1_buffer(315, 256), lv2_op2_buffer(315, 256), inst_buffer) // [Plain_C][RdNum][hsh_A][hsh_B][inst]
 
@@ -424,22 +446,22 @@ class SE(val debug : Boolean, val canChangeKey: Boolean) extends Module{
 	lv3ok_buffer 			:= RegNext(next_lv3ok_buffer) 
 
 	// Level_3 buffer debug
-	// when(lv3ok_buffer && !lv4ok_buffer) {
-	// 	printf("\tresult_buffer: %x %x (<- RdNum, ignore) %x\n", result_buffer(255, 192), result_buffer(191, 128), result_buffer(127, 0))
-	// 	printf("\thash_C_buffer: %x\n", hash_C_buffer)
-	// 	printf("\top1_bit: %x\n", op1_bit)
-	// 	printf("\top2_bit: %x\n", op2_bit)
-	// 	printf("\tseoperation.io.op1_input: %x\n", seoperation.io.op1_input)
-	// 	printf("\tseoperation.io.op2_input: %x\n", seoperation.io.op2_input)
-	// 	printf("\tSE Computation Result: %x\n", Cat(seoperation.io.result))
-	// 	printf("\tRdNum: %x\n", Cat(bit48_randnum))
-	// 	printf("\top1_rehash_result_buffer: %x\n", Cat(op1_rehash_result_buffer));
-	// 	printf("\top2_rehash_result_buffer: %x\n", Cat(op2_rehash_result_buffer));
-	// 	printf("\tlv3ok_buffer: %x\n", lv3ok_buffer);
-	// }
+	when(lv3ok_buffer && !lv4ok_buffer) {
+		printf("\tresult_buffer: %x %x (<- RdNum, ignore) %x\n", result_buffer(255, 192), result_buffer(191, 128), result_buffer(127, 0))
+		printf("\thash_C_buffer: %x\n", hash_C_buffer)
+		printf("\top1_bit: %x\n", op1_bit)
+		printf("\top2_bit: %x\n", op2_bit)
+		printf("\tseoperation.io.op1_input: %x\n", seoperation.io.op1_input)
+		printf("\tseoperation.io.op2_input: %x\n", seoperation.io.op2_input)
+		printf("\tSE Computation Result: %x\n", Cat(seoperation.io.result))
+		printf("\tRdNum: %x\n", Cat(bit48_randnum))
+		printf("\top1_rehash_result_buffer: %x\n", Cat(op1_rehash_result_buffer));
+		printf("\top2_rehash_result_buffer: %x\n", Cat(op2_rehash_result_buffer));
+		printf("\tlv3ok_buffer: %x\n", lv3ok_buffer);
+	}
 
 	// Level_4 buffer debug
-	// printf("[Stage: Level_3 Buffer -> Level_4 Buffer]\n")
+	printf("[Stage: Level_3 Buffer -> Level_4 Buffer]\n")
 
 	// Connect result_buffer: [Plain_C][RdNum][hsh_A][hsh_B][inst] to the cipher
 	// Reverse the result and feed the plaintexts into the cipher
@@ -553,18 +575,20 @@ class SE(val debug : Boolean, val canChangeKey: Boolean) extends Module{
 	}
 
 	// Level_4 buffer debug
-	// when(lv4ok_buffer) {
-	// 	printf("\taes_input_reverse_bit: %x\n", aes_input_reverse_bit);
-	// 	printf("\tplain_out_calc_vec: %x\n", Cat(plain_out_calc_vec));
-	// 	printf("\toutput_buffer_lo: %x\n", Cat(output_buffer_lo));
-	// 	printf("\tplain_out_comp_vec: %x\n", Cat(plain_out_comp_vec));
-	// 	printf("\toutput_buffer_up: %x\n", Cat(output_buffer_up));
-	// 	printf("\toutput_connect: %x\n", output_connect);
-	// 	printf("\toutput_buffer: %x\n", output_buffer);
-	// 	printf("\thash_compare_result_op1: %x\n", hash_compare_result_op1)
-	// 	printf("\thash_compare_result_op2: %x\n", hash_compare_result_op2)
-	// 	printf("\tlv4ok_buffer: %x\n", lv4ok_buffer);
-	// }
+	when(lv4ok_buffer) {
+		printf("\taes_input_reverse_bit: %x\n", aes_input_reverse_bit);
+		// printf("\tplain_out_calc_vec: %x\n", Cat(plain_out_calc_vec));
+		// printf("\toutput_buffer_lo: %x\n", Cat(output_buffer_lo));
+		// printf("\tplain_out_comp_vec: %x\n", Cat(plain_out_comp_vec));
+		// printf("\toutput_buffer_up: %x\n", Cat(output_buffer_up));
+		printf("\tcompare_hash_total: %x\n", compare_hash_total);
+		printf("\tcompare_pp_total: %x\n", compare_pp_total);
+		printf("\toutput_connect: %x\n", output_connect);
+		printf("\toutput_buffer: %x\n", output_buffer);
+		printf("\thash_compare_result_op1: %x\n", hash_compare_result_op1)
+		printf("\thash_compare_result_op2: %x\n", hash_compare_result_op2)
+		printf("\tlv4ok_buffer: %x\n", lv4ok_buffer);
+	}
 
 	io.out.valid 			:= output_valid
 	// io.out.ready CANNOT be hardcoded here! 
