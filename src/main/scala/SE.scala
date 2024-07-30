@@ -102,6 +102,52 @@ class Pub_Prv_Compare extends Module {
 	io.compare_result 	:= comp_result
 }
 
+class Version_ID_Generator extends Module {
+	// Generate new version id (or throw error code when detecting unauthorized version data modification)
+	// Based on two version id input and Pub_Priv status
+	// Combinational logic
+	val io = IO(new Bundle {
+		val pub_priv_opA 	= Input(Bool())
+		val pub_priv_opB 	= Input(Bool())
+		val version_id_opA 	= Input(UInt(16.W))
+		val version_id_opB 	= Input(UInt(16.W))
+		val valid_in 		= Input(Bool())
+		val valid_out 		= Output(Bool())
+		val version_id_out 	= Output(UInt(16.W))
+	})
+
+	val is_valid 		= Wire(Bool())
+	val ver_id_result 	= Wire(UInt(16.W))
+
+	is_valid 		:= Mux(io.valid_in, true.B, false.B)
+	
+	if(io.pub_priv_opA == 0) {
+		if(io.pub_priv_opB == 0) {
+			// (A, B) is (priv, priv)
+			if(io.version_id_opA != io.version_id_opB) {
+				ver_id_result := Fill(16, 1.U) // Error
+			} else {
+				ver_id_result := io.version_id_opA
+			}
+		} else {
+			// (A, B) is (priv, pub)
+			ver_id_result := io.version_id_opA
+		}
+	} else {
+		if(io.pub_priv_opB == 0) {
+			// (A, B) is (pub, priv)
+			ver_id_result := io.version_id_opA
+		} else {
+			// (A, B) is (pub, pub)
+			ver_id_result := DontCare
+		}
+	}
+
+	io.valid_out 		:= is_valid
+	io.version_id_out 	:= ver_id_result
+
+}
+
 class SE(val debug : Boolean, val canChangeKey: Boolean) extends Module{
 	// IO ports and control bits
 	val io      = IO(new SEIO(canChangeKey))
