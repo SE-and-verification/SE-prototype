@@ -167,7 +167,7 @@ class SE(val debug : Boolean, val canChangeKey: Boolean) extends Module{
 
     // Five ENCryptors:
     // Firsthlf: get RdNum + Plaintext (Lower 128 bits of Ciph_X) -> ALU part
-    // Secondhlf: get Inst + Hash * 2 (Upper 128 bits of Ciph_X) -> Comparison part
+    // Secondhlf: get Inst p+ Hash * 2 (Upper 128 bits of Ciph_X) -> Comparison part
     // Hash_C: Generate Hash_C_original
     // For_opX: Rehash and comparison
 	val aes_cipher     			= Module(new AESEncrypt256(rolled))
@@ -207,6 +207,9 @@ class SE(val debug : Boolean, val canChangeKey: Boolean) extends Module{
 	// PPC: Public-Private Compare Module
 	val PPC_op1 = Module(new Pub_Prv_Compare)
 	val PPC_op2 = Module(new Pub_Prv_Compare)
+
+	// VID: Version ID Generator
+	val VID_0 = Module(new Version_ID_Generator)
 
     // Key changing logic
 	if(canChangeKey) {
@@ -412,31 +415,20 @@ class SE(val debug : Boolean, val canChangeKey: Boolean) extends Module{
 	pub_prv_bit 	:= lv2_op1_buffer(315) & lv2_op2_buffer(315)
 	
 	// Compute version_id
-	val verID_A = op1_bit(15, 0)
-	val verID_B = op2_bit(15, 0)
-	val verID_C = 0.U(16.W);
-
 	val opA_pub_priv = lv2_op1_buffer(315)
 	val opB_pub_priv = lv2_op2_buffer(315)
-	if(opA_pub_priv == 0){
-		if(opB_pub_priv == 0){
-			if(verID_A == verID_B){
-				verID_C := verID_A
-			}
-			else{
-				verID_C := Fill(16, 1.U)
-			}
-		}else{
-			verID_C := verID_A
-		}
-	}else{
-		if(opB_pub_priv == 0){
-			verID_C := verID_B
-		}
-		// else{
-		// 	verID_C := DC(0) // BY DEAFAULT
-		// }
-	}
+
+	VID_0.io.pub_priv_opA 	:= lv2_op1_buffer(315)
+	VID_0.io.pub_priv_opB 	:= lv2_op2_buffer(315)
+	VID_0.io.version_id_opA := op1_bit(15, 0)
+	VID_0.io.version_id_opB := op2_bit(15, 0)
+	VID_0.io.valid_in 		:= lv2ok_buffer
+	
+	val verID_C = RegEnable(VID_0.io.version_id_out, VID_0.io.valid_out)
+	val verID_C_valid = RegInit(false.B)
+	val next_verID_C_valid  = Wire(Bool())
+	next_verID_C_valid 		:= Mux(VID_0.io.valid_out, true.B, Mux(output_valid, false.B, verID_C_valid))
+	verID_C_valid 			:= RegNext(next_verID_C_valid)
 	
 	// Once we receive the result from the seoperation, we pad the result with RNG and latch them first.
 	// Note that ALU may need 3 to 4 clock cycles (after seOpValid being set high) to calculate the result
@@ -453,7 +445,7 @@ class SE(val debug : Boolean, val canChangeKey: Boolean) extends Module{
 	aes_cipher_for_op2.io.input_roundKeys 	:= key
 
     // ----------buf_lv3----------
-	val result_buffer 					= RegEnable(padded_result, seoperation.io.out_valid)
+	val result_buffer 					= RegEnable(padded_result, seoperation.io.out_valid && verID_C_valid)
 	val result_valid_buffer 			= RegInit(false.B)
 	// val result_plaintext_buffer = RegInit(0.U(64.W)) // cache ptr
 	val hash_C_buffer_valid 			= RegInit(false.B)
