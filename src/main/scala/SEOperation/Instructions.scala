@@ -46,7 +46,7 @@ object Instructions {
   def LTS    = BitPat("b01000001")
 
   // Conditional
-  def CMOV   = BitPat("b011?????")
+  def CMOV   = BitPat("b01100000")
 
   // Logical
   def XOR    = BitPat("b10000000")
@@ -54,7 +54,8 @@ object Instructions {
   def AND    = BitPat("b10001000")
 
   // ENC
-  def ENC    = BitPat("b101?????")
+  def ENC_VAR    = BitPat("b10100000")
+  def ENC_CONST   = BitPat("b10110000")
 }
 
 
@@ -92,6 +93,7 @@ object COND{
 }
 
 object CRYPTO{
-  val CRYPTO_ENC = 0.U(2.W)
+  val CRYPTO_ENC_VAR = 0.U(2.W)
+  val CRYPTO_ENC_CONST = 1.U(2.W)
   val CRYPTO_XXX = 3.U(2.W)
 }

@@ -47,7 +47,8 @@ object SEControl {
   CMOV  -> List(FU_COND, COND_COND, LEGAL, N),
 
   // ENC
-  ENC   -> List(FU_ENC, CRYPTO_ENC, LEGAL, N)
+  ENC_VAR   -> List(FU_ENC, CRYPTO_ENC_VAR, LEGAL, N),
+  ENC_CONST  -> List(FU_ENC, CRYPTO_ENC_CONST, LEGAL, N)
 	)
 }
 
