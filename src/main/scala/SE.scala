@@ -82,9 +82,6 @@ class Hash_Compare extends Module {
 	// Given the original 60 bit "hash_orig" and a 128 bit "hash_regenerated", judge whether hash_orig(58, 0) === hash_regenerated(126, 68)
 	// Combinational logic
 	val io = IO(new Bundle {
-		val hash_4_test		= Input(Bool())
-		val test_bit_X		= Input(Bool())
-		val test_bit_Y 		= Input(Bool())
 		val hash_orig 			= Input(UInt(60.W))
 		val hash_regenerated 	= Input(UInt(128.W))
 		val valid_in 			= Input(Bool())
@@ -94,19 +91,14 @@ class Hash_Compare extends Module {
 	
 	val is_valid 		= Wire(Bool())
 	val comp_result 	= Wire(Bool())
-  val comp_result_pub_priv = Wire(Bool())
 
-
-
-	comp_result_pub_priv 		:= io.hash_4_test === (io.test_bit_X & io.test_bit_Y)
 
 	is_valid 			:= Mux(io.valid_in, true.B, false.B) 
-	comp_result 		:= io.hash_orig(59, 0) === io.hash_regenerated(125, 66) && comp_result_pub_priv
+	comp_result 		:= io.hash_orig(59, 0) === io.hash_regenerated(125, 66) 
 
 	io.valid_out 		:= is_valid
-	io.compare_result 	:= comp_result && comp_result_pub_priv
+	io.compare_result 	:= comp_result 
 }
-
 
 class Version_ID_Generator extends Module {
 	// Generate new version id (or throw error code when detecting unauthorized version data modification)
@@ -236,7 +228,8 @@ class SE(val debug : Boolean, val canChangeKey: Boolean) extends Module{
 	// PUB_VAR_HASH
 	val is_enc_const = (inst_buffer === Instructions.ENC_CONST)
 	val is_enc_var =  (inst_buffer === Instructions.ENC_VAR)
-	val is_enc_inst = (is_enc_const&&is_enc_var)
+	val is_enc_var_hash = (inst_buffer === Instructions.ENC_VAR_HASH)
+	val is_enc_inst = (is_enc_const&&is_enc_var && is_enc_var_hash)
   val start_enc_var_regs = lv1ok_buffer && is_enc_var
 
 	val incr_pub_var_prng = Wire(Bool())
@@ -430,7 +423,8 @@ class SE(val debug : Boolean, val canChangeKey: Boolean) extends Module{
 	seoperation.io.in_valid 	:= seOpValid // || (all_match && lv1ok_buffer)
 	val op1_bit 	            = Cat(decrypted_op1_val_buffer) // [plain_A][RdNum][verID_A]
 	val op2_bit 	            = Cat(decrypted_op2_val_buffer) // [plain_B][RdNum][verID_B]
-	val op1_plaintext_64		= Mux(is_enc_inst,op1_buffer(255,192) ,op1_bit(127, 64)) // [plain_A]
+	val op1_plaintext_64		= Mux(is_enc_var_hash, pub_var_hash_register,
+																Mux( is_enc_var || is_enc_const,op1_buffer(255,192) ,op1_bit(127, 64))) // [plain_A]
 	val op2_plaintext_64		= op2_bit(127, 64) // [plain_B]
 	// seoperation.io.op1_input := Mux(all_match && lv1ok_buffer, op1_val, Mux(mid_inst_buffer(7,5) === 5.U(3.W), Cat(aes_invcipher_op1.io.output_op1), op1_asUInt)) // FIXME: input for ENC is aes_invcipher_op1.io.output_op1 ? 
 	// seoperation.io.op2_input := Mux(all_match && lv1ok_buffer, op2_val, Mux(mid_inst_buffer(7,5) === 5.U(3.W), Cat(aes_invcipher_op1.io.output_op2), op2_asUInt))
@@ -567,15 +561,6 @@ class SE(val debug : Boolean, val canChangeKey: Boolean) extends Module{
 	HC_op2.io.hash_regenerated 	:= Mux(opB_pub_priv, decrypted_op2_hash_buffer, op2_rehash_result_bit)
 	HC_op2.io.valid_in 			:= lv3ok_buffer
 
-	// Compare the P&P bit
-	HC_op1.io.hash_4_test 	:= lv2_op1_buffer(315, 314)
-	HC_op1.io.test_bit_X 	:= decrypted_op1_hash_buffer(1, 0)
-	HC_op1.io.test_bit_Y 	:= decrypted_op1_hash_buffer(61, 60)
-
-	HC_op2.io.hash_4_test 	:= lv2_op2_buffer(315, 314)
-	HC_op2.io.test_bit_X 	:= decrypted_op2_hash_buffer(1, 0)
-	HC_op2.io.test_bit_Y 	:= decrypted_op2_hash_buffer(61, 60)
-
 	// when(lv4_AES_valid){
 	// 	printf("Enc input: %x %x\n", plain_out_calc, plain_out_comp)
 	// }
@@ -587,9 +572,9 @@ class SE(val debug : Boolean, val canChangeKey: Boolean) extends Module{
 	val output_buffer_enc_valid			= RegInit(false.B)
 	val output_buffer_enc 				= RegEnable(aes_cipher.io.output_text, aes_cipher.io.output_valid)
 	val output_buffer 					= RegInit(0.U(316.W))
-	val hash_compare_result_op1 		= RegEnable(HC_op1.io.compare_result, HC_op1.io.valid_out) // Test: RegInit(false.B) 
+	val hash_compare_result_op1 		= RegEnable(HC_op1.io.compare_result || (!is_enc_var_hash), HC_op1.io.valid_out) // Test: RegInit(false.B) 
 	val hash_compare_result_op1_valid	= RegInit(false.B)
-	val hash_compare_result_op2 		= RegEnable(HC_op2.io.compare_result, HC_op2.io.valid_out) // Test: RegInit(false.B) 
+	val hash_compare_result_op2 		= RegEnable(HC_op2.io.compare_result || (!is_enc_var_hash), HC_op2.io.valid_out) // Test: RegInit(false.B) 
 	val hash_compare_result_op2_valid	= RegInit(false.B)
 	// ----------buf_lv4----------
 

@@ -56,6 +56,7 @@ object Instructions {
   // ENC
   def ENC_VAR    = BitPat("b10100000")
   def ENC_CONST   = BitPat("b10110000")
+  def ENC_VAR_HASH   = BitPat("b10111000")
 }
 
 
@@ -95,5 +96,6 @@ object COND{
 object CRYPTO{
   val CRYPTO_ENC_VAR = 0.U(2.W)
   val CRYPTO_ENC_CONST = 1.U(2.W)
+  val CRYPTO_ENC_VAR_HASH = 2.U(2.W)
   val CRYPTO_XXX = 3.U(2.W)
 }
