@@ -79,11 +79,11 @@ class Plaintext_Reverse_Connector extends Module {
 }
 
 class Hash_Compare extends Module {
-	// Given the original 60 bit "hash_orig" and a 128 bit "hash_regenerated", judge whether hash_orig(58, 0) === hash_regenerated(126, 68)
+	// Given the original 60 bit "hash_orig" and a 60 bit "hash_regenerated", judge whether hash_orig(59, 0) === hash_regenerated(126, 68)
 	// Combinational logic
 	val io = IO(new Bundle {
 		val hash_orig 			= Input(UInt(60.W))
-		val hash_regenerated 	= Input(UInt(128.W))
+		val hash_regenerated 	= Input(UInt(60.W))
 		val valid_in 			= Input(Bool())
 		val valid_out 			= Output(Bool())
 		val compare_result 		= Output(Bool())
@@ -94,7 +94,7 @@ class Hash_Compare extends Module {
 
 
 	is_valid 			:= Mux(io.valid_in, true.B, false.B) 
-	comp_result 		:= io.hash_orig(59, 0) === io.hash_regenerated(125, 66) 
+	comp_result 		:= io.hash_orig === io.hash_regenerated
 
 	io.valid_out 		:= is_valid
 	io.compare_result 	:= comp_result 
@@ -555,10 +555,10 @@ class SE(val debug : Boolean, val canChangeKey: Boolean) extends Module{
 	val op1_rehash_result_bit 	= Cat(op1_rehash_result_buffer)
 	val op2_rehash_result_bit 	= Cat(op2_rehash_result_buffer)
 	HC_op1.io.hash_orig 		:= lv2_op1_buffer(315, 256)
-	HC_op1.io.hash_regenerated 	:= Mux(opA_pub_priv, 	decrypted_op1_hash_buffer,	op1_rehash_result_bit)
+	HC_op1.io.hash_regenerated 	:= Mux(opA_pub_priv, 	decrypted_op1_hash_buffer(127,68),	op1_rehash_result_bit(127,68))
 	HC_op1.io.valid_in 			:= lv3ok_buffer
 	HC_op2.io.hash_orig 		:= lv2_op2_buffer(315, 256)
-	HC_op2.io.hash_regenerated 	:= Mux(opB_pub_priv, decrypted_op2_hash_buffer, op2_rehash_result_bit)
+	HC_op2.io.hash_regenerated 	:= Mux(opB_pub_priv, decrypted_op2_hash_buffer(127,68), op2_rehash_result_bit(127,68))
 	HC_op2.io.valid_in 			:= lv3ok_buffer
 
 	// when(lv4_AES_valid){

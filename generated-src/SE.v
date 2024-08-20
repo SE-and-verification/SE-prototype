@@ -37402,14 +37402,14 @@ module Plaintext_Reverse_Connector(
   assign io_out_15 = connect_result[127:120]; // @[SE.scala 74:60]
 endmodule
 module Hash_Compare(
-  input  [59:0]  io_hash_orig,
-  input  [127:0] io_hash_regenerated,
-  input          io_valid_in,
-  output         io_valid_out,
-  output         io_compare_result
+  input  [59:0] io_hash_orig,
+  input  [59:0] io_hash_regenerated,
+  input         io_valid_in,
+  output        io_valid_out,
+  output        io_compare_result
 );
   assign io_valid_out = io_valid_in; // @[SE.scala 96:47]
-  assign io_compare_result = io_hash_orig == io_hash_regenerated[125:66]; // @[SE.scala 97:56]
+  assign io_compare_result = io_hash_orig == io_hash_regenerated; // @[SE.scala 97:49]
 endmodule
 module Version_ID_Generator(
   input   io_pub_priv_opA,
@@ -38312,69 +38312,85 @@ module MaxPeriodFibonacciLFSR_1(
   assign io_out_45 = state_45; // @[PRNG.scala 78:10]
   assign io_out_46 = state_46; // @[PRNG.scala 78:10]
   always @(posedge clock) begin
-    state_0 <= reset | _T; // @[PRNG.scala 55:{49,49}]
-    state_1 <= reset | state_0; // @[PRNG.scala 55:{49,49}]
+    if (reset) begin // @[PRNG.scala 55:49]
+      state_0 <= 1'h0; // @[PRNG.scala 55:49]
+    end else begin
+      state_0 <= _T;
+    end
+    if (reset) begin // @[PRNG.scala 55:49]
+      state_1 <= 1'h0; // @[PRNG.scala 55:49]
+    end else begin
+      state_1 <= state_0;
+    end
     if (reset) begin // @[PRNG.scala 55:49]
       state_2 <= 1'h0; // @[PRNG.scala 55:49]
     end else begin
       state_2 <= state_1;
     end
-    state_3 <= reset | state_2; // @[PRNG.scala 55:{49,49}]
-    state_4 <= reset | state_3; // @[PRNG.scala 55:{49,49}]
-    state_5 <= reset | state_4; // @[PRNG.scala 55:{49,49}]
     if (reset) begin // @[PRNG.scala 55:49]
-      state_6 <= 1'h0; // @[PRNG.scala 55:49]
+      state_3 <= 1'h0; // @[PRNG.scala 55:49]
     end else begin
-      state_6 <= state_5;
+      state_3 <= state_2;
     end
+    state_4 <= reset | state_3; // @[PRNG.scala 55:{49,49}]
+    if (reset) begin // @[PRNG.scala 55:49]
+      state_5 <= 1'h0; // @[PRNG.scala 55:49]
+    end else begin
+      state_5 <= state_4;
+    end
+    state_6 <= reset | state_5; // @[PRNG.scala 55:{49,49}]
     state_7 <= reset | state_6; // @[PRNG.scala 55:{49,49}]
     state_8 <= reset | state_7; // @[PRNG.scala 55:{49,49}]
     state_9 <= reset | state_8; // @[PRNG.scala 55:{49,49}]
     state_10 <= reset | state_9; // @[PRNG.scala 55:{49,49}]
-    state_11 <= reset | state_10; // @[PRNG.scala 55:{49,49}]
+    if (reset) begin // @[PRNG.scala 55:49]
+      state_11 <= 1'h0; // @[PRNG.scala 55:49]
+    end else begin
+      state_11 <= state_10;
+    end
     if (reset) begin // @[PRNG.scala 55:49]
       state_12 <= 1'h0; // @[PRNG.scala 55:49]
     end else begin
       state_12 <= state_11;
     end
-    state_13 <= reset | state_12; // @[PRNG.scala 55:{49,49}]
     if (reset) begin // @[PRNG.scala 55:49]
-      state_14 <= 1'h0; // @[PRNG.scala 55:49]
+      state_13 <= 1'h0; // @[PRNG.scala 55:49]
     end else begin
-      state_14 <= state_13;
+      state_13 <= state_12;
     end
+    state_14 <= reset | state_13; // @[PRNG.scala 55:{49,49}]
     state_15 <= reset | state_14; // @[PRNG.scala 55:{49,49}]
-    state_16 <= reset | state_15; // @[PRNG.scala 55:{49,49}]
-    state_17 <= reset | state_16; // @[PRNG.scala 55:{49,49}]
     if (reset) begin // @[PRNG.scala 55:49]
-      state_18 <= 1'h0; // @[PRNG.scala 55:49]
+      state_16 <= 1'h0; // @[PRNG.scala 55:49]
     end else begin
-      state_18 <= state_17;
+      state_16 <= state_15;
     end
+    state_17 <= reset | state_16; // @[PRNG.scala 55:{49,49}]
+    state_18 <= reset | state_17; // @[PRNG.scala 55:{49,49}]
     if (reset) begin // @[PRNG.scala 55:49]
       state_19 <= 1'h0; // @[PRNG.scala 55:49]
     end else begin
       state_19 <= state_18;
     end
-    if (reset) begin // @[PRNG.scala 55:49]
-      state_20 <= 1'h0; // @[PRNG.scala 55:49]
-    end else begin
-      state_20 <= state_19;
-    end
-    if (reset) begin // @[PRNG.scala 55:49]
-      state_21 <= 1'h0; // @[PRNG.scala 55:49]
-    end else begin
-      state_21 <= state_20;
-    end
+    state_20 <= reset | state_19; // @[PRNG.scala 55:{49,49}]
+    state_21 <= reset | state_20; // @[PRNG.scala 55:{49,49}]
     state_22 <= reset | state_21; // @[PRNG.scala 55:{49,49}]
-    state_23 <= reset | state_22; // @[PRNG.scala 55:{49,49}]
+    if (reset) begin // @[PRNG.scala 55:49]
+      state_23 <= 1'h0; // @[PRNG.scala 55:49]
+    end else begin
+      state_23 <= state_22;
+    end
     state_24 <= reset | state_23; // @[PRNG.scala 55:{49,49}]
     if (reset) begin // @[PRNG.scala 55:49]
       state_25 <= 1'h0; // @[PRNG.scala 55:49]
     end else begin
       state_25 <= state_24;
     end
-    state_26 <= reset | state_25; // @[PRNG.scala 55:{49,49}]
+    if (reset) begin // @[PRNG.scala 55:49]
+      state_26 <= 1'h0; // @[PRNG.scala 55:49]
+    end else begin
+      state_26 <= state_25;
+    end
     if (reset) begin // @[PRNG.scala 55:49]
       state_27 <= 1'h0; // @[PRNG.scala 55:49]
     end else begin
@@ -38395,65 +38411,49 @@ module MaxPeriodFibonacciLFSR_1(
     end else begin
       state_30 <= state_29;
     end
-    if (reset) begin // @[PRNG.scala 55:49]
-      state_31 <= 1'h0; // @[PRNG.scala 55:49]
-    end else begin
-      state_31 <= state_30;
-    end
+    state_31 <= reset | state_30; // @[PRNG.scala 55:{49,49}]
     if (reset) begin // @[PRNG.scala 55:49]
       state_32 <= 1'h0; // @[PRNG.scala 55:49]
     end else begin
       state_32 <= state_31;
     end
-    state_33 <= reset | state_32; // @[PRNG.scala 55:{49,49}]
+    if (reset) begin // @[PRNG.scala 55:49]
+      state_33 <= 1'h0; // @[PRNG.scala 55:49]
+    end else begin
+      state_33 <= state_32;
+    end
     if (reset) begin // @[PRNG.scala 55:49]
       state_34 <= 1'h0; // @[PRNG.scala 55:49]
     end else begin
       state_34 <= state_33;
     end
+    state_35 <= reset | state_34; // @[PRNG.scala 55:{49,49}]
     if (reset) begin // @[PRNG.scala 55:49]
-      state_35 <= 1'h0; // @[PRNG.scala 55:49]
+      state_36 <= 1'h0; // @[PRNG.scala 55:49]
     end else begin
-      state_35 <= state_34;
+      state_36 <= state_35;
     end
-    state_36 <= reset | state_35; // @[PRNG.scala 55:{49,49}]
     if (reset) begin // @[PRNG.scala 55:49]
       state_37 <= 1'h0; // @[PRNG.scala 55:49]
     end else begin
       state_37 <= state_36;
     end
-    if (reset) begin // @[PRNG.scala 55:49]
-      state_38 <= 1'h0; // @[PRNG.scala 55:49]
-    end else begin
-      state_38 <= state_37;
-    end
-    if (reset) begin // @[PRNG.scala 55:49]
-      state_39 <= 1'h0; // @[PRNG.scala 55:49]
-    end else begin
-      state_39 <= state_38;
-    end
-    if (reset) begin // @[PRNG.scala 55:49]
-      state_40 <= 1'h0; // @[PRNG.scala 55:49]
-    end else begin
-      state_40 <= state_39;
-    end
+    state_38 <= reset | state_37; // @[PRNG.scala 55:{49,49}]
+    state_39 <= reset | state_38; // @[PRNG.scala 55:{49,49}]
+    state_40 <= reset | state_39; // @[PRNG.scala 55:{49,49}]
     state_41 <= reset | state_40; // @[PRNG.scala 55:{49,49}]
-    if (reset) begin // @[PRNG.scala 55:49]
-      state_42 <= 1'h0; // @[PRNG.scala 55:49]
-    end else begin
-      state_42 <= state_41;
-    end
+    state_42 <= reset | state_41; // @[PRNG.scala 55:{49,49}]
     if (reset) begin // @[PRNG.scala 55:49]
       state_43 <= 1'h0; // @[PRNG.scala 55:49]
     end else begin
       state_43 <= state_42;
     end
-    state_44 <= reset | state_43; // @[PRNG.scala 55:{49,49}]
     if (reset) begin // @[PRNG.scala 55:49]
-      state_45 <= 1'h0; // @[PRNG.scala 55:49]
+      state_44 <= 1'h0; // @[PRNG.scala 55:49]
     end else begin
-      state_45 <= state_44;
+      state_44 <= state_43;
     end
+    state_45 <= reset | state_44; // @[PRNG.scala 55:{49,49}]
     if (reset) begin // @[PRNG.scala 55:49]
       state_46 <= 1'h0; // @[PRNG.scala 55:49]
     end else begin
@@ -38744,12 +38744,12 @@ module SE(
   wire [7:0] PRC_0_io_out_14; // @[SE.scala 201:23]
   wire [7:0] PRC_0_io_out_15; // @[SE.scala 201:23]
   wire [59:0] HC_op1_io_hash_orig; // @[SE.scala 204:28]
-  wire [127:0] HC_op1_io_hash_regenerated; // @[SE.scala 204:28]
+  wire [59:0] HC_op1_io_hash_regenerated; // @[SE.scala 204:28]
   wire  HC_op1_io_valid_in; // @[SE.scala 204:28]
   wire  HC_op1_io_valid_out; // @[SE.scala 204:28]
   wire  HC_op1_io_compare_result; // @[SE.scala 204:28]
   wire [59:0] HC_op2_io_hash_orig; // @[SE.scala 205:28]
-  wire [127:0] HC_op2_io_hash_regenerated; // @[SE.scala 205:28]
+  wire [59:0] HC_op2_io_hash_regenerated; // @[SE.scala 205:28]
   wire  HC_op2_io_valid_in; // @[SE.scala 205:28]
   wire  HC_op2_io_valid_out; // @[SE.scala 205:28]
   wire  HC_op2_io_compare_result; // @[SE.scala 205:28]
@@ -39380,10 +39380,10 @@ module SE(
   assign PRC_0_io_op2 = op2_buffer; // @[SE.scala 291:49]
   assign PRC_0_io_inst = inst_buffer; // @[SE.scala 292:47]
   assign HC_op1_io_hash_orig = lv2_op1_buffer[315:256]; // @[SE.scala 557:58]
-  assign HC_op1_io_hash_regenerated = opA_pub_priv ? decrypted_op1_hash_buffer : op1_rehash_result_bit; // @[SE.scala 558:47]
+  assign HC_op1_io_hash_regenerated = opA_pub_priv ? decrypted_op1_hash_buffer[127:68] : op1_rehash_result_bit[127:68]; // @[SE.scala 558:47]
   assign HC_op1_io_valid_in = lv3ok_buffer; // @[SE.scala 559:49]
   assign HC_op2_io_hash_orig = lv2_op2_buffer[315:256]; // @[SE.scala 560:58]
-  assign HC_op2_io_hash_regenerated = opB_pub_priv ? decrypted_op2_hash_buffer : op2_rehash_result_bit; // @[SE.scala 561:47]
+  assign HC_op2_io_hash_regenerated = opB_pub_priv ? decrypted_op2_hash_buffer[127:68] : op2_rehash_result_bit[127:68]; // @[SE.scala 561:47]
   assign HC_op2_io_valid_in = lv3ok_buffer; // @[SE.scala 562:49]
   assign VID_0_io_pub_priv_opA = is_enc_inst | opA_pub_priv; // @[SE.scala 439:39]
   assign VID_0_io_pub_priv_opB = is_enc_inst | opB_pub_priv; // @[SE.scala 440:39]
