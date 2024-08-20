@@ -120,25 +120,25 @@ class Version_ID_Generator extends Module {
 
 	is_valid 		:= Mux(io.valid_in, true.B, false.B)
 	
-	if(io.pub_priv_opA == 0) {
-		if(io.pub_priv_opB == 0) {
+	when(io.pub_priv_opA === false.B) {
+		when(io.pub_priv_opB === false.B) {
 			// (A, B) is (priv, priv)
-			if(io.version_id_opA != io.version_id_opB) {
+			when(io.version_id_opA =/= io.version_id_opB) {
 				ver_id_result := Fill(16, 1.U) // Error
-			} else {
+			}.otherwise{
 				ver_id_result := io.version_id_opA
 			}
-		} else {
+		}.otherwise{
 			// (A, B) is (priv, pub)
 			ver_id_result := io.version_id_opA
 		}
-	} else {
-		if(io.pub_priv_opB == 0) {
+	}.otherwise{
+		when(io.pub_priv_opB === false.B) {
 			// (A, B) is (pub, priv)
-			ver_id_result := io.version_id_opA
-		} else {
+			ver_id_result := io.version_id_opB
+		}.otherwise {
 			// (A, B) is (pub, pub)
-			ver_id_result := DontCare
+			ver_id_result := Fill(16, 0.U)
 		}
 	}
 
@@ -421,8 +421,8 @@ class SE(val debug : Boolean, val canChangeKey: Boolean) extends Module{
     seoperation.io.inst         := inst_buffer
     val seOpValid 			    = lv2ok_buffer
 	seoperation.io.in_valid 	:= seOpValid // || (all_match && lv1ok_buffer)
-	val op1_bit 	            = Cat(decrypted_op1_val_buffer) // [plain_A][RdNum][verID_A]
-	val op2_bit 	            = Cat(decrypted_op2_val_buffer) // [plain_B][RdNum][verID_B]
+	val op1_bit 	            = decrypted_op1_val_buffer // [plain_A][RdNum][verID_A]
+	val op2_bit 	            = decrypted_op2_val_buffer // [plain_B][RdNum][verID_B]
 	val op1_plaintext_64		= Mux(is_enc_var_hash, pub_var_hash_register,
 																Mux( is_enc_var || is_enc_const,op1_buffer(255,192) ,op1_bit(127, 64))) // [plain_A]
 	val op2_plaintext_64		= op2_bit(127, 64) // [plain_B]

@@ -37412,13 +37412,21 @@ module Hash_Compare(
   assign io_compare_result = io_hash_orig == io_hash_regenerated; // @[SE.scala 97:49]
 endmodule
 module Version_ID_Generator(
-  input   io_pub_priv_opA,
-  input   io_pub_priv_opB,
-  input   io_valid_in,
-  output  io_valid_out,
-  output  io_pub_priv_out
+  input         io_pub_priv_opA,
+  input         io_pub_priv_opB,
+  input  [15:0] io_version_id_opA,
+  input  [15:0] io_version_id_opB,
+  input         io_valid_in,
+  output        io_valid_out,
+  output [15:0] io_version_id_out,
+  output        io_pub_priv_out
 );
+  wire  _T_1 = ~io_pub_priv_opB; // @[SE.scala 124:38]
+  wire [15:0] _GEN_0 = io_version_id_opA != io_version_id_opB ? 16'hffff : io_version_id_opA; // @[SE.scala 126:71 127:47 129:47]
+  wire [15:0] _GEN_1 = ~io_pub_priv_opB ? _GEN_0 : io_version_id_opA; // @[SE.scala 124:51 133:39]
+  wire [15:0] _GEN_2 = _T_1 ? io_version_id_opB : 16'h0; // @[SE.scala 136:51 138:39 141:39]
   assign io_valid_out = io_valid_in; // @[SE.scala 121:39]
+  assign io_version_id_out = ~io_pub_priv_opA ? _GEN_1 : _GEN_2; // @[SE.scala 123:43]
   assign io_pub_priv_out = io_pub_priv_opA & io_pub_priv_opB; // @[SE.scala 147:38]
 endmodule
 module MaxPeriodFibonacciLFSR(
@@ -38322,58 +38330,62 @@ module MaxPeriodFibonacciLFSR_1(
     end else begin
       state_1 <= state_0;
     end
+    state_2 <= reset | state_1; // @[PRNG.scala 55:{49,49}]
+    state_3 <= reset | state_2; // @[PRNG.scala 55:{49,49}]
     if (reset) begin // @[PRNG.scala 55:49]
-      state_2 <= 1'h0; // @[PRNG.scala 55:49]
+      state_4 <= 1'h0; // @[PRNG.scala 55:49]
     end else begin
-      state_2 <= state_1;
+      state_4 <= state_3;
     end
-    if (reset) begin // @[PRNG.scala 55:49]
-      state_3 <= 1'h0; // @[PRNG.scala 55:49]
-    end else begin
-      state_3 <= state_2;
-    end
-    state_4 <= reset | state_3; // @[PRNG.scala 55:{49,49}]
     if (reset) begin // @[PRNG.scala 55:49]
       state_5 <= 1'h0; // @[PRNG.scala 55:49]
     end else begin
       state_5 <= state_4;
     end
-    state_6 <= reset | state_5; // @[PRNG.scala 55:{49,49}]
-    state_7 <= reset | state_6; // @[PRNG.scala 55:{49,49}]
-    state_8 <= reset | state_7; // @[PRNG.scala 55:{49,49}]
-    state_9 <= reset | state_8; // @[PRNG.scala 55:{49,49}]
-    state_10 <= reset | state_9; // @[PRNG.scala 55:{49,49}]
     if (reset) begin // @[PRNG.scala 55:49]
-      state_11 <= 1'h0; // @[PRNG.scala 55:49]
+      state_6 <= 1'h0; // @[PRNG.scala 55:49]
     end else begin
-      state_11 <= state_10;
+      state_6 <= state_5;
     end
+    state_7 <= reset | state_6; // @[PRNG.scala 55:{49,49}]
+    if (reset) begin // @[PRNG.scala 55:49]
+      state_8 <= 1'h0; // @[PRNG.scala 55:49]
+    end else begin
+      state_8 <= state_7;
+    end
+    state_9 <= reset | state_8; // @[PRNG.scala 55:{49,49}]
+    if (reset) begin // @[PRNG.scala 55:49]
+      state_10 <= 1'h0; // @[PRNG.scala 55:49]
+    end else begin
+      state_10 <= state_9;
+    end
+    state_11 <= reset | state_10; // @[PRNG.scala 55:{49,49}]
     if (reset) begin // @[PRNG.scala 55:49]
       state_12 <= 1'h0; // @[PRNG.scala 55:49]
     end else begin
       state_12 <= state_11;
     end
+    state_13 <= reset | state_12; // @[PRNG.scala 55:{49,49}]
     if (reset) begin // @[PRNG.scala 55:49]
-      state_13 <= 1'h0; // @[PRNG.scala 55:49]
+      state_14 <= 1'h0; // @[PRNG.scala 55:49]
     end else begin
-      state_13 <= state_12;
+      state_14 <= state_13;
     end
-    state_14 <= reset | state_13; // @[PRNG.scala 55:{49,49}]
     state_15 <= reset | state_14; // @[PRNG.scala 55:{49,49}]
+    state_16 <= reset | state_15; // @[PRNG.scala 55:{49,49}]
     if (reset) begin // @[PRNG.scala 55:49]
-      state_16 <= 1'h0; // @[PRNG.scala 55:49]
+      state_17 <= 1'h0; // @[PRNG.scala 55:49]
     end else begin
-      state_16 <= state_15;
+      state_17 <= state_16;
     end
-    state_17 <= reset | state_16; // @[PRNG.scala 55:{49,49}]
     state_18 <= reset | state_17; // @[PRNG.scala 55:{49,49}]
-    if (reset) begin // @[PRNG.scala 55:49]
-      state_19 <= 1'h0; // @[PRNG.scala 55:49]
-    end else begin
-      state_19 <= state_18;
-    end
+    state_19 <= reset | state_18; // @[PRNG.scala 55:{49,49}]
     state_20 <= reset | state_19; // @[PRNG.scala 55:{49,49}]
-    state_21 <= reset | state_20; // @[PRNG.scala 55:{49,49}]
+    if (reset) begin // @[PRNG.scala 55:49]
+      state_21 <= 1'h0; // @[PRNG.scala 55:49]
+    end else begin
+      state_21 <= state_20;
+    end
     state_22 <= reset | state_21; // @[PRNG.scala 55:{49,49}]
     if (reset) begin // @[PRNG.scala 55:49]
       state_23 <= 1'h0; // @[PRNG.scala 55:49]
@@ -38391,11 +38403,7 @@ module MaxPeriodFibonacciLFSR_1(
     end else begin
       state_26 <= state_25;
     end
-    if (reset) begin // @[PRNG.scala 55:49]
-      state_27 <= 1'h0; // @[PRNG.scala 55:49]
-    end else begin
-      state_27 <= state_26;
-    end
+    state_27 <= reset | state_26; // @[PRNG.scala 55:{49,49}]
     if (reset) begin // @[PRNG.scala 55:49]
       state_28 <= 1'h0; // @[PRNG.scala 55:49]
     end else begin
@@ -38428,37 +38436,29 @@ module MaxPeriodFibonacciLFSR_1(
       state_34 <= state_33;
     end
     state_35 <= reset | state_34; // @[PRNG.scala 55:{49,49}]
+    state_36 <= reset | state_35; // @[PRNG.scala 55:{49,49}]
+    state_37 <= reset | state_36; // @[PRNG.scala 55:{49,49}]
     if (reset) begin // @[PRNG.scala 55:49]
-      state_36 <= 1'h0; // @[PRNG.scala 55:49]
+      state_38 <= 1'h0; // @[PRNG.scala 55:49]
     end else begin
-      state_36 <= state_35;
+      state_38 <= state_37;
     end
-    if (reset) begin // @[PRNG.scala 55:49]
-      state_37 <= 1'h0; // @[PRNG.scala 55:49]
-    end else begin
-      state_37 <= state_36;
-    end
-    state_38 <= reset | state_37; // @[PRNG.scala 55:{49,49}]
     state_39 <= reset | state_38; // @[PRNG.scala 55:{49,49}]
     state_40 <= reset | state_39; // @[PRNG.scala 55:{49,49}]
-    state_41 <= reset | state_40; // @[PRNG.scala 55:{49,49}]
-    state_42 <= reset | state_41; // @[PRNG.scala 55:{49,49}]
     if (reset) begin // @[PRNG.scala 55:49]
-      state_43 <= 1'h0; // @[PRNG.scala 55:49]
+      state_41 <= 1'h0; // @[PRNG.scala 55:49]
     end else begin
-      state_43 <= state_42;
+      state_41 <= state_40;
     end
     if (reset) begin // @[PRNG.scala 55:49]
-      state_44 <= 1'h0; // @[PRNG.scala 55:49]
+      state_42 <= 1'h0; // @[PRNG.scala 55:49]
     end else begin
-      state_44 <= state_43;
+      state_42 <= state_41;
     end
+    state_43 <= reset | state_42; // @[PRNG.scala 55:{49,49}]
+    state_44 <= reset | state_43; // @[PRNG.scala 55:{49,49}]
     state_45 <= reset | state_44; // @[PRNG.scala 55:{49,49}]
-    if (reset) begin // @[PRNG.scala 55:49]
-      state_46 <= 1'h0; // @[PRNG.scala 55:49]
-    end else begin
-      state_46 <= state_45;
-    end
+    state_46 <= reset | state_45; // @[PRNG.scala 55:{49,49}]
   end
 // Register and memory initialization
 `ifdef RANDOMIZE_GARBAGE_ASSIGN
@@ -38646,15 +38646,15 @@ module SE(
   reg [31:0] _RAND_30;
   reg [31:0] _RAND_31;
   reg [31:0] _RAND_32;
-  reg [255:0] _RAND_33;
-  reg [31:0] _RAND_34;
+  reg [31:0] _RAND_33;
+  reg [255:0] _RAND_34;
   reg [31:0] _RAND_35;
-  reg [63:0] _RAND_36;
-  reg [31:0] _RAND_37;
-  reg [127:0] _RAND_38;
-  reg [31:0] _RAND_39;
-  reg [127:0] _RAND_40;
-  reg [31:0] _RAND_41;
+  reg [31:0] _RAND_36;
+  reg [63:0] _RAND_37;
+  reg [31:0] _RAND_38;
+  reg [127:0] _RAND_39;
+  reg [31:0] _RAND_40;
+  reg [127:0] _RAND_41;
   reg [31:0] _RAND_42;
   reg [31:0] _RAND_43;
   reg [31:0] _RAND_44;
@@ -38664,9 +38664,9 @@ module SE(
   reg [31:0] _RAND_48;
   reg [31:0] _RAND_49;
   reg [31:0] _RAND_50;
-  reg [255:0] _RAND_51;
-  reg [319:0] _RAND_52;
-  reg [31:0] _RAND_53;
+  reg [31:0] _RAND_51;
+  reg [255:0] _RAND_52;
+  reg [319:0] _RAND_53;
   reg [31:0] _RAND_54;
   reg [31:0] _RAND_55;
   reg [31:0] _RAND_56;
@@ -38674,6 +38674,7 @@ module SE(
   reg [31:0] _RAND_58;
   reg [31:0] _RAND_59;
   reg [31:0] _RAND_60;
+  reg [31:0] _RAND_61;
 `endif // RANDOMIZE_REG_INIT
   wire [7:0] seoperation_io_inst; // @[SE.scala 156:33]
   wire  seoperation_io_in_valid; // @[SE.scala 156:33]
@@ -38755,8 +38756,11 @@ module SE(
   wire  HC_op2_io_compare_result; // @[SE.scala 205:28]
   wire  VID_0_io_pub_priv_opA; // @[SE.scala 209:27]
   wire  VID_0_io_pub_priv_opB; // @[SE.scala 209:27]
+  wire [15:0] VID_0_io_version_id_opA; // @[SE.scala 209:27]
+  wire [15:0] VID_0_io_version_id_opB; // @[SE.scala 209:27]
   wire  VID_0_io_valid_in; // @[SE.scala 209:27]
   wire  VID_0_io_valid_out; // @[SE.scala 209:27]
+  wire [15:0] VID_0_io_version_id_out; // @[SE.scala 209:27]
   wire  VID_0_io_pub_priv_out; // @[SE.scala 209:27]
   wire  PUB_VAR_HASH_LFSR_prng_clock; // @[PRNG.scala 91:22]
   wire  PUB_VAR_HASH_LFSR_prng_reset; // @[PRNG.scala 91:22]
@@ -38984,6 +38988,7 @@ module SE(
     ; // @[SE.scala 427:132]
   wire  opA_pub_priv = decrypted_op1_val_buffer[16]; // @[SE.scala 436:35]
   wire  opB_pub_priv = decrypted_op2_val_buffer[16]; // @[SE.scala 437:35]
+  reg [15:0] verID_C; // @[Reg.scala 16:16]
   reg  verID_C_valid; // @[SE.scala 446:36]
   wire  _next_verID_C_valid_T = output_valid ? 1'h0 : verID_C_valid; // @[SE.scala 448:79]
   reg  verID_C_valid_REG; // @[SE.scala 449:51]
@@ -39014,10 +39019,10 @@ module SE(
   wire [110:0] non_enc_padded_result_hi_hi = {seoperation_io_result,bit47_randnum_prng_io_out_46,
     bit47_randnum_prng_io_out_45,bit47_randnum_prng_io_out_44,bit47_randnum_prng_io_out_43,bit47_randnum_prng_io_out_42,
     bit47_randnum_prng_io_out_41,bit47_randnum_hi_hi_lo,bit47_randnum_hi_lo,bit47_randnum_lo}; // @[Cat.scala 31:58]
-  wire [255:0] non_enc_padded_result = {non_enc_padded_result_hi_hi,pub_prv_bit,16'h0,lv2_op1_buffer[315:256],
+  wire [255:0] non_enc_padded_result = {non_enc_padded_result_hi_hi,pub_prv_bit,verID_C,lv2_op1_buffer[315:256],
     lv2_op2_buffer[315:256],inst_buffer}; // @[Cat.scala 31:58]
   wire [59:0] enc_datahash = is_enc_var ? seoperation_io_result[59:0] : PUB_VAR_HASH_LFSR[59:0]; // @[SE.scala 459:25]
-  wire [255:0] enc_padded_result = {non_enc_padded_result_hi_hi,pub_prv_bit,16'h0,enc_datahash,60'h0,inst_buffer}; // @[Cat.scala 31:58]
+  wire [255:0] enc_padded_result = {non_enc_padded_result_hi_hi,pub_prv_bit,verID_C,enc_datahash,60'h0,inst_buffer}; // @[Cat.scala 31:58]
   wire  _result_buffer_T = seoperation_io_out_valid & verID_C_valid; // @[SE.scala 471:117]
   reg [255:0] result_buffer; // @[Reg.scala 16:16]
   reg  result_valid_buffer; // @[SE.scala 472:66]
@@ -39213,8 +39218,11 @@ module SE(
   Version_ID_Generator VID_0 ( // @[SE.scala 209:27]
     .io_pub_priv_opA(VID_0_io_pub_priv_opA),
     .io_pub_priv_opB(VID_0_io_pub_priv_opB),
+    .io_version_id_opA(VID_0_io_version_id_opA),
+    .io_version_id_opB(VID_0_io_version_id_opB),
     .io_valid_in(VID_0_io_valid_in),
     .io_valid_out(VID_0_io_valid_out),
+    .io_version_id_out(VID_0_io_version_id_out),
     .io_pub_priv_out(VID_0_io_pub_priv_out)
   );
   MaxPeriodFibonacciLFSR PUB_VAR_HASH_LFSR_prng ( // @[PRNG.scala 91:22]
@@ -39387,6 +39395,8 @@ module SE(
   assign HC_op2_io_valid_in = lv3ok_buffer; // @[SE.scala 562:49]
   assign VID_0_io_pub_priv_opA = is_enc_inst | opA_pub_priv; // @[SE.scala 439:39]
   assign VID_0_io_pub_priv_opB = is_enc_inst | opB_pub_priv; // @[SE.scala 440:39]
+  assign VID_0_io_version_id_opA = decrypted_op1_val_buffer[15:0]; // @[SE.scala 441:43]
+  assign VID_0_io_version_id_opB = decrypted_op2_val_buffer[15:0]; // @[SE.scala 442:43]
   assign VID_0_io_valid_in = lv2ok_buffer; // @[SE.scala 443:41]
   assign PUB_VAR_HASH_LFSR_prng_clock = clock;
   assign PUB_VAR_HASH_LFSR_prng_reset = reset;
@@ -39491,6 +39501,9 @@ module SE(
       aes_cipher_for_hash_C_io_output_valid | _next_lv2ok_buffer_T_3; // @[SE.scala 372:39]
     lv3_AES_valid_REG <= lv2ok_buffer & ~tmp_2; // @[SE.scala 379:62]
     tmp_2_REG <= lv2ok_buffer & ~lv3_AES_valid | _next_tmp_2_T_2; // @[SE.scala 380:55]
+    if (VID_0_io_valid_out) begin // @[Reg.scala 17:18]
+      verID_C <= VID_0_io_version_id_out; // @[Reg.scala 17:22]
+    end
     if (reset) begin // @[SE.scala 446:36]
       verID_C_valid <= 1'h0; // @[SE.scala 446:36]
     end else begin
@@ -40808,67 +40821,69 @@ initial begin
   _RAND_29 = {1{`RANDOM}};
   tmp_2_REG = _RAND_29[0:0];
   _RAND_30 = {1{`RANDOM}};
-  verID_C_valid = _RAND_30[0:0];
+  verID_C = _RAND_30[15:0];
   _RAND_31 = {1{`RANDOM}};
-  verID_C_valid_REG = _RAND_31[0:0];
+  verID_C_valid = _RAND_31[0:0];
   _RAND_32 = {1{`RANDOM}};
-  pub_prv_bit = _RAND_32[0:0];
-  _RAND_33 = {8{`RANDOM}};
-  result_buffer = _RAND_33[255:0];
-  _RAND_34 = {1{`RANDOM}};
-  result_valid_buffer = _RAND_34[0:0];
+  verID_C_valid_REG = _RAND_32[0:0];
+  _RAND_33 = {1{`RANDOM}};
+  pub_prv_bit = _RAND_33[0:0];
+  _RAND_34 = {8{`RANDOM}};
+  result_buffer = _RAND_34[255:0];
   _RAND_35 = {1{`RANDOM}};
-  hash_C_buffer_valid = _RAND_35[0:0];
-  _RAND_36 = {2{`RANDOM}};
-  hash_C_buffer = _RAND_36[59:0];
-  _RAND_37 = {1{`RANDOM}};
-  op1_rehash_result_buffer_valid = _RAND_37[0:0];
-  _RAND_38 = {4{`RANDOM}};
-  op1_rehash_result_bit = _RAND_38[127:0];
-  _RAND_39 = {1{`RANDOM}};
-  op2_rehash_result_buffer_valid = _RAND_39[0:0];
-  _RAND_40 = {4{`RANDOM}};
-  op2_rehash_result_bit = _RAND_40[127:0];
-  _RAND_41 = {1{`RANDOM}};
-  op1_rehash_result_buffer_valid_REG = _RAND_41[0:0];
+  result_valid_buffer = _RAND_35[0:0];
+  _RAND_36 = {1{`RANDOM}};
+  hash_C_buffer_valid = _RAND_36[0:0];
+  _RAND_37 = {2{`RANDOM}};
+  hash_C_buffer = _RAND_37[59:0];
+  _RAND_38 = {1{`RANDOM}};
+  op1_rehash_result_buffer_valid = _RAND_38[0:0];
+  _RAND_39 = {4{`RANDOM}};
+  op1_rehash_result_bit = _RAND_39[127:0];
+  _RAND_40 = {1{`RANDOM}};
+  op2_rehash_result_buffer_valid = _RAND_40[0:0];
+  _RAND_41 = {4{`RANDOM}};
+  op2_rehash_result_bit = _RAND_41[127:0];
   _RAND_42 = {1{`RANDOM}};
-  op2_rehash_result_buffer_valid_REG = _RAND_42[0:0];
+  op1_rehash_result_buffer_valid_REG = _RAND_42[0:0];
   _RAND_43 = {1{`RANDOM}};
-  hash_C_buffer_valid_REG = _RAND_43[0:0];
+  op2_rehash_result_buffer_valid_REG = _RAND_43[0:0];
   _RAND_44 = {1{`RANDOM}};
-  result_valid_buffer_REG = _RAND_44[0:0];
+  hash_C_buffer_valid_REG = _RAND_44[0:0];
   _RAND_45 = {1{`RANDOM}};
-  lv3ok_buffer_REG = _RAND_45[0:0];
+  result_valid_buffer_REG = _RAND_45[0:0];
   _RAND_46 = {1{`RANDOM}};
-  lv4_AES_valid = _RAND_46[0:0];
+  lv3ok_buffer_REG = _RAND_46[0:0];
   _RAND_47 = {1{`RANDOM}};
-  tmp_3 = _RAND_47[0:0];
+  lv4_AES_valid = _RAND_47[0:0];
   _RAND_48 = {1{`RANDOM}};
-  lv4_AES_valid_REG = _RAND_48[0:0];
+  tmp_3 = _RAND_48[0:0];
   _RAND_49 = {1{`RANDOM}};
-  tmp_3_REG = _RAND_49[0:0];
+  lv4_AES_valid_REG = _RAND_49[0:0];
   _RAND_50 = {1{`RANDOM}};
-  output_buffer_enc_valid = _RAND_50[0:0];
-  _RAND_51 = {8{`RANDOM}};
-  output_buffer_enc = _RAND_51[255:0];
-  _RAND_52 = {10{`RANDOM}};
-  output_buffer = _RAND_52[315:0];
-  _RAND_53 = {1{`RANDOM}};
-  hash_compare_result_op1 = _RAND_53[0:0];
+  tmp_3_REG = _RAND_50[0:0];
+  _RAND_51 = {1{`RANDOM}};
+  output_buffer_enc_valid = _RAND_51[0:0];
+  _RAND_52 = {8{`RANDOM}};
+  output_buffer_enc = _RAND_52[255:0];
+  _RAND_53 = {10{`RANDOM}};
+  output_buffer = _RAND_53[315:0];
   _RAND_54 = {1{`RANDOM}};
-  hash_compare_result_op1_valid = _RAND_54[0:0];
+  hash_compare_result_op1 = _RAND_54[0:0];
   _RAND_55 = {1{`RANDOM}};
-  hash_compare_result_op2 = _RAND_55[0:0];
+  hash_compare_result_op1_valid = _RAND_55[0:0];
   _RAND_56 = {1{`RANDOM}};
-  hash_compare_result_op2_valid = _RAND_56[0:0];
+  hash_compare_result_op2 = _RAND_56[0:0];
   _RAND_57 = {1{`RANDOM}};
-  output_buffer_enc_valid_REG = _RAND_57[0:0];
+  hash_compare_result_op2_valid = _RAND_57[0:0];
   _RAND_58 = {1{`RANDOM}};
-  lv4ok_buffer_REG = _RAND_58[0:0];
+  output_buffer_enc_valid_REG = _RAND_58[0:0];
   _RAND_59 = {1{`RANDOM}};
-  hash_compare_result_op1_valid_REG = _RAND_59[0:0];
+  lv4ok_buffer_REG = _RAND_59[0:0];
   _RAND_60 = {1{`RANDOM}};
-  hash_compare_result_op2_valid_REG = _RAND_60[0:0];
+  hash_compare_result_op1_valid_REG = _RAND_60[0:0];
+  _RAND_61 = {1{`RANDOM}};
+  hash_compare_result_op2_valid_REG = _RAND_61[0:0];
 `endif // RANDOMIZE_REG_INIT
   `endif // RANDOMIZE
 end // initial
