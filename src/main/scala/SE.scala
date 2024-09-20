@@ -147,6 +147,16 @@ class Version_ID_Generator extends Module {
   io.pub_priv_out := io.pub_priv_opA & io.pub_priv_opB
 }
 
+class RNG_IO(val bits: Int) extends Bundle{
+	val increment = Input(Bool())
+	val PUB_VAR_HASH_LFSR = Output(Bits(bits.W))
+}
+
+class moduled_prng(val bits: Int, val pub_var_seed: Option[BigInt]) extends Module{
+	val io = IO(new RNG_IO(bits))
+	io.PUB_VAR_HASH_LFSR := LFSR(64, io.increment, pub_var_seed)
+}
+
 class SE(val debug : Boolean, val canChangeKey: Boolean) extends Module{
 	// IO ports and control bits
 	val io      = IO(new SEIO(canChangeKey))
@@ -233,7 +243,9 @@ class SE(val debug : Boolean, val canChangeKey: Boolean) extends Module{
   val start_enc_var_regs = lv1ok_buffer && is_enc_var
 
 	val incr_pub_var_prng = Wire(Bool())
-	val PUB_VAR_HASH_LFSR = LFSR(64, incr_pub_var_prng, pub_var_seed)
+	val moduled_prng_pub_var = Module(new moduled_prng(64, pub_var_seed))
+	moduled_prng_pub_var.io.increment := incr_pub_var_prng
+	val PUB_VAR_HASH_LFSR = moduled_prng_pub_var.io.PUB_VAR_HASH_LFSR
 	incr_pub_var_prng := start_enc_var_regs
 
 	val pub_var_hash_register = Reg(UInt(64.W))
