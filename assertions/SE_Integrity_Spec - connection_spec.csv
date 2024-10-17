@@ -1,0 +1,42 @@
+From Signal,To Signal ,Condition
+pub_var_rng.pub_var_rand,IO.hash_C,inst_reg == ENC_VAR
+IO.in_A[255:192],IO.hash_C,inst_reg == ENC_CONST
+Enc_hash.hash_C,IO.hash_C,inst_reg != ENC_VAR_HASH && inst_reg != ENC_VAR && inst_reg != ENC_CONST
+Enc_result.ciphertext,IO.out_C,
+ALU.result,Enc_result.plaintext,
+RNG.RN,Enc_result.RN,
+pub_var_rng.pub_var_rand,Enc_result.hash_A,inst_reg == ENC_VAR
+IO.in_A[255:192],Enc_result.hash_A,inst_reg == ENC_CONST
+IO.hash_A,Enc_result.hash_A,inst_reg != ENC_VAR_HASH && inst_reg != ENC_VAR && inst_reg != ENC_CONST
+IO.hash_B,Enc_result.hash_B,!(inst_reg == ENC_VAR || inst_reg == ENC_CONST || inst_reg == ENC_VAR_HASH)
+inst_reg,Enc_result.inst,
+version_id_generator.out_pub_priv,Enc_result.pub_priv,
+version_id_generator.out_version_id,Enc_result.version_id,
+IO.hash_A,Enc_hash.hash_A,
+IO.hash_B,Enc_hash.hash_B,
+inst_reg,Enc_hash.inst,
+Dec_A.hash_1,Enc_veriA.hash_A,
+Dec_A.hash_2,Enc_veriA.hash_B,
+Dec_A.inst,Enc_veriA.inst,
+Dec_B.hash_1,Enc_veriB.hash_A,
+Dec_B.hash_2,Enc_veriB.hash_B,
+Dec_B.inst,Enc_veriB.inst,
+pub_var_hash_register,Enc_pub_var.in_old_value,
+IO.in_A[255:192],Enc_pub_var.in_new_value,
+IO.in_A,Dec_A.ciphertext,
+IO.in_B,Dec_B.ciphertext,
+IO.in_A[255:192],ALU.op_A,inst_reg == ENC_VAR || inst_reg == ENC_CONST
+pub_var_hash_register,ALU.op_A,inst_reg == ENC_VAR_HASH
+Dec_A.plaintext,ALU.op_A,!(inst_reg == ENC_VAR || inst_reg == ENC_CONST || inst_reg == ENC_VAR_HASH)
+Dec_B.plaintext,ALU.op_B,!(inst_reg == ENC_VAR || inst_reg == ENC_CONST || inst_reg == ENC_VAR_HASH)
+inst_reg,ALU.inst,
+IO.hash_A,compare_verify_A.hash_input,
+Dec_A.hash_1,compare_verify_A.hash_reconstructed,Dec_A.pub_priv
+Enc_veriA.hash_C[125:66],compare_verify_A.hash_reconstructed,!Dec_A.pub_priv
+IO.hash_B,compare_verify_B.hash_input,
+Dec_B.hash_1,compare_verify_B.hash_reconstructed,Dec_B.pub_priv
+Enc_veriB.hash_C[125:66],compare_verify_B.hash_reconstructed,!Dec_B.pub_priv
+Dec_A.pub_priv,version_id_generator.pub_priv_A,!(inst_reg == ENC_VAR || inst_reg == ENC_CONST || inst_reg == ENC_VAR_HASH)
+Dec_B.pub_priv,version_id_generator.pub_priv_B,!(inst_reg == ENC_VAR || inst_reg == ENC_CONST || inst_reg == ENC_VAR_HASH)
+Dec_A.versionID,version_id_generator.version_id_A,!(inst_reg == ENC_VAR || inst_reg == ENC_CONST || inst_reg == ENC_VAR_HASH)
+Dec_B.versionID,version_id_generator.version_id_B,!(inst_reg == ENC_VAR || inst_reg == ENC_CONST || inst_reg == ENC_VAR_HASH)
