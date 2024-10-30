@@ -38495,31 +38495,23 @@ module MaxPeriodFibonacciLFSR_1(
   assign io_out_44 = state_44; // @[PRNG.scala 78:10]
   assign io_out_45 = state_45; // @[PRNG.scala 78:10]
   always @(posedge clock) begin
-    if (reset) begin // @[PRNG.scala 55:49]
-      state_0 <= 1'h0; // @[PRNG.scala 55:49]
-    end else begin
-      state_0 <= _T_2;
-    end
+    state_0 <= reset | _T_2; // @[PRNG.scala 55:{49,49}]
     state_1 <= reset | state_0; // @[PRNG.scala 55:{49,49}]
+    state_2 <= reset | state_1; // @[PRNG.scala 55:{49,49}]
+    state_3 <= reset | state_2; // @[PRNG.scala 55:{49,49}]
     if (reset) begin // @[PRNG.scala 55:49]
-      state_2 <= 1'h0; // @[PRNG.scala 55:49]
+      state_4 <= 1'h0; // @[PRNG.scala 55:49]
     end else begin
-      state_2 <= state_1;
+      state_4 <= state_3;
     end
     if (reset) begin // @[PRNG.scala 55:49]
-      state_3 <= 1'h0; // @[PRNG.scala 55:49]
+      state_5 <= 1'h0; // @[PRNG.scala 55:49]
     end else begin
-      state_3 <= state_2;
+      state_5 <= state_4;
     end
-    state_4 <= reset | state_3; // @[PRNG.scala 55:{49,49}]
-    state_5 <= reset | state_4; // @[PRNG.scala 55:{49,49}]
     state_6 <= reset | state_5; // @[PRNG.scala 55:{49,49}]
     state_7 <= reset | state_6; // @[PRNG.scala 55:{49,49}]
-    if (reset) begin // @[PRNG.scala 55:49]
-      state_8 <= 1'h0; // @[PRNG.scala 55:49]
-    end else begin
-      state_8 <= state_7;
-    end
+    state_8 <= reset | state_7; // @[PRNG.scala 55:{49,49}]
     if (reset) begin // @[PRNG.scala 55:49]
       state_9 <= 1'h0; // @[PRNG.scala 55:49]
     end else begin
@@ -38530,13 +38522,21 @@ module MaxPeriodFibonacciLFSR_1(
     end else begin
       state_10 <= state_9;
     end
-    state_11 <= reset | state_10; // @[PRNG.scala 55:{49,49}]
+    if (reset) begin // @[PRNG.scala 55:49]
+      state_11 <= 1'h0; // @[PRNG.scala 55:49]
+    end else begin
+      state_11 <= state_10;
+    end
     if (reset) begin // @[PRNG.scala 55:49]
       state_12 <= 1'h0; // @[PRNG.scala 55:49]
     end else begin
       state_12 <= state_11;
     end
-    state_13 <= reset | state_12; // @[PRNG.scala 55:{49,49}]
+    if (reset) begin // @[PRNG.scala 55:49]
+      state_13 <= 1'h0; // @[PRNG.scala 55:49]
+    end else begin
+      state_13 <= state_12;
+    end
     state_14 <= reset | state_13; // @[PRNG.scala 55:{49,49}]
     state_15 <= reset | state_14; // @[PRNG.scala 55:{49,49}]
     if (reset) begin // @[PRNG.scala 55:49]
@@ -38544,39 +38544,39 @@ module MaxPeriodFibonacciLFSR_1(
     end else begin
       state_16 <= state_15;
     end
-    state_17 <= reset | state_16; // @[PRNG.scala 55:{49,49}]
+    if (reset) begin // @[PRNG.scala 55:49]
+      state_17 <= 1'h0; // @[PRNG.scala 55:49]
+    end else begin
+      state_17 <= state_16;
+    end
     if (reset) begin // @[PRNG.scala 55:49]
       state_18 <= 1'h0; // @[PRNG.scala 55:49]
     end else begin
       state_18 <= state_17;
     end
+    state_19 <= reset | state_18; // @[PRNG.scala 55:{49,49}]
     if (reset) begin // @[PRNG.scala 55:49]
-      state_19 <= 1'h0; // @[PRNG.scala 55:49]
+      state_20 <= 1'h0; // @[PRNG.scala 55:49]
     end else begin
-      state_19 <= state_18;
+      state_20 <= state_19;
     end
-    state_20 <= reset | state_19; // @[PRNG.scala 55:{49,49}]
-    if (reset) begin // @[PRNG.scala 55:49]
-      state_21 <= 1'h0; // @[PRNG.scala 55:49]
-    end else begin
-      state_21 <= state_20;
-    end
+    state_21 <= reset | state_20; // @[PRNG.scala 55:{49,49}]
     if (reset) begin // @[PRNG.scala 55:49]
       state_22 <= 1'h0; // @[PRNG.scala 55:49]
     end else begin
       state_22 <= state_21;
     end
-    state_23 <= reset | state_22; // @[PRNG.scala 55:{49,49}]
+    if (reset) begin // @[PRNG.scala 55:49]
+      state_23 <= 1'h0; // @[PRNG.scala 55:49]
+    end else begin
+      state_23 <= state_22;
+    end
     if (reset) begin // @[PRNG.scala 55:49]
       state_24 <= 1'h0; // @[PRNG.scala 55:49]
     end else begin
       state_24 <= state_23;
     end
-    if (reset) begin // @[PRNG.scala 55:49]
-      state_25 <= 1'h0; // @[PRNG.scala 55:49]
-    end else begin
-      state_25 <= state_24;
-    end
+    state_25 <= reset | state_24; // @[PRNG.scala 55:{49,49}]
     if (reset) begin // @[PRNG.scala 55:49]
       state_26 <= 1'h0; // @[PRNG.scala 55:49]
     end else begin
@@ -38588,53 +38588,53 @@ module MaxPeriodFibonacciLFSR_1(
       state_27 <= state_26;
     end
     state_28 <= reset | state_27; // @[PRNG.scala 55:{49,49}]
-    if (reset) begin // @[PRNG.scala 55:49]
-      state_29 <= 1'h0; // @[PRNG.scala 55:49]
-    end else begin
-      state_29 <= state_28;
-    end
+    state_29 <= reset | state_28; // @[PRNG.scala 55:{49,49}]
     state_30 <= reset | state_29; // @[PRNG.scala 55:{49,49}]
-    if (reset) begin // @[PRNG.scala 55:49]
-      state_31 <= 1'h0; // @[PRNG.scala 55:49]
-    end else begin
-      state_31 <= state_30;
-    end
+    state_31 <= reset | state_30; // @[PRNG.scala 55:{49,49}]
     if (reset) begin // @[PRNG.scala 55:49]
       state_32 <= 1'h0; // @[PRNG.scala 55:49]
     end else begin
       state_32 <= state_31;
     end
-    state_33 <= reset | state_32; // @[PRNG.scala 55:{49,49}]
+    if (reset) begin // @[PRNG.scala 55:49]
+      state_33 <= 1'h0; // @[PRNG.scala 55:49]
+    end else begin
+      state_33 <= state_32;
+    end
     if (reset) begin // @[PRNG.scala 55:49]
       state_34 <= 1'h0; // @[PRNG.scala 55:49]
     end else begin
       state_34 <= state_33;
     end
     state_35 <= reset | state_34; // @[PRNG.scala 55:{49,49}]
-    state_36 <= reset | state_35; // @[PRNG.scala 55:{49,49}]
+    if (reset) begin // @[PRNG.scala 55:49]
+      state_36 <= 1'h0; // @[PRNG.scala 55:49]
+    end else begin
+      state_36 <= state_35;
+    end
     state_37 <= reset | state_36; // @[PRNG.scala 55:{49,49}]
     if (reset) begin // @[PRNG.scala 55:49]
       state_38 <= 1'h0; // @[PRNG.scala 55:49]
     end else begin
       state_38 <= state_37;
     end
-    if (reset) begin // @[PRNG.scala 55:49]
-      state_39 <= 1'h0; // @[PRNG.scala 55:49]
-    end else begin
-      state_39 <= state_38;
-    end
-    if (reset) begin // @[PRNG.scala 55:49]
-      state_40 <= 1'h0; // @[PRNG.scala 55:49]
-    end else begin
-      state_40 <= state_39;
-    end
+    state_39 <= reset | state_38; // @[PRNG.scala 55:{49,49}]
+    state_40 <= reset | state_39; // @[PRNG.scala 55:{49,49}]
     if (reset) begin // @[PRNG.scala 55:49]
       state_41 <= 1'h0; // @[PRNG.scala 55:49]
     end else begin
       state_41 <= state_40;
     end
-    state_42 <= reset | state_41; // @[PRNG.scala 55:{49,49}]
-    state_43 <= reset | state_42; // @[PRNG.scala 55:{49,49}]
+    if (reset) begin // @[PRNG.scala 55:49]
+      state_42 <= 1'h0; // @[PRNG.scala 55:49]
+    end else begin
+      state_42 <= state_41;
+    end
+    if (reset) begin // @[PRNG.scala 55:49]
+      state_43 <= 1'h0; // @[PRNG.scala 55:49]
+    end else begin
+      state_43 <= state_42;
+    end
     state_44 <= reset | state_43; // @[PRNG.scala 55:{49,49}]
     state_45 <= reset | state_44; // @[PRNG.scala 55:{49,49}]
   end
@@ -38796,8 +38796,8 @@ module SE(
   reg [31:0] _RAND_4;
   reg [31:0] _RAND_5;
   reg [31:0] _RAND_6;
-  reg [31:0] _RAND_7;
-  reg [63:0] _RAND_8;
+  reg [63:0] _RAND_7;
+  reg [31:0] _RAND_8;
   reg [31:0] _RAND_9;
   reg [31:0] _RAND_10;
   reg [31:0] _RAND_11;
@@ -38817,41 +38817,24 @@ module SE(
   reg [31:0] _RAND_25;
   reg [31:0] _RAND_26;
   reg [31:0] _RAND_27;
-  reg [31:0] _RAND_28;
+  reg [255:0] _RAND_28;
   reg [31:0] _RAND_29;
   reg [31:0] _RAND_30;
-  reg [31:0] _RAND_31;
+  reg [63:0] _RAND_31;
   reg [31:0] _RAND_32;
-  reg [31:0] _RAND_33;
+  reg [127:0] _RAND_33;
   reg [31:0] _RAND_34;
-  reg [255:0] _RAND_35;
-  reg [31:0] _RAND_36;
+  reg [127:0] _RAND_35;
+  reg [255:0] _RAND_36;
   reg [31:0] _RAND_37;
-  reg [63:0] _RAND_38;
+  reg [31:0] _RAND_38;
   reg [31:0] _RAND_39;
-  reg [127:0] _RAND_40;
+  reg [31:0] _RAND_40;
   reg [31:0] _RAND_41;
-  reg [127:0] _RAND_42;
+  reg [31:0] _RAND_42;
   reg [31:0] _RAND_43;
   reg [31:0] _RAND_44;
   reg [31:0] _RAND_45;
-  reg [31:0] _RAND_46;
-  reg [31:0] _RAND_47;
-  reg [31:0] _RAND_48;
-  reg [31:0] _RAND_49;
-  reg [31:0] _RAND_50;
-  reg [31:0] _RAND_51;
-  reg [31:0] _RAND_52;
-  reg [255:0] _RAND_53;
-  reg [319:0] _RAND_54;
-  reg [31:0] _RAND_55;
-  reg [31:0] _RAND_56;
-  reg [31:0] _RAND_57;
-  reg [31:0] _RAND_58;
-  reg [31:0] _RAND_59;
-  reg [31:0] _RAND_60;
-  reg [31:0] _RAND_61;
-  reg [31:0] _RAND_62;
 `endif // RANDOMIZE_REG_INIT
   wire [7:0] seoperation_io_inst; // @[SE.scala 170:33]
   wire  seoperation_io_in_valid; // @[SE.scala 170:33]
@@ -39001,89 +38984,95 @@ module SE(
   reg  lv1ok_buffer; // @[SE.scala 236:42]
   reg  lv2ok_buffer; // @[SE.scala 237:42]
   reg  lv3ok_buffer; // @[SE.scala 238:42]
-  reg  lv4ok_buffer; // @[SE.scala 239:42]
   wire  is_enc_const = 8'hb0 == inst_buffer; // @[SE.scala 243:41]
   wire  is_enc_var = 8'ha0 == inst_buffer; // @[SE.scala 244:40]
   wire  is_READ_PUB_VAR_HASH = 8'hb8 == inst_buffer; // @[SE.scala 245:49]
   wire  is_enc_non_integrity = 8'hbc == inst_buffer; // @[SE.scala 246:49]
   wire  is_enc_inst = is_enc_const & is_enc_var & is_READ_PUB_VAR_HASH & is_enc_non_integrity; // @[SE.scala 247:77]
   reg [63:0] pub_var_hash_register; // @[SE.scala 256:40]
-  reg  output_valid; // @[SE.scala 277:35]
-  wire  _next_ready_for_input_T = io_in_valid & io_in_ready; // @[SE.scala 286:61]
-  wire  _next_ready_for_input_T_1 = io_out_valid & io_out_ready; // @[SE.scala 286:105]
-  reg  ready_for_input_REG; // @[SE.scala 287:59]
-  wire  _next_lv1ok_buffer_T_1 = output_valid ? 1'h0 : lv1ok_buffer; // @[SE.scala 291:81]
-  reg  lv1ok_buffer_REG; // @[SE.scala 292:51]
-  wire  _T_3 = ~lv3ok_buffer; // @[SE.scala 295:47]
-  wire  _T_5 = ~lv4ok_buffer; // @[SE.scala 295:64]
-  wire  _T_6 = lv1ok_buffer & ~lv2ok_buffer & ~lv3ok_buffer & ~lv4ok_buffer; // @[SE.scala 295:61]
-  wire  _T_8 = ~reset; // @[SE.scala 296:23]
-  wire [255:0] ciph_op1 = op1_buffer[255:0]; // @[SE.scala 314:53]
-  wire [127:0] ciph_op1_val = ciph_op1[127:0]; // @[SE.scala 315:51]
-  wire [127:0] ciph_op1_hash = ciph_op1[255:128]; // @[SE.scala 316:51]
-  wire [255:0] ciph_op2 = op2_buffer[255:0]; // @[SE.scala 317:53]
-  wire [127:0] ciph_op2_val = ciph_op2[127:0]; // @[SE.scala 318:51]
-  wire [127:0] ciph_op2_hash = ciph_op2[255:128]; // @[SE.scala 319:51]
-  reg  lv2_AES_valid; // @[SE.scala 320:42]
-  reg  tmp_1; // @[SE.scala 321:58]
-  wire  _next_tmp_1_T_2 = output_valid ? 1'h0 : tmp_1; // @[SE.scala 329:101]
-  reg  lv2_AES_valid_REG; // @[SE.scala 330:51]
-  reg  tmp_1_REG; // @[SE.scala 331:59]
-  wire [7:0] connected_reversed_plaintext_buffer_1 = PRC_0_io_out_1; // @[SE.scala 310:51 311:49]
-  wire [7:0] connected_reversed_plaintext_buffer_0 = PRC_0_io_out_0; // @[SE.scala 310:51 311:49]
-  wire [7:0] connected_reversed_plaintext_buffer_3 = PRC_0_io_out_3; // @[SE.scala 310:51 311:49]
-  wire [7:0] connected_reversed_plaintext_buffer_2 = PRC_0_io_out_2; // @[SE.scala 310:51 311:49]
-  wire [7:0] connected_reversed_plaintext_buffer_5 = PRC_0_io_out_5; // @[SE.scala 310:51 311:49]
-  wire [7:0] connected_reversed_plaintext_buffer_4 = PRC_0_io_out_4; // @[SE.scala 310:51 311:49]
-  wire [7:0] connected_reversed_plaintext_buffer_7 = PRC_0_io_out_7; // @[SE.scala 310:51 311:49]
-  wire [7:0] connected_reversed_plaintext_buffer_6 = PRC_0_io_out_6; // @[SE.scala 310:51 311:49]
+  wire  _next_ready_for_input_T = io_in_valid & io_in_ready; // @[SE.scala 287:61]
+  reg  ready_for_input_REG; // @[SE.scala 288:59]
+  wire  _lv2_AES_valid_T = ~lv2ok_buffer; // @[SE.scala 333:50]
+  wire  _lv2_AES_valid_T_1 = lv1ok_buffer & ~lv2ok_buffer; // @[SE.scala 333:46]
+  reg  dec1_idle; // @[SE.scala 326:34]
+  reg  dec2_idle; // @[SE.scala 327:34]
+  reg  hashC_idle; // @[SE.scala 328:34]
+  wire  stage1_idle = dec1_idle & dec2_idle & hashC_idle; // @[SE.scala 329:58]
+  wire  lv2_AES_valid = lv1ok_buffer & ~lv2ok_buffer & stage1_idle; // @[SE.scala 333:65]
+  wire  lv2_bypass = lv1ok_buffer & is_enc_inst & _lv2_AES_valid_T & stage1_idle; // @[SE.scala 412:70]
+  wire  _next_lv1ok_buffer_T_3 = lv1ok_buffer ? ~(lv2_AES_valid | lv2_bypass) : lv1ok_buffer; // @[SE.scala 295:81]
+  reg  lv1ok_buffer_REG; // @[SE.scala 296:51]
+  wire  _T_3 = ~lv3ok_buffer; // @[SE.scala 299:47]
+  wire  _T_4 = _lv2_AES_valid_T_1 & ~lv3ok_buffer; // @[SE.scala 299:44]
+  wire  _T_8 = ~reset; // @[SE.scala 300:23]
+  wire [255:0] ciph_op1 = op1_buffer[255:0]; // @[SE.scala 318:53]
+  wire [127:0] ciph_op1_val = ciph_op1[127:0]; // @[SE.scala 319:51]
+  wire [127:0] ciph_op1_hash = ciph_op1[255:128]; // @[SE.scala 320:51]
+  wire [255:0] ciph_op2 = op2_buffer[255:0]; // @[SE.scala 321:53]
+  wire [127:0] ciph_op2_val = ciph_op2[127:0]; // @[SE.scala 322:51]
+  wire [127:0] ciph_op2_hash = ciph_op2[255:128]; // @[SE.scala 323:51]
+  wire [7:0] connected_reversed_plaintext_buffer_1 = PRC_0_io_out_1; // @[SE.scala 314:51 315:49]
+  wire [7:0] connected_reversed_plaintext_buffer_0 = PRC_0_io_out_0; // @[SE.scala 314:51 315:49]
+  wire [7:0] connected_reversed_plaintext_buffer_3 = PRC_0_io_out_3; // @[SE.scala 314:51 315:49]
+  wire [7:0] connected_reversed_plaintext_buffer_2 = PRC_0_io_out_2; // @[SE.scala 314:51 315:49]
+  wire [7:0] connected_reversed_plaintext_buffer_5 = PRC_0_io_out_5; // @[SE.scala 314:51 315:49]
+  wire [7:0] connected_reversed_plaintext_buffer_4 = PRC_0_io_out_4; // @[SE.scala 314:51 315:49]
+  wire [7:0] connected_reversed_plaintext_buffer_7 = PRC_0_io_out_7; // @[SE.scala 314:51 315:49]
+  wire [7:0] connected_reversed_plaintext_buffer_6 = PRC_0_io_out_6; // @[SE.scala 314:51 315:49]
   wire [63:0] aes_cipher_for_hash_C_io_input_text_lo = {connected_reversed_plaintext_buffer_7,
     connected_reversed_plaintext_buffer_6,connected_reversed_plaintext_buffer_5,connected_reversed_plaintext_buffer_4,
     connected_reversed_plaintext_buffer_3,connected_reversed_plaintext_buffer_2,connected_reversed_plaintext_buffer_1,
-    connected_reversed_plaintext_buffer_0}; // @[SE.scala 340:96]
-  wire [7:0] connected_reversed_plaintext_buffer_9 = PRC_0_io_out_9; // @[SE.scala 310:51 311:49]
-  wire [7:0] connected_reversed_plaintext_buffer_8 = PRC_0_io_out_8; // @[SE.scala 310:51 311:49]
-  wire [7:0] connected_reversed_plaintext_buffer_11 = PRC_0_io_out_11; // @[SE.scala 310:51 311:49]
-  wire [7:0] connected_reversed_plaintext_buffer_10 = PRC_0_io_out_10; // @[SE.scala 310:51 311:49]
-  wire [7:0] connected_reversed_plaintext_buffer_13 = PRC_0_io_out_13; // @[SE.scala 310:51 311:49]
-  wire [7:0] connected_reversed_plaintext_buffer_12 = PRC_0_io_out_12; // @[SE.scala 310:51 311:49]
-  wire [7:0] connected_reversed_plaintext_buffer_15 = PRC_0_io_out_15; // @[SE.scala 310:51 311:49]
-  wire [7:0] connected_reversed_plaintext_buffer_14 = PRC_0_io_out_14; // @[SE.scala 310:51 311:49]
+    connected_reversed_plaintext_buffer_0}; // @[SE.scala 346:96]
+  wire [7:0] connected_reversed_plaintext_buffer_9 = PRC_0_io_out_9; // @[SE.scala 314:51 315:49]
+  wire [7:0] connected_reversed_plaintext_buffer_8 = PRC_0_io_out_8; // @[SE.scala 314:51 315:49]
+  wire [7:0] connected_reversed_plaintext_buffer_11 = PRC_0_io_out_11; // @[SE.scala 314:51 315:49]
+  wire [7:0] connected_reversed_plaintext_buffer_10 = PRC_0_io_out_10; // @[SE.scala 314:51 315:49]
+  wire [7:0] connected_reversed_plaintext_buffer_13 = PRC_0_io_out_13; // @[SE.scala 314:51 315:49]
+  wire [7:0] connected_reversed_plaintext_buffer_12 = PRC_0_io_out_12; // @[SE.scala 314:51 315:49]
+  wire [7:0] connected_reversed_plaintext_buffer_15 = PRC_0_io_out_15; // @[SE.scala 314:51 315:49]
+  wire [7:0] connected_reversed_plaintext_buffer_14 = PRC_0_io_out_14; // @[SE.scala 314:51 315:49]
   wire [63:0] aes_cipher_for_hash_C_io_input_text_hi = {connected_reversed_plaintext_buffer_15,
     connected_reversed_plaintext_buffer_14,connected_reversed_plaintext_buffer_13,connected_reversed_plaintext_buffer_12
     ,connected_reversed_plaintext_buffer_11,connected_reversed_plaintext_buffer_10,connected_reversed_plaintext_buffer_9
-    ,connected_reversed_plaintext_buffer_8}; // @[SE.scala 340:96]
+    ,connected_reversed_plaintext_buffer_8}; // @[SE.scala 346:96]
+  wire  _GEN_180 = lv2_AES_valid ? 1'h0 : dec1_idle; // @[SE.scala 350:28 351:27 326:34]
+  wire  _GEN_181 = lv2_AES_valid ? 1'h0 : dec2_idle; // @[SE.scala 350:28 352:27 327:34]
+  wire  _GEN_182 = lv2_AES_valid ? 1'h0 : hashC_idle; // @[SE.scala 350:28 353:28 328:34]
+  wire  _GEN_183 = ~dec1_idle & aes_invcipher_op1_io_output_valid | _GEN_180; // @[SE.scala 356:65 357:27]
+  wire  _GEN_184 = ~dec2_idle & aes_invcipher_op2_io_output_valid | _GEN_181; // @[SE.scala 360:65 361:27]
+  wire  _GEN_185 = ~hashC_idle & aes_cipher_for_hash_C_io_output_valid | _GEN_182; // @[SE.scala 364:70 365:28]
+  reg  Hash1_idle; // @[SE.scala 369:33]
+  reg  Hash2_idle; // @[SE.scala 370:33]
+  reg  enc_idle; // @[SE.scala 371:30]
+  wire  stage2_idle = Hash1_idle & Hash2_idle & enc_idle; // @[SE.scala 372:52]
   reg [315:0] lv2_op1_buffer; // @[Reg.scala 16:16]
   reg [315:0] lv2_op2_buffer; // @[Reg.scala 16:16]
   reg [127:0] hash_C_original_buffer; // @[Reg.scala 16:16]
-  reg  hash_C_original_buffer_valid; // @[SE.scala 353:66]
+  reg  hash_C_original_buffer_valid; // @[SE.scala 378:66]
   reg [127:0] decrypted_op1_val_buffer; // @[Reg.scala 16:16]
   reg [127:0] decrypted_op1_hash_buffer; // @[Reg.scala 16:16]
   reg [127:0] decrypted_op2_val_buffer; // @[Reg.scala 16:16]
   reg [127:0] decrypted_op2_hash_buffer; // @[Reg.scala 16:16]
-  reg  lv3_AES_valid; // @[SE.scala 364:42]
-  reg  tmp_2; // @[SE.scala 365:58]
-  wire  _next_hash_C_original_buffer_valid_T = output_valid ? 1'h0 : hash_C_original_buffer_valid; // @[SE.scala 369:102]
-  reg  hash_C_original_buffer_valid_REG; // @[SE.scala 370:59]
-  wire  lv2_bypass = lv1ok_buffer & is_enc_inst; // @[SE.scala 388:39]
-  wire  _next_lv2ok_buffer_T_3 = output_valid ? 1'h0 : lv2ok_buffer; // @[SE.scala 389:180]
-  reg  lv2ok_buffer_REG; // @[SE.scala 390:51]
-  wire  _next_tmp_2_T_2 = output_valid ? 1'h0 : tmp_2; // @[SE.scala 397:101]
-  reg  lv3_AES_valid_REG; // @[SE.scala 398:51]
-  reg  tmp_2_REG; // @[SE.scala 399:59]
-  wire  _T_22 = lv2ok_buffer & _T_3 & _T_5; // @[SE.scala 402:44]
+  reg  hash_C_original_buffer_valid_REG; // @[SE.scala 394:59]
+  wire  lv3_AES_valid = stage2_idle & lv2ok_buffer & _T_3; // @[SE.scala 418:55]
+  wire  _next_decrypted_op1_val_buffer_valid_T = ~lv3_AES_valid; // @[SE.scala 399:136]
+  wire  _next_lv2ok_buffer_T_4 = lv2ok_buffer ? _next_decrypted_op1_val_buffer_valid_T : lv2ok_buffer; // @[SE.scala 413:180]
+  reg  lv2ok_buffer_REG; // @[SE.scala 414:51]
+  wire  _GEN_193 = lv3_AES_valid ? 1'h0 : Hash1_idle; // @[SE.scala 420:28 421:28 369:33]
+  wire  _GEN_194 = lv3_AES_valid ? 1'h0 : Hash2_idle; // @[SE.scala 420:28 422:28 370:33]
+  wire  _GEN_195 = lv3_AES_valid ? 1'h0 : enc_idle; // @[SE.scala 420:28 423:26 371:30]
+  wire  _GEN_196 = ~Hash1_idle & aes_cipher_for_op1_io_output_valid | _GEN_193; // @[SE.scala 426:67 427:28]
+  wire  _GEN_197 = ~Hash2_idle & aes_cipher_for_op2_io_output_valid | _GEN_194; // @[SE.scala 430:67 431:28]
+  wire  _GEN_198 = ~enc_idle & aes_cipher_io_output_valid | _GEN_195; // @[SE.scala 434:57 435:26]
+  wire  _T_32 = lv2ok_buffer & _T_3; // @[SE.scala 439:27]
   wire [63:0] _op1_plaintext_64_T_3 = is_enc_var | is_enc_const ? op1_buffer[255:192] : decrypted_op1_val_buffer[127:64]
-    ; // @[SE.scala 444:132]
-  wire  opA_pub_priv = decrypted_op1_val_buffer[16]; // @[SE.scala 453:35]
-  wire  opB_pub_priv = decrypted_op2_val_buffer[16]; // @[SE.scala 454:35]
-  wire  _VID_0_io_pub_priv_opA_T = is_enc_inst | opA_pub_priv; // @[SE.scala 459:37]
-  wire  _VID_0_io_pub_priv_opB_T = is_enc_inst | opB_pub_priv; // @[SE.scala 460:37]
-  reg [15:0] verID_C; // @[Reg.scala 16:16]
-  reg  verID_C_valid; // @[SE.scala 468:36]
-  wire  _next_verID_C_valid_T = output_valid ? 1'h0 : verID_C_valid; // @[SE.scala 470:79]
-  reg  verID_C_valid_REG; // @[SE.scala 471:51]
-  reg  pub_prv_bit; // @[Reg.scala 16:16]
-  reg  auth_bit; // @[Reg.scala 16:16]
+    ; // @[SE.scala 481:132]
+  wire  opA_pub_priv = decrypted_op1_val_buffer[16]; // @[SE.scala 490:35]
+  wire  opB_pub_priv = decrypted_op2_val_buffer[16]; // @[SE.scala 491:35]
+  wire  _VID_0_io_pub_priv_opA_T = is_enc_inst | opA_pub_priv; // @[SE.scala 496:37]
+  wire  _VID_0_io_pub_priv_opB_T = is_enc_inst | opB_pub_priv; // @[SE.scala 497:37]
+  reg  opA_lv3_auth_bit; // @[Reg.scala 16:16]
+  reg  opB_lv3_auth_bit; // @[Reg.scala 16:16]
   wire [4:0] bit46_randnum_lo_lo_lo = {bit46_randnum_prng_io_out_4,bit46_randnum_prng_io_out_3,
     bit46_randnum_prng_io_out_2,bit46_randnum_prng_io_out_1,bit46_randnum_prng_io_out_0}; // @[PRNG.scala 95:17]
   wire [10:0] bit46_randnum_lo_lo = {bit46_randnum_prng_io_out_10,bit46_randnum_prng_io_out_9,
@@ -39109,62 +39098,58 @@ module SE(
   wire [109:0] non_enc_padded_result_hi_hi = {seoperation_io_result,bit46_randnum_prng_io_out_45,
     bit46_randnum_prng_io_out_44,bit46_randnum_prng_io_out_43,bit46_randnum_prng_io_out_42,bit46_randnum_prng_io_out_41,
     bit46_randnum_prng_io_out_40,bit46_randnum_hi_hi_lo,bit46_randnum_hi_lo,bit46_randnum_lo}; // @[Cat.scala 31:58]
-  wire [255:0] non_enc_padded_result = {non_enc_padded_result_hi_hi,auth_bit,pub_prv_bit,verID_C,lv2_op1_buffer[315:256]
-    ,lv2_op2_buffer[315:256],inst_buffer}; // @[Cat.scala 31:58]
-  wire [59:0] enc_datahash = is_enc_var ? seoperation_io_result[59:0] : moduled_prng_pub_var_io_PUB_VAR_HASH_LFSR[59:0]; // @[SE.scala 482:25]
-  wire [254:0] enc_padded_result = {non_enc_padded_result_hi_hi,pub_prv_bit,verID_C,enc_datahash,60'h0,inst_buffer}; // @[Cat.scala 31:58]
-  wire  _result_buffer_T = seoperation_io_out_valid & verID_C_valid; // @[SE.scala 494:117]
+  wire [255:0] non_enc_padded_result = {non_enc_padded_result_hi_hi,VID_0_io_auth_bit_out,VID_0_io_pub_priv_out,
+    VID_0_io_version_id_out,lv2_op1_buffer[315:256],lv2_op2_buffer[315:256],inst_buffer}; // @[Cat.scala 31:58]
+  wire [59:0] enc_datahash = is_enc_var ? seoperation_io_result[59:0] : moduled_prng_pub_var_io_PUB_VAR_HASH_LFSR[59:0]; // @[SE.scala 511:25]
+  wire [239:0] enc_padded_result = {non_enc_padded_result_hi_hi,VID_0_io_auth_bit_out,VID_0_io_pub_priv_out,enc_datahash
+    ,60'h0,inst_buffer}; // @[Cat.scala 31:58]
+  wire  _result_buffer_T = seoperation_io_out_valid & VID_0_io_valid_out; // @[SE.scala 523:117]
   reg [255:0] result_buffer; // @[Reg.scala 16:16]
-  reg  result_valid_buffer; // @[SE.scala 495:66]
-  reg  hash_C_buffer_valid; // @[SE.scala 497:66]
+  reg  result_valid_buffer; // @[SE.scala 524:66]
+  reg  hash_C_buffer_valid; // @[SE.scala 526:66]
   reg [59:0] hash_C_buffer; // @[Reg.scala 16:16]
-  reg  op1_rehash_result_buffer_valid; // @[SE.scala 499:58]
+  reg  op1_rehash_result_buffer_valid; // @[SE.scala 528:58]
   reg [127:0] op1_rehash_result_bit; // @[Reg.scala 16:16]
-  reg  op2_rehash_result_buffer_valid; // @[SE.scala 501:58]
+  reg  op2_rehash_result_buffer_valid; // @[SE.scala 530:58]
   reg [127:0] op2_rehash_result_bit; // @[Reg.scala 16:16]
-  wire  _next_op1_rehash_result_buffer_valid_T = output_valid ? 1'h0 : op1_rehash_result_buffer_valid; // @[SE.scala 512:111]
-  wire  _next_op2_rehash_result_buffer_valid_T = output_valid ? 1'h0 : op2_rehash_result_buffer_valid; // @[SE.scala 513:111]
-  reg  op1_rehash_result_buffer_valid_REG; // @[SE.scala 514:75]
-  reg  op2_rehash_result_buffer_valid_REG; // @[SE.scala 515:75]
-  wire  _next_hash_C_buffer_valid_T = output_valid ? 1'h0 : hash_C_buffer_valid; // @[SE.scala 519:88]
-  reg  hash_C_buffer_valid_REG; // @[SE.scala 520:50]
-  wire  _n_result_valid_buffer_T = output_valid ? 1'h0 : result_valid_buffer; // @[SE.scala 524:60]
-  reg  result_valid_buffer_REG; // @[SE.scala 525:39]
-  wire  _next_lv3ok_buffer_T_3 = output_valid ? 1'h0 : lv3ok_buffer; // @[SE.scala 529:165]
-  reg  lv3ok_buffer_REG; // @[SE.scala 530:51]
-  wire  _T_224 = lv3ok_buffer & _T_5; // @[SE.scala 533:27]
-  wire [7:0] result_buffer_vectorized_0 = result_buffer[7:0]; // @[SE.scala 553:110]
-  wire [7:0] result_buffer_vectorized_1 = result_buffer[15:8]; // @[SE.scala 553:110]
-  wire [7:0] result_buffer_vectorized_2 = result_buffer[23:16]; // @[SE.scala 553:110]
-  wire [7:0] result_buffer_vectorized_3 = result_buffer[31:24]; // @[SE.scala 553:110]
-  wire [7:0] result_buffer_vectorized_4 = result_buffer[39:32]; // @[SE.scala 553:110]
-  wire [7:0] result_buffer_vectorized_5 = result_buffer[47:40]; // @[SE.scala 553:110]
-  wire [7:0] result_buffer_vectorized_6 = result_buffer[55:48]; // @[SE.scala 553:110]
-  wire [7:0] result_buffer_vectorized_7 = result_buffer[63:56]; // @[SE.scala 553:110]
-  wire [7:0] result_buffer_vectorized_8 = result_buffer[71:64]; // @[SE.scala 553:110]
-  wire [7:0] result_buffer_vectorized_9 = result_buffer[79:72]; // @[SE.scala 553:110]
-  wire [7:0] result_buffer_vectorized_10 = result_buffer[87:80]; // @[SE.scala 553:110]
-  wire [7:0] result_buffer_vectorized_11 = result_buffer[95:88]; // @[SE.scala 553:110]
-  wire [7:0] result_buffer_vectorized_12 = result_buffer[103:96]; // @[SE.scala 553:110]
-  wire [7:0] result_buffer_vectorized_13 = result_buffer[111:104]; // @[SE.scala 553:110]
-  wire [7:0] result_buffer_vectorized_14 = result_buffer[119:112]; // @[SE.scala 553:110]
-  wire [7:0] result_buffer_vectorized_15 = result_buffer[127:120]; // @[SE.scala 553:110]
-  wire [7:0] result_buffer_vectorized_16 = result_buffer[135:128]; // @[SE.scala 553:110]
-  wire [7:0] result_buffer_vectorized_17 = result_buffer[143:136]; // @[SE.scala 553:110]
-  wire [7:0] result_buffer_vectorized_18 = result_buffer[151:144]; // @[SE.scala 553:110]
-  wire [7:0] result_buffer_vectorized_19 = result_buffer[159:152]; // @[SE.scala 553:110]
-  wire [7:0] result_buffer_vectorized_20 = result_buffer[167:160]; // @[SE.scala 553:110]
-  wire [7:0] result_buffer_vectorized_21 = result_buffer[175:168]; // @[SE.scala 553:110]
-  wire [7:0] result_buffer_vectorized_22 = result_buffer[183:176]; // @[SE.scala 553:110]
-  wire [7:0] result_buffer_vectorized_23 = result_buffer[191:184]; // @[SE.scala 553:110]
-  wire [7:0] result_buffer_vectorized_24 = result_buffer[199:192]; // @[SE.scala 553:110]
-  wire [7:0] result_buffer_vectorized_25 = result_buffer[207:200]; // @[SE.scala 553:110]
-  wire [7:0] result_buffer_vectorized_26 = result_buffer[215:208]; // @[SE.scala 553:110]
-  wire [7:0] result_buffer_vectorized_27 = result_buffer[223:216]; // @[SE.scala 553:110]
-  wire [7:0] result_buffer_vectorized_28 = result_buffer[231:224]; // @[SE.scala 553:110]
-  wire [7:0] result_buffer_vectorized_29 = result_buffer[239:232]; // @[SE.scala 553:110]
-  wire [7:0] result_buffer_vectorized_30 = result_buffer[247:240]; // @[SE.scala 553:110]
-  wire [7:0] result_buffer_vectorized_31 = result_buffer[255:248]; // @[SE.scala 553:110]
+  reg [255:0] output_buffer_enc; // @[Reg.scala 16:16]
+  reg  op1_rehash_result_buffer_valid_REG; // @[SE.scala 546:75]
+  reg  op2_rehash_result_buffer_valid_REG; // @[SE.scala 547:75]
+  reg  hash_C_buffer_valid_REG; // @[SE.scala 552:50]
+  reg  result_valid_buffer_REG; // @[SE.scala 557:39]
+  reg  lv3ok_buffer_REG; // @[SE.scala 562:51]
+  wire [7:0] result_buffer_vectorized_0 = result_buffer[7:0]; // @[SE.scala 585:110]
+  wire [7:0] result_buffer_vectorized_1 = result_buffer[15:8]; // @[SE.scala 585:110]
+  wire [7:0] result_buffer_vectorized_2 = result_buffer[23:16]; // @[SE.scala 585:110]
+  wire [7:0] result_buffer_vectorized_3 = result_buffer[31:24]; // @[SE.scala 585:110]
+  wire [7:0] result_buffer_vectorized_4 = result_buffer[39:32]; // @[SE.scala 585:110]
+  wire [7:0] result_buffer_vectorized_5 = result_buffer[47:40]; // @[SE.scala 585:110]
+  wire [7:0] result_buffer_vectorized_6 = result_buffer[55:48]; // @[SE.scala 585:110]
+  wire [7:0] result_buffer_vectorized_7 = result_buffer[63:56]; // @[SE.scala 585:110]
+  wire [7:0] result_buffer_vectorized_8 = result_buffer[71:64]; // @[SE.scala 585:110]
+  wire [7:0] result_buffer_vectorized_9 = result_buffer[79:72]; // @[SE.scala 585:110]
+  wire [7:0] result_buffer_vectorized_10 = result_buffer[87:80]; // @[SE.scala 585:110]
+  wire [7:0] result_buffer_vectorized_11 = result_buffer[95:88]; // @[SE.scala 585:110]
+  wire [7:0] result_buffer_vectorized_12 = result_buffer[103:96]; // @[SE.scala 585:110]
+  wire [7:0] result_buffer_vectorized_13 = result_buffer[111:104]; // @[SE.scala 585:110]
+  wire [7:0] result_buffer_vectorized_14 = result_buffer[119:112]; // @[SE.scala 585:110]
+  wire [7:0] result_buffer_vectorized_15 = result_buffer[127:120]; // @[SE.scala 585:110]
+  wire [7:0] result_buffer_vectorized_16 = result_buffer[135:128]; // @[SE.scala 585:110]
+  wire [7:0] result_buffer_vectorized_17 = result_buffer[143:136]; // @[SE.scala 585:110]
+  wire [7:0] result_buffer_vectorized_18 = result_buffer[151:144]; // @[SE.scala 585:110]
+  wire [7:0] result_buffer_vectorized_19 = result_buffer[159:152]; // @[SE.scala 585:110]
+  wire [7:0] result_buffer_vectorized_20 = result_buffer[167:160]; // @[SE.scala 585:110]
+  wire [7:0] result_buffer_vectorized_21 = result_buffer[175:168]; // @[SE.scala 585:110]
+  wire [7:0] result_buffer_vectorized_22 = result_buffer[183:176]; // @[SE.scala 585:110]
+  wire [7:0] result_buffer_vectorized_23 = result_buffer[191:184]; // @[SE.scala 585:110]
+  wire [7:0] result_buffer_vectorized_24 = result_buffer[199:192]; // @[SE.scala 585:110]
+  wire [7:0] result_buffer_vectorized_25 = result_buffer[207:200]; // @[SE.scala 585:110]
+  wire [7:0] result_buffer_vectorized_26 = result_buffer[215:208]; // @[SE.scala 585:110]
+  wire [7:0] result_buffer_vectorized_27 = result_buffer[223:216]; // @[SE.scala 585:110]
+  wire [7:0] result_buffer_vectorized_28 = result_buffer[231:224]; // @[SE.scala 585:110]
+  wire [7:0] result_buffer_vectorized_29 = result_buffer[239:232]; // @[SE.scala 585:110]
+  wire [7:0] result_buffer_vectorized_30 = result_buffer[247:240]; // @[SE.scala 585:110]
+  wire [7:0] result_buffer_vectorized_31 = result_buffer[255:248]; // @[SE.scala 585:110]
   wire [63:0] aes_input_reverse_bit_lo_lo = {result_buffer_vectorized_24,result_buffer_vectorized_25,
     result_buffer_vectorized_26,result_buffer_vectorized_27,result_buffer_vectorized_28,result_buffer_vectorized_29,
     result_buffer_vectorized_30,result_buffer_vectorized_31}; // @[Cat.scala 31:58]
@@ -39177,34 +39162,20 @@ module SE(
   wire [255:0] aes_input_reverse_bit = {result_buffer_vectorized_0,result_buffer_vectorized_1,result_buffer_vectorized_2
     ,result_buffer_vectorized_3,result_buffer_vectorized_4,result_buffer_vectorized_5,result_buffer_vectorized_6,
     result_buffer_vectorized_7,aes_input_reverse_bit_hi_lo,aes_input_reverse_bit_lo}; // @[Cat.scala 31:58]
-  reg  lv4_AES_valid; // @[SE.scala 559:42]
-  reg  tmp_3; // @[SE.scala 560:58]
-  wire  _next_tmp_3_T_2 = output_valid ? 1'h0 : tmp_3; // @[SE.scala 567:101]
-  reg  lv4_AES_valid_REG; // @[SE.scala 568:51]
-  reg  tmp_3_REG; // @[SE.scala 569:59]
-  reg  output_buffer_enc_valid; // @[SE.scala 595:66]
-  reg [255:0] output_buffer_enc; // @[Reg.scala 16:16]
-  reg [315:0] output_buffer; // @[SE.scala 597:74]
-  wire  _hash_compare_result_op1_T = ~is_READ_PUB_VAR_HASH; // @[SE.scala 598:90]
-  wire  _hash_compare_result_op1_T_2 = HC_op1_io_compare_result | ~is_READ_PUB_VAR_HASH | opA_pub_priv; // @[SE.scala 598:113]
+  wire  _hash_compare_result_op1_T = ~is_READ_PUB_VAR_HASH; // @[SE.scala 607:90]
+  wire  _hash_compare_result_op1_T_2 = HC_op1_io_compare_result | ~is_READ_PUB_VAR_HASH | opA_lv3_auth_bit; // @[SE.scala 607:113]
   reg  hash_compare_result_op1; // @[Reg.scala 16:16]
-  reg  hash_compare_result_op1_valid; // @[SE.scala 599:58]
-  wire  _hash_compare_result_op2_T_2 = HC_op2_io_compare_result | _hash_compare_result_op1_T | opB_pub_priv; // @[SE.scala 600:113]
+  reg  hash_compare_result_op1_valid; // @[SE.scala 608:58]
+  wire  _hash_compare_result_op2_T_2 = HC_op2_io_compare_result | _hash_compare_result_op1_T | opB_lv3_auth_bit; // @[SE.scala 609:113]
   reg  hash_compare_result_op2; // @[Reg.scala 16:16]
-  reg  hash_compare_result_op2_valid; // @[SE.scala 601:58]
-  wire  _next_output_buffer_enc_valid_T = output_valid ? 1'h0 : output_buffer_enc_valid; // @[SE.scala 605:94]
-  reg  output_buffer_enc_valid_REG; // @[SE.scala 606:67]
-  wire  _next_lv4ok_buffer_T_2 = output_valid ? 1'h0 : lv4ok_buffer; // @[SE.scala 609:143]
-  reg  lv4ok_buffer_REG; // @[SE.scala 610:51]
-  wire  _GEN_197 = _next_ready_for_input_T_1 ? 1'h0 : output_valid; // @[SE.scala 614:50 615:30 277:35]
-  wire  _GEN_198 = lv4ok_buffer | _GEN_197; // @[SE.scala 612:28 613:30]
-  wire  _next_hash_compare_result_op1_valid_T = output_valid ? 1'h0 : hash_compare_result_op1_valid; // @[SE.scala 621:96]
-  wire  _next_hash_compare_result_op2_valid_T = output_valid ? 1'h0 : hash_compare_result_op2_valid; // @[SE.scala 622:96]
-  reg  hash_compare_result_op1_valid_REG; // @[SE.scala 623:67]
-  reg  hash_compare_result_op2_valid_REG; // @[SE.scala 624:67]
+  reg  hash_compare_result_op2_valid; // @[SE.scala 610:58]
+  wire  _GEN_210 = io_out_valid & io_out_ready ? 1'h0 : hash_compare_result_op1_valid; // @[SE.scala 618:44 620:48 608:58]
+  wire  _GEN_211 = io_out_valid & io_out_ready ? 1'h0 : hash_compare_result_op2_valid; // @[SE.scala 618:44 621:48 610:58]
+  wire  _GEN_212 = HC_op1_io_valid_out | _GEN_210; // @[SE.scala 623:34 624:48]
+  wire  _GEN_213 = HC_op2_io_valid_out | _GEN_211; // @[SE.scala 627:34 628:48]
   wire [315:0] output_connect = {hash_C_buffer,output_buffer_enc}; // @[Cat.scala 31:58]
   wire  compare_hash_total = hash_compare_result_op1 & hash_compare_result_op1_valid & hash_compare_result_op2 &
-    hash_compare_result_op2_valid; // @[SE.scala 632:128]
+    hash_compare_result_op2_valid; // @[SE.scala 637:128]
   SEOperation seoperation ( // @[SE.scala 170:33]
     .io_inst(seoperation_io_inst),
     .io_in_valid(seoperation_io_in_valid),
@@ -39375,60 +39346,60 @@ module SE(
     .io_out_45(bit46_randnum_prng_io_out_45)
   );
   assign io_in_ready = ready_for_input; // @[SE.scala 282:21]
-  assign io_out_result = output_buffer; // @[SE.scala 656:41]
-  assign io_out_valid = output_valid; // @[SE.scala 654:41]
-  assign io_out_op1_hash_compare = hash_compare_result_op1; // @[SE.scala 657:33]
-  assign io_out_op2_hash_compare = hash_compare_result_op2; // @[SE.scala 658:33]
-  assign seoperation_io_inst = inst_buffer; // @[SE.scala 438:33]
-  assign seoperation_io_in_valid = lv2ok_buffer; // @[SE.scala 440:41]
-  assign seoperation_io_op1_input = is_READ_PUB_VAR_HASH ? pub_var_hash_register : _op1_plaintext_64_T_3; // @[SE.scala 443:46]
-  assign seoperation_io_op2_input = decrypted_op2_val_buffer[127:64]; // @[SE.scala 445:50]
+  assign io_out_result = compare_hash_total ? output_connect : 316'h0; // @[SE.scala 638:34 639:31 643:31]
+  assign io_out_valid = lv3ok_buffer & hash_compare_result_op1_valid & hash_compare_result_op2_valid; // @[SE.scala 612:60]
+  assign io_out_op1_hash_compare = hash_compare_result_op1; // @[SE.scala 663:33]
+  assign io_out_op2_hash_compare = hash_compare_result_op2; // @[SE.scala 664:33]
+  assign seoperation_io_inst = inst_buffer; // @[SE.scala 475:33]
+  assign seoperation_io_in_valid = lv2ok_buffer; // @[SE.scala 477:41]
+  assign seoperation_io_op1_input = is_READ_PUB_VAR_HASH ? pub_var_hash_register : _op1_plaintext_64_T_3; // @[SE.scala 480:46]
+  assign seoperation_io_op2_input = decrypted_op2_val_buffer[127:64]; // @[SE.scala 482:50]
   assign aes_invcipher_op1_clock = clock;
   assign aes_invcipher_op1_reset = reset;
-  assign aes_invcipher_op1_io_input_valid = lv2_AES_valid; // @[SE.scala 336:57]
+  assign aes_invcipher_op1_io_input_valid = lv1ok_buffer & ~lv2ok_buffer & stage1_idle; // @[SE.scala 333:65]
   assign aes_invcipher_op1_io_input_text = {ciph_op1_val,ciph_op1_hash}; // @[Cat.scala 31:58]
   assign aes_invcipher_op2_clock = clock;
   assign aes_invcipher_op2_reset = reset;
-  assign aes_invcipher_op2_io_input_valid = lv2_AES_valid; // @[SE.scala 339:57]
+  assign aes_invcipher_op2_io_input_valid = lv1ok_buffer & ~lv2ok_buffer & stage1_idle; // @[SE.scala 333:65]
   assign aes_invcipher_op2_io_input_text = {ciph_op2_val,ciph_op2_hash}; // @[Cat.scala 31:58]
   assign aes_cipher_clock = clock;
   assign aes_cipher_reset = reset;
-  assign aes_cipher_io_input_valid = lv4_AES_valid; // @[SE.scala 573:49]
-  assign aes_cipher_io_input_op1 = aes_input_reverse_bit[127:0]; // @[SE.scala 555:80]
-  assign aes_cipher_io_input_op2 = aes_input_reverse_bit[255:128]; // @[SE.scala 556:80]
+  assign aes_cipher_io_input_valid = stage2_idle & lv2ok_buffer & _T_3; // @[SE.scala 418:55]
+  assign aes_cipher_io_input_op1 = aes_input_reverse_bit[127:0]; // @[SE.scala 587:80]
+  assign aes_cipher_io_input_op2 = aes_input_reverse_bit[255:128]; // @[SE.scala 588:80]
   assign aes_cipher_for_hash_C_clock = clock;
   assign aes_cipher_for_hash_C_reset = reset;
-  assign aes_cipher_for_hash_C_io_input_valid = lv2_AES_valid; // @[SE.scala 341:57]
+  assign aes_cipher_for_hash_C_io_input_valid = lv1ok_buffer & ~lv2ok_buffer & stage1_idle; // @[SE.scala 333:65]
   assign aes_cipher_for_hash_C_io_input_text = {aes_cipher_for_hash_C_io_input_text_hi,
-    aes_cipher_for_hash_C_io_input_text_lo}; // @[SE.scala 340:96]
+    aes_cipher_for_hash_C_io_input_text_lo}; // @[SE.scala 346:96]
   assign aes_cipher_for_op1_clock = clock;
   assign aes_cipher_for_op1_reset = reset;
-  assign aes_cipher_for_op1_io_input_valid = lv3_AES_valid; // @[SE.scala 487:57]
-  assign aes_cipher_for_op1_io_input_text = decrypted_op1_hash_buffer; // @[SE.scala 486:57]
+  assign aes_cipher_for_op1_io_input_valid = stage2_idle & lv2ok_buffer & _T_3; // @[SE.scala 418:55]
+  assign aes_cipher_for_op1_io_input_text = decrypted_op1_hash_buffer; // @[SE.scala 515:57]
   assign aes_cipher_for_op2_clock = clock;
   assign aes_cipher_for_op2_reset = reset;
-  assign aes_cipher_for_op2_io_input_valid = lv3_AES_valid; // @[SE.scala 490:57]
-  assign aes_cipher_for_op2_io_input_text = decrypted_op2_hash_buffer; // @[SE.scala 489:57]
+  assign aes_cipher_for_op2_io_input_valid = stage2_idle & lv2ok_buffer & _T_3; // @[SE.scala 418:55]
+  assign aes_cipher_for_op2_io_input_text = decrypted_op2_hash_buffer; // @[SE.scala 518:57]
   assign aes_cipher_for_pub_var_clock = clock;
   assign aes_cipher_for_pub_var_reset = reset;
   assign aes_cipher_for_pub_var_io_input_valid = lv1ok_buffer & is_enc_var; // @[SE.scala 248:41]
   assign aes_cipher_for_pub_var_io_input_text = {pub_var_hash_register,op1_buffer[255:192]}; // @[Cat.scala 31:58]
-  assign PRC_0_io_op1 = op1_buffer; // @[SE.scala 307:41]
-  assign PRC_0_io_op2 = op2_buffer; // @[SE.scala 308:49]
-  assign PRC_0_io_inst = inst_buffer; // @[SE.scala 309:47]
-  assign HC_op1_io_hash_orig = lv2_op1_buffer[315:256]; // @[SE.scala 580:58]
-  assign HC_op1_io_hash_regenerated = opA_pub_priv ? decrypted_op1_hash_buffer[127:68] : op1_rehash_result_bit[127:68]; // @[SE.scala 581:47]
-  assign HC_op1_io_valid_in = lv3ok_buffer; // @[SE.scala 582:49]
-  assign HC_op2_io_hash_orig = lv2_op2_buffer[315:256]; // @[SE.scala 583:58]
-  assign HC_op2_io_hash_regenerated = opB_pub_priv ? decrypted_op2_hash_buffer[127:68] : op2_rehash_result_bit[127:68]; // @[SE.scala 584:47]
-  assign HC_op2_io_valid_in = lv3ok_buffer; // @[SE.scala 585:49]
-  assign VID_0_io_pub_priv_opA = is_enc_inst | opA_pub_priv; // @[SE.scala 459:37]
-  assign VID_0_io_pub_priv_opB = is_enc_inst | opB_pub_priv; // @[SE.scala 460:37]
-  assign VID_0_io_auth_bit_opA = is_enc_non_integrity ? 1'h0 : _VID_0_io_pub_priv_opA_T; // @[SE.scala 461:37]
-  assign VID_0_io_auth_bit_opB = is_enc_non_integrity ? 1'h0 : _VID_0_io_pub_priv_opB_T; // @[SE.scala 462:37]
-  assign VID_0_io_version_id_opA = decrypted_op1_val_buffer[15:0]; // @[SE.scala 463:43]
-  assign VID_0_io_version_id_opB = decrypted_op2_val_buffer[15:0]; // @[SE.scala 464:43]
-  assign VID_0_io_valid_in = lv2ok_buffer; // @[SE.scala 465:41]
+  assign PRC_0_io_op1 = op1_buffer; // @[SE.scala 311:41]
+  assign PRC_0_io_op2 = op2_buffer; // @[SE.scala 312:49]
+  assign PRC_0_io_inst = inst_buffer; // @[SE.scala 313:47]
+  assign HC_op1_io_hash_orig = lv2_op1_buffer[315:256]; // @[SE.scala 599:58]
+  assign HC_op1_io_hash_regenerated = opA_pub_priv ? decrypted_op1_hash_buffer[127:68] : op1_rehash_result_bit[127:68]; // @[SE.scala 600:47]
+  assign HC_op1_io_valid_in = lv3ok_buffer; // @[SE.scala 601:49]
+  assign HC_op2_io_hash_orig = lv2_op2_buffer[315:256]; // @[SE.scala 602:58]
+  assign HC_op2_io_hash_regenerated = opB_pub_priv ? decrypted_op2_hash_buffer[127:68] : op2_rehash_result_bit[127:68]; // @[SE.scala 603:47]
+  assign HC_op2_io_valid_in = lv3ok_buffer; // @[SE.scala 604:49]
+  assign VID_0_io_pub_priv_opA = is_enc_inst | opA_pub_priv; // @[SE.scala 496:37]
+  assign VID_0_io_pub_priv_opB = is_enc_inst | opB_pub_priv; // @[SE.scala 497:37]
+  assign VID_0_io_auth_bit_opA = is_enc_non_integrity ? 1'h0 : _VID_0_io_pub_priv_opA_T; // @[SE.scala 498:37]
+  assign VID_0_io_auth_bit_opB = is_enc_non_integrity ? 1'h0 : _VID_0_io_pub_priv_opB_T; // @[SE.scala 499:37]
+  assign VID_0_io_version_id_opA = decrypted_op1_val_buffer[15:0]; // @[SE.scala 500:43]
+  assign VID_0_io_version_id_opB = decrypted_op2_val_buffer[15:0]; // @[SE.scala 501:43]
+  assign VID_0_io_valid_in = lv2ok_buffer; // @[SE.scala 502:41]
   assign moduled_prng_pub_var_clock = clock;
   assign moduled_prng_pub_var_reset = reset;
   assign moduled_prng_pub_var_io_increment = lv1ok_buffer & is_enc_var; // @[SE.scala 248:41]
@@ -39444,53 +39415,39 @@ module SE(
     if (io_in_valid) begin // @[Reg.scala 17:18]
       op2_buffer <= io_in_op2; // @[Reg.scala 17:22]
     end
-    ready_for_input <= reset | ready_for_input_REG; // @[SE.scala 229:{38,38} 287:49]
+    ready_for_input <= reset | ready_for_input_REG; // @[SE.scala 229:{38,38} 288:49]
     if (reset) begin // @[SE.scala 236:42]
       lv1ok_buffer <= 1'h0; // @[SE.scala 236:42]
     end else begin
-      lv1ok_buffer <= lv1ok_buffer_REG; // @[SE.scala 292:41]
+      lv1ok_buffer <= lv1ok_buffer_REG; // @[SE.scala 296:41]
     end
     if (reset) begin // @[SE.scala 237:42]
       lv2ok_buffer <= 1'h0; // @[SE.scala 237:42]
     end else begin
-      lv2ok_buffer <= lv2ok_buffer_REG; // @[SE.scala 390:41]
+      lv2ok_buffer <= lv2ok_buffer_REG; // @[SE.scala 414:41]
     end
     if (reset) begin // @[SE.scala 238:42]
       lv3ok_buffer <= 1'h0; // @[SE.scala 238:42]
+    end else if (io_out_valid & io_out_ready) begin // @[SE.scala 618:44]
+      lv3ok_buffer <= 1'h0; // @[SE.scala 619:30]
     end else begin
-      lv3ok_buffer <= lv3ok_buffer_REG; // @[SE.scala 530:41]
-    end
-    if (reset) begin // @[SE.scala 239:42]
-      lv4ok_buffer <= 1'h0; // @[SE.scala 239:42]
-    end else begin
-      lv4ok_buffer <= lv4ok_buffer_REG; // @[SE.scala 610:41]
+      lv3ok_buffer <= lv3ok_buffer_REG; // @[SE.scala 562:41]
     end
     if (aes_cipher_for_pub_var_io_output_valid) begin // @[SE.scala 257:53]
       pub_var_hash_register <= aes_cipher_for_pub_var_io_output_text[127:64]; // @[SE.scala 258:39]
     end
-    if (reset) begin // @[SE.scala 277:35]
-      output_valid <= 1'h0; // @[SE.scala 277:35]
-    end else begin
-      output_valid <= _GEN_198;
-    end
-    if (io_in_valid & io_in_ready) begin // @[SE.scala 286:47]
+    if (io_in_valid & io_in_ready) begin // @[SE.scala 287:47]
       ready_for_input_REG <= 1'h0;
     end else begin
-      ready_for_input_REG <= io_out_valid & io_out_ready | ready_for_input;
+      ready_for_input_REG <= ~lv1ok_buffer;
     end
-    lv1ok_buffer_REG <= _next_ready_for_input_T | _next_lv1ok_buffer_T_1; // @[SE.scala 291:39]
-    if (reset) begin // @[SE.scala 320:42]
-      lv2_AES_valid <= 1'h0; // @[SE.scala 320:42]
-    end else begin
-      lv2_AES_valid <= lv2_AES_valid_REG; // @[SE.scala 330:41]
-    end
-    if (reset) begin // @[SE.scala 321:58]
-      tmp_1 <= 1'h0; // @[SE.scala 321:58]
-    end else begin
-      tmp_1 <= tmp_1_REG; // @[SE.scala 331:49]
-    end
-    lv2_AES_valid_REG <= lv1ok_buffer & ~tmp_1 & ~is_enc_inst; // @[SE.scala 328:72]
-    tmp_1_REG <= lv1ok_buffer & ~lv2_AES_valid | _next_tmp_1_T_2; // @[SE.scala 329:55]
+    dec1_idle <= reset | _GEN_183; // @[SE.scala 326:{34,34}]
+    dec2_idle <= reset | _GEN_184; // @[SE.scala 327:{34,34}]
+    hashC_idle <= reset | _GEN_185; // @[SE.scala 328:{34,34}]
+    lv1ok_buffer_REG <= _next_ready_for_input_T | _next_lv1ok_buffer_T_3; // @[SE.scala 295:39]
+    Hash1_idle <= reset | _GEN_196; // @[SE.scala 369:{33,33}]
+    Hash2_idle <= reset | _GEN_197; // @[SE.scala 370:{33,33}]
+    enc_idle <= reset | _GEN_198; // @[SE.scala 371:{30,30}]
     if (aes_invcipher_op1_io_output_valid) begin // @[Reg.scala 17:18]
       lv2_op1_buffer <= op1_buffer; // @[Reg.scala 17:22]
     end
@@ -39500,10 +39457,10 @@ module SE(
     if (aes_cipher_for_hash_C_io_output_valid) begin // @[Reg.scala 17:18]
       hash_C_original_buffer <= aes_cipher_for_hash_C_io_output_text; // @[Reg.scala 17:22]
     end
-    if (reset) begin // @[SE.scala 353:66]
-      hash_C_original_buffer_valid <= 1'h0; // @[SE.scala 353:66]
+    if (reset) begin // @[SE.scala 378:66]
+      hash_C_original_buffer_valid <= 1'h0; // @[SE.scala 378:66]
     end else begin
-      hash_C_original_buffer_valid <= hash_C_original_buffer_valid_REG; // @[SE.scala 370:49]
+      hash_C_original_buffer_valid <= hash_C_original_buffer_valid_REG; // @[SE.scala 394:49]
     end
     if (aes_invcipher_op1_io_output_valid) begin // @[Reg.scala 17:18]
       decrypted_op1_val_buffer <= aes_invcipher_op1_io_output_text[255:128]; // @[Reg.scala 17:22]
@@ -39517,56 +39474,35 @@ module SE(
     if (aes_invcipher_op2_io_output_valid) begin // @[Reg.scala 17:18]
       decrypted_op2_hash_buffer <= aes_invcipher_op2_io_output_text[127:0]; // @[Reg.scala 17:22]
     end
-    if (reset) begin // @[SE.scala 364:42]
-      lv3_AES_valid <= 1'h0; // @[SE.scala 364:42]
-    end else begin
-      lv3_AES_valid <= lv3_AES_valid_REG; // @[SE.scala 398:41]
-    end
-    if (reset) begin // @[SE.scala 365:58]
-      tmp_2 <= 1'h0; // @[SE.scala 365:58]
-    end else begin
-      tmp_2 <= tmp_2_REG; // @[SE.scala 399:49]
-    end
-    hash_C_original_buffer_valid_REG <= aes_cipher_for_hash_C_io_output_valid | _next_hash_C_original_buffer_valid_T; // @[SE.scala 369:51]
+    hash_C_original_buffer_valid_REG <= aes_cipher_for_hash_C_io_output_valid | hash_C_original_buffer_valid; // @[SE.scala 393:51]
     lv2ok_buffer_REG <= lv2_bypass | aes_invcipher_op1_io_output_valid & aes_invcipher_op2_io_output_valid &
-      aes_cipher_for_hash_C_io_output_valid | _next_lv2ok_buffer_T_3; // @[SE.scala 389:39]
-    lv3_AES_valid_REG <= lv2ok_buffer & ~tmp_2; // @[SE.scala 396:62]
-    tmp_2_REG <= lv2ok_buffer & ~lv3_AES_valid | _next_tmp_2_T_2; // @[SE.scala 397:55]
-    if (VID_0_io_valid_out) begin // @[Reg.scala 17:18]
-      verID_C <= VID_0_io_version_id_out; // @[Reg.scala 17:22]
+      aes_cipher_for_hash_C_io_output_valid | _next_lv2ok_buffer_T_4; // @[SE.scala 413:39]
+    if (lv3_AES_valid) begin // @[Reg.scala 17:18]
+      opA_lv3_auth_bit <= opA_pub_priv; // @[Reg.scala 17:22]
     end
-    if (reset) begin // @[SE.scala 468:36]
-      verID_C_valid <= 1'h0; // @[SE.scala 468:36]
-    end else begin
-      verID_C_valid <= verID_C_valid_REG; // @[SE.scala 471:41]
-    end
-    verID_C_valid_REG <= VID_0_io_valid_out | _next_verID_C_valid_T; // @[SE.scala 470:47]
-    if (VID_0_io_valid_out) begin // @[Reg.scala 17:18]
-      pub_prv_bit <= VID_0_io_pub_priv_out; // @[Reg.scala 17:22]
-    end
-    if (VID_0_io_valid_out) begin // @[Reg.scala 17:18]
-      auth_bit <= VID_0_io_auth_bit_out; // @[Reg.scala 17:22]
+    if (lv3_AES_valid) begin // @[Reg.scala 17:18]
+      opB_lv3_auth_bit <= opB_pub_priv; // @[Reg.scala 17:22]
     end
     if (_result_buffer_T) begin // @[Reg.scala 17:18]
-      if (is_enc_inst) begin // @[SE.scala 484:32]
-        result_buffer <= {{1'd0}, enc_padded_result};
+      if (is_enc_inst) begin // @[SE.scala 513:32]
+        result_buffer <= {{16'd0}, enc_padded_result};
       end else begin
         result_buffer <= non_enc_padded_result;
       end
     end
-    if (reset) begin // @[SE.scala 495:66]
-      result_valid_buffer <= 1'h0; // @[SE.scala 495:66]
+    if (reset) begin // @[SE.scala 524:66]
+      result_valid_buffer <= 1'h0; // @[SE.scala 524:66]
     end else begin
-      result_valid_buffer <= result_valid_buffer_REG; // @[SE.scala 525:29]
+      result_valid_buffer <= result_valid_buffer_REG; // @[SE.scala 557:29]
     end
-    if (reset) begin // @[SE.scala 497:66]
-      hash_C_buffer_valid <= 1'h0; // @[SE.scala 497:66]
+    if (reset) begin // @[SE.scala 526:66]
+      hash_C_buffer_valid <= 1'h0; // @[SE.scala 526:66]
     end else begin
-      hash_C_buffer_valid <= hash_C_buffer_valid_REG; // @[SE.scala 520:40]
+      hash_C_buffer_valid <= hash_C_buffer_valid_REG; // @[SE.scala 552:40]
     end
     if (hash_C_buffer_valid) begin // @[Reg.scala 17:18]
-      if (is_enc_inst) begin // @[SE.scala 498:81]
-        if (is_enc_var) begin // @[SE.scala 482:25]
+      if (is_enc_inst) begin // @[SE.scala 527:81]
+        if (is_enc_var) begin // @[SE.scala 511:25]
           hash_C_buffer <= seoperation_io_result[59:0];
         end else begin
           hash_C_buffer <= moduled_prng_pub_var_io_PUB_VAR_HASH_LFSR[59:0];
@@ -39575,82 +39511,53 @@ module SE(
         hash_C_buffer <= hash_C_original_buffer[125:66];
       end
     end
-    if (reset) begin // @[SE.scala 499:58]
-      op1_rehash_result_buffer_valid <= 1'h0; // @[SE.scala 499:58]
+    if (reset) begin // @[SE.scala 528:58]
+      op1_rehash_result_buffer_valid <= 1'h0; // @[SE.scala 528:58]
     end else begin
-      op1_rehash_result_buffer_valid <= op1_rehash_result_buffer_valid_REG; // @[SE.scala 514:65]
+      op1_rehash_result_buffer_valid <= op1_rehash_result_buffer_valid_REG; // @[SE.scala 546:65]
     end
     if (aes_cipher_for_op1_io_output_valid) begin // @[Reg.scala 17:18]
       op1_rehash_result_bit <= aes_cipher_for_op1_io_output_text; // @[Reg.scala 17:22]
     end
-    if (reset) begin // @[SE.scala 501:58]
-      op2_rehash_result_buffer_valid <= 1'h0; // @[SE.scala 501:58]
+    if (reset) begin // @[SE.scala 530:58]
+      op2_rehash_result_buffer_valid <= 1'h0; // @[SE.scala 530:58]
     end else begin
-      op2_rehash_result_buffer_valid <= op2_rehash_result_buffer_valid_REG; // @[SE.scala 515:65]
+      op2_rehash_result_buffer_valid <= op2_rehash_result_buffer_valid_REG; // @[SE.scala 547:65]
     end
     if (aes_cipher_for_op2_io_output_valid) begin // @[Reg.scala 17:18]
       op2_rehash_result_bit <= aes_cipher_for_op2_io_output_text; // @[Reg.scala 17:22]
     end
-    op1_rehash_result_buffer_valid_REG <= aes_cipher_for_op1_io_output_valid | _next_op1_rehash_result_buffer_valid_T; // @[SE.scala 512:63]
-    op2_rehash_result_buffer_valid_REG <= aes_cipher_for_op2_io_output_valid | _next_op2_rehash_result_buffer_valid_T; // @[SE.scala 513:63]
-    hash_C_buffer_valid_REG <= hash_C_original_buffer_valid | _next_hash_C_buffer_valid_T; // @[SE.scala 519:46]
-    result_valid_buffer_REG <= lv2ok_buffer | _n_result_valid_buffer_T; // @[SE.scala 524:37]
-    lv3ok_buffer_REG <= result_valid_buffer & hash_C_buffer_valid & op1_rehash_result_buffer_valid &
-      op2_rehash_result_buffer_valid | _next_lv3ok_buffer_T_3; // @[SE.scala 529:39]
-    if (reset) begin // @[SE.scala 559:42]
-      lv4_AES_valid <= 1'h0; // @[SE.scala 559:42]
-    end else begin
-      lv4_AES_valid <= lv4_AES_valid_REG; // @[SE.scala 568:41]
-    end
-    if (reset) begin // @[SE.scala 560:58]
-      tmp_3 <= 1'h0; // @[SE.scala 560:58]
-    end else begin
-      tmp_3 <= tmp_3_REG; // @[SE.scala 569:49]
-    end
-    lv4_AES_valid_REG <= lv3ok_buffer & ~tmp_3; // @[SE.scala 566:62]
-    tmp_3_REG <= lv3ok_buffer & ~lv4_AES_valid | _next_tmp_3_T_2; // @[SE.scala 567:55]
-    if (reset) begin // @[SE.scala 595:66]
-      output_buffer_enc_valid <= 1'h0; // @[SE.scala 595:66]
-    end else begin
-      output_buffer_enc_valid <= output_buffer_enc_valid_REG; // @[SE.scala 606:57]
-    end
     if (aes_cipher_io_output_valid) begin // @[Reg.scala 17:18]
       output_buffer_enc <= aes_cipher_io_output_text; // @[Reg.scala 17:22]
     end
-    if (reset) begin // @[SE.scala 597:74]
-      output_buffer <= 316'h0; // @[SE.scala 597:74]
-    end else if (compare_hash_total) begin // @[SE.scala 633:34]
-      output_buffer <= output_connect; // @[SE.scala 634:31]
-    end else begin
-      output_buffer <= 316'h0; // @[SE.scala 636:31]
-    end
+    op1_rehash_result_buffer_valid_REG <= aes_cipher_for_op1_io_output_valid | op1_rehash_result_buffer_valid; // @[SE.scala 544:63]
+    op2_rehash_result_buffer_valid_REG <= aes_cipher_for_op2_io_output_valid | op2_rehash_result_buffer_valid; // @[SE.scala 545:63]
+    hash_C_buffer_valid_REG <= hash_C_original_buffer_valid | hash_C_buffer_valid; // @[SE.scala 551:46]
+    result_valid_buffer_REG <= lv2ok_buffer | result_valid_buffer; // @[SE.scala 556:37]
+    lv3ok_buffer_REG <= result_valid_buffer & hash_C_buffer_valid & op1_rehash_result_buffer_valid &
+      op2_rehash_result_buffer_valid | lv3ok_buffer; // @[SE.scala 561:39]
     if (HC_op1_io_valid_out) begin // @[Reg.scala 17:18]
       hash_compare_result_op1 <= _hash_compare_result_op1_T_2; // @[Reg.scala 17:22]
     end
-    if (reset) begin // @[SE.scala 599:58]
-      hash_compare_result_op1_valid <= 1'h0; // @[SE.scala 599:58]
+    if (reset) begin // @[SE.scala 608:58]
+      hash_compare_result_op1_valid <= 1'h0; // @[SE.scala 608:58]
     end else begin
-      hash_compare_result_op1_valid <= hash_compare_result_op1_valid_REG; // @[SE.scala 623:57]
+      hash_compare_result_op1_valid <= _GEN_212;
     end
     if (HC_op2_io_valid_out) begin // @[Reg.scala 17:18]
       hash_compare_result_op2 <= _hash_compare_result_op2_T_2; // @[Reg.scala 17:22]
     end
-    if (reset) begin // @[SE.scala 601:58]
-      hash_compare_result_op2_valid <= 1'h0; // @[SE.scala 601:58]
+    if (reset) begin // @[SE.scala 610:58]
+      hash_compare_result_op2_valid <= 1'h0; // @[SE.scala 610:58]
     end else begin
-      hash_compare_result_op2_valid <= hash_compare_result_op2_valid_REG; // @[SE.scala 624:57]
+      hash_compare_result_op2_valid <= _GEN_213;
     end
-    output_buffer_enc_valid_REG <= aes_cipher_io_output_valid | _next_output_buffer_enc_valid_T; // @[SE.scala 605:54]
-    lv4ok_buffer_REG <= output_buffer_enc_valid & hash_compare_result_op1_valid & hash_compare_result_op2_valid |
-      _next_lv4ok_buffer_T_2; // @[SE.scala 609:38]
-    hash_compare_result_op1_valid_REG <= HC_op1_io_valid_out | _next_hash_compare_result_op1_valid_T; // @[SE.scala 621:63]
-    hash_compare_result_op2_valid_REG <= HC_op2_io_valid_out | _next_hash_compare_result_op2_valid_T; // @[SE.scala 622:63]
     `ifndef SYNTHESIS
     `ifdef PRINTF_COND
       if (`PRINTF_COND) begin
     `endif
-        if (_T_6 & ~reset) begin
-          $fwrite(32'h80000002,"\tinst_buffer: %x\n",inst_buffer); // @[SE.scala 296:23]
+        if (_T_4 & ~reset) begin
+          $fwrite(32'h80000002,"\tinst_buffer: %x\n",inst_buffer); // @[SE.scala 300:23]
         end
     `ifdef PRINTF_COND
       end
@@ -39660,8 +39567,8 @@ module SE(
     `ifdef PRINTF_COND
       if (`PRINTF_COND) begin
     `endif
-        if (_T_6 & _T_8) begin
-          $fwrite(32'h80000002,"\top1_buffer: %x\n",op1_buffer); // @[SE.scala 297:23]
+        if (_T_4 & _T_8) begin
+          $fwrite(32'h80000002,"\top1_buffer: %x\n",op1_buffer); // @[SE.scala 301:23]
         end
     `ifdef PRINTF_COND
       end
@@ -39671,8 +39578,8 @@ module SE(
     `ifdef PRINTF_COND
       if (`PRINTF_COND) begin
     `endif
-        if (_T_6 & _T_8) begin
-          $fwrite(32'h80000002,"\top2_buffer: %x\n",op2_buffer); // @[SE.scala 298:23]
+        if (_T_4 & _T_8) begin
+          $fwrite(32'h80000002,"\top2_buffer: %x\n",op2_buffer); // @[SE.scala 302:23]
         end
     `ifdef PRINTF_COND
       end
@@ -39682,8 +39589,8 @@ module SE(
     `ifdef PRINTF_COND
       if (`PRINTF_COND) begin
     `endif
-        if (_T_6 & _T_8) begin
-          $fwrite(32'h80000002,"\tready_for_input: %x\n",ready_for_input); // @[SE.scala 299:23]
+        if (_T_4 & _T_8) begin
+          $fwrite(32'h80000002,"\tready_for_input: %x\n",ready_for_input); // @[SE.scala 303:23]
         end
     `ifdef PRINTF_COND
       end
@@ -39693,8 +39600,8 @@ module SE(
     `ifdef PRINTF_COND
       if (`PRINTF_COND) begin
     `endif
-        if (_T_6 & _T_8) begin
-          $fwrite(32'h80000002,"\tlv1ok_buffer: %x\n",lv1ok_buffer); // @[SE.scala 300:23]
+        if (_T_4 & _T_8) begin
+          $fwrite(32'h80000002,"\tlv1ok_buffer: %x\n",lv1ok_buffer); // @[SE.scala 304:23]
         end
     `ifdef PRINTF_COND
       end
@@ -39705,7 +39612,7 @@ module SE(
       if (`PRINTF_COND) begin
     `endif
         if (_T_8) begin
-          $fwrite(32'h80000002,"[Stage: Level_1 Buffer -> Level_2 Buffer]\n"); // @[SE.scala 304:15]
+          $fwrite(32'h80000002,"[Stage: Level_1 Buffer -> Level_2 Buffer]\n"); // @[SE.scala 308:15]
         end
     `ifdef PRINTF_COND
       end
@@ -39715,8 +39622,8 @@ module SE(
     `ifdef PRINTF_COND
       if (`PRINTF_COND) begin
     `endif
-        if (_T_22 & _T_8) begin
-          $fwrite(32'h80000002,"\tconnected_reversed_plaintext_buffer: "); // @[SE.scala 403:23]
+        if (_T_32 & _T_8) begin
+          $fwrite(32'h80000002,"\tconnected_reversed_plaintext_buffer: "); // @[SE.scala 440:23]
         end
     `ifdef PRINTF_COND
       end
@@ -39726,8 +39633,8 @@ module SE(
     `ifdef PRINTF_COND
       if (`PRINTF_COND) begin
     `endif
-        if (_T_22 & _T_8) begin
-          $fwrite(32'h80000002,"%x",connected_reversed_plaintext_buffer_0); // @[SE.scala 405:31]
+        if (_T_32 & _T_8) begin
+          $fwrite(32'h80000002,"%x",connected_reversed_plaintext_buffer_0); // @[SE.scala 442:31]
         end
     `ifdef PRINTF_COND
       end
@@ -39737,8 +39644,8 @@ module SE(
     `ifdef PRINTF_COND
       if (`PRINTF_COND) begin
     `endif
-        if (_T_22 & _T_8) begin
-          $fwrite(32'h80000002,"%x",connected_reversed_plaintext_buffer_1); // @[SE.scala 405:31]
+        if (_T_32 & _T_8) begin
+          $fwrite(32'h80000002,"%x",connected_reversed_plaintext_buffer_1); // @[SE.scala 442:31]
         end
     `ifdef PRINTF_COND
       end
@@ -39748,8 +39655,8 @@ module SE(
     `ifdef PRINTF_COND
       if (`PRINTF_COND) begin
     `endif
-        if (_T_22 & _T_8) begin
-          $fwrite(32'h80000002,"%x",connected_reversed_plaintext_buffer_2); // @[SE.scala 405:31]
+        if (_T_32 & _T_8) begin
+          $fwrite(32'h80000002,"%x",connected_reversed_plaintext_buffer_2); // @[SE.scala 442:31]
         end
     `ifdef PRINTF_COND
       end
@@ -39759,8 +39666,8 @@ module SE(
     `ifdef PRINTF_COND
       if (`PRINTF_COND) begin
     `endif
-        if (_T_22 & _T_8) begin
-          $fwrite(32'h80000002,"%x",connected_reversed_plaintext_buffer_3); // @[SE.scala 405:31]
+        if (_T_32 & _T_8) begin
+          $fwrite(32'h80000002,"%x",connected_reversed_plaintext_buffer_3); // @[SE.scala 442:31]
         end
     `ifdef PRINTF_COND
       end
@@ -39770,8 +39677,8 @@ module SE(
     `ifdef PRINTF_COND
       if (`PRINTF_COND) begin
     `endif
-        if (_T_22 & _T_8) begin
-          $fwrite(32'h80000002,"%x",connected_reversed_plaintext_buffer_4); // @[SE.scala 405:31]
+        if (_T_32 & _T_8) begin
+          $fwrite(32'h80000002,"%x",connected_reversed_plaintext_buffer_4); // @[SE.scala 442:31]
         end
     `ifdef PRINTF_COND
       end
@@ -39781,8 +39688,8 @@ module SE(
     `ifdef PRINTF_COND
       if (`PRINTF_COND) begin
     `endif
-        if (_T_22 & _T_8) begin
-          $fwrite(32'h80000002,"%x",connected_reversed_plaintext_buffer_5); // @[SE.scala 405:31]
+        if (_T_32 & _T_8) begin
+          $fwrite(32'h80000002,"%x",connected_reversed_plaintext_buffer_5); // @[SE.scala 442:31]
         end
     `ifdef PRINTF_COND
       end
@@ -39792,8 +39699,8 @@ module SE(
     `ifdef PRINTF_COND
       if (`PRINTF_COND) begin
     `endif
-        if (_T_22 & _T_8) begin
-          $fwrite(32'h80000002,"%x",connected_reversed_plaintext_buffer_6); // @[SE.scala 405:31]
+        if (_T_32 & _T_8) begin
+          $fwrite(32'h80000002,"%x",connected_reversed_plaintext_buffer_6); // @[SE.scala 442:31]
         end
     `ifdef PRINTF_COND
       end
@@ -39803,8 +39710,8 @@ module SE(
     `ifdef PRINTF_COND
       if (`PRINTF_COND) begin
     `endif
-        if (_T_22 & _T_8) begin
-          $fwrite(32'h80000002,"%x",connected_reversed_plaintext_buffer_7); // @[SE.scala 405:31]
+        if (_T_32 & _T_8) begin
+          $fwrite(32'h80000002,"%x",connected_reversed_plaintext_buffer_7); // @[SE.scala 442:31]
         end
     `ifdef PRINTF_COND
       end
@@ -39814,8 +39721,8 @@ module SE(
     `ifdef PRINTF_COND
       if (`PRINTF_COND) begin
     `endif
-        if (_T_22 & _T_8) begin
-          $fwrite(32'h80000002,"%x",connected_reversed_plaintext_buffer_8); // @[SE.scala 405:31]
+        if (_T_32 & _T_8) begin
+          $fwrite(32'h80000002,"%x",connected_reversed_plaintext_buffer_8); // @[SE.scala 442:31]
         end
     `ifdef PRINTF_COND
       end
@@ -39825,8 +39732,8 @@ module SE(
     `ifdef PRINTF_COND
       if (`PRINTF_COND) begin
     `endif
-        if (_T_22 & _T_8) begin
-          $fwrite(32'h80000002,"%x",connected_reversed_plaintext_buffer_9); // @[SE.scala 405:31]
+        if (_T_32 & _T_8) begin
+          $fwrite(32'h80000002,"%x",connected_reversed_plaintext_buffer_9); // @[SE.scala 442:31]
         end
     `ifdef PRINTF_COND
       end
@@ -39836,8 +39743,8 @@ module SE(
     `ifdef PRINTF_COND
       if (`PRINTF_COND) begin
     `endif
-        if (_T_22 & _T_8) begin
-          $fwrite(32'h80000002,"%x",connected_reversed_plaintext_buffer_10); // @[SE.scala 405:31]
+        if (_T_32 & _T_8) begin
+          $fwrite(32'h80000002,"%x",connected_reversed_plaintext_buffer_10); // @[SE.scala 442:31]
         end
     `ifdef PRINTF_COND
       end
@@ -39847,8 +39754,8 @@ module SE(
     `ifdef PRINTF_COND
       if (`PRINTF_COND) begin
     `endif
-        if (_T_22 & _T_8) begin
-          $fwrite(32'h80000002,"%x",connected_reversed_plaintext_buffer_11); // @[SE.scala 405:31]
+        if (_T_32 & _T_8) begin
+          $fwrite(32'h80000002,"%x",connected_reversed_plaintext_buffer_11); // @[SE.scala 442:31]
         end
     `ifdef PRINTF_COND
       end
@@ -39858,8 +39765,8 @@ module SE(
     `ifdef PRINTF_COND
       if (`PRINTF_COND) begin
     `endif
-        if (_T_22 & _T_8) begin
-          $fwrite(32'h80000002,"%x",connected_reversed_plaintext_buffer_12); // @[SE.scala 405:31]
+        if (_T_32 & _T_8) begin
+          $fwrite(32'h80000002,"%x",connected_reversed_plaintext_buffer_12); // @[SE.scala 442:31]
         end
     `ifdef PRINTF_COND
       end
@@ -39869,8 +39776,8 @@ module SE(
     `ifdef PRINTF_COND
       if (`PRINTF_COND) begin
     `endif
-        if (_T_22 & _T_8) begin
-          $fwrite(32'h80000002,"%x",connected_reversed_plaintext_buffer_13); // @[SE.scala 405:31]
+        if (_T_32 & _T_8) begin
+          $fwrite(32'h80000002,"%x",connected_reversed_plaintext_buffer_13); // @[SE.scala 442:31]
         end
     `ifdef PRINTF_COND
       end
@@ -39880,8 +39787,8 @@ module SE(
     `ifdef PRINTF_COND
       if (`PRINTF_COND) begin
     `endif
-        if (_T_22 & _T_8) begin
-          $fwrite(32'h80000002,"%x",connected_reversed_plaintext_buffer_14); // @[SE.scala 405:31]
+        if (_T_32 & _T_8) begin
+          $fwrite(32'h80000002,"%x",connected_reversed_plaintext_buffer_14); // @[SE.scala 442:31]
         end
     `ifdef PRINTF_COND
       end
@@ -39891,8 +39798,8 @@ module SE(
     `ifdef PRINTF_COND
       if (`PRINTF_COND) begin
     `endif
-        if (_T_22 & _T_8) begin
-          $fwrite(32'h80000002,"%x",connected_reversed_plaintext_buffer_15); // @[SE.scala 405:31]
+        if (_T_32 & _T_8) begin
+          $fwrite(32'h80000002,"%x",connected_reversed_plaintext_buffer_15); // @[SE.scala 442:31]
         end
     `ifdef PRINTF_COND
       end
@@ -39902,8 +39809,8 @@ module SE(
     `ifdef PRINTF_COND
       if (`PRINTF_COND) begin
     `endif
-        if (_T_22 & _T_8) begin
-          $fwrite(32'h80000002,"\n"); // @[SE.scala 407:23]
+        if (_T_32 & _T_8) begin
+          $fwrite(32'h80000002,"\n"); // @[SE.scala 444:23]
         end
     `ifdef PRINTF_COND
       end
@@ -39913,8 +39820,8 @@ module SE(
     `ifdef PRINTF_COND
       if (`PRINTF_COND) begin
     `endif
-        if (_T_22 & _T_8) begin
-          $fwrite(32'h80000002,"\thash_C_original_buffer: %x\n",hash_C_original_buffer); // @[SE.scala 408:23]
+        if (_T_32 & _T_8) begin
+          $fwrite(32'h80000002,"\thash_C_original_buffer: %x\n",hash_C_original_buffer); // @[SE.scala 445:23]
         end
     `ifdef PRINTF_COND
       end
@@ -39924,8 +39831,8 @@ module SE(
     `ifdef PRINTF_COND
       if (`PRINTF_COND) begin
     `endif
-        if (_T_22 & _T_8) begin
-          $fwrite(32'h80000002,"\tdecrypted_op1_val_buffer: %x\n",decrypted_op1_val_buffer); // @[SE.scala 413:23]
+        if (_T_32 & _T_8) begin
+          $fwrite(32'h80000002,"\tdecrypted_op1_val_buffer: %x\n",decrypted_op1_val_buffer); // @[SE.scala 450:23]
         end
     `ifdef PRINTF_COND
       end
@@ -39935,8 +39842,8 @@ module SE(
     `ifdef PRINTF_COND
       if (`PRINTF_COND) begin
     `endif
-        if (_T_22 & _T_8) begin
-          $fwrite(32'h80000002,"\tdecrypted_op1_hash_buffer: "); // @[SE.scala 414:23]
+        if (_T_32 & _T_8) begin
+          $fwrite(32'h80000002,"\tdecrypted_op1_hash_buffer: "); // @[SE.scala 451:23]
         end
     `ifdef PRINTF_COND
       end
@@ -39946,8 +39853,8 @@ module SE(
     `ifdef PRINTF_COND
       if (`PRINTF_COND) begin
     `endif
-        if (_T_22 & _T_8) begin
-          $fwrite(32'h80000002,"%x",decrypted_op1_hash_buffer[0]); // @[SE.scala 416:31]
+        if (_T_32 & _T_8) begin
+          $fwrite(32'h80000002,"%x",decrypted_op1_hash_buffer[0]); // @[SE.scala 453:31]
         end
     `ifdef PRINTF_COND
       end
@@ -39957,8 +39864,8 @@ module SE(
     `ifdef PRINTF_COND
       if (`PRINTF_COND) begin
     `endif
-        if (_T_22 & _T_8) begin
-          $fwrite(32'h80000002,"%x",decrypted_op1_hash_buffer[1]); // @[SE.scala 416:31]
+        if (_T_32 & _T_8) begin
+          $fwrite(32'h80000002,"%x",decrypted_op1_hash_buffer[1]); // @[SE.scala 453:31]
         end
     `ifdef PRINTF_COND
       end
@@ -39968,8 +39875,8 @@ module SE(
     `ifdef PRINTF_COND
       if (`PRINTF_COND) begin
     `endif
-        if (_T_22 & _T_8) begin
-          $fwrite(32'h80000002,"%x",decrypted_op1_hash_buffer[2]); // @[SE.scala 416:31]
+        if (_T_32 & _T_8) begin
+          $fwrite(32'h80000002,"%x",decrypted_op1_hash_buffer[2]); // @[SE.scala 453:31]
         end
     `ifdef PRINTF_COND
       end
@@ -39979,8 +39886,8 @@ module SE(
     `ifdef PRINTF_COND
       if (`PRINTF_COND) begin
     `endif
-        if (_T_22 & _T_8) begin
-          $fwrite(32'h80000002,"%x",decrypted_op1_hash_buffer[3]); // @[SE.scala 416:31]
+        if (_T_32 & _T_8) begin
+          $fwrite(32'h80000002,"%x",decrypted_op1_hash_buffer[3]); // @[SE.scala 453:31]
         end
     `ifdef PRINTF_COND
       end
@@ -39990,8 +39897,8 @@ module SE(
     `ifdef PRINTF_COND
       if (`PRINTF_COND) begin
     `endif
-        if (_T_22 & _T_8) begin
-          $fwrite(32'h80000002,"%x",decrypted_op1_hash_buffer[4]); // @[SE.scala 416:31]
+        if (_T_32 & _T_8) begin
+          $fwrite(32'h80000002,"%x",decrypted_op1_hash_buffer[4]); // @[SE.scala 453:31]
         end
     `ifdef PRINTF_COND
       end
@@ -40001,8 +39908,8 @@ module SE(
     `ifdef PRINTF_COND
       if (`PRINTF_COND) begin
     `endif
-        if (_T_22 & _T_8) begin
-          $fwrite(32'h80000002,"%x",decrypted_op1_hash_buffer[5]); // @[SE.scala 416:31]
+        if (_T_32 & _T_8) begin
+          $fwrite(32'h80000002,"%x",decrypted_op1_hash_buffer[5]); // @[SE.scala 453:31]
         end
     `ifdef PRINTF_COND
       end
@@ -40012,8 +39919,8 @@ module SE(
     `ifdef PRINTF_COND
       if (`PRINTF_COND) begin
     `endif
-        if (_T_22 & _T_8) begin
-          $fwrite(32'h80000002,"%x",decrypted_op1_hash_buffer[6]); // @[SE.scala 416:31]
+        if (_T_32 & _T_8) begin
+          $fwrite(32'h80000002,"%x",decrypted_op1_hash_buffer[6]); // @[SE.scala 453:31]
         end
     `ifdef PRINTF_COND
       end
@@ -40023,8 +39930,8 @@ module SE(
     `ifdef PRINTF_COND
       if (`PRINTF_COND) begin
     `endif
-        if (_T_22 & _T_8) begin
-          $fwrite(32'h80000002,"%x",decrypted_op1_hash_buffer[7]); // @[SE.scala 416:31]
+        if (_T_32 & _T_8) begin
+          $fwrite(32'h80000002,"%x",decrypted_op1_hash_buffer[7]); // @[SE.scala 453:31]
         end
     `ifdef PRINTF_COND
       end
@@ -40034,8 +39941,8 @@ module SE(
     `ifdef PRINTF_COND
       if (`PRINTF_COND) begin
     `endif
-        if (_T_22 & _T_8) begin
-          $fwrite(32'h80000002,"%x",decrypted_op1_hash_buffer[8]); // @[SE.scala 416:31]
+        if (_T_32 & _T_8) begin
+          $fwrite(32'h80000002,"%x",decrypted_op1_hash_buffer[8]); // @[SE.scala 453:31]
         end
     `ifdef PRINTF_COND
       end
@@ -40045,8 +39952,8 @@ module SE(
     `ifdef PRINTF_COND
       if (`PRINTF_COND) begin
     `endif
-        if (_T_22 & _T_8) begin
-          $fwrite(32'h80000002,"%x",decrypted_op1_hash_buffer[9]); // @[SE.scala 416:31]
+        if (_T_32 & _T_8) begin
+          $fwrite(32'h80000002,"%x",decrypted_op1_hash_buffer[9]); // @[SE.scala 453:31]
         end
     `ifdef PRINTF_COND
       end
@@ -40056,8 +39963,8 @@ module SE(
     `ifdef PRINTF_COND
       if (`PRINTF_COND) begin
     `endif
-        if (_T_22 & _T_8) begin
-          $fwrite(32'h80000002,"%x",decrypted_op1_hash_buffer[10]); // @[SE.scala 416:31]
+        if (_T_32 & _T_8) begin
+          $fwrite(32'h80000002,"%x",decrypted_op1_hash_buffer[10]); // @[SE.scala 453:31]
         end
     `ifdef PRINTF_COND
       end
@@ -40067,8 +39974,8 @@ module SE(
     `ifdef PRINTF_COND
       if (`PRINTF_COND) begin
     `endif
-        if (_T_22 & _T_8) begin
-          $fwrite(32'h80000002,"%x",decrypted_op1_hash_buffer[11]); // @[SE.scala 416:31]
+        if (_T_32 & _T_8) begin
+          $fwrite(32'h80000002,"%x",decrypted_op1_hash_buffer[11]); // @[SE.scala 453:31]
         end
     `ifdef PRINTF_COND
       end
@@ -40078,8 +39985,8 @@ module SE(
     `ifdef PRINTF_COND
       if (`PRINTF_COND) begin
     `endif
-        if (_T_22 & _T_8) begin
-          $fwrite(32'h80000002,"%x",decrypted_op1_hash_buffer[12]); // @[SE.scala 416:31]
+        if (_T_32 & _T_8) begin
+          $fwrite(32'h80000002,"%x",decrypted_op1_hash_buffer[12]); // @[SE.scala 453:31]
         end
     `ifdef PRINTF_COND
       end
@@ -40089,8 +39996,8 @@ module SE(
     `ifdef PRINTF_COND
       if (`PRINTF_COND) begin
     `endif
-        if (_T_22 & _T_8) begin
-          $fwrite(32'h80000002,"%x",decrypted_op1_hash_buffer[13]); // @[SE.scala 416:31]
+        if (_T_32 & _T_8) begin
+          $fwrite(32'h80000002,"%x",decrypted_op1_hash_buffer[13]); // @[SE.scala 453:31]
         end
     `ifdef PRINTF_COND
       end
@@ -40100,8 +40007,8 @@ module SE(
     `ifdef PRINTF_COND
       if (`PRINTF_COND) begin
     `endif
-        if (_T_22 & _T_8) begin
-          $fwrite(32'h80000002,"%x",decrypted_op1_hash_buffer[14]); // @[SE.scala 416:31]
+        if (_T_32 & _T_8) begin
+          $fwrite(32'h80000002,"%x",decrypted_op1_hash_buffer[14]); // @[SE.scala 453:31]
         end
     `ifdef PRINTF_COND
       end
@@ -40111,8 +40018,8 @@ module SE(
     `ifdef PRINTF_COND
       if (`PRINTF_COND) begin
     `endif
-        if (_T_22 & _T_8) begin
-          $fwrite(32'h80000002,"%x",decrypted_op1_hash_buffer[15]); // @[SE.scala 416:31]
+        if (_T_32 & _T_8) begin
+          $fwrite(32'h80000002,"%x",decrypted_op1_hash_buffer[15]); // @[SE.scala 453:31]
         end
     `ifdef PRINTF_COND
       end
@@ -40122,8 +40029,8 @@ module SE(
     `ifdef PRINTF_COND
       if (`PRINTF_COND) begin
     `endif
-        if (_T_22 & _T_8) begin
-          $fwrite(32'h80000002,"\n"); // @[SE.scala 418:23]
+        if (_T_32 & _T_8) begin
+          $fwrite(32'h80000002,"\n"); // @[SE.scala 455:23]
         end
     `ifdef PRINTF_COND
       end
@@ -40133,8 +40040,8 @@ module SE(
     `ifdef PRINTF_COND
       if (`PRINTF_COND) begin
     `endif
-        if (_T_22 & _T_8) begin
-          $fwrite(32'h80000002,"\tdecrypted_op2_val_buffer: "); // @[SE.scala 419:23]
+        if (_T_32 & _T_8) begin
+          $fwrite(32'h80000002,"\tdecrypted_op2_val_buffer: "); // @[SE.scala 456:23]
         end
     `ifdef PRINTF_COND
       end
@@ -40144,8 +40051,8 @@ module SE(
     `ifdef PRINTF_COND
       if (`PRINTF_COND) begin
     `endif
-        if (_T_22 & _T_8) begin
-          $fwrite(32'h80000002,"%x",decrypted_op2_val_buffer[0]); // @[SE.scala 421:31]
+        if (_T_32 & _T_8) begin
+          $fwrite(32'h80000002,"%x",decrypted_op2_val_buffer[0]); // @[SE.scala 458:31]
         end
     `ifdef PRINTF_COND
       end
@@ -40155,8 +40062,8 @@ module SE(
     `ifdef PRINTF_COND
       if (`PRINTF_COND) begin
     `endif
-        if (_T_22 & _T_8) begin
-          $fwrite(32'h80000002,"%x",decrypted_op2_val_buffer[1]); // @[SE.scala 421:31]
+        if (_T_32 & _T_8) begin
+          $fwrite(32'h80000002,"%x",decrypted_op2_val_buffer[1]); // @[SE.scala 458:31]
         end
     `ifdef PRINTF_COND
       end
@@ -40166,8 +40073,8 @@ module SE(
     `ifdef PRINTF_COND
       if (`PRINTF_COND) begin
     `endif
-        if (_T_22 & _T_8) begin
-          $fwrite(32'h80000002,"%x",decrypted_op2_val_buffer[2]); // @[SE.scala 421:31]
+        if (_T_32 & _T_8) begin
+          $fwrite(32'h80000002,"%x",decrypted_op2_val_buffer[2]); // @[SE.scala 458:31]
         end
     `ifdef PRINTF_COND
       end
@@ -40177,8 +40084,8 @@ module SE(
     `ifdef PRINTF_COND
       if (`PRINTF_COND) begin
     `endif
-        if (_T_22 & _T_8) begin
-          $fwrite(32'h80000002,"%x",decrypted_op2_val_buffer[3]); // @[SE.scala 421:31]
+        if (_T_32 & _T_8) begin
+          $fwrite(32'h80000002,"%x",decrypted_op2_val_buffer[3]); // @[SE.scala 458:31]
         end
     `ifdef PRINTF_COND
       end
@@ -40188,8 +40095,8 @@ module SE(
     `ifdef PRINTF_COND
       if (`PRINTF_COND) begin
     `endif
-        if (_T_22 & _T_8) begin
-          $fwrite(32'h80000002,"%x",decrypted_op2_val_buffer[4]); // @[SE.scala 421:31]
+        if (_T_32 & _T_8) begin
+          $fwrite(32'h80000002,"%x",decrypted_op2_val_buffer[4]); // @[SE.scala 458:31]
         end
     `ifdef PRINTF_COND
       end
@@ -40199,8 +40106,8 @@ module SE(
     `ifdef PRINTF_COND
       if (`PRINTF_COND) begin
     `endif
-        if (_T_22 & _T_8) begin
-          $fwrite(32'h80000002,"%x",decrypted_op2_val_buffer[5]); // @[SE.scala 421:31]
+        if (_T_32 & _T_8) begin
+          $fwrite(32'h80000002,"%x",decrypted_op2_val_buffer[5]); // @[SE.scala 458:31]
         end
     `ifdef PRINTF_COND
       end
@@ -40210,8 +40117,8 @@ module SE(
     `ifdef PRINTF_COND
       if (`PRINTF_COND) begin
     `endif
-        if (_T_22 & _T_8) begin
-          $fwrite(32'h80000002,"%x",decrypted_op2_val_buffer[6]); // @[SE.scala 421:31]
+        if (_T_32 & _T_8) begin
+          $fwrite(32'h80000002,"%x",decrypted_op2_val_buffer[6]); // @[SE.scala 458:31]
         end
     `ifdef PRINTF_COND
       end
@@ -40221,8 +40128,8 @@ module SE(
     `ifdef PRINTF_COND
       if (`PRINTF_COND) begin
     `endif
-        if (_T_22 & _T_8) begin
-          $fwrite(32'h80000002,"%x",decrypted_op2_val_buffer[7]); // @[SE.scala 421:31]
+        if (_T_32 & _T_8) begin
+          $fwrite(32'h80000002,"%x",decrypted_op2_val_buffer[7]); // @[SE.scala 458:31]
         end
     `ifdef PRINTF_COND
       end
@@ -40232,8 +40139,8 @@ module SE(
     `ifdef PRINTF_COND
       if (`PRINTF_COND) begin
     `endif
-        if (_T_22 & _T_8) begin
-          $fwrite(32'h80000002,"%x",decrypted_op2_val_buffer[8]); // @[SE.scala 421:31]
+        if (_T_32 & _T_8) begin
+          $fwrite(32'h80000002,"%x",decrypted_op2_val_buffer[8]); // @[SE.scala 458:31]
         end
     `ifdef PRINTF_COND
       end
@@ -40243,8 +40150,8 @@ module SE(
     `ifdef PRINTF_COND
       if (`PRINTF_COND) begin
     `endif
-        if (_T_22 & _T_8) begin
-          $fwrite(32'h80000002,"%x",decrypted_op2_val_buffer[9]); // @[SE.scala 421:31]
+        if (_T_32 & _T_8) begin
+          $fwrite(32'h80000002,"%x",decrypted_op2_val_buffer[9]); // @[SE.scala 458:31]
         end
     `ifdef PRINTF_COND
       end
@@ -40254,8 +40161,8 @@ module SE(
     `ifdef PRINTF_COND
       if (`PRINTF_COND) begin
     `endif
-        if (_T_22 & _T_8) begin
-          $fwrite(32'h80000002,"%x",decrypted_op2_val_buffer[10]); // @[SE.scala 421:31]
+        if (_T_32 & _T_8) begin
+          $fwrite(32'h80000002,"%x",decrypted_op2_val_buffer[10]); // @[SE.scala 458:31]
         end
     `ifdef PRINTF_COND
       end
@@ -40265,8 +40172,8 @@ module SE(
     `ifdef PRINTF_COND
       if (`PRINTF_COND) begin
     `endif
-        if (_T_22 & _T_8) begin
-          $fwrite(32'h80000002,"%x",decrypted_op2_val_buffer[11]); // @[SE.scala 421:31]
+        if (_T_32 & _T_8) begin
+          $fwrite(32'h80000002,"%x",decrypted_op2_val_buffer[11]); // @[SE.scala 458:31]
         end
     `ifdef PRINTF_COND
       end
@@ -40276,8 +40183,8 @@ module SE(
     `ifdef PRINTF_COND
       if (`PRINTF_COND) begin
     `endif
-        if (_T_22 & _T_8) begin
-          $fwrite(32'h80000002,"%x",decrypted_op2_val_buffer[12]); // @[SE.scala 421:31]
+        if (_T_32 & _T_8) begin
+          $fwrite(32'h80000002,"%x",decrypted_op2_val_buffer[12]); // @[SE.scala 458:31]
         end
     `ifdef PRINTF_COND
       end
@@ -40287,8 +40194,8 @@ module SE(
     `ifdef PRINTF_COND
       if (`PRINTF_COND) begin
     `endif
-        if (_T_22 & _T_8) begin
-          $fwrite(32'h80000002,"%x",decrypted_op2_val_buffer[13]); // @[SE.scala 421:31]
+        if (_T_32 & _T_8) begin
+          $fwrite(32'h80000002,"%x",decrypted_op2_val_buffer[13]); // @[SE.scala 458:31]
         end
     `ifdef PRINTF_COND
       end
@@ -40298,8 +40205,8 @@ module SE(
     `ifdef PRINTF_COND
       if (`PRINTF_COND) begin
     `endif
-        if (_T_22 & _T_8) begin
-          $fwrite(32'h80000002,"%x",decrypted_op2_val_buffer[14]); // @[SE.scala 421:31]
+        if (_T_32 & _T_8) begin
+          $fwrite(32'h80000002,"%x",decrypted_op2_val_buffer[14]); // @[SE.scala 458:31]
         end
     `ifdef PRINTF_COND
       end
@@ -40309,8 +40216,8 @@ module SE(
     `ifdef PRINTF_COND
       if (`PRINTF_COND) begin
     `endif
-        if (_T_22 & _T_8) begin
-          $fwrite(32'h80000002,"%x",decrypted_op2_val_buffer[15]); // @[SE.scala 421:31]
+        if (_T_32 & _T_8) begin
+          $fwrite(32'h80000002,"%x",decrypted_op2_val_buffer[15]); // @[SE.scala 458:31]
         end
     `ifdef PRINTF_COND
       end
@@ -40320,8 +40227,8 @@ module SE(
     `ifdef PRINTF_COND
       if (`PRINTF_COND) begin
     `endif
-        if (_T_22 & _T_8) begin
-          $fwrite(32'h80000002,"\n"); // @[SE.scala 423:23]
+        if (_T_32 & _T_8) begin
+          $fwrite(32'h80000002,"\n"); // @[SE.scala 460:23]
         end
     `ifdef PRINTF_COND
       end
@@ -40331,8 +40238,8 @@ module SE(
     `ifdef PRINTF_COND
       if (`PRINTF_COND) begin
     `endif
-        if (_T_22 & _T_8) begin
-          $fwrite(32'h80000002,"\tdecrypted_op2_hash_buffer: "); // @[SE.scala 424:23]
+        if (_T_32 & _T_8) begin
+          $fwrite(32'h80000002,"\tdecrypted_op2_hash_buffer: "); // @[SE.scala 461:23]
         end
     `ifdef PRINTF_COND
       end
@@ -40342,8 +40249,8 @@ module SE(
     `ifdef PRINTF_COND
       if (`PRINTF_COND) begin
     `endif
-        if (_T_22 & _T_8) begin
-          $fwrite(32'h80000002,"%x",decrypted_op2_hash_buffer[0]); // @[SE.scala 426:31]
+        if (_T_32 & _T_8) begin
+          $fwrite(32'h80000002,"%x",decrypted_op2_hash_buffer[0]); // @[SE.scala 463:31]
         end
     `ifdef PRINTF_COND
       end
@@ -40353,8 +40260,8 @@ module SE(
     `ifdef PRINTF_COND
       if (`PRINTF_COND) begin
     `endif
-        if (_T_22 & _T_8) begin
-          $fwrite(32'h80000002,"%x",decrypted_op2_hash_buffer[1]); // @[SE.scala 426:31]
+        if (_T_32 & _T_8) begin
+          $fwrite(32'h80000002,"%x",decrypted_op2_hash_buffer[1]); // @[SE.scala 463:31]
         end
     `ifdef PRINTF_COND
       end
@@ -40364,8 +40271,8 @@ module SE(
     `ifdef PRINTF_COND
       if (`PRINTF_COND) begin
     `endif
-        if (_T_22 & _T_8) begin
-          $fwrite(32'h80000002,"%x",decrypted_op2_hash_buffer[2]); // @[SE.scala 426:31]
+        if (_T_32 & _T_8) begin
+          $fwrite(32'h80000002,"%x",decrypted_op2_hash_buffer[2]); // @[SE.scala 463:31]
         end
     `ifdef PRINTF_COND
       end
@@ -40375,8 +40282,8 @@ module SE(
     `ifdef PRINTF_COND
       if (`PRINTF_COND) begin
     `endif
-        if (_T_22 & _T_8) begin
-          $fwrite(32'h80000002,"%x",decrypted_op2_hash_buffer[3]); // @[SE.scala 426:31]
+        if (_T_32 & _T_8) begin
+          $fwrite(32'h80000002,"%x",decrypted_op2_hash_buffer[3]); // @[SE.scala 463:31]
         end
     `ifdef PRINTF_COND
       end
@@ -40386,8 +40293,8 @@ module SE(
     `ifdef PRINTF_COND
       if (`PRINTF_COND) begin
     `endif
-        if (_T_22 & _T_8) begin
-          $fwrite(32'h80000002,"%x",decrypted_op2_hash_buffer[4]); // @[SE.scala 426:31]
+        if (_T_32 & _T_8) begin
+          $fwrite(32'h80000002,"%x",decrypted_op2_hash_buffer[4]); // @[SE.scala 463:31]
         end
     `ifdef PRINTF_COND
       end
@@ -40397,8 +40304,8 @@ module SE(
     `ifdef PRINTF_COND
       if (`PRINTF_COND) begin
     `endif
-        if (_T_22 & _T_8) begin
-          $fwrite(32'h80000002,"%x",decrypted_op2_hash_buffer[5]); // @[SE.scala 426:31]
+        if (_T_32 & _T_8) begin
+          $fwrite(32'h80000002,"%x",decrypted_op2_hash_buffer[5]); // @[SE.scala 463:31]
         end
     `ifdef PRINTF_COND
       end
@@ -40408,8 +40315,8 @@ module SE(
     `ifdef PRINTF_COND
       if (`PRINTF_COND) begin
     `endif
-        if (_T_22 & _T_8) begin
-          $fwrite(32'h80000002,"%x",decrypted_op2_hash_buffer[6]); // @[SE.scala 426:31]
+        if (_T_32 & _T_8) begin
+          $fwrite(32'h80000002,"%x",decrypted_op2_hash_buffer[6]); // @[SE.scala 463:31]
         end
     `ifdef PRINTF_COND
       end
@@ -40419,8 +40326,8 @@ module SE(
     `ifdef PRINTF_COND
       if (`PRINTF_COND) begin
     `endif
-        if (_T_22 & _T_8) begin
-          $fwrite(32'h80000002,"%x",decrypted_op2_hash_buffer[7]); // @[SE.scala 426:31]
+        if (_T_32 & _T_8) begin
+          $fwrite(32'h80000002,"%x",decrypted_op2_hash_buffer[7]); // @[SE.scala 463:31]
         end
     `ifdef PRINTF_COND
       end
@@ -40430,8 +40337,8 @@ module SE(
     `ifdef PRINTF_COND
       if (`PRINTF_COND) begin
     `endif
-        if (_T_22 & _T_8) begin
-          $fwrite(32'h80000002,"%x",decrypted_op2_hash_buffer[8]); // @[SE.scala 426:31]
+        if (_T_32 & _T_8) begin
+          $fwrite(32'h80000002,"%x",decrypted_op2_hash_buffer[8]); // @[SE.scala 463:31]
         end
     `ifdef PRINTF_COND
       end
@@ -40441,8 +40348,8 @@ module SE(
     `ifdef PRINTF_COND
       if (`PRINTF_COND) begin
     `endif
-        if (_T_22 & _T_8) begin
-          $fwrite(32'h80000002,"%x",decrypted_op2_hash_buffer[9]); // @[SE.scala 426:31]
+        if (_T_32 & _T_8) begin
+          $fwrite(32'h80000002,"%x",decrypted_op2_hash_buffer[9]); // @[SE.scala 463:31]
         end
     `ifdef PRINTF_COND
       end
@@ -40452,8 +40359,8 @@ module SE(
     `ifdef PRINTF_COND
       if (`PRINTF_COND) begin
     `endif
-        if (_T_22 & _T_8) begin
-          $fwrite(32'h80000002,"%x",decrypted_op2_hash_buffer[10]); // @[SE.scala 426:31]
+        if (_T_32 & _T_8) begin
+          $fwrite(32'h80000002,"%x",decrypted_op2_hash_buffer[10]); // @[SE.scala 463:31]
         end
     `ifdef PRINTF_COND
       end
@@ -40463,8 +40370,8 @@ module SE(
     `ifdef PRINTF_COND
       if (`PRINTF_COND) begin
     `endif
-        if (_T_22 & _T_8) begin
-          $fwrite(32'h80000002,"%x",decrypted_op2_hash_buffer[11]); // @[SE.scala 426:31]
+        if (_T_32 & _T_8) begin
+          $fwrite(32'h80000002,"%x",decrypted_op2_hash_buffer[11]); // @[SE.scala 463:31]
         end
     `ifdef PRINTF_COND
       end
@@ -40474,8 +40381,8 @@ module SE(
     `ifdef PRINTF_COND
       if (`PRINTF_COND) begin
     `endif
-        if (_T_22 & _T_8) begin
-          $fwrite(32'h80000002,"%x",decrypted_op2_hash_buffer[12]); // @[SE.scala 426:31]
+        if (_T_32 & _T_8) begin
+          $fwrite(32'h80000002,"%x",decrypted_op2_hash_buffer[12]); // @[SE.scala 463:31]
         end
     `ifdef PRINTF_COND
       end
@@ -40485,8 +40392,8 @@ module SE(
     `ifdef PRINTF_COND
       if (`PRINTF_COND) begin
     `endif
-        if (_T_22 & _T_8) begin
-          $fwrite(32'h80000002,"%x",decrypted_op2_hash_buffer[13]); // @[SE.scala 426:31]
+        if (_T_32 & _T_8) begin
+          $fwrite(32'h80000002,"%x",decrypted_op2_hash_buffer[13]); // @[SE.scala 463:31]
         end
     `ifdef PRINTF_COND
       end
@@ -40496,8 +40403,8 @@ module SE(
     `ifdef PRINTF_COND
       if (`PRINTF_COND) begin
     `endif
-        if (_T_22 & _T_8) begin
-          $fwrite(32'h80000002,"%x",decrypted_op2_hash_buffer[14]); // @[SE.scala 426:31]
+        if (_T_32 & _T_8) begin
+          $fwrite(32'h80000002,"%x",decrypted_op2_hash_buffer[14]); // @[SE.scala 463:31]
         end
     `ifdef PRINTF_COND
       end
@@ -40507,8 +40414,8 @@ module SE(
     `ifdef PRINTF_COND
       if (`PRINTF_COND) begin
     `endif
-        if (_T_22 & _T_8) begin
-          $fwrite(32'h80000002,"%x",decrypted_op2_hash_buffer[15]); // @[SE.scala 426:31]
+        if (_T_32 & _T_8) begin
+          $fwrite(32'h80000002,"%x",decrypted_op2_hash_buffer[15]); // @[SE.scala 463:31]
         end
     `ifdef PRINTF_COND
       end
@@ -40518,8 +40425,8 @@ module SE(
     `ifdef PRINTF_COND
       if (`PRINTF_COND) begin
     `endif
-        if (_T_22 & _T_8) begin
-          $fwrite(32'h80000002,"\n"); // @[SE.scala 428:23]
+        if (_T_32 & _T_8) begin
+          $fwrite(32'h80000002,"\n"); // @[SE.scala 465:23]
         end
     `ifdef PRINTF_COND
       end
@@ -40529,8 +40436,8 @@ module SE(
     `ifdef PRINTF_COND
       if (`PRINTF_COND) begin
     `endif
-        if (_T_22 & _T_8) begin
-          $fwrite(32'h80000002,"\tlv2ok_buffer: %x\n",lv2ok_buffer); // @[SE.scala 429:23]
+        if (_T_32 & _T_8) begin
+          $fwrite(32'h80000002,"\tlv2ok_buffer: %x\n",lv2ok_buffer); // @[SE.scala 466:23]
         end
     `ifdef PRINTF_COND
       end
@@ -40541,7 +40448,7 @@ module SE(
       if (`PRINTF_COND) begin
     `endif
         if (_T_8) begin
-          $fwrite(32'h80000002,"[Stage: Level_2 Buffer -> Level_3 Buffer]\n"); // @[SE.scala 433:15]
+          $fwrite(32'h80000002,"[Stage: Level_2 Buffer -> Level_3 Buffer]\n"); // @[SE.scala 470:15]
         end
     `ifdef PRINTF_COND
       end
@@ -40551,9 +40458,9 @@ module SE(
     `ifdef PRINTF_COND
       if (`PRINTF_COND) begin
     `endif
-        if (_T_224 & _T_8) begin
+        if (lv3ok_buffer & _T_8) begin
           $fwrite(32'h80000002,"\tresult_buffer: %x %x (<- RdNum, ignore) %x\n",result_buffer[255:192],result_buffer[191
-            :128],result_buffer[127:0]); // @[SE.scala 534:23]
+            :128],result_buffer[127:0]); // @[SE.scala 566:23]
         end
     `ifdef PRINTF_COND
       end
@@ -40563,8 +40470,8 @@ module SE(
     `ifdef PRINTF_COND
       if (`PRINTF_COND) begin
     `endif
-        if (_T_224 & _T_8) begin
-          $fwrite(32'h80000002,"\thash_C_buffer: %x\n",hash_C_buffer); // @[SE.scala 535:23]
+        if (lv3ok_buffer & _T_8) begin
+          $fwrite(32'h80000002,"\thash_C_buffer: %x\n",hash_C_buffer); // @[SE.scala 567:23]
         end
     `ifdef PRINTF_COND
       end
@@ -40574,8 +40481,8 @@ module SE(
     `ifdef PRINTF_COND
       if (`PRINTF_COND) begin
     `endif
-        if (_T_224 & _T_8) begin
-          $fwrite(32'h80000002,"\top1_bit: %x\n",decrypted_op1_val_buffer); // @[SE.scala 536:23]
+        if (lv3ok_buffer & _T_8) begin
+          $fwrite(32'h80000002,"\top1_bit: %x\n",decrypted_op1_val_buffer); // @[SE.scala 568:23]
         end
     `ifdef PRINTF_COND
       end
@@ -40585,8 +40492,8 @@ module SE(
     `ifdef PRINTF_COND
       if (`PRINTF_COND) begin
     `endif
-        if (_T_224 & _T_8) begin
-          $fwrite(32'h80000002,"\top2_bit: %x\n",decrypted_op2_val_buffer); // @[SE.scala 537:23]
+        if (lv3ok_buffer & _T_8) begin
+          $fwrite(32'h80000002,"\top2_bit: %x\n",decrypted_op2_val_buffer); // @[SE.scala 569:23]
         end
     `ifdef PRINTF_COND
       end
@@ -40596,8 +40503,8 @@ module SE(
     `ifdef PRINTF_COND
       if (`PRINTF_COND) begin
     `endif
-        if (_T_224 & _T_8) begin
-          $fwrite(32'h80000002,"\tseoperation.io.op1_input: %x\n",seoperation_io_op1_input); // @[SE.scala 538:23]
+        if (lv3ok_buffer & _T_8) begin
+          $fwrite(32'h80000002,"\tseoperation.io.op1_input: %x\n",seoperation_io_op1_input); // @[SE.scala 570:23]
         end
     `ifdef PRINTF_COND
       end
@@ -40607,8 +40514,8 @@ module SE(
     `ifdef PRINTF_COND
       if (`PRINTF_COND) begin
     `endif
-        if (_T_224 & _T_8) begin
-          $fwrite(32'h80000002,"\tseoperation.io.op2_input: %x\n",seoperation_io_op2_input); // @[SE.scala 539:23]
+        if (lv3ok_buffer & _T_8) begin
+          $fwrite(32'h80000002,"\tseoperation.io.op2_input: %x\n",seoperation_io_op2_input); // @[SE.scala 571:23]
         end
     `ifdef PRINTF_COND
       end
@@ -40618,8 +40525,8 @@ module SE(
     `ifdef PRINTF_COND
       if (`PRINTF_COND) begin
     `endif
-        if (_T_224 & _T_8) begin
-          $fwrite(32'h80000002,"\tSE Computation Result: %x\n",seoperation_io_result); // @[SE.scala 540:23]
+        if (lv3ok_buffer & _T_8) begin
+          $fwrite(32'h80000002,"\tSE Computation Result: %x\n",seoperation_io_result); // @[SE.scala 572:23]
         end
     `ifdef PRINTF_COND
       end
@@ -40629,8 +40536,8 @@ module SE(
     `ifdef PRINTF_COND
       if (`PRINTF_COND) begin
     `endif
-        if (_T_224 & _T_8) begin
-          $fwrite(32'h80000002,"\tRdNum: %x\n",bit46_randnum); // @[SE.scala 541:23]
+        if (lv3ok_buffer & _T_8) begin
+          $fwrite(32'h80000002,"\tRdNum: %x\n",bit46_randnum); // @[SE.scala 573:23]
         end
     `ifdef PRINTF_COND
       end
@@ -40640,8 +40547,8 @@ module SE(
     `ifdef PRINTF_COND
       if (`PRINTF_COND) begin
     `endif
-        if (_T_224 & _T_8) begin
-          $fwrite(32'h80000002,"\top1_rehash_result_buffer: %x\n",op1_rehash_result_bit); // @[SE.scala 542:23]
+        if (lv3ok_buffer & _T_8) begin
+          $fwrite(32'h80000002,"\top1_rehash_result_buffer: %x\n",op1_rehash_result_bit); // @[SE.scala 574:23]
         end
     `ifdef PRINTF_COND
       end
@@ -40651,8 +40558,8 @@ module SE(
     `ifdef PRINTF_COND
       if (`PRINTF_COND) begin
     `endif
-        if (_T_224 & _T_8) begin
-          $fwrite(32'h80000002,"\top2_rehash_result_buffer: %x\n",op2_rehash_result_bit); // @[SE.scala 543:23]
+        if (lv3ok_buffer & _T_8) begin
+          $fwrite(32'h80000002,"\top2_rehash_result_buffer: %x\n",op2_rehash_result_bit); // @[SE.scala 575:23]
         end
     `ifdef PRINTF_COND
       end
@@ -40662,8 +40569,8 @@ module SE(
     `ifdef PRINTF_COND
       if (`PRINTF_COND) begin
     `endif
-        if (_T_224 & _T_8) begin
-          $fwrite(32'h80000002,"\tlv3ok_buffer: %x\n",lv3ok_buffer); // @[SE.scala 544:23]
+        if (lv3ok_buffer & _T_8) begin
+          $fwrite(32'h80000002,"\tlv3ok_buffer: %x\n",lv3ok_buffer); // @[SE.scala 576:23]
         end
     `ifdef PRINTF_COND
       end
@@ -40674,84 +40581,7 @@ module SE(
       if (`PRINTF_COND) begin
     `endif
         if (_T_8) begin
-          $fwrite(32'h80000002,"[Stage: Level_3 Buffer -> Level_4 Buffer]\n"); // @[SE.scala 548:15]
-        end
-    `ifdef PRINTF_COND
-      end
-    `endif
-    `endif // SYNTHESIS
-    `ifndef SYNTHESIS
-    `ifdef PRINTF_COND
-      if (`PRINTF_COND) begin
-    `endif
-        if (lv4ok_buffer & _T_8) begin
-          $fwrite(32'h80000002,"\taes_input_reverse_bit: %x\n",aes_input_reverse_bit); // @[SE.scala 641:23]
-        end
-    `ifdef PRINTF_COND
-      end
-    `endif
-    `endif // SYNTHESIS
-    `ifndef SYNTHESIS
-    `ifdef PRINTF_COND
-      if (`PRINTF_COND) begin
-    `endif
-        if (lv4ok_buffer & _T_8) begin
-          $fwrite(32'h80000002,"\tcompare_hash_total: %x\n",compare_hash_total); // @[SE.scala 646:23]
-        end
-    `ifdef PRINTF_COND
-      end
-    `endif
-    `endif // SYNTHESIS
-    `ifndef SYNTHESIS
-    `ifdef PRINTF_COND
-      if (`PRINTF_COND) begin
-    `endif
-        if (lv4ok_buffer & _T_8) begin
-          $fwrite(32'h80000002,"\toutput_connect: %x\n",output_connect); // @[SE.scala 647:23]
-        end
-    `ifdef PRINTF_COND
-      end
-    `endif
-    `endif // SYNTHESIS
-    `ifndef SYNTHESIS
-    `ifdef PRINTF_COND
-      if (`PRINTF_COND) begin
-    `endif
-        if (lv4ok_buffer & _T_8) begin
-          $fwrite(32'h80000002,"\toutput_buffer: %x\n",output_buffer); // @[SE.scala 648:23]
-        end
-    `ifdef PRINTF_COND
-      end
-    `endif
-    `endif // SYNTHESIS
-    `ifndef SYNTHESIS
-    `ifdef PRINTF_COND
-      if (`PRINTF_COND) begin
-    `endif
-        if (lv4ok_buffer & _T_8) begin
-          $fwrite(32'h80000002,"\thash_compare_result_op1: %x\n",hash_compare_result_op1); // @[SE.scala 649:23]
-        end
-    `ifdef PRINTF_COND
-      end
-    `endif
-    `endif // SYNTHESIS
-    `ifndef SYNTHESIS
-    `ifdef PRINTF_COND
-      if (`PRINTF_COND) begin
-    `endif
-        if (lv4ok_buffer & _T_8) begin
-          $fwrite(32'h80000002,"\thash_compare_result_op2: %x\n",hash_compare_result_op2); // @[SE.scala 650:23]
-        end
-    `ifdef PRINTF_COND
-      end
-    `endif
-    `endif // SYNTHESIS
-    `ifndef SYNTHESIS
-    `ifdef PRINTF_COND
-      if (`PRINTF_COND) begin
-    `endif
-        if (lv4ok_buffer & _T_8) begin
-          $fwrite(32'h80000002,"\tlv4ok_buffer: %x\n",lv4ok_buffer); // @[SE.scala 651:23]
+          $fwrite(32'h80000002,"[Stage: Level_3 Buffer -> Level_4 Buffer]\n"); // @[SE.scala 580:15]
         end
     `ifdef PRINTF_COND
       end
@@ -40808,24 +40638,24 @@ initial begin
   lv2ok_buffer = _RAND_5[0:0];
   _RAND_6 = {1{`RANDOM}};
   lv3ok_buffer = _RAND_6[0:0];
-  _RAND_7 = {1{`RANDOM}};
-  lv4ok_buffer = _RAND_7[0:0];
-  _RAND_8 = {2{`RANDOM}};
-  pub_var_hash_register = _RAND_8[63:0];
+  _RAND_7 = {2{`RANDOM}};
+  pub_var_hash_register = _RAND_7[63:0];
+  _RAND_8 = {1{`RANDOM}};
+  ready_for_input_REG = _RAND_8[0:0];
   _RAND_9 = {1{`RANDOM}};
-  output_valid = _RAND_9[0:0];
+  dec1_idle = _RAND_9[0:0];
   _RAND_10 = {1{`RANDOM}};
-  ready_for_input_REG = _RAND_10[0:0];
+  dec2_idle = _RAND_10[0:0];
   _RAND_11 = {1{`RANDOM}};
-  lv1ok_buffer_REG = _RAND_11[0:0];
+  hashC_idle = _RAND_11[0:0];
   _RAND_12 = {1{`RANDOM}};
-  lv2_AES_valid = _RAND_12[0:0];
+  lv1ok_buffer_REG = _RAND_12[0:0];
   _RAND_13 = {1{`RANDOM}};
-  tmp_1 = _RAND_13[0:0];
+  Hash1_idle = _RAND_13[0:0];
   _RAND_14 = {1{`RANDOM}};
-  lv2_AES_valid_REG = _RAND_14[0:0];
+  Hash2_idle = _RAND_14[0:0];
   _RAND_15 = {1{`RANDOM}};
-  tmp_1_REG = _RAND_15[0:0];
+  enc_idle = _RAND_15[0:0];
   _RAND_16 = {10{`RANDOM}};
   lv2_op1_buffer = _RAND_16[315:0];
   _RAND_17 = {10{`RANDOM}};
@@ -40843,83 +40673,49 @@ initial begin
   _RAND_23 = {4{`RANDOM}};
   decrypted_op2_hash_buffer = _RAND_23[127:0];
   _RAND_24 = {1{`RANDOM}};
-  lv3_AES_valid = _RAND_24[0:0];
+  hash_C_original_buffer_valid_REG = _RAND_24[0:0];
   _RAND_25 = {1{`RANDOM}};
-  tmp_2 = _RAND_25[0:0];
+  lv2ok_buffer_REG = _RAND_25[0:0];
   _RAND_26 = {1{`RANDOM}};
-  hash_C_original_buffer_valid_REG = _RAND_26[0:0];
+  opA_lv3_auth_bit = _RAND_26[0:0];
   _RAND_27 = {1{`RANDOM}};
-  lv2ok_buffer_REG = _RAND_27[0:0];
-  _RAND_28 = {1{`RANDOM}};
-  lv3_AES_valid_REG = _RAND_28[0:0];
+  opB_lv3_auth_bit = _RAND_27[0:0];
+  _RAND_28 = {8{`RANDOM}};
+  result_buffer = _RAND_28[255:0];
   _RAND_29 = {1{`RANDOM}};
-  tmp_2_REG = _RAND_29[0:0];
+  result_valid_buffer = _RAND_29[0:0];
   _RAND_30 = {1{`RANDOM}};
-  verID_C = _RAND_30[15:0];
-  _RAND_31 = {1{`RANDOM}};
-  verID_C_valid = _RAND_31[0:0];
+  hash_C_buffer_valid = _RAND_30[0:0];
+  _RAND_31 = {2{`RANDOM}};
+  hash_C_buffer = _RAND_31[59:0];
   _RAND_32 = {1{`RANDOM}};
-  verID_C_valid_REG = _RAND_32[0:0];
-  _RAND_33 = {1{`RANDOM}};
-  pub_prv_bit = _RAND_33[0:0];
+  op1_rehash_result_buffer_valid = _RAND_32[0:0];
+  _RAND_33 = {4{`RANDOM}};
+  op1_rehash_result_bit = _RAND_33[127:0];
   _RAND_34 = {1{`RANDOM}};
-  auth_bit = _RAND_34[0:0];
-  _RAND_35 = {8{`RANDOM}};
-  result_buffer = _RAND_35[255:0];
-  _RAND_36 = {1{`RANDOM}};
-  result_valid_buffer = _RAND_36[0:0];
+  op2_rehash_result_buffer_valid = _RAND_34[0:0];
+  _RAND_35 = {4{`RANDOM}};
+  op2_rehash_result_bit = _RAND_35[127:0];
+  _RAND_36 = {8{`RANDOM}};
+  output_buffer_enc = _RAND_36[255:0];
   _RAND_37 = {1{`RANDOM}};
-  hash_C_buffer_valid = _RAND_37[0:0];
-  _RAND_38 = {2{`RANDOM}};
-  hash_C_buffer = _RAND_38[59:0];
+  op1_rehash_result_buffer_valid_REG = _RAND_37[0:0];
+  _RAND_38 = {1{`RANDOM}};
+  op2_rehash_result_buffer_valid_REG = _RAND_38[0:0];
   _RAND_39 = {1{`RANDOM}};
-  op1_rehash_result_buffer_valid = _RAND_39[0:0];
-  _RAND_40 = {4{`RANDOM}};
-  op1_rehash_result_bit = _RAND_40[127:0];
+  hash_C_buffer_valid_REG = _RAND_39[0:0];
+  _RAND_40 = {1{`RANDOM}};
+  result_valid_buffer_REG = _RAND_40[0:0];
   _RAND_41 = {1{`RANDOM}};
-  op2_rehash_result_buffer_valid = _RAND_41[0:0];
-  _RAND_42 = {4{`RANDOM}};
-  op2_rehash_result_bit = _RAND_42[127:0];
+  lv3ok_buffer_REG = _RAND_41[0:0];
+  _RAND_42 = {1{`RANDOM}};
+  hash_compare_result_op1 = _RAND_42[0:0];
   _RAND_43 = {1{`RANDOM}};
-  op1_rehash_result_buffer_valid_REG = _RAND_43[0:0];
+  hash_compare_result_op1_valid = _RAND_43[0:0];
   _RAND_44 = {1{`RANDOM}};
-  op2_rehash_result_buffer_valid_REG = _RAND_44[0:0];
+  hash_compare_result_op2 = _RAND_44[0:0];
   _RAND_45 = {1{`RANDOM}};
-  hash_C_buffer_valid_REG = _RAND_45[0:0];
-  _RAND_46 = {1{`RANDOM}};
-  result_valid_buffer_REG = _RAND_46[0:0];
-  _RAND_47 = {1{`RANDOM}};
-  lv3ok_buffer_REG = _RAND_47[0:0];
-  _RAND_48 = {1{`RANDOM}};
-  lv4_AES_valid = _RAND_48[0:0];
-  _RAND_49 = {1{`RANDOM}};
-  tmp_3 = _RAND_49[0:0];
-  _RAND_50 = {1{`RANDOM}};
-  lv4_AES_valid_REG = _RAND_50[0:0];
-  _RAND_51 = {1{`RANDOM}};
-  tmp_3_REG = _RAND_51[0:0];
-  _RAND_52 = {1{`RANDOM}};
-  output_buffer_enc_valid = _RAND_52[0:0];
-  _RAND_53 = {8{`RANDOM}};
-  output_buffer_enc = _RAND_53[255:0];
-  _RAND_54 = {10{`RANDOM}};
-  output_buffer = _RAND_54[315:0];
-  _RAND_55 = {1{`RANDOM}};
-  hash_compare_result_op1 = _RAND_55[0:0];
-  _RAND_56 = {1{`RANDOM}};
-  hash_compare_result_op1_valid = _RAND_56[0:0];
-  _RAND_57 = {1{`RANDOM}};
-  hash_compare_result_op2 = _RAND_57[0:0];
-  _RAND_58 = {1{`RANDOM}};
-  hash_compare_result_op2_valid = _RAND_58[0:0];
-  _RAND_59 = {1{`RANDOM}};
-  output_buffer_enc_valid_REG = _RAND_59[0:0];
-  _RAND_60 = {1{`RANDOM}};
-  lv4ok_buffer_REG = _RAND_60[0:0];
-  _RAND_61 = {1{`RANDOM}};
-  hash_compare_result_op1_valid_REG = _RAND_61[0:0];
-  _RAND_62 = {1{`RANDOM}};
-  hash_compare_result_op2_valid_REG = _RAND_62[0:0];
+  hash_compare_result_op2_valid = _RAND_45[0:0];
 `endif // RANDOMIZE_REG_INIT
   `endif // RANDOMIZE
 end // initial

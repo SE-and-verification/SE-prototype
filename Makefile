@@ -26,7 +26,7 @@ verilator_generate: generate
 # 	$(SBT) $(SBT_FLAGS) 'run -td $(gen_dir) -foaf se'
 
 generate:
-	$(SBT) $(SBT_FLAGS) 'run $(gen_dir)'
+	$(SBT) $(SBT_FLAGS) 'run $(gen_dir) --full-stacktrace'
 
 sbt:
 	$(SBT) $(SBT_FLAGS)
