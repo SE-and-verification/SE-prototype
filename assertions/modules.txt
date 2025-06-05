@@ -1,0 +1,9 @@
+module_name_1
+depth: 3
+inputs: signal_a[8], signal_b[1]
+outputs: signal_x[16], signal_y[8]
+
+module_name_2
+depth: 3
+inputs: signal_c[4]
+outputs: signal_z[32]
