@@ -118,10 +118,10 @@ class SE(val debug : Boolean, val canChangeKey: Boolean) extends Module{
 	aes_invcipher_op2.io.input_text        		:= op2_buffer
 	aes_invcipher_op2.io.input_roundKeys  		:= key
 	aes_invcipher_op2.io.input_valid      		:= input_buffer_valid && decrypt_buffer_idle
-	aes_cipher_for_op1_mac_validation.io.input_text		:= Cat(op1_buffer(383, 256), version_id) 
+	aes_cipher_for_op1_mac_validation.io.input_text		:= Cat(op1_buffer(383, 0), version_id) 
 	aes_cipher_for_op1_mac_validation.io.input_valid 		:= input_buffer_valid && decrypt_buffer_idle
 	aes_cipher_for_op1_mac_validation.io.input_roundKeys 	:= mac_key
-	aes_cipher_for_op2_mac_validation.io.input_text		:= Cat(op2_buffer(383, 256), version_id)
+	aes_cipher_for_op2_mac_validation.io.input_text		:= Cat(op2_buffer(383, 0), version_id)
 	aes_cipher_for_op2_mac_validation.io.input_valid 		:= input_buffer_valid && decrypt_buffer_idle
 	aes_cipher_for_op2_mac_validation.io.input_roundKeys 	:= mac_key
 
@@ -201,10 +201,8 @@ class SE(val debug : Boolean, val canChangeKey: Boolean) extends Module{
 	val bit64_randnum = PRNG(new MaxPeriodFibonacciLFSR(64, Some(scala.math.BigInt(46, scala.util.Random))))
 
 	val non_enc_padded_result = Cat(seoperation.io.result, bit64_randnum,  Cat(sha256_for_dataflow.io.outputData)) // [Plain_C][RdNum][hsh_A][hsh_B][inst]
-	val enc_padded_result = Cat(seoperation.io.result,  bit64_randnum,  Cat(sha256_for_dataflow.io.outputData))
-	val padded_result = Mux(is_enc_const, enc_padded_result, non_enc_padded_result)
 
-	val result_hash_buffer 					= RegEnable(padded_result, sha256_for_dataflow.io.outputValid)
+	val result_hash_buffer 					= RegEnable(non_enc_padded_result, sha256_for_dataflow.io.outputValid)
 	val result_hash_valid_buffer 			= RegInit(false.B)
 	when(sha256_for_dataflow.io.inputValid) {
 		result_hash_buffer_idle := false.B
@@ -244,7 +242,7 @@ class SE(val debug : Boolean, val canChangeKey: Boolean) extends Module{
 	val output_buffer_enc_valid = RegInit(false.B)
 	val output_buffer_enc_idle = RegInit(true.B)
 
-	aes_cipher_for_output_mac.io.input_text := encrypted_result_buffer
+	aes_cipher_for_output_mac.io.input_text := output_buffer_enc
 	aes_cipher_for_output_mac.io.input_valid := output_buffer_enc_idle && encrypted_result_valid_buffer
 	aes_cipher_for_output_mac.io.input_roundKeys := mac_key
 	val output_mac = RegEnable(aes_cipher_for_output_mac.io.output_text, aes_cipher_for_output_mac.io.output_valid)
@@ -262,7 +260,7 @@ class SE(val debug : Boolean, val canChangeKey: Boolean) extends Module{
 
 	when(output_buffer_enc_valid) {
 		io.out.valid := true.B
-		io.out.result 			:= output_connect
+		io.out.result 			:= Cat(output_mac, output_buffer_enc)
 	}.otherwise{
 		io.out.valid := false.B
 		io.out.result 			:= 0.U(512.W)
