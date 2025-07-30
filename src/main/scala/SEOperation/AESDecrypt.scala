@@ -6,13 +6,9 @@ import chisel3.util._
 class DecryptIO extends Bundle{
 	val input_valid = Input(Bool())
   val input_roundKeys = Input(Vec(11,Vec(Params.StateLength, UInt(8.W))))
-  val input_text = Input(UInt(256.W))
-	// val input_op1 = Input(Vec(Params.StateLength, UInt(8.W))) // plaintext, ciphertext, roundKey
-	// val input_op2 = Input(Vec(Params.StateLength, UInt(8.W))) // plaintext, ciphertext, roundKey
+  val input_text = Input(UInt(384.W))
 
-  val output_text = Output(UInt(256.W))
-	// val output_op1 = Output(Vec(Params.StateLength, UInt(8.W))) // ciphertext or plaintext
-	// val output_op2 = Output(Vec(Params.StateLength, UInt(8.W))) // ciphertext or plaintext
+  val output_text = Output(UInt(384.W))
 
 	val output_valid = Output(Bool())
 }
@@ -30,11 +26,12 @@ class AESDecrypt(val rolled: Boolean, val index:Int = 0) extends Module {
 
 	val op1_vec 	= Wire(Vec(16, UInt(8.W)))
 	val op2_vec 	= Wire(Vec(16, UInt(8.W)))
-
+  val op3_vec 	= Wire(Vec(16, UInt(8.W)))
 	for (i <- 0 until 16) {
 		// Solve type mismatch (as type of aes_invcipher_XXXhlf.io.input_opX)
-		op1_vec(i) := io.input_text((31 - i) * 8 + 7, (31 - i) * 8)
-		op2_vec(i) := io.input_text((15 - i) * 8 + 7, (15 - i) * 8)
+		op1_vec(i) := io.input_text((15 - i) * 8 + 7, (15 - i) * 8)
+		op2_vec(i) := io.input_text((31 - i) * 8 + 7, (31 - i) * 8)
+		op3_vec(i) := io.input_text((47 - i) * 8 + 7, (47 - i) * 8)
 	}
 
 
@@ -61,11 +58,13 @@ class AESDecrypt(val rolled: Boolean, val index:Int = 0) extends Module {
     InvCipherRoundARK(1).io.state_in := op2_vec
     InvCipherRoundARK(1).io.roundKey := io.input_roundKeys(Nr)
 
-    // InvCipherRoundARK(2).io.input_valid := io.input_valid
-    // InvCipherRoundARK(2).io.roundKey := io.input_roundKeys(Nr)
+    InvCipherRoundARK(2).io.input_valid := io.input_valid
+    InvCipherRoundARK(2).io.state_in := op3_vec
+    InvCipherRoundARK(2).io.roundKey := io.input_roundKeys(Nr)
+
     // Cipher Nr-1 rounds
     // for(j <- 0 to 2){
-    for(j <- 0 to 1){
+    for(j <- 0 to 2){
       for (i <- 0 until (Nr - 1)){
         if (i == 0) {
           InvCipherRounds(j)(i).io.input_valid := InvCipherRoundARK(j).io.output_valid
@@ -84,14 +83,13 @@ class AESDecrypt(val rolled: Boolean, val index:Int = 0) extends Module {
   }
 
 
-    io.output_text := Cat( Cat(InvCipherRoundNMC(0).io.state_out), Cat(InvCipherRoundNMC(1).io.state_out))
-    io.output_valid := InvCipherRoundNMC(0).io.output_valid && InvCipherRoundNMC(1).io.output_valid // || InvCipherRoundNMC(2).io.output_valid
+    io.output_text := Cat( Cat(InvCipherRoundNMC(0).io.state_out), Cat(InvCipherRoundNMC(1).io.state_out), Cat(InvCipherRoundNMC(2).io.state_out))
+    io.output_valid := InvCipherRoundNMC(0).io.output_valid && InvCipherRoundNMC(1).io.output_valid && InvCipherRoundNMC(2).io.output_valid
   }
   else{
-    // val invciphers = Array.fill(3){InvCipher(4, true)}
     val invcipher_A = InvCipher(4, true, index )
     val invcipher_B = InvCipher(4, true, index+1 )
-
+    val invcipher_C = InvCipher(4, true, index+2 )
     val address = RegInit(0.U(log2Ceil(EKDepth).W))
     
     val tmp = RegInit(false.B)
@@ -109,10 +107,11 @@ class AESDecrypt(val rolled: Boolean, val index:Int = 0) extends Module {
     invcipher_B.io.ciphertext := op2_vec
     invcipher_B.io.roundKey := io.input_roundKeys(address)
 
-    // invciphers(2).io.start := io.input_valid
-    // invciphers(2).io.roundKey := io.input_roundKeys(address)
+    invcipher_C.io.start := io.input_valid
+    invcipher_C.io.ciphertext := op3_vec
+    invcipher_C.io.roundKey := io.input_roundKeys(address)
 
-    io.output_text := Cat( Cat(invcipher_A.io.state_out), Cat(invcipher_B.io.state_out))
-    io.output_valid := invcipher_A.io.state_out_valid && invcipher_B.io.state_out_valid // || invciphers(2).io.state_out_valid
+    io.output_text := Cat( Cat(invcipher_A.io.state_out), Cat(invcipher_B.io.state_out), Cat(invcipher_C.io.state_out))
+    io.output_valid := invcipher_A.io.state_out_valid && invcipher_B.io.state_out_valid && invcipher_C.io.state_out_valid
   }
 }
