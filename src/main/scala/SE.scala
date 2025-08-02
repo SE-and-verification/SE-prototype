@@ -67,7 +67,12 @@ class SE(val debug : Boolean, val canChangeKey: Boolean) extends Module{
 	val aes_cipher_for_output_mac = Module(new AESMAC(true))
 	val sha256_for_dataflow = Module(new Sha256Accel)
 	val aes_cipher     			= Module(new AESEncrypt384(true))
-
+	val mac_checkout_1 = Reg(Vec(8, Bool()))
+	val mac_checkout_2 = Reg(Vec(8, Bool()))
+	val (push_pointer1, push_ptr_wrap1) = Counter(aes_cipher_for_op1_mac_validation.io.output_valid,8) // 3 bits for 8 registers
+	val (push_pointer2, push_ptr_wrap2) = Counter(aes_cipher_for_op2_mac_validation.io.output_valid,8) // 3 bits for 8 registers
+	val (pop_pointer1, pop_ptr_wrap1) = Counter(io.out.valid && io.out.ready,8) // 3 bits for 8 registers
+	val (pop_pointer2, pop_ptr_wrap2) = Counter(io.out.valid && io.out.ready,8) // 3 bits for 8 registers
 	// Original AES key
 	val expandedKey128 	= VecInit(
     VecInit(0x00.U(8.W), 0x01.U(8.W), 0x02.U(8.W), 0x03.U(8.W), 0x04.U(8.W), 0x05.U(8.W), 0x06.U(8.W), 0x07.U(8.W), 0x08.U(8.W), 0x09.U(8.W), 0x0a.U(8.W), 0x0b.U(8.W), 0x0c.U(8.W), 0x0d.U(8.W), 0x0e.U(8.W), 0x0f.U(8.W)),
@@ -138,7 +143,9 @@ class SE(val debug : Boolean, val canChangeKey: Boolean) extends Module{
 	when(aes_cipher_for_op1_mac_validation.io.output_valid) {
 		when(aes_cipher_for_op1_mac_validation.io.output_text =/= ciph1_mac) {
 			// If the MAC does not match, we set the decrypted_op1_val_buffer to 0
-			decrypted_op1_val_buffer := 0.U(384.W)
+			mac_checkout_1(push_pointer1) := false.B
+		}.otherwise {
+			mac_checkout_1(push_pointer1) := true.B
 		}
 		mac_validated_op1 := true.B
 	}.elsewhen(sha256_for_dataflow.io.inputValid) {
@@ -148,7 +155,9 @@ class SE(val debug : Boolean, val canChangeKey: Boolean) extends Module{
 	when(aes_cipher_for_op2_mac_validation.io.output_valid) {
 		when(aes_cipher_for_op2_mac_validation.io.output_text =/= ciph2_mac){
 			// If the MAC does not match, we set the decrypted_op2_val_buffer to 0
-			decrypted_op2_val_buffer := 0.U(384.W)
+			mac_checkout_2(push_pointer2) := false.B
+		}.otherwise {
+			mac_checkout_2(push_pointer2) := true.B
 		}
 		mac_validated_op2 := true.B
 	}.elsewhen(sha256_for_dataflow.io.inputValid) {
@@ -257,10 +266,10 @@ class SE(val debug : Boolean, val canChangeKey: Boolean) extends Module{
 	} .elsewhen(aes_cipher.io.output_valid) {
 		output_buffer_enc_valid := true.B
 	}
-
+	val output_gated = Mux(mac_checkout_1(pop_pointer1) && mac_checkout_2(push_pointer2), Cat(output_mac, output_buffer_enc), 0.U(512.W))
 	when(output_buffer_enc_valid) {
 		io.out.valid := true.B
-		io.out.result 			:= Cat(output_mac, output_buffer_enc)
+		io.out.result 			:= output_gated
 	}.otherwise{
 		io.out.valid := false.B
 		io.out.result 			:= 0.U(512.W)
