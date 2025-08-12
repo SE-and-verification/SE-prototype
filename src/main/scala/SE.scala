@@ -13,7 +13,8 @@ class SEInput(val canChangeKey: Boolean) extends Bundle {
 	val op1             = Input(UInt(512.W)) // 128bit mac + 384 bit ciphertext
 	val op2             = Input(UInt(512.W)) // 128bit mac + 384 bit ciphertext
 	val valid           = Input(Bool())
-
+	val op1_type        = Input(Bool()) // 1 for encrypted, 0 for non-encrypted
+	val op2_type        = Input(Bool()) // 1 for encrypted, 0 for non-encrypted
 	val ready           = Output(Bool())
 
 	val changeKey_en    = if(canChangeKey) Some(Input(Bool())) else None
@@ -24,8 +25,9 @@ class SEInput(val canChangeKey: Boolean) extends Bundle {
 class SEOutput extends Bundle{
   val ready 				= Input(Bool())
 
-	val result 				= Output(UInt(512.W))
+	val result 				= Output(UInt(640.W))
 	val valid 				= Output(Bool())
+	val output_type   = Output(Bool()) // 1 for encrypted, 0 for non-encrypted
 }
 
 class SEIO(val canChangeKey: Boolean) extends Bundle {
@@ -56,7 +58,7 @@ class SE(val debug : Boolean, val canChangeKey: Boolean) extends Module{
     val key = Reg(Vec(11, Vec(16,UInt(8.W))))
 	  val mac_key = Reg(Vec(11, Vec(16,UInt(8.W))))
 
-		val version_id = RegInit(0xdeabeaf.U(128.W)) // Version ID register
+		val version_id = RegInit(0xdeabeaf.U(127.W)) // Version ID register
     // Two DECryptors:
     // Firsthlf: get RdNum + Plaintext (Lower 128 bits of Ciph_X) -> ALU part
 	// Secondhlf: get Inst + Hash * 2 (Upper 128 bits of Ciph_X) -> Comparison part
@@ -91,13 +93,15 @@ class SE(val debug : Boolean, val canChangeKey: Boolean) extends Module{
 	val inst_buffer 	= RegEnable(io.in.inst, io.in.valid)
 	val op1_buffer 		= RegEnable(io.in.op1, io.in.valid) // [hsh_A][Ciph_A]
 	val op2_buffer 		= RegEnable(io.in.op2, io.in.valid) // [hsh_B][Ciph_B]
+	val op1_type_buffer = RegEnable(io.in.op1_type, io.in.valid)
+	val op2_type_buffer = RegEnable(io.in.op2_type, io.in.valid)
 	val input_buffer_valid = RegInit(false.B)
 	val input_buffer_idle = RegInit(true.B)
 	io.in.ready := input_buffer_idle
 	when(io.in.valid && io.in.ready) {
 		input_buffer_idle := false.B
 		input_buffer_valid := true.B
-	} .elsewhen(aes_invcipher_op1.io.input_valid) {
+	} .elsewhen(aes_invcipher_op1.io.input_valid && aes_invcipher_op2.io.input_valid) {
 		input_buffer_idle := true.B
 		input_buffer_valid := false.B
 	}
@@ -123,10 +127,10 @@ class SE(val debug : Boolean, val canChangeKey: Boolean) extends Module{
 	aes_invcipher_op2.io.input_text        		:= op2_buffer
 	aes_invcipher_op2.io.input_roundKeys  		:= key
 	aes_invcipher_op2.io.input_valid      		:= input_buffer_valid && decrypt_buffer_idle
-	aes_cipher_for_op1_mac_validation.io.input_text		:= Cat(op1_buffer(383, 0), version_id) 
+	aes_cipher_for_op1_mac_validation.io.input_text		:= Cat(op1_buffer(383, 0), version_id(126,0), op1_type_buffer.asUInt) // [Ciph_A][RdNum][verID_A]
 	aes_cipher_for_op1_mac_validation.io.input_valid 		:= input_buffer_valid && decrypt_buffer_idle
 	aes_cipher_for_op1_mac_validation.io.input_roundKeys 	:= mac_key
-	aes_cipher_for_op2_mac_validation.io.input_text		:= Cat(op2_buffer(383, 0), version_id)
+	aes_cipher_for_op2_mac_validation.io.input_text		:= Cat(op2_buffer(383, 0), version_id(126,0), op2_type_buffer.asUInt) // [Ciph_B][RdNum][verID_B]
 	aes_cipher_for_op2_mac_validation.io.input_valid 		:= input_buffer_valid && decrypt_buffer_idle
 	aes_cipher_for_op2_mac_validation.io.input_roundKeys 	:= mac_key
 
@@ -140,6 +144,10 @@ class SE(val debug : Boolean, val canChangeKey: Boolean) extends Module{
 	val ciph2_mac = op2_buffer(511, 384)
 	val decrypted_op1_val_buffer = RegEnable(aes_invcipher_op1.io.output_text, aes_invcipher_op1.io.output_valid) 
 	val decrypted_op2_val_buffer = RegEnable(aes_invcipher_op2.io.output_text, aes_invcipher_op2.io.output_valid) 
+	val op1_type_buffer_after_decrypt_stage = RegEnable(op1_type_buffer, aes_invcipher_op1.io.input_valid)
+	val op2_type_buffer_after_decrypt_stage = RegEnable(op2_type_buffer, aes_invcipher_op2.io.input_valid)
+	val op1_buffer_after_decrypt_stage = RegEnable(op1_buffer, aes_invcipher_op1.io.input_valid)
+	val op2_buffer_after_decrypt_stage = RegEnable(op2_buffer, aes_invcipher_op2.io.input_valid)
 	when(aes_cipher_for_op1_mac_validation.io.output_valid) {
 		when(aes_cipher_for_op1_mac_validation.io.output_text =/= ciph1_mac) {
 			// If the MAC does not match, we set the decrypted_op1_val_buffer to 0
@@ -198,8 +206,8 @@ class SE(val debug : Boolean, val canChangeKey: Boolean) extends Module{
 	val op2_bit 	            = decrypted_op2_val_buffer(383, 256) // [plain_B][RdNum][verID_B]
 	val is_enc_const = (inst_buffer_buf === Instructions.ENC_CONST)
 
-	val op1_plaintext_64		= Mux(is_enc_const,op1_buffer(383,256) ,op1_bit(127, 64)) // [plain_A]
-	val op2_plaintext_64		= op2_bit(127, 64) // [plain_B]
+	val op1_plaintext_64		= Mux(is_enc_const || op1_type_buffer_after_decrypt_stage, op1_buffer_after_decrypt_stage(383,256) ,op1_bit(127, 64)) // [plain_A]
+	val op2_plaintext_64		= Mux(op2_type_buffer_after_decrypt_stage, op2_buffer_after_decrypt_stage(383,256) ,op2_bit(127, 64)) // [plain_B]
   seoperation.io.op1_input    := op1_plaintext_64 // Currently hardcoded (TEMP)
 	seoperation.io.op2_input    := op2_plaintext_64 // Currently hardcoded (TEMP)
 
@@ -247,7 +255,7 @@ class SE(val debug : Boolean, val canChangeKey: Boolean) extends Module{
 	}
 	
 
-	val output_buffer_enc = RegEnable(Cat(encrypted_result_buffer, version_id), aes_cipher.io.output_valid)
+	val output_buffer_enc = RegEnable(Cat(encrypted_result_buffer, version_id(126,0), 1.U(1.W)), aes_cipher.io.output_valid)
 	val output_buffer_enc_valid = RegInit(false.B)
 	val output_buffer_enc_idle = RegInit(true.B)
 
@@ -255,7 +263,7 @@ class SE(val debug : Boolean, val canChangeKey: Boolean) extends Module{
 	aes_cipher_for_output_mac.io.input_valid := output_buffer_enc_idle && encrypted_result_valid_buffer
 	aes_cipher_for_output_mac.io.input_roundKeys := mac_key
 	val output_mac = RegEnable(aes_cipher_for_output_mac.io.output_text, aes_cipher_for_output_mac.io.output_valid)
-	val output_connect 		= Cat(output_mac, output_buffer_enc)
+	val output_connect 		= Cat(output_mac, output_buffer_enc(511,128))
 	when(io.out.valid && io.out.ready) {
 		output_buffer_enc_idle := true.B
 	} .elsewhen(aes_cipher.io.input_valid) {
@@ -270,9 +278,11 @@ class SE(val debug : Boolean, val canChangeKey: Boolean) extends Module{
 	when(output_buffer_enc_valid) {
 		io.out.valid := true.B
 		io.out.result 			:= output_gated
+		io.out.output_type  := true.B
 	}.otherwise{
 		io.out.valid := false.B
 		io.out.result 			:= 0.U(512.W)
+		io.out.output_type := false.B
 	}
 
 }
