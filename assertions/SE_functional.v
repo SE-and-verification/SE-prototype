@@ -1,3 +1,5 @@
+`include "fifo.sv"
+
 module SEControl(
   input  [7:0] io_inst_in,
   output [2:0] io_fu_op,
@@ -39474,100 +39476,96 @@ module MaxPeriodFibonacciLFSR(
     state_0 <= reset | _T_2; // @[PRNG.scala 55:{49,49}]
     state_1 <= reset | state_0; // @[PRNG.scala 55:{49,49}]
     state_2 <= reset | state_1; // @[PRNG.scala 55:{49,49}]
-    state_3 <= reset | state_2; // @[PRNG.scala 55:{49,49}]
     if (reset) begin // @[PRNG.scala 55:49]
-      state_4 <= 1'h0; // @[PRNG.scala 55:49]
+      state_3 <= 1'h0; // @[PRNG.scala 55:49]
     end else begin
-      state_4 <= state_3;
+      state_3 <= state_2;
     end
-    state_5 <= reset | state_4; // @[PRNG.scala 55:{49,49}]
-    state_6 <= reset | state_5; // @[PRNG.scala 55:{49,49}]
-    state_7 <= reset | state_6; // @[PRNG.scala 55:{49,49}]
+    state_4 <= reset | state_3; // @[PRNG.scala 55:{49,49}]
     if (reset) begin // @[PRNG.scala 55:49]
-      state_8 <= 1'h0; // @[PRNG.scala 55:49]
+      state_5 <= 1'h0; // @[PRNG.scala 55:49]
     end else begin
-      state_8 <= state_7;
+      state_5 <= state_4;
     end
-    state_9 <= reset | state_8; // @[PRNG.scala 55:{49,49}]
+    if (reset) begin // @[PRNG.scala 55:49]
+      state_6 <= 1'h0; // @[PRNG.scala 55:49]
+    end else begin
+      state_6 <= state_5;
+    end
+    if (reset) begin // @[PRNG.scala 55:49]
+      state_7 <= 1'h0; // @[PRNG.scala 55:49]
+    end else begin
+      state_7 <= state_6;
+    end
+    state_8 <= reset | state_7; // @[PRNG.scala 55:{49,49}]
+    if (reset) begin // @[PRNG.scala 55:49]
+      state_9 <= 1'h0; // @[PRNG.scala 55:49]
+    end else begin
+      state_9 <= state_8;
+    end
     state_10 <= reset | state_9; // @[PRNG.scala 55:{49,49}]
+    state_11 <= reset | state_10; // @[PRNG.scala 55:{49,49}]
     if (reset) begin // @[PRNG.scala 55:49]
-      state_11 <= 1'h0; // @[PRNG.scala 55:49]
+      state_12 <= 1'h0; // @[PRNG.scala 55:49]
     end else begin
-      state_11 <= state_10;
+      state_12 <= state_11;
     end
-    state_12 <= reset | state_11; // @[PRNG.scala 55:{49,49}]
-    state_13 <= reset | state_12; // @[PRNG.scala 55:{49,49}]
+    if (reset) begin // @[PRNG.scala 55:49]
+      state_13 <= 1'h0; // @[PRNG.scala 55:49]
+    end else begin
+      state_13 <= state_12;
+    end
     if (reset) begin // @[PRNG.scala 55:49]
       state_14 <= 1'h0; // @[PRNG.scala 55:49]
     end else begin
       state_14 <= state_13;
     end
-    if (reset) begin // @[PRNG.scala 55:49]
-      state_15 <= 1'h0; // @[PRNG.scala 55:49]
-    end else begin
-      state_15 <= state_14;
-    end
-    if (reset) begin // @[PRNG.scala 55:49]
-      state_16 <= 1'h0; // @[PRNG.scala 55:49]
-    end else begin
-      state_16 <= state_15;
-    end
-    if (reset) begin // @[PRNG.scala 55:49]
-      state_17 <= 1'h0; // @[PRNG.scala 55:49]
-    end else begin
-      state_17 <= state_16;
-    end
-    if (reset) begin // @[PRNG.scala 55:49]
-      state_18 <= 1'h0; // @[PRNG.scala 55:49]
-    end else begin
-      state_18 <= state_17;
-    end
-    if (reset) begin // @[PRNG.scala 55:49]
-      state_19 <= 1'h0; // @[PRNG.scala 55:49]
-    end else begin
-      state_19 <= state_18;
-    end
-    if (reset) begin // @[PRNG.scala 55:49]
-      state_20 <= 1'h0; // @[PRNG.scala 55:49]
-    end else begin
-      state_20 <= state_19;
-    end
+    state_15 <= reset | state_14; // @[PRNG.scala 55:{49,49}]
+    state_16 <= reset | state_15; // @[PRNG.scala 55:{49,49}]
+    state_17 <= reset | state_16; // @[PRNG.scala 55:{49,49}]
+    state_18 <= reset | state_17; // @[PRNG.scala 55:{49,49}]
+    state_19 <= reset | state_18; // @[PRNG.scala 55:{49,49}]
+    state_20 <= reset | state_19; // @[PRNG.scala 55:{49,49}]
     if (reset) begin // @[PRNG.scala 55:49]
       state_21 <= 1'h0; // @[PRNG.scala 55:49]
     end else begin
       state_21 <= state_20;
     end
-    if (reset) begin // @[PRNG.scala 55:49]
-      state_22 <= 1'h0; // @[PRNG.scala 55:49]
-    end else begin
-      state_22 <= state_21;
-    end
+    state_22 <= reset | state_21; // @[PRNG.scala 55:{49,49}]
     if (reset) begin // @[PRNG.scala 55:49]
       state_23 <= 1'h0; // @[PRNG.scala 55:49]
     end else begin
       state_23 <= state_22;
     end
-    state_24 <= reset | state_23; // @[PRNG.scala 55:{49,49}]
-    state_25 <= reset | state_24; // @[PRNG.scala 55:{49,49}]
     if (reset) begin // @[PRNG.scala 55:49]
-      state_26 <= 1'h0; // @[PRNG.scala 55:49]
+      state_24 <= 1'h0; // @[PRNG.scala 55:49]
     end else begin
-      state_26 <= state_25;
+      state_24 <= state_23;
     end
+    state_25 <= reset | state_24; // @[PRNG.scala 55:{49,49}]
+    state_26 <= reset | state_25; // @[PRNG.scala 55:{49,49}]
     state_27 <= reset | state_26; // @[PRNG.scala 55:{49,49}]
-    state_28 <= reset | state_27; // @[PRNG.scala 55:{49,49}]
+    if (reset) begin // @[PRNG.scala 55:49]
+      state_28 <= 1'h0; // @[PRNG.scala 55:49]
+    end else begin
+      state_28 <= state_27;
+    end
     if (reset) begin // @[PRNG.scala 55:49]
       state_29 <= 1'h0; // @[PRNG.scala 55:49]
     end else begin
       state_29 <= state_28;
     end
-    state_30 <= reset | state_29; // @[PRNG.scala 55:{49,49}]
     if (reset) begin // @[PRNG.scala 55:49]
-      state_31 <= 1'h0; // @[PRNG.scala 55:49]
+      state_30 <= 1'h0; // @[PRNG.scala 55:49]
     end else begin
-      state_31 <= state_30;
+      state_30 <= state_29;
     end
-    state_32 <= reset | state_31; // @[PRNG.scala 55:{49,49}]
+    state_31 <= reset | state_30; // @[PRNG.scala 55:{49,49}]
+    if (reset) begin // @[PRNG.scala 55:49]
+      state_32 <= 1'h0; // @[PRNG.scala 55:49]
+    end else begin
+      state_32 <= state_31;
+    end
     if (reset) begin // @[PRNG.scala 55:49]
       state_33 <= 1'h0; // @[PRNG.scala 55:49]
     end else begin
@@ -39580,11 +39578,7 @@ module MaxPeriodFibonacciLFSR(
     end
     state_35 <= reset | state_34; // @[PRNG.scala 55:{49,49}]
     state_36 <= reset | state_35; // @[PRNG.scala 55:{49,49}]
-    if (reset) begin // @[PRNG.scala 55:49]
-      state_37 <= 1'h0; // @[PRNG.scala 55:49]
-    end else begin
-      state_37 <= state_36;
-    end
+    state_37 <= reset | state_36; // @[PRNG.scala 55:{49,49}]
     state_38 <= reset | state_37; // @[PRNG.scala 55:{49,49}]
     state_39 <= reset | state_38; // @[PRNG.scala 55:{49,49}]
     if (reset) begin // @[PRNG.scala 55:49]
@@ -39592,15 +39586,19 @@ module MaxPeriodFibonacciLFSR(
     end else begin
       state_40 <= state_39;
     end
+    state_41 <= reset | state_40; // @[PRNG.scala 55:{49,49}]
     if (reset) begin // @[PRNG.scala 55:49]
-      state_41 <= 1'h0; // @[PRNG.scala 55:49]
+      state_42 <= 1'h0; // @[PRNG.scala 55:49]
     end else begin
-      state_41 <= state_40;
+      state_42 <= state_41;
     end
-    state_42 <= reset | state_41; // @[PRNG.scala 55:{49,49}]
     state_43 <= reset | state_42; // @[PRNG.scala 55:{49,49}]
     state_44 <= reset | state_43; // @[PRNG.scala 55:{49,49}]
-    state_45 <= reset | state_44; // @[PRNG.scala 55:{49,49}]
+    if (reset) begin // @[PRNG.scala 55:49]
+      state_45 <= 1'h0; // @[PRNG.scala 55:49]
+    end else begin
+      state_45 <= state_44;
+    end
     if (reset) begin // @[PRNG.scala 55:49]
       state_46 <= 1'h0; // @[PRNG.scala 55:49]
     end else begin
@@ -40181,7 +40179,6 @@ module SE(
   reg  output_buffer_enc_valid; // @[SE.scala 259:46]
   reg  output_buffer_enc_idle; // @[SE.scala 260:45]
   reg [127:0] output_mac; // @[Reg.scala 16:16]
-  wire [511:0] output_connect = {output_mac,output_buffer_enc[511:128]}; // @[Cat.scala 31:58]
   wire  _GEN_466 = aes_cipher_io_input_valid ? 1'h0 : output_buffer_enc_idle; // @[SE.scala 269:48 270:40 260:45]
   wire  _GEN_467 = _T | _GEN_466; // @[SE.scala 267:44 268:40]
   wire  _GEN_468 = aes_cipher_io_output_valid | output_buffer_enc_valid; // @[SE.scala 274:49 275:41 259:46]
@@ -40199,8 +40196,8 @@ module SE(
   wire  _GEN_483 = 3'h5 == push_pointer2 ? mac_checkout_2_5 : _GEN_482; // @[SE.scala 277:{61,61}]
   wire  _GEN_484 = 3'h6 == push_pointer2 ? mac_checkout_2_6 : _GEN_483; // @[SE.scala 277:{61,61}]
   wire  _GEN_485 = 3'h7 == push_pointer2 ? mac_checkout_2_7 : _GEN_484; // @[SE.scala 277:{61,61}]
-  wire [511:0] output_gated = _GEN_477 & _GEN_485 ? output_connect : 512'heeee; // @[SE.scala 277:31]
-  wire [511:0] _GEN_487 = output_buffer_enc_valid ? output_gated : 512'h0; // @[SE.scala 278:39 280:49 284:49]
+  wire [639:0] _output_gated_T_1 = {output_mac,output_buffer_enc}; // @[Cat.scala 31:58]
+  wire [639:0] output_gated = _GEN_477 & _GEN_485 ? _output_gated_T_1 : 640'heeee; // @[SE.scala 277:31]
   SEOperation seoperation ( // @[SE.scala 55:33]
     .io_inst(seoperation_io_inst),
     .io_op1_input(seoperation_io_op1_input),
@@ -40339,7 +40336,7 @@ module SE(
     .io_out_63(bit64_randnum_prng_io_out_63)
   );
   assign io_in_ready = input_buffer_idle; // @[SE.scala 100:21]
-  assign io_out_result = {{128'd0}, _GEN_487};
+  assign io_out_result = output_buffer_enc_valid ? output_gated : 640'h0; // @[SE.scala 278:39 280:49 284:49]
   assign io_out_valid = output_buffer_enc_valid; // @[SE.scala 278:39 279:30 283:30]
   assign io_out_output_type = output_buffer_enc_valid; // @[SE.scala 278:39 279:30 283:30]
   assign seoperation_io_inst = inst_buffer_buf; // @[SE.scala 202:31]
@@ -40773,4 +40770,281 @@ end // initial
 `FIRRTL_AFTER_INITIAL
 `endif
 `endif // SYNTHESIS
+
+wire se_start = io_in_valid & io_in_ready;
+wire [1033:0] se_in_data = {io_in_inst, io_in_op1, io_in_op2, io_in_op1_type, io_in_op2_type};
+wire se_finish = io_out_valid & io_out_ready;
+wire [640:0] se_out_data = {io_out_result, io_out_output_type};
+reg [$clog2(`SE_DEPTH)-1:0] se_next;
+always @(posedge clock) begin
+  if (reset) begin
+    se_next <= 0;
+  end else if (se_start) begin
+    se_next <= se_next + 1;
+  end
+
+end
+
+fifo_single_read se_ValueBuffer #(
+  .WIDTH(1034)
+) se_ValueBuffer (
+  .clk(clock),
+  .rst(reset),
+  .push(se_start),
+  .din(se_in_data),
+  .pop(se_finish),
+  .read_addr(),
+  .read_data(),
+  .read_valid()
+);
+
+wire seoperation_start = sha256_for_dataflow_io_outputValid;
+wire [135:0] seoperation_in_data = {seoperation_io_inst, seoperation_io_op1_input, seoperation_io_op2_input};
+wire seoperation_finish = sha256_for_dataflow_io_outputValid;
+wire [63:0] seoperation_out_data = seoperation_io_result;
+reg [$clog2(`SE_DEPTH)-1:0] seoperation_next;
+always @(posedge clock) begin
+  if (reset) begin
+    seoperation_next <= 0;
+  end else if (seoperation_start) begin
+    seoperation_next <= seoperation_next + 1;
+  end
+
+end
+
+fifo_single_read seoperation_ValueBuffer #(
+  .WIDTH(64)
+) seoperation_ValueBuffer (
+  .clk(clock),
+  .rst(reset),
+  .push(seoperation_finish),
+  .din(seoperation_out_data),
+  .pop(se_finish),
+  .read_addr(),
+  .read_data(),
+  .read_valid()
+);
+
+
+wire aes_invcipher_op1_start = aes_invcipher_op1_io_input_valid;
+wire [383:0] aes_invcipher_op1_in_data = aes_invcipher_op1_io_input_text;
+wire aes_invcipher_op1_finish = aes_invcipher_op1_io_output_valid;
+wire [383:0] aes_invcipher_op1_out_data = aes_invcipher_op1_io_output_text;
+reg [$clog2(`SE_DEPTH)-1:0] aes_invcipher_op1_next;
+always @(posedge clock) begin
+  if (reset) begin
+    aes_invcipher_op1_next <= 0;
+  end else if (aes_invcipher_op1_start) begin
+    aes_invcipher_op1_next <= aes_invcipher_op1_next + 1;
+  end
+
+end
+
+fifo_single_read aes_invcipher_op1_ValueBuffer #(
+  .WIDTH(384)
+) aes_invcipher_op1_ValueBuffer (
+  .clk(clock),
+  .rst(reset),
+  .push(aes_invcipher_op1_finish),
+  .din(aes_invcipher_op1_out_data),
+  .pop(se_finish),
+  .read_addr(),
+  .read_data(),
+  .read_valid()
+);
+
+wire aes_invcipher_op2_start = aes_invcipher_op2_io_input_valid;
+wire [383:0] aes_invcipher_op2_in_data = aes_invcipher_op2_io_input_text;
+wire aes_invcipher_op2_finish = aes_invcipher_op2_io_output_valid;
+wire [383:0] aes_invcipher_op2_out_data = aes_invcipher_op2_io_output_text;
+reg [$clog2(`SE_DEPTH)-1:0] aes_invcipher_op2_next;
+always @(posedge clock) begin
+  if (reset) begin
+    aes_invcipher_op2_next <= 0;
+  end else if (aes_invcipher_op2_start) begin
+    aes_invcipher_op2_next <= aes_invcipher_op2_next + 1;
+  end
+end
+
+fifo_single_read aes_invcipher_op2_ValueBuffer #(
+  .WIDTH(384)
+) aes_invcipher_op2_ValueBuffer (
+  .clk(clock),
+  .rst(reset),
+  .push(aes_invcipher_op2_finish),
+  .din(aes_invcipher_op2_out_data),
+  .pop(se_finish),
+  .read_addr(),
+  .read_data(),
+  .read_valid()
+);
+
+wire aes_cipher_for_op1_mac_validation_start = aes_cipher_for_op1_mac_validation_io_input_valid;
+wire [511:0] aes_cipher_for_op1_mac_validation_in_data = aes_cipher_for_op1_mac_validation_io_input_text;
+wire aes_cipher_for_op1_mac_validation_finish = aes_cipher_for_op1_mac_validation_io_output_valid;
+wire [511:0] aes_cipher_for_op1_mac_validation_out_data = aes_cipher_for_op1_mac_validation_io_output_text;
+reg [$clog2(`SE_DEPTH)-1:0] aes_cipher_for_op1_mac_validation_next;
+always @(posedge clock) begin
+  if (reset) begin
+    aes_cipher_for_op1_mac_validation_next <= 0;
+  end else if (aes_cipher_for_op1_mac_validation_start) begin
+    aes_cipher_for_op1_mac_validation_next <= aes_cipher_for_op1_mac_validation_next + 1;
+  end
+end
+
+fifo_single_read aes_invcipher_op1_ValueBuffer #(
+  .WIDTH(512)
+) aes_invcipher_op1_ValueBuffer (
+  .clk(clock),
+  .rst(reset),
+  .push(aes_cipher_for_op1_mac_validation_finish),
+  .din(aes_cipher_for_op1_mac_validation_out_data),
+  .pop(se_finish),
+  .read_addr(),
+  .read_data(),
+  .read_valid()
+);
+
+wire aes_cipher_for_op2_mac_validation_start = aes_cipher_for_op2_mac_validation_io_input_valid;
+wire [511:0] aes_cipher_for_op2_mac_validation_in_data = aes_cipher_for_op2_mac_validation_io_input_text;
+wire aes_cipher_for_op2_mac_validation_finish = aes_cipher_for_op2_mac_validation_io_output_valid;
+wire [511:0] aes_cipher_for_op2_mac_validation_out_data = aes_cipher_for_op2_mac_validation_io_output_text;
+reg [$clog2(`SE_DEPTH)-1:0] aes_cipher_for_op2_mac_validation_next;
+
+always @(posedge clock) begin
+  if (reset) begin
+    aes_cipher_for_op2_mac_validation_next <= 0;
+  end else if (aes_cipher_for_op2_mac_validation_start) begin
+    aes_cipher_for_op2_mac_validation_next <= aes_cipher_for_op2_mac_validation_next + 1;
+  end
+end
+
+fifo_single_read aes_cipher_for_op2_mac_validation_ValueBuffer #(
+  .WIDTH(512)
+) aes_cipher_for_op2_mac_validation_ValueBuffer (
+  .clk(clock),
+  .rst(reset),
+  .push(aes_cipher_for_op2_mac_validation_finish),
+  .din(aes_cipher_for_op2_mac_validation_out_data),
+  .pop(se_finish),
+  .read_addr(),
+  .read_data(),
+  .read_valid()
+);
+
+wire aes_cipher_for_output_mac_start = aes_cipher_for_output_mac_io_input_valid;
+wire [511:0] aes_cipher_for_output_mac_in_data = aes_cipher_for_output_mac_io_input_text;
+wire aes_cipher_for_output_mac_finish = aes_cipher_for_output_mac_io_output_valid;
+wire [127:0] aes_cipher_for_output_mac_out_data = aes_cipher_for_output_mac_io_output_text;
+reg [$clog2(`SE_DEPTH)-1:0] aes_cipher_for_output_mac_next;
+
+always @(posedge clock) begin
+  if (reset) begin
+    aes_cipher_for_output_mac_next <= 0;
+  end else if (aes_cipher_for_output_mac_start) begin
+    aes_cipher_for_output_mac_next <= aes_cipher_for_output_mac_next + 1;
+  end
+end
+
+fifo_single_read aes_cipher_for_output_mac_ValueBuffer #(
+  .WIDTH(128)
+) aes_cipher_for_output_mac_ValueBuffer (
+  .clk(clock),
+  .rst(reset),
+  .push(aes_cipher_for_output_mac_finish),
+  .din(aes_cipher_for_output_mac_out_data),
+  .pop(se_finish),
+  .read_addr(),
+  .read_data(),
+  .read_valid()
+);
+
+wire sha256_for_dataflow_start = sha256_for_dataflow_io_inputValid;
+wire [519:0] sha256_for_dataflow_in_data = sha256_for_dataflow_io_inputData;
+wire sha256_for_dataflow_finish = sha256_for_dataflow_io_outputValid;
+wire [255:0] sha256_for_dataflow_out_data = {sha256_for_dataflow_io_outputData_0, sha256_for_dataflow_io_outputData_1, sha256_for_dataflow_io_outputData_2, sha256_for_dataflow_io_outputData_3, sha256_for_dataflow_io_outputData_4, sha256_for_dataflow_io_outputData_5, sha256_for_dataflow_io_outputData_6, sha256_for_dataflow_io_outputData_7};
+reg [$clog2(`SE_DEPTH)-1:0] sha256_for_dataflow_next;
+
+always @(posedge clock) begin
+  if (reset) begin
+    sha256_for_dataflow_next <= 0;
+  end else if (sha256_for_dataflow_start) begin
+    sha256_for_dataflow_next <= sha256_for_dataflow_next + 1;
+  end
+end
+
+fifo_single_read sha256_for_dataflow_ValueBuffer #(
+  .WIDTH(256)
+) sha256_for_dataflow_ValueBuffer (
+  .clk(clock),
+  .rst(reset),
+  .push(sha256_for_dataflow_finish),
+  .din(sha256_for_dataflow_out_data),
+  .pop(se_finish),
+  .read_addr(),
+  .read_data(),
+  .read_valid()
+);
+
+
+wire aes_cipher_start = aes_cipher_io_input_valid;
+wire [383:0] aes_cipher_in_data = aes_cipher_io_input_text;
+wire aes_cipher_finish = aes_cipher_io_output_valid;
+wire [383:0] aes_cipher_out_data = aes_cipher_io_output_text;
+reg [$clog2(`SE_DEPTH)-1:0] aes_cipher_next;
+
+always @(posedge clock) begin
+  if (reset) begin
+    aes_cipher_next <= 0;
+  end else if (aes_cipher_start) begin
+    aes_cipher_next <= aes_cipher_next + 1;
+  end
+end
+
+fifo_single_read aes_cipher_ValueBuffer #(
+  .WIDTH(384)
+) aes_cipher_ValueBuffer (
+  .clk(clock),
+  .rst(reset),
+  .push(aes_cipher_finish),
+  .din(aes_cipher_out_data),
+  .pop(se_finish),
+  .read_addr(),
+  .read_data(),
+  .read_valid()
+);
+
+
+wire bit64_randnum_prng_finish = sha256_for_dataflow_io_outputValid;
+wire [63:0] bit64_randnum_prng_out_data = {bit64_randnum_prng_io_out_63, bit64_randnum_prng_io_out_62, bit64_randnum_prng_io_out_61, bit64_randnum_prng_io_out_60,
+                                          bit64_randnum_prng_io_out_59, bit64_randnum_prng_io_out_58, bit64_randnum_prng_io_out_57, bit64_randnum_prng_io_out_56,
+                                          bit64_randnum_prng_io_out_55, bit64_randnum_prng_io_out_54, bit64_randnum_prng_io_out_53, bit64_randnum_prng_io_out_52,
+                                          bit64_randnum_prng_io_out_51, bit64_randnum_prng_io_out_50, bit64_randnum_prng_io_out_49, bit64_randnum_prng_io_out_48,
+                                          bit64_randnum_prng_io_out_47, bit64_randnum_prng_io_out_46, bit64_randnum_prng_io_out_45, bit64_randnum_prng_io_out_44,
+                                          bit64_randnum_prng_io_out_43, bit64_randnum_prng_io_out_42, bit64_randnum_prng_io_out_41, bit64_randnum_prng_io_out_40,
+                                          bit64_randnum_prng_io_out_39, bit64_randnum_prng_io_out_38, bit64_randnum_prng_io_out_37, bit64_randnum_prng_io_out_36,
+                                          bit64_randnum_prng_io_out_35, bit64_randnum_prng_io_out_34, bit64_randnum_prng_io_out_33, bit64_randnum_prng_io_out_32,
+                                          bit64_randnum_prng_io_out_31, bit64_randnum_prng_io_out_30, bit64_randnum_prng_io_out_29, bit64_randnum_prng_io_out_28,
+                                          bit64_randnum_prng_io_out_27, bit64_randnum_prng_io_out_26, bit64_randnum_prng_io_out_25, bit64_randnum_prng_io_out_24,
+                                          bit64_randnum_prng_io_out_23, bit64_randnum_prng_io_out_22, bit64_randnum_prng_io_out_21, bit64_randnum_prng_io_out_20,
+                                          bit64_randnum_prng_io_out_19, bit64_randnum_prng_io_out_18, bit64_randnum_prng_io_out_17, bit64_randnum_prng_io_out_16,
+                                          bit64_randnum_prng_io_out_15, bit64_randnum_prng_io_out_14, bit64_randnum_prng_io_out_13, bit64_randnum_prng_io_out_12,
+                                          bit64_randnum_prng_io_out_11, bit64_randnum_prng_io_out_10, bit64_randnum_prng_io_out_9,  bit64_randnum_prng_io_out_8,
+                                          bit64_randnum_prng_io_out_7,  bit64_randnum_prng_io_out_6,  bit64_randnum_prng_io_out_5,  bit64_randnum_prng_io_out_4,
+                                          bit64_randnum_prng_io_out_3,  bit64_randnum_prng_io_out_2,  bit64_randnum_prng_io_out_1,  bit64_randnum_prng_io_out_0};
+fifo_single_read bit64_randnum_prng_ValueBuffer #(
+  .WIDTH(64)
+) bit64_randnum_prng_ValueBuffer (
+  .clk(clock),
+  .rst(reset),
+  .push(bit64_randnum_prng_finish),
+  .din(bit64_randnum_prng_out_data),
+  .pop(se_finish),
+  .read_addr(),
+  .read_data(),
+  .read_valid()
+);
+
+
+
 endmodule
