@@ -200,7 +200,7 @@ class SE(val debug : Boolean, val canChangeKey: Boolean) extends Module{
 	val inst_buffer_buf = RegEnable(inst_buffer, aes_invcipher_op1.io.input_valid) // [inst]
 	val result_hash_buffer_idle = RegInit(true.B)
   seoperation.io.inst         := inst_buffer_buf
-	seoperation.io.in_valid 	:= decrypted_op1_val_buffer_valid && decrypted_op2_val_buffer_valid 
+	seoperation.io.in_valid 	:= decrypted_op1_val_buffer_valid && decrypted_op2_val_buffer_valid && mac_validated_op1 && mac_validated_op2
 
 	val op1_bit 	            = decrypted_op1_val_buffer(383, 256) // [plain_A][RdNum][verID_A]
 	val op2_bit 	            = decrypted_op2_val_buffer(383, 256) // [plain_B][RdNum][verID_B]
@@ -212,7 +212,7 @@ class SE(val debug : Boolean, val canChangeKey: Boolean) extends Module{
 	seoperation.io.op2_input    := op2_plaintext_64 // Currently hardcoded (TEMP)
 
 	sha256_for_dataflow.io.inputData := Cat(decrypted_op1_val_buffer(255, 0), decrypted_op2_val_buffer(255, 0), inst_buffer_buf) // [hsh_A][hsh_B]
-	sha256_for_dataflow.io.inputValid := decrypted_op1_val_buffer_valid && decrypted_op2_val_buffer_valid && result_hash_buffer_idle && mac_validated_op1 && mac_validated_op2
+	sha256_for_dataflow.io.inputValid := seoperation.io.out_valid
 	// Once we receive the result from the seoperation, we pad the result with RNG and latch them first.
 	// Note that ALU may need 3 to 4 clock cycles (after seOpValid being set high) to calculate the result
 	val bit64_randnum = PRNG(new MaxPeriodFibonacciLFSR(64, Some(scala.math.BigInt(46, scala.util.Random))))
@@ -236,7 +236,7 @@ class SE(val debug : Boolean, val canChangeKey: Boolean) extends Module{
 	val encrypt_buffer_idle = RegInit(true.B)
 	// Encrypt the padded result to get the final output
 	aes_cipher.io.input_text			:= result_hash_buffer
-	aes_cipher.io.input_valid 		:= result_hash_valid_buffer && encrypt_buffer_idle
+	aes_cipher.io.input_valid 		:= seoperation.io.out_valid && encrypt_buffer_idle
 	aes_cipher.io.input_roundKeys 	:= key
 
 	// enc buf

@@ -42,8 +42,10 @@ class SEOperation(val debug: Boolean) extends Module{
   fu.io.fu_op := decode.io.fu_op
 	fu.io.fu_type := decode.io.fu_type
 	fu.io.signed := decode.io.signed
-	io.result := fu.io.out
-	io.out_valid := io.in_valid
+	val result_buffer = RegEnable(fu.io.out, io.in_valid)
+	val result_valid = RegNext(io.in_valid && op2 =/= 0.U)
+	io.out_valid := Mux(op2 === 0.U, io.in_valid , result_valid)
+	io.result := Mux(op2 === 0.U, io.op1_input , result_buffer)
 	if(debug){
 		when(io.in_valid){
 			printf("\n------fu-----\n")
