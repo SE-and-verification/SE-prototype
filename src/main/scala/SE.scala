@@ -255,7 +255,7 @@ class SE(val debug : Boolean, val canChangeKey: Boolean) extends Module{
 	}
 	
 
-	val output_buffer_enc = RegEnable(Cat(encrypted_result_buffer, version_id(126,0), 1.U(1.W)), aes_cipher.io.output_valid)
+	val output_buffer_enc = RegEnable(Cat(encrypted_result_buffer, 0.U(127.W), 1.U(1.W)), aes_cipher.io.output_valid)
 	val output_buffer_enc_valid = RegInit(false.B)
 	val output_buffer_enc_idle = RegInit(true.B)
 
