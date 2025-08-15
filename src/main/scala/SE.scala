@@ -276,7 +276,7 @@ class SE(val debug : Boolean, val canChangeKey: Boolean) extends Module{
 	}
 	when(output_buffer_enc_valid) {
 		io.out.valid := true.B
-		io.out.result 			:= Cat(output_mac, output_buffer_enc)
+		io.out.result 			:= output_connect
 		io.out.output_type  := true.B
 	}.otherwise{
 		io.out.valid := false.B
