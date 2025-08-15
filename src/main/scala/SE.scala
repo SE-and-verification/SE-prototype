@@ -211,7 +211,7 @@ class SE(val debug : Boolean, val canChangeKey: Boolean) extends Module{
   seoperation.io.op1_input    := op1_plaintext_64 // Currently hardcoded (TEMP)
 	seoperation.io.op2_input    := op2_plaintext_64 // Currently hardcoded (TEMP)
 
-	sha256_for_dataflow.io.inputData := Cat(decrypted_op1_val_buffer(255, 0), decrypted_op2_val_buffer(255, 0), inst_buffer_buf) // [hsh_A][hsh_B]
+	sha256_for_dataflow.io.inputData := Cat(decrypted_op1_val_buffer(255, 0), decrypted_op1_val_buffer(255, 0), inst_buffer_buf) // [hsh_A][hsh_B]
 	sha256_for_dataflow.io.inputValid := decrypted_op1_val_buffer_valid && decrypted_op2_val_buffer_valid && result_hash_buffer_idle && mac_validated_op1 && mac_validated_op2
 	// Once we receive the result from the seoperation, we pad the result with RNG and latch them first.
 	// Note that ALU may need 3 to 4 clock cycles (after seOpValid being set high) to calculate the result
