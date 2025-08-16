@@ -18,7 +18,7 @@ module fifo_single_read #(
     // status
     output wire                  full,
     output wire                  empty,
-    output wire [($clog2(DEPTH)):0] level  // number of stored items
+    output wire [($clog2(DEPTH)):0] level,  // number of stored items
 
     // head, tail
     output wire [$clog2(DEPTH)-1:0] head,  // index of next item to read
@@ -94,7 +94,7 @@ module fifo_single_read #(
 
 endmodule
 
-module fifo_doubke_read #(
+module fifo_double_read #(
     parameter integer DEPTH = `SE_DEPTH,   // power of two
     parameter integer WIDTH = 8
 )(
@@ -112,7 +112,7 @@ module fifo_doubke_read #(
     // status
     output wire                  full,
     output wire                  empty,
-    output wire [($clog2(DEPTH)):0] level  // number of stored items
+    output wire [($clog2(DEPTH)):0] level,  // number of stored items
 
     // head, tail
     output wire [$clog2(DEPTH)-1:0] head,  // index of next item to read
@@ -120,7 +120,7 @@ module fifo_doubke_read #(
     // absolute read port
     input  wire [$clog2(DEPTH)-1:0] read_addr_1,  // 0..DEPTH-1 (physical slot)
     output wire [WIDTH-1:0]         read_data_1,  // mem[read_addr]
-    output wire                     read_valid_1  // 1 if slot currently occupied
+    output wire                     read_valid_1,  // 1 if slot currently occupied
 
     // absolute read port
     input  wire [$clog2(DEPTH)-1:0] read_addr_2,  // 0..DEPTH-1 (physical slot)
@@ -216,7 +216,7 @@ module fifo_triple_read #(
     // status
     output wire                  full,
     output wire                  empty,
-    output wire [($clog2(DEPTH)):0] level  // number of stored items
+    output wire [($clog2(DEPTH)):0] level,  // number of stored items
 
     // head, tail
     output wire [$clog2(DEPTH)-1:0] head,  // index of next item to read
