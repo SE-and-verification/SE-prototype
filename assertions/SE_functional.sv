@@ -40780,8 +40780,8 @@ wire se_start = io_in_valid & io_in_ready;
 wire [1033:0] se_in_data = {io_in_inst, io_in_op1, io_in_op2, io_in_op1_type, io_in_op2_type};
 wire se_finish = io_out_valid & io_out_ready;
 wire [640:0] se_out_data = {io_out_result, 1'b1};
-wire [1033:0] se_VB_read_data_1, se_VB_read_data_2, se_VB_read_data_3;
-wire se_VB_read_valid_1, se_VB_read_valid_2, se_VB_read_valid_3;
+wire [1033:0] se_VB_read_data_1, se_VB_read_data_2, se_VB_read_data_3, se_VB_read_data_4, se_VB_read_data_5, se_VB_read_data_6;
+wire se_VB_read_valid_1, se_VB_read_valid_2, se_VB_read_valid_3, se_VB_read_valid_4, se_VB_read_valid_5, se_VB_read_valid_6;
 reg [$clog2(`SE_DEPTH)-1:0] se_next;
 always @(posedge clock) begin
   if (reset) begin
@@ -40791,7 +40791,7 @@ always @(posedge clock) begin
   end
 end
 
-fifo_triple_read #(
+fifo_six_read #(
   .WIDTH(1034)
 ) se_ValueBuffer (
   .clk(clock),
@@ -40799,18 +40799,25 @@ fifo_triple_read #(
   .push(se_start),
   .din(se_in_data),
   .pop(se_finish),
-  .read_addr_1(seoperation_next), // ALU Read
+  .read_addr_1(seoperation_next),                       // ALU Read
   .read_data_1(se_VB_read_data_1),
   .read_valid_1(se_VB_read_valid_1),
-  .read_addr_2(aes_cipher_for_op1_mac_validation_next), // MAC Read
+  .read_addr_2(sha256_for_dataflow_next),               // SHA-256 Read
   .read_data_2(se_VB_read_data_2),
   .read_valid_2(se_VB_read_valid_2),
-  .read_addr_3(aes_invcipher_op1_next),                 // Decryption Read
+  .read_addr_3(aes_invcipher_op1_next),                 // op1 Decryption Read
   .read_data_3(se_VB_read_data_3),
-  .read_valid_3(se_VB_read_valid_3)
+  .read_valid_3(se_VB_read_valid_3),
+  .read_addr_4(aes_invcipher_op2_next),                 // op2 Decryption Read
+  .read_data_4(se_VB_read_data_4),
+  .read_valid_4(se_VB_read_valid_4),
+  .read_addr_5(aes_cipher_for_op1_mac_validation_next),  // op1 MAC Read
+  .read_data_5(se_VB_read_data_5),
+  .read_valid_5(se_VB_read_valid_5),
+  .read_addr_6(aes_cipher_for_op2_mac_validation_next),  // op2 MAC Read          
+  .read_data_6(se_VB_read_data_6),
+  .read_valid_6(se_VB_read_valid_6)
 );
-
-
 
 wire seoperation_start = sha256_for_dataflow_io_outputValid;
 wire [135:0] seoperation_in_data = {seoperation_io_inst, seoperation_io_op1_input, seoperation_io_op2_input};
@@ -40826,7 +40833,6 @@ always @(posedge clock) begin
   end else if (seoperation_start) begin
     seoperation_next <= seoperation_next + 1;
   end
-
 end
 
 fifo_single_read #(
@@ -40842,11 +40848,24 @@ fifo_single_read #(
   .read_valid(seoperation_VB_read_valid)
 );
 
+wire [7:0] seoperation_inst_read = se_VB_read_data_1[1033:1026];
+wire seoperation_op1_type_read = se_VB_read_data_1[1];
+wire [127:0] seoperation_op1_read = ((seoperation_inst_read == 8'hb0) || seoperation_op1_type_read) ?
+                                  se_VB_read_data_1[897:770] : {64'b0, aes_invcipher_op1_read_data[383:320]};
+wire seoperation_op2_type_read = se_VB_read_data_1[0];
+wire [127:0] seoperation_op2_read = ((seoperation_inst_read == 8'hb0) || seoperation_op2_type_read) ?
+                                  se_VB_read_data_1[385:258] : {64'b0, aes_invcipher_op2_read_data[383:320]};
+
+seoperation_check: assert property (@(posedge clock) disable iff (reset) seoperation_start |->
+                                          (se_VB_read_valid_1 && aes_invcipher_op1_read_valid && aes_invcipher_op2_read_valid)
+                                          && (seoperation_in_data == {seoperation_inst_read, seoperation_op1_read, seoperation_op2_read}));
 
 wire aes_invcipher_op1_start = aes_invcipher_op1_io_input_valid;
 wire [383:0] aes_invcipher_op1_in_data = aes_invcipher_op1_io_input_text;
 wire aes_invcipher_op1_finish = aes_invcipher_op1_io_output_valid;
 wire [383:0] aes_invcipher_op1_out_data = aes_invcipher_op1_io_output_text;
+wire [383:0] aes_invcipher_op1_read_data;
+wire aes_invcipher_op1_read_valid;
 reg [$clog2(`SE_DEPTH)-1:0] aes_invcipher_op1_next;
 always @(posedge clock) begin
   if (reset) begin
@@ -40865,20 +40884,22 @@ fifo_single_read  #(
   .push(aes_invcipher_op1_finish),
   .din(aes_invcipher_op1_out_data),
   .pop(se_finish),
-  .read_addr(),
-  .read_data(),
-  .read_valid()
+  .read_addr(seoperation_next),
+  .read_data(aes_invcipher_op1_read_data),
+  .read_valid(aes_invcipher_op1_read_valid)
 );
 
 aes_invcipher_op1_check: assert property (@(posedge clock) disable iff (reset) aes_invcipher_op1_start |->
-                                          (se_VB_read_valid_3 && (se_VB_read_data_3[897:514] == aes_invcipher_op1_in_data))
-                                          || (!se_VB_read_valid_3 && se_start && se_in_data[897:514] == aes_invcipher_op1_in_data));
+                                          (se_VB_read_valid_3 && (se_VB_read_data_3[897:514] == aes_invcipher_op1_in_data)));
+                                          // || (!se_VB_read_valid_3 && se_start && se_in_data[897:514] == aes_invcipher_op1_in_data));
 
 
 wire aes_invcipher_op2_start = aes_invcipher_op2_io_input_valid;
 wire [383:0] aes_invcipher_op2_in_data = aes_invcipher_op2_io_input_text;
 wire aes_invcipher_op2_finish = aes_invcipher_op2_io_output_valid;
 wire [383:0] aes_invcipher_op2_out_data = aes_invcipher_op2_io_output_text;
+wire [383:0] aes_invcipher_op2_read_data;
+wire aes_invcipher_op2_read_valid;
 reg [$clog2(`SE_DEPTH)-1:0] aes_invcipher_op2_next;
 always @(posedge clock) begin
   if (reset) begin
@@ -40896,10 +40917,15 @@ fifo_single_read #(
   .push(aes_invcipher_op2_finish),
   .din(aes_invcipher_op2_out_data),
   .pop(se_finish),
-  .read_addr(),
-  .read_data(),
-  .read_valid()
+  .read_addr(seoperation_next),
+  .read_data(aes_invcipher_op2_read_data),
+  .read_valid(aes_invcipher_op2_read_valid)
 );
+
+aes_invcipher_op2_check: assert property (@(posedge clock) disable iff (reset) aes_invcipher_op2_start |->
+                                          (se_VB_read_valid_4 && (se_VB_read_data_4[385:2] == aes_invcipher_op2_in_data)));
+                                          // || (!se_VB_read_valid_3 && se_start && se_in_data[897:514] == aes_invcipher_op2_in_data));
+
 
 wire aes_cipher_for_op1_mac_validation_start = aes_cipher_for_op1_mac_validation_io_input_valid;
 wire [511:0] aes_cipher_for_op1_mac_validation_in_data = aes_cipher_for_op1_mac_validation_io_input_text;
