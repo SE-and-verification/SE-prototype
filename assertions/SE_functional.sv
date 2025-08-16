@@ -1,5 +1,3 @@
-`include "fifo.sv"
-
 module SEControl(
   input  [7:0] io_inst_in,
   output [2:0] io_fu_op,
@@ -39476,96 +39474,100 @@ module MaxPeriodFibonacciLFSR(
     state_0 <= reset | _T_2; // @[PRNG.scala 55:{49,49}]
     state_1 <= reset | state_0; // @[PRNG.scala 55:{49,49}]
     state_2 <= reset | state_1; // @[PRNG.scala 55:{49,49}]
+    state_3 <= reset | state_2; // @[PRNG.scala 55:{49,49}]
     if (reset) begin // @[PRNG.scala 55:49]
-      state_3 <= 1'h0; // @[PRNG.scala 55:49]
+      state_4 <= 1'h0; // @[PRNG.scala 55:49]
     end else begin
-      state_3 <= state_2;
+      state_4 <= state_3;
     end
-    state_4 <= reset | state_3; // @[PRNG.scala 55:{49,49}]
+    state_5 <= reset | state_4; // @[PRNG.scala 55:{49,49}]
+    state_6 <= reset | state_5; // @[PRNG.scala 55:{49,49}]
+    state_7 <= reset | state_6; // @[PRNG.scala 55:{49,49}]
     if (reset) begin // @[PRNG.scala 55:49]
-      state_5 <= 1'h0; // @[PRNG.scala 55:49]
+      state_8 <= 1'h0; // @[PRNG.scala 55:49]
     end else begin
-      state_5 <= state_4;
+      state_8 <= state_7;
     end
-    if (reset) begin // @[PRNG.scala 55:49]
-      state_6 <= 1'h0; // @[PRNG.scala 55:49]
-    end else begin
-      state_6 <= state_5;
-    end
-    if (reset) begin // @[PRNG.scala 55:49]
-      state_7 <= 1'h0; // @[PRNG.scala 55:49]
-    end else begin
-      state_7 <= state_6;
-    end
-    state_8 <= reset | state_7; // @[PRNG.scala 55:{49,49}]
-    if (reset) begin // @[PRNG.scala 55:49]
-      state_9 <= 1'h0; // @[PRNG.scala 55:49]
-    end else begin
-      state_9 <= state_8;
-    end
+    state_9 <= reset | state_8; // @[PRNG.scala 55:{49,49}]
     state_10 <= reset | state_9; // @[PRNG.scala 55:{49,49}]
-    state_11 <= reset | state_10; // @[PRNG.scala 55:{49,49}]
     if (reset) begin // @[PRNG.scala 55:49]
-      state_12 <= 1'h0; // @[PRNG.scala 55:49]
+      state_11 <= 1'h0; // @[PRNG.scala 55:49]
     end else begin
-      state_12 <= state_11;
+      state_11 <= state_10;
     end
-    if (reset) begin // @[PRNG.scala 55:49]
-      state_13 <= 1'h0; // @[PRNG.scala 55:49]
-    end else begin
-      state_13 <= state_12;
-    end
+    state_12 <= reset | state_11; // @[PRNG.scala 55:{49,49}]
+    state_13 <= reset | state_12; // @[PRNG.scala 55:{49,49}]
     if (reset) begin // @[PRNG.scala 55:49]
       state_14 <= 1'h0; // @[PRNG.scala 55:49]
     end else begin
       state_14 <= state_13;
     end
-    state_15 <= reset | state_14; // @[PRNG.scala 55:{49,49}]
-    state_16 <= reset | state_15; // @[PRNG.scala 55:{49,49}]
-    state_17 <= reset | state_16; // @[PRNG.scala 55:{49,49}]
-    state_18 <= reset | state_17; // @[PRNG.scala 55:{49,49}]
-    state_19 <= reset | state_18; // @[PRNG.scala 55:{49,49}]
-    state_20 <= reset | state_19; // @[PRNG.scala 55:{49,49}]
+    if (reset) begin // @[PRNG.scala 55:49]
+      state_15 <= 1'h0; // @[PRNG.scala 55:49]
+    end else begin
+      state_15 <= state_14;
+    end
+    if (reset) begin // @[PRNG.scala 55:49]
+      state_16 <= 1'h0; // @[PRNG.scala 55:49]
+    end else begin
+      state_16 <= state_15;
+    end
+    if (reset) begin // @[PRNG.scala 55:49]
+      state_17 <= 1'h0; // @[PRNG.scala 55:49]
+    end else begin
+      state_17 <= state_16;
+    end
+    if (reset) begin // @[PRNG.scala 55:49]
+      state_18 <= 1'h0; // @[PRNG.scala 55:49]
+    end else begin
+      state_18 <= state_17;
+    end
+    if (reset) begin // @[PRNG.scala 55:49]
+      state_19 <= 1'h0; // @[PRNG.scala 55:49]
+    end else begin
+      state_19 <= state_18;
+    end
+    if (reset) begin // @[PRNG.scala 55:49]
+      state_20 <= 1'h0; // @[PRNG.scala 55:49]
+    end else begin
+      state_20 <= state_19;
+    end
     if (reset) begin // @[PRNG.scala 55:49]
       state_21 <= 1'h0; // @[PRNG.scala 55:49]
     end else begin
       state_21 <= state_20;
     end
-    state_22 <= reset | state_21; // @[PRNG.scala 55:{49,49}]
+    if (reset) begin // @[PRNG.scala 55:49]
+      state_22 <= 1'h0; // @[PRNG.scala 55:49]
+    end else begin
+      state_22 <= state_21;
+    end
     if (reset) begin // @[PRNG.scala 55:49]
       state_23 <= 1'h0; // @[PRNG.scala 55:49]
     end else begin
       state_23 <= state_22;
     end
-    if (reset) begin // @[PRNG.scala 55:49]
-      state_24 <= 1'h0; // @[PRNG.scala 55:49]
-    end else begin
-      state_24 <= state_23;
-    end
+    state_24 <= reset | state_23; // @[PRNG.scala 55:{49,49}]
     state_25 <= reset | state_24; // @[PRNG.scala 55:{49,49}]
-    state_26 <= reset | state_25; // @[PRNG.scala 55:{49,49}]
-    state_27 <= reset | state_26; // @[PRNG.scala 55:{49,49}]
     if (reset) begin // @[PRNG.scala 55:49]
-      state_28 <= 1'h0; // @[PRNG.scala 55:49]
+      state_26 <= 1'h0; // @[PRNG.scala 55:49]
     end else begin
-      state_28 <= state_27;
+      state_26 <= state_25;
     end
+    state_27 <= reset | state_26; // @[PRNG.scala 55:{49,49}]
+    state_28 <= reset | state_27; // @[PRNG.scala 55:{49,49}]
     if (reset) begin // @[PRNG.scala 55:49]
       state_29 <= 1'h0; // @[PRNG.scala 55:49]
     end else begin
       state_29 <= state_28;
     end
+    state_30 <= reset | state_29; // @[PRNG.scala 55:{49,49}]
     if (reset) begin // @[PRNG.scala 55:49]
-      state_30 <= 1'h0; // @[PRNG.scala 55:49]
+      state_31 <= 1'h0; // @[PRNG.scala 55:49]
     end else begin
-      state_30 <= state_29;
+      state_31 <= state_30;
     end
-    state_31 <= reset | state_30; // @[PRNG.scala 55:{49,49}]
-    if (reset) begin // @[PRNG.scala 55:49]
-      state_32 <= 1'h0; // @[PRNG.scala 55:49]
-    end else begin
-      state_32 <= state_31;
-    end
+    state_32 <= reset | state_31; // @[PRNG.scala 55:{49,49}]
     if (reset) begin // @[PRNG.scala 55:49]
       state_33 <= 1'h0; // @[PRNG.scala 55:49]
     end else begin
@@ -39578,7 +39580,11 @@ module MaxPeriodFibonacciLFSR(
     end
     state_35 <= reset | state_34; // @[PRNG.scala 55:{49,49}]
     state_36 <= reset | state_35; // @[PRNG.scala 55:{49,49}]
-    state_37 <= reset | state_36; // @[PRNG.scala 55:{49,49}]
+    if (reset) begin // @[PRNG.scala 55:49]
+      state_37 <= 1'h0; // @[PRNG.scala 55:49]
+    end else begin
+      state_37 <= state_36;
+    end
     state_38 <= reset | state_37; // @[PRNG.scala 55:{49,49}]
     state_39 <= reset | state_38; // @[PRNG.scala 55:{49,49}]
     if (reset) begin // @[PRNG.scala 55:49]
@@ -39586,19 +39592,15 @@ module MaxPeriodFibonacciLFSR(
     end else begin
       state_40 <= state_39;
     end
-    state_41 <= reset | state_40; // @[PRNG.scala 55:{49,49}]
     if (reset) begin // @[PRNG.scala 55:49]
-      state_42 <= 1'h0; // @[PRNG.scala 55:49]
+      state_41 <= 1'h0; // @[PRNG.scala 55:49]
     end else begin
-      state_42 <= state_41;
+      state_41 <= state_40;
     end
+    state_42 <= reset | state_41; // @[PRNG.scala 55:{49,49}]
     state_43 <= reset | state_42; // @[PRNG.scala 55:{49,49}]
     state_44 <= reset | state_43; // @[PRNG.scala 55:{49,49}]
-    if (reset) begin // @[PRNG.scala 55:49]
-      state_45 <= 1'h0; // @[PRNG.scala 55:49]
-    end else begin
-      state_45 <= state_44;
-    end
+    state_45 <= reset | state_44; // @[PRNG.scala 55:{49,49}]
     if (reset) begin // @[PRNG.scala 55:49]
       state_46 <= 1'h0; // @[PRNG.scala 55:49]
     end else begin
@@ -40179,6 +40181,7 @@ module SE(
   reg  output_buffer_enc_valid; // @[SE.scala 259:46]
   reg  output_buffer_enc_idle; // @[SE.scala 260:45]
   reg [127:0] output_mac; // @[Reg.scala 16:16]
+  wire [511:0] output_connect = {output_mac,output_buffer_enc[511:128]}; // @[Cat.scala 31:58]
   wire  _GEN_466 = aes_cipher_io_input_valid ? 1'h0 : output_buffer_enc_idle; // @[SE.scala 269:48 270:40 260:45]
   wire  _GEN_467 = _T | _GEN_466; // @[SE.scala 267:44 268:40]
   wire  _GEN_468 = aes_cipher_io_output_valid | output_buffer_enc_valid; // @[SE.scala 274:49 275:41 259:46]
@@ -40196,8 +40199,8 @@ module SE(
   wire  _GEN_483 = 3'h5 == push_pointer2 ? mac_checkout_2_5 : _GEN_482; // @[SE.scala 277:{61,61}]
   wire  _GEN_484 = 3'h6 == push_pointer2 ? mac_checkout_2_6 : _GEN_483; // @[SE.scala 277:{61,61}]
   wire  _GEN_485 = 3'h7 == push_pointer2 ? mac_checkout_2_7 : _GEN_484; // @[SE.scala 277:{61,61}]
-  wire [639:0] _output_gated_T_1 = {output_mac,output_buffer_enc}; // @[Cat.scala 31:58]
-  wire [639:0] output_gated = _GEN_477 & _GEN_485 ? _output_gated_T_1 : 640'heeee; // @[SE.scala 277:31]
+  wire [511:0] output_gated = _GEN_477 & _GEN_485 ? output_connect : 512'heeee; // @[SE.scala 277:31]
+  wire [511:0] _GEN_487 = output_buffer_enc_valid ? output_gated : 512'h0; // @[SE.scala 278:39 280:49 284:49]
   SEOperation seoperation ( // @[SE.scala 55:33]
     .io_inst(seoperation_io_inst),
     .io_op1_input(seoperation_io_op1_input),
@@ -40336,7 +40339,7 @@ module SE(
     .io_out_63(bit64_randnum_prng_io_out_63)
   );
   assign io_in_ready = input_buffer_idle; // @[SE.scala 100:21]
-  assign io_out_result = output_buffer_enc_valid ? output_gated : 640'h0; // @[SE.scala 278:39 280:49 284:49]
+  assign io_out_result = {{128'd0}, _GEN_487};
   assign io_out_valid = output_buffer_enc_valid; // @[SE.scala 278:39 279:30 283:30]
   assign io_out_output_type = output_buffer_enc_valid; // @[SE.scala 278:39 279:30 283:30]
   assign seoperation_io_inst = inst_buffer_buf; // @[SE.scala 202:31]
@@ -40774,7 +40777,9 @@ end // initial
 wire se_start = io_in_valid & io_in_ready;
 wire [1033:0] se_in_data = {io_in_inst, io_in_op1, io_in_op2, io_in_op1_type, io_in_op2_type};
 wire se_finish = io_out_valid & io_out_ready;
-wire [640:0] se_out_data = {io_out_result, io_out_output_type};
+wire [640:0] se_out_data = {io_out_result, 1'b1};
+wire [1033:0] se_VB_read_data_1, se_VB_read_data_2, se_VB_read_data_3;
+wire se_VB_read_valid_1, se_VB_read_valid_2, se_VB_read_valid_3;
 reg [$clog2(`SE_DEPTH)-1:0] se_next;
 always @(posedge clock) begin
   if (reset) begin
@@ -40782,10 +40787,9 @@ always @(posedge clock) begin
   end else if (se_start) begin
     se_next <= se_next + 1;
   end
-
 end
 
-fifo_single_read se_ValueBuffer #(
+fifo_triple_read se_ValueBuffer #(
   .WIDTH(1034)
 ) se_ValueBuffer (
   .clk(clock),
@@ -40793,15 +40797,26 @@ fifo_single_read se_ValueBuffer #(
   .push(se_start),
   .din(se_in_data),
   .pop(se_finish),
-  .read_addr(),
-  .read_data(),
-  .read_valid()
+  .read_addr_1(seoperation_next), // ALU Read
+  .read_data_1(se_VB_read_data_1),
+  .read_valid_1(se_VB_read_valid_1),
+  .read_addr_2(aes_cipher_for_op1_mac_validation_next), // MAC Read
+  .read_data_2(se_VB_read_data_2),
+  .read_valid_2(se_VB_read_valid_2),
+  .read_addr_3(aes_invcipher_op1_next),                 // Decryption Read
+  .read_data_3(se_VB_read_data_3),
+  .read_valid_3(se_VB_read_valid_3)
 );
+
+
 
 wire seoperation_start = sha256_for_dataflow_io_outputValid;
 wire [135:0] seoperation_in_data = {seoperation_io_inst, seoperation_io_op1_input, seoperation_io_op2_input};
+wire [7:0] seoperation_io_inst_read = se_VB_read_valid_1 ? se_VB_read_data_1[1033:1026] : io_in_inst;
 wire seoperation_finish = sha256_for_dataflow_io_outputValid;
 wire [63:0] seoperation_out_data = seoperation_io_result;
+wire [63:0] seoperation_VB_read_data;
+wire seoperation_VB_read_valid;
 reg [$clog2(`SE_DEPTH)-1:0] seoperation_next;
 always @(posedge clock) begin
   if (reset) begin
@@ -40820,9 +40835,9 @@ fifo_single_read seoperation_ValueBuffer #(
   .push(seoperation_finish),
   .din(seoperation_out_data),
   .pop(se_finish),
-  .read_addr(),
-  .read_data(),
-  .read_valid()
+  .read_addr(aes_cipher_next),
+  .read_data(seoperation_VB_read_data),
+  .read_valid(seoperation_VB_read_valid)
 );
 
 
@@ -40852,6 +40867,11 @@ fifo_single_read aes_invcipher_op1_ValueBuffer #(
   .read_data(),
   .read_valid()
 );
+
+aes_invcipher_op1_check: assert property (@(posedge clock) disable iff (reset) aes_invcipher_op1_start |->
+                                          (se_VB_read_valid_3 && (se_VB_read_data_3[1025:642] == aes_invcipher_op1_in_data))
+                                          || (!se_VB_read_valid_3 && se_start && se_in_data[1025:642] == aes_invcipher_op1_in_data));
+
 
 wire aes_invcipher_op2_start = aes_invcipher_op2_io_input_valid;
 wire [383:0] aes_invcipher_op2_in_data = aes_invcipher_op2_io_input_text;
@@ -40892,9 +40912,9 @@ always @(posedge clock) begin
   end
 end
 
-fifo_single_read aes_invcipher_op1_ValueBuffer #(
+fifo_single_read aes_cipher_for_op1_mac_validation_ValueBuffer #(
   .WIDTH(512)
-) aes_invcipher_op1_ValueBuffer (
+) aes_cipher_for_op1_mac_validation_ValueBuffer (
   .clk(clock),
   .rst(reset),
   .push(aes_cipher_for_op1_mac_validation_finish),
@@ -41044,7 +41064,4 @@ fifo_single_read bit64_randnum_prng_ValueBuffer #(
   .read_data(),
   .read_valid()
 );
-
-
-
 endmodule
