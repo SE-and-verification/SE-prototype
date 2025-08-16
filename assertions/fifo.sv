@@ -198,7 +198,7 @@ module fifo_double_read #(
 
 endmodule
 
-module fifo_triple_read #(
+module fifo_six_read #(
     parameter integer DEPTH = `SE_DEPTH,   // power of two
     parameter integer WIDTH = 8
 )(
@@ -220,6 +220,7 @@ module fifo_triple_read #(
 
     // head, tail
     output wire [$clog2(DEPTH)-1:0] head,  // index of next item to read
+    output wire [$clog2(DEPTH)-1:0] tail,  // index of next item to write
 
     // absolute read port 1
     input  wire [$clog2(DEPTH)-1:0] read_addr_1,  // 0..DEPTH-1 (physical slot)
@@ -234,7 +235,22 @@ module fifo_triple_read #(
     // absolute read port 3
     input  wire [$clog2(DEPTH)-1:0] read_addr_3,  // 0..DEPTH-1 (physical slot)
     output wire [WIDTH-1:0]         read_data_3,  // mem[read_addr]
-    output wire                     read_valid_3  // 1 if slot currently occupied
+    output wire                     read_valid_3,  // 1 if slot currently occupied
+
+    // absolute read port 4
+    input  wire [$clog2(DEPTH)-1:0] read_addr_4,  // 0..DEPTH-1 (physical slot)
+    output wire [WIDTH-1:0]         read_data_4,  // mem[read_addr]
+    output wire                     read_valid_4,  // 1 if slot currently occupied
+
+    // absolute read port 5
+    input  wire [$clog2(DEPTH)-1:0] read_addr_5,  // 0..DEPTH-1 (physical slot)
+    output wire [WIDTH-1:0]         read_data_5,  // mem[read_addr]
+    output wire                     read_valid_5,  // 1 if slot currently occupied
+
+    // absolute read port 6
+    input  wire [$clog2(DEPTH)-1:0] read_addr_6,  // 0..DEPTH-1 (physical slot)
+    output wire [WIDTH-1:0]         read_data_6,  // mem[read_addr]
+    output wire                     read_valid_6  // 1 if slot currently occupied
 );
 
     localparam AW = $clog2(DEPTH);
@@ -283,6 +299,9 @@ module fifo_triple_read #(
     // Number of valid entries in FIFO
     assign level = wr_ptr - rd_ptr; // width AW+1
 
+    assign head = rd_ptr[AW-1:0];  // index of next item to read
+    assign tail = wr_ptr[AW-1:0];  // index of next item to write
+
     // =========================
     // Absolute read port
     //   read_data  = mem[read_addr] (combinational)
@@ -307,7 +326,20 @@ module fifo_triple_read #(
     assign        read_valid_3 = (diff_3 < level);                 // compares AW+1 vs AW -> zero-extends diff
     assign        read_data_3  = mem[read_addr_3];
 
-    assign head = rd_ptr[AW-1:0];  // index of next item to read
-    assign tail = wr_ptr[AW-1:0];  // index of next item to write
+
+    wire [AW-1:0] rd_idx_4   = rd_ptr[AW-1:0];
+    wire [AW-1:0] diff_4     = (read_addr_4 - rd_idx_4) & (DEPTH-1); // modulo DEPTH
+    assign        read_valid_4 = (diff_4 < level);                 // compares AW+1 vs AW -> zero-extends diff
+    assign        read_data_4  = mem[read_addr_4];
+
+    wire [AW-1:0] rd_idx_5   = rd_ptr[AW-1:0];
+    wire [AW-1:0] diff_5     = (read_addr_5 - rd_idx_5) & (DEPTH-1); // modulo DEPTH
+    assign        read_valid_5 = (diff_5 < level);                 // compares AW+1 vs AW -> zero-extends diff
+    assign        read_data_5  = mem[read_addr_5];
+
+    wire [AW-1:0] rd_idx_6   = rd_ptr[AW-1:0];
+    wire [AW-1:0] diff_6     = (read_addr_6 - rd_idx_6) & (DEPTH-1); // modulo DEPTH
+    assign        read_valid_6 = (diff_6 < level);                 // compares AW+1 vs AW -> zero-extends diff
+    assign        read_data_6  = mem[read_addr_6];
 
 endmodule
