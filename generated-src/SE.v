@@ -37884,7 +37884,6 @@ module CompressionFunction(
   input         io_newChunk,
   input         io_shiftIn,
   input  [31:0] io_wordIn,
-  output        io_valid,
   output [31:0] io_out_0,
   output [31:0] io_out_1,
   output [31:0] io_out_2,
@@ -37913,7 +37912,6 @@ module CompressionFunction(
   reg [31:0] _RAND_15;
   reg [31:0] _RAND_16;
   reg [31:0] _RAND_17;
-  reg [31:0] _RAND_18;
 `endif // RANDOMIZE_REG_INIT
   wire  messageScheduleArray_clock; // @[CompressionFunction.scala 49:38]
   wire  messageScheduleArray_reset; // @[CompressionFunction.scala 49:38]
@@ -37921,7 +37919,6 @@ module CompressionFunction(
   wire  messageScheduleArray_io_shiftIn; // @[CompressionFunction.scala 49:38]
   wire [31:0] messageScheduleArray_io_wordIn; // @[CompressionFunction.scala 49:38]
   wire [31:0] messageScheduleArray_io_wOut; // @[CompressionFunction.scala 49:38]
-  reg  valid; // @[CompressionFunction.scala 32:24]
   reg [5:0] i; // @[CompressionFunction.scala 35:20]
   reg [31:0] hash_val_0; // @[CompressionFunction.scala 37:27]
   reg [31:0] hash_val_1; // @[CompressionFunction.scala 37:27]
@@ -38039,7 +38036,6 @@ module CompressionFunction(
   wire [31:0] _e_T_1 = d + temp1; // @[CompressionFunction.scala 99:16]
   wire [31:0] _a_T_1 = temp1 + temp2; // @[CompressionFunction.scala 103:20]
   wire [5:0] _i_T_1 = i + 6'h1; // @[CompressionFunction.scala 105:20]
-  wire  _T_1 = i == 6'h3f; // @[CompressionFunction.scala 107:17]
   wire [31:0] _a_T_5 = _a_T_1 + hash_val_0; // @[CompressionFunction.scala 110:32]
   wire [31:0] _b_T_1 = a + hash_val_1; // @[CompressionFunction.scala 111:20]
   wire [31:0] _c_T_1 = b + hash_val_2; // @[CompressionFunction.scala 112:20]
@@ -38066,7 +38062,6 @@ module CompressionFunction(
     .io_wordIn(messageScheduleArray_io_wordIn),
     .io_wOut(messageScheduleArray_io_wOut)
   );
-  assign io_valid = valid; // @[CompressionFunction.scala 33:14]
   assign io_out_0 = hash_val_0; // @[CompressionFunction.scala 38:12]
   assign io_out_1 = hash_val_1; // @[CompressionFunction.scala 38:12]
   assign io_out_2 = hash_val_2; // @[CompressionFunction.scala 38:12]
@@ -38081,13 +38076,6 @@ module CompressionFunction(
   assign messageScheduleArray_io_shiftIn = io_shiftIn; // @[CompressionFunction.scala 51:37]
   assign messageScheduleArray_io_wordIn = io_wordIn; // @[CompressionFunction.scala 52:36]
   always @(posedge clock) begin
-    if (reset) begin // @[CompressionFunction.scala 32:24]
-      valid <= 1'h0; // @[CompressionFunction.scala 32:24]
-    end else if (shiftIn) begin // @[CompressionFunction.scala 86:20]
-      valid <= _T_1;
-    end else if (_messageScheduleArray_io_first_T) begin // @[CompressionFunction.scala 59:35]
-      valid <= 1'h0; // @[CompressionFunction.scala 60:15]
-    end
     if (reset) begin // @[CompressionFunction.scala 35:20]
       i <= 6'h0; // @[CompressionFunction.scala 35:20]
     end else if (shiftIn) begin // @[CompressionFunction.scala 86:20]
@@ -38326,43 +38314,41 @@ initial begin
     `endif
 `ifdef RANDOMIZE_REG_INIT
   _RAND_0 = {1{`RANDOM}};
-  valid = _RAND_0[0:0];
+  i = _RAND_0[5:0];
   _RAND_1 = {1{`RANDOM}};
-  i = _RAND_1[5:0];
+  hash_val_0 = _RAND_1[31:0];
   _RAND_2 = {1{`RANDOM}};
-  hash_val_0 = _RAND_2[31:0];
+  hash_val_1 = _RAND_2[31:0];
   _RAND_3 = {1{`RANDOM}};
-  hash_val_1 = _RAND_3[31:0];
+  hash_val_2 = _RAND_3[31:0];
   _RAND_4 = {1{`RANDOM}};
-  hash_val_2 = _RAND_4[31:0];
+  hash_val_3 = _RAND_4[31:0];
   _RAND_5 = {1{`RANDOM}};
-  hash_val_3 = _RAND_5[31:0];
+  hash_val_4 = _RAND_5[31:0];
   _RAND_6 = {1{`RANDOM}};
-  hash_val_4 = _RAND_6[31:0];
+  hash_val_5 = _RAND_6[31:0];
   _RAND_7 = {1{`RANDOM}};
-  hash_val_5 = _RAND_7[31:0];
+  hash_val_6 = _RAND_7[31:0];
   _RAND_8 = {1{`RANDOM}};
-  hash_val_6 = _RAND_8[31:0];
+  hash_val_7 = _RAND_8[31:0];
   _RAND_9 = {1{`RANDOM}};
-  hash_val_7 = _RAND_9[31:0];
+  a = _RAND_9[31:0];
   _RAND_10 = {1{`RANDOM}};
-  a = _RAND_10[31:0];
+  b = _RAND_10[31:0];
   _RAND_11 = {1{`RANDOM}};
-  b = _RAND_11[31:0];
+  c = _RAND_11[31:0];
   _RAND_12 = {1{`RANDOM}};
-  c = _RAND_12[31:0];
+  d = _RAND_12[31:0];
   _RAND_13 = {1{`RANDOM}};
-  d = _RAND_13[31:0];
+  e = _RAND_13[31:0];
   _RAND_14 = {1{`RANDOM}};
-  e = _RAND_14[31:0];
+  f = _RAND_14[31:0];
   _RAND_15 = {1{`RANDOM}};
-  f = _RAND_15[31:0];
+  g = _RAND_15[31:0];
   _RAND_16 = {1{`RANDOM}};
-  g = _RAND_16[31:0];
+  h = _RAND_16[31:0];
   _RAND_17 = {1{`RANDOM}};
-  h = _RAND_17[31:0];
-  _RAND_18 = {1{`RANDOM}};
-  shiftIn = _RAND_18[0:0];
+  shiftIn = _RAND_17[0:0];
 `endif // RANDOMIZE_REG_INIT
   `endif // RANDOMIZE
 end // initial
@@ -38398,7 +38384,6 @@ module Sha256Accel(
   wire  accel_io_newChunk; // @[Sha256Accel.scala 35:23]
   wire  accel_io_shiftIn; // @[Sha256Accel.scala 35:23]
   wire [31:0] accel_io_wordIn; // @[Sha256Accel.scala 35:23]
-  wire  accel_io_valid; // @[Sha256Accel.scala 35:23]
   wire [31:0] accel_io_out_0; // @[Sha256Accel.scala 35:23]
   wire [31:0] accel_io_out_1; // @[Sha256Accel.scala 35:23]
   wire [31:0] accel_io_out_2; // @[Sha256Accel.scala 35:23]
@@ -38408,30 +38393,22 @@ module Sha256Accel(
   wire [31:0] accel_io_out_6; // @[Sha256Accel.scala 35:23]
   wire [31:0] accel_io_out_7; // @[Sha256Accel.scala 35:23]
   reg [519:0] vec_data; // @[Reg.scala 16:16]
-  reg  input_valid; // @[Sha256Accel.scala 32:30]
   reg  first; // @[Sha256Accel.scala 33:24]
-  wire  _input_valid_T = io_outputValid ? 1'h0 : input_valid; // @[Sha256Accel.scala 34:50]
   wire  _first_T = accel_io_first ? 1'h0 : first; // @[Sha256Accel.scala 37:44]
-  reg [7:0] ctr; // @[Sha256Accel.scala 41:22]
-  wire [13:0] _accel_io_wordIn_T = 6'h20 * ctr; // @[Sha256Accel.scala 45:46]
-  wire [519:0] _accel_io_wordIn_T_1 = vec_data >> _accel_io_wordIn_T; // @[Sha256Accel.scala 45:38]
+  reg  start; // @[Sha256Accel.scala 39:24]
+  reg [7:0] ctr; // @[Sha256Accel.scala 40:22]
+  wire  _io_outputValid_T = ctr == 8'h3f; // @[Sha256Accel.scala 41:27]
+  wire [13:0] _accel_io_wordIn_T = 6'h20 * ctr; // @[Sha256Accel.scala 46:46]
+  wire [519:0] _accel_io_wordIn_T_1 = vec_data >> _accel_io_wordIn_T; // @[Sha256Accel.scala 46:38]
   wire [31:0] _accel_io_wordIn_T_4 = {vec_data[519:512],24'h0}; // @[Cat.scala 31:58]
-  wire  _T_2 = ctr == 8'h3f; // @[Sha256Accel.scala 49:20]
-  wire [31:0] _GEN_1 = ctr == 8'h3f ? 32'h208 : 32'h0; // @[Sha256Accel.scala 49:30 51:25 53:25]
-  wire [31:0] _GEN_2 = ctr == 8'h10 ? _accel_io_wordIn_T_4 : _GEN_1; // @[Sha256Accel.scala 46:31 48:25]
-  wire [31:0] _GEN_3 = ctr < 8'h10 ? _accel_io_wordIn_T_1[31:0] : _GEN_2; // @[Sha256Accel.scala 44:22 45:25]
-  wire  _GEN_4 = accel_io_shiftIn ? 1'h0 : io_inputValid | _first_T; // @[Sha256Accel.scala 37:11 59:36 60:15]
-  wire  _GEN_5 = io_inputValid | _GEN_4; // @[Sha256Accel.scala 56:26 57:15]
-  wire [7:0] _GEN_6 = io_inputValid ? 8'h0 : ctr; // @[Sha256Accel.scala 56:26 58:13 41:22]
-  wire  _T_3 = ctr >= 8'h10; // @[Sha256Accel.scala 62:15]
-  wire [7:0] _ctr_T_1 = ctr + 8'h1; // @[Sha256Accel.scala 65:20]
-  wire  _T_5 = input_valid & ctr != 8'h0; // @[Sha256Accel.scala 66:30]
-  wire [7:0] _GEN_8 = input_valid & ctr != 8'h0 ? _ctr_T_1 : _GEN_6; // @[Sha256Accel.scala 66:46 68:13]
-  wire [7:0] _GEN_10 = ctr >= 8'h10 ? _ctr_T_1 : _GEN_8; // @[Sha256Accel.scala 62:24 65:13]
-  wire [7:0] _GEN_11 = io_inputValid ? 8'h0 : _GEN_10; // @[Sha256Accel.scala 73:{26,32}]
-  wire  _GEN_13 = accel_io_shiftIn ? 1'h0 : _GEN_5; // @[Sha256Accel.scala 81:36 82:15]
-  wire  _GEN_14 = io_inputValid | _GEN_13; // @[Sha256Accel.scala 78:26 79:15]
-  wire [7:0] _GEN_15 = io_inputValid ? 8'h0 : _GEN_11; // @[Sha256Accel.scala 78:26 80:13]
+  wire [31:0] _GEN_1 = _io_outputValid_T ? 32'h208 : 32'h0; // @[Sha256Accel.scala 50:30 52:25 54:25]
+  wire [31:0] _GEN_2 = ctr == 8'h10 ? _accel_io_wordIn_T_4 : _GEN_1; // @[Sha256Accel.scala 47:31 49:25]
+  wire [31:0] _GEN_3 = ctr < 8'h10 ? _accel_io_wordIn_T_1[31:0] : _GEN_2; // @[Sha256Accel.scala 45:22 46:25]
+  wire  _GEN_4 = io_outputValid ? 1'h0 : start; // @[Sha256Accel.scala 58:33 59:15 39:24]
+  wire  _GEN_5 = io_inputValid | _GEN_4; // @[Sha256Accel.scala 56:25 57:15]
+  wire  _GEN_7 = accel_io_shiftIn ? 1'h0 : io_inputValid | _first_T; // @[Sha256Accel.scala 37:11 70:36 71:15]
+  wire  _GEN_8 = io_inputValid | _GEN_7; // @[Sha256Accel.scala 67:26 68:15]
+  wire [7:0] _ctr_T_1 = ctr + 8'h1; // @[Sha256Accel.scala 74:20]
   CompressionFunction accel ( // @[Sha256Accel.scala 35:23]
     .clock(accel_clock),
     .reset(accel_reset),
@@ -38439,7 +38416,6 @@ module Sha256Accel(
     .io_newChunk(accel_io_newChunk),
     .io_shiftIn(accel_io_shiftIn),
     .io_wordIn(accel_io_wordIn),
-    .io_valid(accel_io_valid),
     .io_out_0(accel_io_out_0),
     .io_out_1(accel_io_out_1),
     .io_out_2(accel_io_out_2),
@@ -38457,37 +38433,33 @@ module Sha256Accel(
   assign io_outputData_5 = accel_io_out_5; // @[Sha256Accel.scala 38:19]
   assign io_outputData_6 = accel_io_out_6; // @[Sha256Accel.scala 38:19]
   assign io_outputData_7 = accel_io_out_7; // @[Sha256Accel.scala 38:19]
-  assign io_outputValid = accel_io_valid; // @[Sha256Accel.scala 39:20]
+  assign io_outputValid = ctr == 8'h3f; // @[Sha256Accel.scala 41:27]
   assign accel_clock = clock;
   assign accel_reset = reset;
-  assign accel_io_first = first & accel_io_shiftIn; // @[Sha256Accel.scala 43:29]
-  assign accel_io_newChunk = ctr == 8'h0 & accel_io_shiftIn; // @[Sha256Accel.scala 42:40]
-  assign accel_io_shiftIn = _T_3 | _T_5; // @[Sha256Accel.scala 84:24 85:26]
-  assign accel_io_wordIn = io_inputValid ? _GEN_3 : 32'h0; // @[Sha256Accel.scala 73:26 75:25]
+  assign accel_io_first = first & accel_io_shiftIn; // @[Sha256Accel.scala 44:29]
+  assign accel_io_newChunk = ctr == 8'h0 & accel_io_shiftIn; // @[Sha256Accel.scala 43:40]
+  assign accel_io_shiftIn = start; // @[Sha256Accel.scala 62:18 63:26 65:26]
+  assign accel_io_wordIn = io_inputValid ? _GEN_3 : 32'h0; // @[Sha256Accel.scala 79:26 81:25]
   always @(posedge clock) begin
     if (io_inputValid) begin // @[Reg.scala 17:18]
       vec_data <= io_inputData; // @[Reg.scala 17:22]
     end
-    if (reset) begin // @[Sha256Accel.scala 32:30]
-      input_valid <= 1'h0; // @[Sha256Accel.scala 32:30]
+    first <= reset | _GEN_8; // @[Sha256Accel.scala 33:{24,24}]
+    if (reset) begin // @[Sha256Accel.scala 39:24]
+      start <= 1'h0; // @[Sha256Accel.scala 39:24]
     end else begin
-      input_valid <= io_inputValid | _input_valid_T; // @[Sha256Accel.scala 34:17]
+      start <= _GEN_5;
     end
-    first <= reset | _GEN_14; // @[Sha256Accel.scala 33:{24,24}]
-    if (reset) begin // @[Sha256Accel.scala 41:22]
-      ctr <= 8'h0; // @[Sha256Accel.scala 41:22]
-    end else if (io_inputValid) begin // @[Sha256Accel.scala 96:26]
-      ctr <= 8'h0; // @[Sha256Accel.scala 96:32]
-    end else if (_T_3) begin // @[Sha256Accel.scala 84:24]
-      if (_T_2) begin // @[Sha256Accel.scala 88:29]
-        ctr <= 8'h0; // @[Sha256Accel.scala 88:35]
-      end else begin
-        ctr <= _ctr_T_1; // @[Sha256Accel.scala 87:13]
-      end
-    end else if (_T_5) begin // @[Sha256Accel.scala 89:46]
-      ctr <= _ctr_T_1; // @[Sha256Accel.scala 91:13]
+    if (reset) begin // @[Sha256Accel.scala 40:22]
+      ctr <= 8'h0; // @[Sha256Accel.scala 40:22]
+    end else if (io_inputValid) begin // @[Sha256Accel.scala 84:26]
+      ctr <= 8'h0; // @[Sha256Accel.scala 84:32]
+    end else if (io_inputValid) begin // @[Sha256Accel.scala 79:26]
+      ctr <= 8'h0; // @[Sha256Accel.scala 79:32]
+    end else if (ctr != 8'h3f & start) begin // @[Sha256Accel.scala 73:34]
+      ctr <= _ctr_T_1; // @[Sha256Accel.scala 74:13]
     end else begin
-      ctr <= _GEN_15;
+      ctr <= 8'h0; // @[Sha256Accel.scala 76:12]
     end
   end
 // Register and memory initialization
@@ -38529,9 +38501,9 @@ initial begin
   _RAND_0 = {17{`RANDOM}};
   vec_data = _RAND_0[519:0];
   _RAND_1 = {1{`RANDOM}};
-  input_valid = _RAND_1[0:0];
+  first = _RAND_1[0:0];
   _RAND_2 = {1{`RANDOM}};
-  first = _RAND_2[0:0];
+  start = _RAND_2[0:0];
   _RAND_3 = {1{`RANDOM}};
   ctr = _RAND_3[7:0];
 `endif // RANDOMIZE_REG_INIT
@@ -39475,28 +39447,44 @@ module MaxPeriodFibonacciLFSR(
     state_1 <= reset | state_0; // @[PRNG.scala 55:{49,49}]
     state_2 <= reset | state_1; // @[PRNG.scala 55:{49,49}]
     state_3 <= reset | state_2; // @[PRNG.scala 55:{49,49}]
+    state_4 <= reset | state_3; // @[PRNG.scala 55:{49,49}]
     if (reset) begin // @[PRNG.scala 55:49]
-      state_4 <= 1'h0; // @[PRNG.scala 55:49]
+      state_5 <= 1'h0; // @[PRNG.scala 55:49]
     end else begin
-      state_4 <= state_3;
+      state_5 <= state_4;
     end
-    state_5 <= reset | state_4; // @[PRNG.scala 55:{49,49}]
     state_6 <= reset | state_5; // @[PRNG.scala 55:{49,49}]
-    state_7 <= reset | state_6; // @[PRNG.scala 55:{49,49}]
     if (reset) begin // @[PRNG.scala 55:49]
-      state_8 <= 1'h0; // @[PRNG.scala 55:49]
+      state_7 <= 1'h0; // @[PRNG.scala 55:49]
     end else begin
-      state_8 <= state_7;
+      state_7 <= state_6;
     end
-    state_9 <= reset | state_8; // @[PRNG.scala 55:{49,49}]
-    state_10 <= reset | state_9; // @[PRNG.scala 55:{49,49}]
+    state_8 <= reset | state_7; // @[PRNG.scala 55:{49,49}]
+    if (reset) begin // @[PRNG.scala 55:49]
+      state_9 <= 1'h0; // @[PRNG.scala 55:49]
+    end else begin
+      state_9 <= state_8;
+    end
+    if (reset) begin // @[PRNG.scala 55:49]
+      state_10 <= 1'h0; // @[PRNG.scala 55:49]
+    end else begin
+      state_10 <= state_9;
+    end
     if (reset) begin // @[PRNG.scala 55:49]
       state_11 <= 1'h0; // @[PRNG.scala 55:49]
     end else begin
       state_11 <= state_10;
     end
-    state_12 <= reset | state_11; // @[PRNG.scala 55:{49,49}]
-    state_13 <= reset | state_12; // @[PRNG.scala 55:{49,49}]
+    if (reset) begin // @[PRNG.scala 55:49]
+      state_12 <= 1'h0; // @[PRNG.scala 55:49]
+    end else begin
+      state_12 <= state_11;
+    end
+    if (reset) begin // @[PRNG.scala 55:49]
+      state_13 <= 1'h0; // @[PRNG.scala 55:49]
+    end else begin
+      state_13 <= state_12;
+    end
     if (reset) begin // @[PRNG.scala 55:49]
       state_14 <= 1'h0; // @[PRNG.scala 55:49]
     end else begin
@@ -39522,26 +39510,10 @@ module MaxPeriodFibonacciLFSR(
     end else begin
       state_18 <= state_17;
     end
-    if (reset) begin // @[PRNG.scala 55:49]
-      state_19 <= 1'h0; // @[PRNG.scala 55:49]
-    end else begin
-      state_19 <= state_18;
-    end
-    if (reset) begin // @[PRNG.scala 55:49]
-      state_20 <= 1'h0; // @[PRNG.scala 55:49]
-    end else begin
-      state_20 <= state_19;
-    end
-    if (reset) begin // @[PRNG.scala 55:49]
-      state_21 <= 1'h0; // @[PRNG.scala 55:49]
-    end else begin
-      state_21 <= state_20;
-    end
-    if (reset) begin // @[PRNG.scala 55:49]
-      state_22 <= 1'h0; // @[PRNG.scala 55:49]
-    end else begin
-      state_22 <= state_21;
-    end
+    state_19 <= reset | state_18; // @[PRNG.scala 55:{49,49}]
+    state_20 <= reset | state_19; // @[PRNG.scala 55:{49,49}]
+    state_21 <= reset | state_20; // @[PRNG.scala 55:{49,49}]
+    state_22 <= reset | state_21; // @[PRNG.scala 55:{49,49}]
     if (reset) begin // @[PRNG.scala 55:49]
       state_23 <= 1'h0; // @[PRNG.scala 55:49]
     end else begin
@@ -39554,53 +39526,69 @@ module MaxPeriodFibonacciLFSR(
     end else begin
       state_26 <= state_25;
     end
-    state_27 <= reset | state_26; // @[PRNG.scala 55:{49,49}]
+    if (reset) begin // @[PRNG.scala 55:49]
+      state_27 <= 1'h0; // @[PRNG.scala 55:49]
+    end else begin
+      state_27 <= state_26;
+    end
     state_28 <= reset | state_27; // @[PRNG.scala 55:{49,49}]
     if (reset) begin // @[PRNG.scala 55:49]
       state_29 <= 1'h0; // @[PRNG.scala 55:49]
     end else begin
       state_29 <= state_28;
     end
-    state_30 <= reset | state_29; // @[PRNG.scala 55:{49,49}]
+    if (reset) begin // @[PRNG.scala 55:49]
+      state_30 <= 1'h0; // @[PRNG.scala 55:49]
+    end else begin
+      state_30 <= state_29;
+    end
     if (reset) begin // @[PRNG.scala 55:49]
       state_31 <= 1'h0; // @[PRNG.scala 55:49]
     end else begin
       state_31 <= state_30;
     end
     state_32 <= reset | state_31; // @[PRNG.scala 55:{49,49}]
+    state_33 <= reset | state_32; // @[PRNG.scala 55:{49,49}]
+    state_34 <= reset | state_33; // @[PRNG.scala 55:{49,49}]
     if (reset) begin // @[PRNG.scala 55:49]
-      state_33 <= 1'h0; // @[PRNG.scala 55:49]
+      state_35 <= 1'h0; // @[PRNG.scala 55:49]
     end else begin
-      state_33 <= state_32;
+      state_35 <= state_34;
     end
-    if (reset) begin // @[PRNG.scala 55:49]
-      state_34 <= 1'h0; // @[PRNG.scala 55:49]
-    end else begin
-      state_34 <= state_33;
-    end
-    state_35 <= reset | state_34; // @[PRNG.scala 55:{49,49}]
     state_36 <= reset | state_35; // @[PRNG.scala 55:{49,49}]
     if (reset) begin // @[PRNG.scala 55:49]
       state_37 <= 1'h0; // @[PRNG.scala 55:49]
     end else begin
       state_37 <= state_36;
     end
-    state_38 <= reset | state_37; // @[PRNG.scala 55:{49,49}]
+    if (reset) begin // @[PRNG.scala 55:49]
+      state_38 <= 1'h0; // @[PRNG.scala 55:49]
+    end else begin
+      state_38 <= state_37;
+    end
     state_39 <= reset | state_38; // @[PRNG.scala 55:{49,49}]
     if (reset) begin // @[PRNG.scala 55:49]
       state_40 <= 1'h0; // @[PRNG.scala 55:49]
     end else begin
       state_40 <= state_39;
     end
+    state_41 <= reset | state_40; // @[PRNG.scala 55:{49,49}]
     if (reset) begin // @[PRNG.scala 55:49]
-      state_41 <= 1'h0; // @[PRNG.scala 55:49]
+      state_42 <= 1'h0; // @[PRNG.scala 55:49]
     end else begin
-      state_41 <= state_40;
+      state_42 <= state_41;
     end
-    state_42 <= reset | state_41; // @[PRNG.scala 55:{49,49}]
-    state_43 <= reset | state_42; // @[PRNG.scala 55:{49,49}]
+    if (reset) begin // @[PRNG.scala 55:49]
+      state_43 <= 1'h0; // @[PRNG.scala 55:49]
+    end else begin
+      state_43 <= state_42;
+    end
     state_44 <= reset | state_43; // @[PRNG.scala 55:{49,49}]
-    state_45 <= reset | state_44; // @[PRNG.scala 55:{49,49}]
+    if (reset) begin // @[PRNG.scala 55:49]
+      state_45 <= 1'h0; // @[PRNG.scala 55:49]
+    end else begin
+      state_45 <= state_44;
+    end
     if (reset) begin // @[PRNG.scala 55:49]
       state_46 <= 1'h0; // @[PRNG.scala 55:49]
     end else begin

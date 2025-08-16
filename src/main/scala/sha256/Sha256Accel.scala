@@ -36,9 +36,10 @@ class Sha256Accel extends Module {
 
     first := Mux(io.inputValid, true.B, Mux(accel.io.first, false.B, first))
     io.outputData := accel.io.out
-    io.outputValid := accel.io.valid
-
+    val start = RegInit(false.B)
     val ctr = RegInit(0.U(8.W))
+    io.outputValid := ctr === 63.U 
+
     accel.io.newChunk := (ctr === 0.U) && accel.io.shiftIn
     accel.io.first := first && accel.io.shiftIn
     when(ctr < 16.U) {
@@ -52,45 +53,32 @@ class Sha256Accel extends Module {
     } .otherwise {
         accel.io.wordIn := 0.U
     }
+    when(io.inputValid) {
+        start := true.B
+    } .elsewhen(io.outputValid) {
+        start := false.B
+    }
 
+    when (start) {
+        accel.io.shiftIn := true.B
+    } .otherwise {
+        accel.io.shiftIn := false.B
+    }
     when (io.inputValid) {
         first := true.B
         ctr := 0.U
     } .elsewhen (accel.io.shiftIn) {
         first := false.B
     }
-    when (ctr >= 16.U) {
-        accel.io.shiftIn := true.B
-
+    when (ctr =/= 63.U && start) {
         ctr := ctr + 1.U
-    } .elsewhen (input_valid && ctr =/= 0.U) {
-        accel.io.shiftIn := true.B
-        ctr := ctr + 1.U
-    }.otherwise {
-        accel.io.shiftIn := false.B
+    } .otherwise{
+       ctr := 0.U
     }
 
     when (io.inputValid) { ctr := 0.U }
     .otherwise {
         accel.io.wordIn := 0.U
-    }
-
-    when (io.inputValid) {
-        first := true.B
-        ctr := 0.U
-    } .elsewhen (accel.io.shiftIn) {
-        first := false.B
-    }
-    when (ctr >= 16.U) {
-        accel.io.shiftIn := true.B
-
-        ctr := ctr + 1.U
-        when (ctr === 63.U) { ctr := 0.U }
-    } .elsewhen (input_valid && ctr =/= 0.U) {
-        accel.io.shiftIn := true.B
-        ctr := ctr + 1.U
-    }.otherwise {
-        accel.io.shiftIn := false.B
     }
 
     when (io.inputValid) { ctr := 0.U }
