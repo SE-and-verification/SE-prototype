@@ -38400,7 +38400,6 @@ module Sha256Accel(
   wire  accel_io_newChunk; // @[Sha256Accel.scala 35:23]
   wire  accel_io_shiftIn; // @[Sha256Accel.scala 35:23]
   wire [31:0] accel_io_wordIn; // @[Sha256Accel.scala 35:23]
-  wire  accel_io_valid; // @[Sha256Accel.scala 35:23]
   wire [31:0] accel_io_out_0; // @[Sha256Accel.scala 35:23]
   wire [31:0] accel_io_out_1; // @[Sha256Accel.scala 35:23]
   wire [31:0] accel_io_out_2; // @[Sha256Accel.scala 35:23]
@@ -38410,30 +38409,22 @@ module Sha256Accel(
   wire [31:0] accel_io_out_6; // @[Sha256Accel.scala 35:23]
   wire [31:0] accel_io_out_7; // @[Sha256Accel.scala 35:23]
   reg [519:0] vec_data; // @[Reg.scala 16:16]
-  reg  input_valid; // @[Sha256Accel.scala 32:30]
   reg  first; // @[Sha256Accel.scala 33:24]
-  wire  _input_valid_T = io_outputValid ? 1'h0 : input_valid; // @[Sha256Accel.scala 34:50]
   wire  _first_T = accel_io_first ? 1'h0 : first; // @[Sha256Accel.scala 37:44]
-  reg [7:0] ctr; // @[Sha256Accel.scala 41:22]
-  wire [13:0] _accel_io_wordIn_T = 6'h20 * ctr; // @[Sha256Accel.scala 45:46]
-  wire [519:0] _accel_io_wordIn_T_1 = vec_data >> _accel_io_wordIn_T; // @[Sha256Accel.scala 45:38]
+  reg  start; // @[Sha256Accel.scala 39:24]
+  reg [7:0] ctr; // @[Sha256Accel.scala 40:22]
+  wire  _io_outputValid_T = ctr == 8'h3f; // @[Sha256Accel.scala 41:27]
+  wire [13:0] _accel_io_wordIn_T = 6'h20 * ctr; // @[Sha256Accel.scala 46:46]
+  wire [519:0] _accel_io_wordIn_T_1 = vec_data >> _accel_io_wordIn_T; // @[Sha256Accel.scala 46:38]
   wire [31:0] _accel_io_wordIn_T_4 = {vec_data[519:512],24'h0}; // @[Cat.scala 31:58]
-  wire  _T_2 = ctr == 8'h3f; // @[Sha256Accel.scala 49:20]
-  wire [31:0] _GEN_1 = ctr == 8'h3f ? 32'h208 : 32'h0; // @[Sha256Accel.scala 49:30 51:25 53:25]
-  wire [31:0] _GEN_2 = ctr == 8'h10 ? _accel_io_wordIn_T_4 : _GEN_1; // @[Sha256Accel.scala 46:31 48:25]
-  wire [31:0] _GEN_3 = ctr < 8'h10 ? _accel_io_wordIn_T_1[31:0] : _GEN_2; // @[Sha256Accel.scala 44:22 45:25]
-  wire  _GEN_4 = accel_io_shiftIn ? 1'h0 : io_inputValid | _first_T; // @[Sha256Accel.scala 37:11 59:36 60:15]
-  wire  _GEN_5 = io_inputValid | _GEN_4; // @[Sha256Accel.scala 56:26 57:15]
-  wire [7:0] _GEN_6 = io_inputValid ? 8'h0 : ctr; // @[Sha256Accel.scala 56:26 58:13 41:22]
-  wire  _T_3 = ctr >= 8'h10; // @[Sha256Accel.scala 62:15]
-  wire [7:0] _ctr_T_1 = ctr + 8'h1; // @[Sha256Accel.scala 65:20]
-  wire  _T_5 = input_valid & ctr != 8'h0; // @[Sha256Accel.scala 66:30]
-  wire [7:0] _GEN_8 = input_valid & ctr != 8'h0 ? _ctr_T_1 : _GEN_6; // @[Sha256Accel.scala 66:46 68:13]
-  wire [7:0] _GEN_10 = ctr >= 8'h10 ? _ctr_T_1 : _GEN_8; // @[Sha256Accel.scala 62:24 65:13]
-  wire [7:0] _GEN_11 = io_inputValid ? 8'h0 : _GEN_10; // @[Sha256Accel.scala 73:{26,32}]
-  wire  _GEN_13 = accel_io_shiftIn ? 1'h0 : _GEN_5; // @[Sha256Accel.scala 81:36 82:15]
-  wire  _GEN_14 = io_inputValid | _GEN_13; // @[Sha256Accel.scala 78:26 79:15]
-  wire [7:0] _GEN_15 = io_inputValid ? 8'h0 : _GEN_11; // @[Sha256Accel.scala 78:26 80:13]
+  wire [31:0] _GEN_1 = _io_outputValid_T ? 32'h208 : 32'h0; // @[Sha256Accel.scala 50:30 52:25 54:25]
+  wire [31:0] _GEN_2 = ctr == 8'h10 ? _accel_io_wordIn_T_4 : _GEN_1; // @[Sha256Accel.scala 47:31 49:25]
+  wire [31:0] _GEN_3 = ctr < 8'h10 ? _accel_io_wordIn_T_1[31:0] : _GEN_2; // @[Sha256Accel.scala 45:22 46:25]
+  wire  _GEN_4 = io_outputValid ? 1'h0 : start; // @[Sha256Accel.scala 58:33 59:15 39:24]
+  wire  _GEN_5 = io_inputValid | _GEN_4; // @[Sha256Accel.scala 56:25 57:15]
+  wire  _GEN_7 = accel_io_shiftIn ? 1'h0 : io_inputValid | _first_T; // @[Sha256Accel.scala 37:11 70:36 71:15]
+  wire  _GEN_8 = io_inputValid | _GEN_7; // @[Sha256Accel.scala 67:26 68:15]
+  wire [7:0] _ctr_T_1 = ctr + 8'h1; // @[Sha256Accel.scala 74:20]
   CompressionFunction accel ( // @[Sha256Accel.scala 35:23]
     .clock(accel_clock),
     .reset(accel_reset),
@@ -38441,7 +38432,6 @@ module Sha256Accel(
     .io_newChunk(accel_io_newChunk),
     .io_shiftIn(accel_io_shiftIn),
     .io_wordIn(accel_io_wordIn),
-    .io_valid(accel_io_valid),
     .io_out_0(accel_io_out_0),
     .io_out_1(accel_io_out_1),
     .io_out_2(accel_io_out_2),
@@ -38459,37 +38449,33 @@ module Sha256Accel(
   assign io_outputData_5 = accel_io_out_5; // @[Sha256Accel.scala 38:19]
   assign io_outputData_6 = accel_io_out_6; // @[Sha256Accel.scala 38:19]
   assign io_outputData_7 = accel_io_out_7; // @[Sha256Accel.scala 38:19]
-  assign io_outputValid = accel_io_valid; // @[Sha256Accel.scala 39:20]
+  assign io_outputValid = ctr == 8'h3f; // @[Sha256Accel.scala 41:27]
   assign accel_clock = clock;
   assign accel_reset = reset;
-  assign accel_io_first = first & accel_io_shiftIn; // @[Sha256Accel.scala 43:29]
-  assign accel_io_newChunk = ctr == 8'h0 & accel_io_shiftIn; // @[Sha256Accel.scala 42:40]
-  assign accel_io_shiftIn = _T_3 | _T_5; // @[Sha256Accel.scala 84:24 85:26]
-  assign accel_io_wordIn = io_inputValid ? _GEN_3 : 32'h0; // @[Sha256Accel.scala 73:26 75:25]
+  assign accel_io_first = first & accel_io_shiftIn; // @[Sha256Accel.scala 44:29]
+  assign accel_io_newChunk = ctr == 8'h0 & accel_io_shiftIn; // @[Sha256Accel.scala 43:40]
+  assign accel_io_shiftIn = start; // @[Sha256Accel.scala 62:18 63:26 65:26]
+  assign accel_io_wordIn = io_inputValid ? _GEN_3 : 32'h0; // @[Sha256Accel.scala 79:26 81:25]
   always @(posedge clock) begin
     if (io_inputValid) begin // @[Reg.scala 17:18]
       vec_data <= io_inputData; // @[Reg.scala 17:22]
     end
-    if (reset) begin // @[Sha256Accel.scala 32:30]
-      input_valid <= 1'h0; // @[Sha256Accel.scala 32:30]
+    first <= reset | _GEN_8; // @[Sha256Accel.scala 33:{24,24}]
+    if (reset) begin // @[Sha256Accel.scala 39:24]
+      start <= 1'h0; // @[Sha256Accel.scala 39:24]
     end else begin
-      input_valid <= io_inputValid | _input_valid_T; // @[Sha256Accel.scala 34:17]
+      start <= _GEN_5;
     end
-    first <= reset | _GEN_14; // @[Sha256Accel.scala 33:{24,24}]
-    if (reset) begin // @[Sha256Accel.scala 41:22]
-      ctr <= 8'h0; // @[Sha256Accel.scala 41:22]
-    end else if (io_inputValid) begin // @[Sha256Accel.scala 96:26]
-      ctr <= 8'h0; // @[Sha256Accel.scala 96:32]
-    end else if (_T_3) begin // @[Sha256Accel.scala 84:24]
-      if (_T_2) begin // @[Sha256Accel.scala 88:29]
-        ctr <= 8'h0; // @[Sha256Accel.scala 88:35]
-      end else begin
-        ctr <= _ctr_T_1; // @[Sha256Accel.scala 87:13]
-      end
-    end else if (_T_5) begin // @[Sha256Accel.scala 89:46]
-      ctr <= _ctr_T_1; // @[Sha256Accel.scala 91:13]
+    if (reset) begin // @[Sha256Accel.scala 40:22]
+      ctr <= 8'h0; // @[Sha256Accel.scala 40:22]
+    end else if (io_inputValid) begin // @[Sha256Accel.scala 84:26]
+      ctr <= 8'h0; // @[Sha256Accel.scala 84:32]
+    end else if (io_inputValid) begin // @[Sha256Accel.scala 79:26]
+      ctr <= 8'h0; // @[Sha256Accel.scala 79:32]
+    end else if (ctr != 8'h3f & start) begin // @[Sha256Accel.scala 73:34]
+      ctr <= _ctr_T_1; // @[Sha256Accel.scala 74:13]
     end else begin
-      ctr <= _GEN_15;
+      ctr <= 8'h0; // @[Sha256Accel.scala 76:12]
     end
   end
 // Register and memory initialization
@@ -38531,9 +38517,9 @@ initial begin
   _RAND_0 = {17{`RANDOM}};
   vec_data = _RAND_0[519:0];
   _RAND_1 = {1{`RANDOM}};
-  input_valid = _RAND_1[0:0];
+  first = _RAND_1[0:0];
   _RAND_2 = {1{`RANDOM}};
-  first = _RAND_2[0:0];
+  start = _RAND_2[0:0];
   _RAND_3 = {1{`RANDOM}};
   ctr = _RAND_3[7:0];
 `endif // RANDOMIZE_REG_INIT
@@ -40776,12 +40762,18 @@ end // initial
 `endif
 `endif // SYNTHESIS
 
+
+
+
+// Value Correspondence Check
 wire se_start = io_in_valid & io_in_ready;
 wire [1033:0] se_in_data = {io_in_inst, io_in_op1, io_in_op2, io_in_op1_type, io_in_op2_type};
 wire se_finish = io_out_valid & io_out_ready;
-wire [640:0] se_out_data = {io_out_result, 1'b1};
-wire [1033:0] se_VB_read_data_1, se_VB_read_data_2, se_VB_read_data_3, se_VB_read_data_4, se_VB_read_data_5, se_VB_read_data_6;
-wire se_VB_read_valid_1, se_VB_read_valid_2, se_VB_read_valid_3, se_VB_read_valid_4, se_VB_read_valid_5, se_VB_read_valid_6;
+wire [640:0] se_out_data = {io_out_result, io_out_output_type};
+wire [1033:0] se_VB_read_data_1, se_VB_read_data_2, se_VB_read_data_3, se_VB_read_data_4, se_VB_read_data_5, se_VB_read_data_6, se_VB_read_data_7;
+wire se_VB_read_valid_1, se_VB_read_valid_2, se_VB_read_valid_3, se_VB_read_valid_4, se_VB_read_valid_5, se_VB_read_valid_6, se_VB_read_valid_7;
+wire [$clog2(`SE_DEPTH)-1:0] se_VB_head;
+
 reg [$clog2(`SE_DEPTH)-1:0] se_next;
 always @(posedge clock) begin
   if (reset) begin
@@ -40791,7 +40783,7 @@ always @(posedge clock) begin
   end
 end
 
-fifo_six_read #(
+fifo_seven_read #(
   .WIDTH(1034)
 ) se_ValueBuffer (
   .clk(clock),
@@ -40799,6 +40791,7 @@ fifo_six_read #(
   .push(se_start),
   .din(se_in_data),
   .pop(se_finish),
+  .head(se_VB_head),
   .read_addr_1(seoperation_next),                       // ALU Read
   .read_data_1(se_VB_read_data_1),
   .read_valid_1(se_VB_read_valid_1),
@@ -40816,16 +40809,27 @@ fifo_six_read #(
   .read_valid_5(se_VB_read_valid_5),
   .read_addr_6(aes_cipher_for_op2_mac_validation_next),  // op2 MAC Read          
   .read_data_6(se_VB_read_data_6),
-  .read_valid_6(se_VB_read_valid_6)
+  .read_valid_6(se_VB_read_valid_6),
+  .read_addr_7(se_VB_head),                             // SE output Read          
+  .read_data_7(se_VB_read_data_7),
+  .read_valid_7(se_VB_read_valid_7)
 );
+
+wire op1_mac_result = (se_VB_read_data_7[1025: 898] != aes_cipher_for_op1_mac_validation_VB_read_data);
+wire op2_mac_result = (se_VB_read_data_7[513: 386] != aes_cipher_for_op2_mac_validation_VB_read_data);
+wire [640:0] se_out_gated = (op1_mac_result || op2_mac_result) ? 641'b1 : {128'b0, aes_cipher_for_output_mac_VB_read_data, aes_cipher_read_data_2, 1'b1};
+se_check: assert property (@(posedge clock) disable iff (reset) se_finish |->
+                          aes_cipher_for_op1_mac_validation_VB_read_valid && aes_cipher_for_op2_mac_validation_VB_read_valid && aes_cipher_for_output_mac_VB_read_valid && aes_cipher_read_valid_2 && se_VB_read_valid_7
+                          && (se_out_gated == se_out_data));
+
 
 wire seoperation_start = sha256_for_dataflow_io_outputValid;
 wire [135:0] seoperation_in_data = {seoperation_io_inst, seoperation_io_op1_input, seoperation_io_op2_input};
-wire [7:0] seoperation_io_inst_read = se_VB_read_valid_1 ? se_VB_read_data_1[1033:1026] : io_in_inst;
 wire seoperation_finish = sha256_for_dataflow_io_outputValid;
 wire [63:0] seoperation_out_data = seoperation_io_result;
 wire [63:0] seoperation_VB_read_data;
 wire seoperation_VB_read_valid;
+
 reg [$clog2(`SE_DEPTH)-1:0] seoperation_next;
 always @(posedge clock) begin
   if (reset) begin
@@ -40850,22 +40854,23 @@ fifo_single_read #(
 
 wire [7:0] seoperation_inst_read = se_VB_read_data_1[1033:1026];
 wire seoperation_op1_type_read = se_VB_read_data_1[1];
-wire [127:0] seoperation_op1_read = ((seoperation_inst_read == 8'hb0) || seoperation_op1_type_read) ?
-                                  se_VB_read_data_1[897:770] : {64'b0, aes_invcipher_op1_read_data[383:320]};
+wire [63:0] seoperation_op1_read = ((seoperation_inst_read == 8'hb0) || seoperation_op1_type_read) ?
+                                  se_VB_read_data_1[833:770] : aes_invcipher_op1_VB_read_data_1[383:320];
 wire seoperation_op2_type_read = se_VB_read_data_1[0];
-wire [127:0] seoperation_op2_read = ((seoperation_inst_read == 8'hb0) || seoperation_op2_type_read) ?
-                                  se_VB_read_data_1[385:258] : {64'b0, aes_invcipher_op2_read_data[383:320]};
+wire [63:0] seoperation_op2_read = (seoperation_op2_type_read) ?
+                                  se_VB_read_data_1[321:258] : aes_invcipher_op2_VB_read_data_1[383:320];
 
 seoperation_check: assert property (@(posedge clock) disable iff (reset) seoperation_start |->
-                                          (se_VB_read_valid_1 && aes_invcipher_op1_read_valid && aes_invcipher_op2_read_valid)
-                                          && (seoperation_in_data == {seoperation_inst_read, seoperation_op1_read, seoperation_op2_read}));
+                                  (se_VB_read_valid_1 && aes_invcipher_op1_VB_read_valid_1 && aes_invcipher_op2_VB_read_valid_1)
+                                  && (seoperation_in_data == {seoperation_inst_read, seoperation_op1_read, seoperation_op2_read}));
 
 wire aes_invcipher_op1_start = aes_invcipher_op1_io_input_valid;
 wire [383:0] aes_invcipher_op1_in_data = aes_invcipher_op1_io_input_text;
 wire aes_invcipher_op1_finish = aes_invcipher_op1_io_output_valid;
 wire [383:0] aes_invcipher_op1_out_data = aes_invcipher_op1_io_output_text;
-wire [383:0] aes_invcipher_op1_read_data;
-wire aes_invcipher_op1_read_valid;
+wire [383:0] aes_invcipher_op1_VB_read_data_1, aes_invcipher_op1_VB_read_data_2;
+wire aes_invcipher_op1_VB_read_valid_1, aes_invcipher_op1_VB_read_valid_2;
+
 reg [$clog2(`SE_DEPTH)-1:0] aes_invcipher_op1_next;
 always @(posedge clock) begin
   if (reset) begin
@@ -40876,7 +40881,7 @@ always @(posedge clock) begin
 
 end
 
-fifo_single_read  #(
+fifo_double_read  #(
   .WIDTH(384)
 ) aes_invcipher_op1_ValueBuffer (
   .clk(clock),
@@ -40884,9 +40889,12 @@ fifo_single_read  #(
   .push(aes_invcipher_op1_finish),
   .din(aes_invcipher_op1_out_data),
   .pop(se_finish),
-  .read_addr(seoperation_next),
-  .read_data(aes_invcipher_op1_read_data),
-  .read_valid(aes_invcipher_op1_read_valid)
+  .read_addr_1(seoperation_next),                     // Read for ALU
+  .read_data_1(aes_invcipher_op1_VB_read_data_1),
+  .read_valid_1(aes_invcipher_op1_VB_read_valid_1),
+  .read_addr_2(sha256_for_dataflow_next),              // Read for SHA256
+  .read_data_2(aes_invcipher_op1_VB_read_data_2),
+  .read_valid_2(aes_invcipher_op1_VB_read_valid_2)
 );
 
 aes_invcipher_op1_check: assert property (@(posedge clock) disable iff (reset) aes_invcipher_op1_start |->
@@ -40898,8 +40906,9 @@ wire aes_invcipher_op2_start = aes_invcipher_op2_io_input_valid;
 wire [383:0] aes_invcipher_op2_in_data = aes_invcipher_op2_io_input_text;
 wire aes_invcipher_op2_finish = aes_invcipher_op2_io_output_valid;
 wire [383:0] aes_invcipher_op2_out_data = aes_invcipher_op2_io_output_text;
-wire [383:0] aes_invcipher_op2_read_data;
-wire aes_invcipher_op2_read_valid;
+wire [383:0] aes_invcipher_op2_VB_read_data_1, aes_invcipher_op2_VB_read_data_2;
+wire aes_invcipher_op2_VB_read_valid_1, aes_invcipher_op2_VB_read_valid_2;
+
 reg [$clog2(`SE_DEPTH)-1:0] aes_invcipher_op2_next;
 always @(posedge clock) begin
   if (reset) begin
@@ -40909,7 +40918,7 @@ always @(posedge clock) begin
   end
 end
 
-fifo_single_read #(
+fifo_double_read #(
   .WIDTH(384)
 ) aes_invcipher_op2_ValueBuffer (
   .clk(clock),
@@ -40917,9 +40926,12 @@ fifo_single_read #(
   .push(aes_invcipher_op2_finish),
   .din(aes_invcipher_op2_out_data),
   .pop(se_finish),
-  .read_addr(seoperation_next),
-  .read_data(aes_invcipher_op2_read_data),
-  .read_valid(aes_invcipher_op2_read_valid)
+  .read_addr_1(seoperation_next),               // Read for ALU
+  .read_data_1(aes_invcipher_op2_VB_read_data_1),
+  .read_valid_1(aes_invcipher_op2_VB_read_valid_1),
+  .read_addr_2(sha256_for_dataflow_next),       // Read for SHA256
+  .read_data_2(aes_invcipher_op2_VB_read_data_2),
+  .read_valid_2(aes_invcipher_op2_VB_read_valid_2)
 );
 
 aes_invcipher_op2_check: assert property (@(posedge clock) disable iff (reset) aes_invcipher_op2_start |->
@@ -40928,9 +40940,12 @@ aes_invcipher_op2_check: assert property (@(posedge clock) disable iff (reset) a
 
 
 wire aes_cipher_for_op1_mac_validation_start = aes_cipher_for_op1_mac_validation_io_input_valid;
-wire [511:0] aes_cipher_for_op1_mac_validation_in_data = aes_cipher_for_op1_mac_validation_io_input_text;
+wire [511:0] aes_cipher_for_op1_mac_validation_in_data = aes_cipher_for_op1_mac_validation_io_input_text; // {{op1[383:0],127'hdeabeaf,op1_type}}
 wire aes_cipher_for_op1_mac_validation_finish = aes_cipher_for_op1_mac_validation_io_output_valid;
-wire [511:0] aes_cipher_for_op1_mac_validation_out_data = aes_cipher_for_op1_mac_validation_io_output_text;
+wire [127:0] aes_cipher_for_op1_mac_validation_out_data = aes_cipher_for_op1_mac_validation_io_output_text;
+wire [127:0] aes_cipher_for_op1_mac_validation_VB_read_data;
+wire aes_cipher_for_op1_mac_validation_VB_read_valid;
+
 reg [$clog2(`SE_DEPTH)-1:0] aes_cipher_for_op1_mac_validation_next;
 always @(posedge clock) begin
   if (reset) begin
@@ -40941,24 +40956,29 @@ always @(posedge clock) begin
 end
 
 fifo_single_read #(
-  .WIDTH(512)
+  .WIDTH(128)
 ) aes_cipher_for_op1_mac_validation_ValueBuffer (
   .clk(clock),
   .rst(reset),
   .push(aes_cipher_for_op1_mac_validation_finish),
   .din(aes_cipher_for_op1_mac_validation_out_data),
   .pop(se_finish),
-  .read_addr(),
-  .read_data(),
-  .read_valid()
+  .read_addr(se_next),
+  .read_data(aes_cipher_for_op1_mac_validation_VB_read_data),
+  .read_valid(aes_cipher_for_op1_mac_validation_VB_read_valid)
 );
+
+aes_cipher_for_op1_mac_validation_check: assert property (@(posedge clock) disable iff (reset) aes_cipher_for_op1_mac_validation_start |->
+                                          (se_VB_read_valid_5 && ({se_VB_read_data_5[897:514], 127'hdeabeaf, se_VB_read_data_5[1]} == aes_cipher_for_op1_mac_validation_in_data)));
 
 wire aes_cipher_for_op2_mac_validation_start = aes_cipher_for_op2_mac_validation_io_input_valid;
 wire [511:0] aes_cipher_for_op2_mac_validation_in_data = aes_cipher_for_op2_mac_validation_io_input_text;
 wire aes_cipher_for_op2_mac_validation_finish = aes_cipher_for_op2_mac_validation_io_output_valid;
-wire [511:0] aes_cipher_for_op2_mac_validation_out_data = aes_cipher_for_op2_mac_validation_io_output_text;
-reg [$clog2(`SE_DEPTH)-1:0] aes_cipher_for_op2_mac_validation_next;
+wire [127:0] aes_cipher_for_op2_mac_validation_out_data = aes_cipher_for_op2_mac_validation_io_output_text;
+wire [127:0] aes_cipher_for_op2_mac_validation_VB_read_data;
+wire aes_cipher_for_op2_mac_validation_VB_read_valid;
 
+reg [$clog2(`SE_DEPTH)-1:0] aes_cipher_for_op2_mac_validation_next;
 always @(posedge clock) begin
   if (reset) begin
     aes_cipher_for_op2_mac_validation_next <= 0;
@@ -40968,24 +40988,30 @@ always @(posedge clock) begin
 end
 
 fifo_single_read #(
-  .WIDTH(512)
+  .WIDTH(128)
 ) aes_cipher_for_op2_mac_validation_ValueBuffer (
   .clk(clock),
   .rst(reset),
   .push(aes_cipher_for_op2_mac_validation_finish),
   .din(aes_cipher_for_op2_mac_validation_out_data),
   .pop(se_finish),
-  .read_addr(),
-  .read_data(),
-  .read_valid()
+  .read_addr(se_next),
+  .read_data(aes_cipher_for_op2_mac_validation_VB_read_data),
+  .read_valid(aes_cipher_for_op2_mac_validation_VB_read_valid)
 );
+
+aes_cipher_for_op2_mac_validation_check: assert property (@(posedge clock) disable iff (reset) aes_cipher_for_op2_mac_validation_start |->
+                                          (se_VB_read_valid_6 && ({se_VB_read_data_6[385:2], 127'hdeabeaf, se_VB_read_data_6[0]} == aes_cipher_for_op2_mac_validation_in_data)));
+
 
 wire aes_cipher_for_output_mac_start = aes_cipher_for_output_mac_io_input_valid;
 wire [511:0] aes_cipher_for_output_mac_in_data = aes_cipher_for_output_mac_io_input_text;
 wire aes_cipher_for_output_mac_finish = aes_cipher_for_output_mac_io_output_valid;
 wire [127:0] aes_cipher_for_output_mac_out_data = aes_cipher_for_output_mac_io_output_text;
-reg [$clog2(`SE_DEPTH)-1:0] aes_cipher_for_output_mac_next;
+wire [127:0] aes_cipher_for_output_mac_VB_read_data;
+wire aes_cipher_for_output_mac_VB_read_valid;
 
+reg [$clog2(`SE_DEPTH)-1:0] aes_cipher_for_output_mac_next;
 always @(posedge clock) begin
   if (reset) begin
     aes_cipher_for_output_mac_next <= 0;
@@ -41002,17 +41028,22 @@ fifo_single_read #(
   .push(aes_cipher_for_output_mac_finish),
   .din(aes_cipher_for_output_mac_out_data),
   .pop(se_finish),
-  .read_addr(),
-  .read_data(),
-  .read_valid()
+  .read_addr(se_next),
+  .read_data(aes_cipher_for_output_mac_VB_read_data),
+  .read_valid(aes_cipher_for_output_mac_VB_read_valid)
 );
+
+aes_cipher_for_output_mac_check: assert property (@(posedge clock) disable iff (reset) aes_cipher_for_output_mac_start |->
+                                                aes_cipher_read_valid_1 && ({aes_cipher_read_data_1,127'hdeabeaf,1'h1} == aes_cipher_for_output_mac_in_data));
 
 wire sha256_for_dataflow_start = sha256_for_dataflow_io_inputValid;
 wire [519:0] sha256_for_dataflow_in_data = sha256_for_dataflow_io_inputData;
 wire sha256_for_dataflow_finish = sha256_for_dataflow_io_outputValid;
 wire [255:0] sha256_for_dataflow_out_data = {sha256_for_dataflow_io_outputData_0, sha256_for_dataflow_io_outputData_1, sha256_for_dataflow_io_outputData_2, sha256_for_dataflow_io_outputData_3, sha256_for_dataflow_io_outputData_4, sha256_for_dataflow_io_outputData_5, sha256_for_dataflow_io_outputData_6, sha256_for_dataflow_io_outputData_7};
-reg [$clog2(`SE_DEPTH)-1:0] sha256_for_dataflow_next;
+wire [255:0] sha256_for_dataflow_VB_read_data;
+wire sha256_for_dataflow_VB_read_valid;
 
+reg [$clog2(`SE_DEPTH)-1:0] sha256_for_dataflow_next;
 always @(posedge clock) begin
   if (reset) begin
     sha256_for_dataflow_next <= 0;
@@ -41029,18 +41060,24 @@ fifo_single_read #(
   .push(sha256_for_dataflow_finish),
   .din(sha256_for_dataflow_out_data),
   .pop(se_finish),
-  .read_addr(),
-  .read_data(),
-  .read_valid()
+  .read_addr(aes_cipher_next),
+  .read_data(sha256_for_dataflow_VB_read_data),
+  .read_valid(sha256_for_dataflow_VB_read_valid)
 );
+
+sha256_for_dataflow_check: assert property (@(posedge clock) disable iff (reset) sha256_for_dataflow_start |->
+                                          se_VB_read_valid_1 && aes_invcipher_op1_VB_read_valid_2 && aes_invcipher_op1_VB_read_valid_2 &&
+                                          ({aes_invcipher_op1_VB_read_data_1[255:0] ,aes_invcipher_op1_VB_read_data_2[255:0], se_VB_read_data_2[1033:1024]} == sha256_for_dataflow_in_data));
 
 
 wire aes_cipher_start = aes_cipher_io_input_valid;
 wire [383:0] aes_cipher_in_data = aes_cipher_io_input_text;
 wire aes_cipher_finish = aes_cipher_io_output_valid;
 wire [383:0] aes_cipher_out_data = aes_cipher_io_output_text;
-reg [$clog2(`SE_DEPTH)-1:0] aes_cipher_next;
+wire [383:0] aes_cipher_read_data_1, aes_cipher_read_data_2;
+wire aes_cipher_read_valid_1, aes_cipher_read_valid_2;
 
+reg [$clog2(`SE_DEPTH)-1:0] aes_cipher_next;
 always @(posedge clock) begin
   if (reset) begin
     aes_cipher_next <= 0;
@@ -41049,7 +41086,7 @@ always @(posedge clock) begin
   end
 end
 
-fifo_single_read #(
+fifo_double_read #(
   .WIDTH(384)
 ) aes_cipher_ValueBuffer (
   .clk(clock),
@@ -41057,10 +41094,18 @@ fifo_single_read #(
   .push(aes_cipher_finish),
   .din(aes_cipher_out_data),
   .pop(se_finish),
-  .read_addr(),
-  .read_data(),
-  .read_valid()
+  .read_addr_1(aes_cipher_for_output_mac_next),     // Read for output MAC
+  .read_data_1(aes_cipher_read_data_1),    
+  .read_valid_1(aes_cipher_read_valid_1),
+  .read_addr_2(se_next),                            // Read for SE output
+  .read_data_2(aes_cipher_read_data_2),     
+  .read_valid_2(aes_cipher_read_valid_2)
 );
+
+aes_cipher_check: assert property (@(posedge clock) disable iff (reset) aes_cipher_start |->
+                                          seoperation_VB_read_valid && bit64_randnum_prng_VB_read_valid && sha256_for_dataflow_VB_read_valid &&
+                                          ({seoperation_VB_read_data, bit64_randnum_prng_VB_read_data, sha256_for_dataflow_VB_read_data} == aes_cipher_in_data));
+
 
 
 wire bit64_randnum_prng_finish = sha256_for_dataflow_io_outputValid;
@@ -41080,6 +41125,9 @@ wire [63:0] bit64_randnum_prng_out_data = {bit64_randnum_prng_io_out_63, bit64_r
                                           bit64_randnum_prng_io_out_11, bit64_randnum_prng_io_out_10, bit64_randnum_prng_io_out_9,  bit64_randnum_prng_io_out_8,
                                           bit64_randnum_prng_io_out_7,  bit64_randnum_prng_io_out_6,  bit64_randnum_prng_io_out_5,  bit64_randnum_prng_io_out_4,
                                           bit64_randnum_prng_io_out_3,  bit64_randnum_prng_io_out_2,  bit64_randnum_prng_io_out_1,  bit64_randnum_prng_io_out_0};
+wire [63:0] bit64_randnum_prng_VB_read_data;
+wire bit64_randnum_prng_VB_read_valid;
+
 fifo_single_read #(
   .WIDTH(64)
 ) bit64_randnum_prng_ValueBuffer (
@@ -41088,8 +41136,32 @@ fifo_single_read #(
   .push(bit64_randnum_prng_finish),
   .din(bit64_randnum_prng_out_data),
   .pop(se_finish),
-  .read_addr(),
-  .read_data(),
-  .read_valid()
+  .read_addr(aes_cipher_next),
+  .read_data(bit64_randnum_prng_VB_read_data),
+  .read_valid(bit64_randnum_prng_VB_read_valid)
 );
+
+// 1-1 Correspondence Check
+reg [$clog2(`SE_DEPTH): 0] inst_counter;
+wire stop_enable;
+reg stop;
+always @(posedge clock) begin
+  if (reset) begin
+    inst_counter <= 0;
+  end
+  if (se_start && se_finish)
+    inst_counter <= inst_counter;
+  else if (se_finish)
+    inst_counter <= inst_counter - 1;
+  else if (se_start)
+    inst_counter <= inst_counter + 1;
+  if (stop_enable)
+    stop <= 1;
+end
+
+no_overflow: assert property (@(posedge clock) disable iff (reset) !(se_start && (inst_counter==`SE_DEPTH)));
+no_underflow: assert property (@(posedge clock) disable iff (reset) !(se_finish && (inst_counter==0)));
+inst_drain: assert property (@(posedge clock) disable iff (reset) stop |-> ##[0:$] (inst_counter==0));
+arbitrary_stop: assume property (stop |-> !io_in_valid);
+
 endmodule
