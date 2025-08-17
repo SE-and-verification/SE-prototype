@@ -140,14 +140,15 @@ class SE(val debug : Boolean, val canChangeKey: Boolean) extends Module{
 	val mac_validated_op1 = RegInit(false.B)
 	val mac_validated_op2 = RegInit(false.B)
 
-	val ciph1_mac = op1_buffer(511, 384)
-	val ciph2_mac = op2_buffer(511, 384)
+
 	val decrypted_op1_val_buffer = RegEnable(aes_invcipher_op1.io.output_text, aes_invcipher_op1.io.output_valid) 
 	val decrypted_op2_val_buffer = RegEnable(aes_invcipher_op2.io.output_text, aes_invcipher_op2.io.output_valid) 
 	val op1_type_buffer_after_decrypt_stage = RegEnable(op1_type_buffer, aes_invcipher_op1.io.input_valid)
 	val op2_type_buffer_after_decrypt_stage = RegEnable(op2_type_buffer, aes_invcipher_op2.io.input_valid)
 	val op1_buffer_after_decrypt_stage = RegEnable(op1_buffer, aes_invcipher_op1.io.input_valid)
 	val op2_buffer_after_decrypt_stage = RegEnable(op2_buffer, aes_invcipher_op2.io.input_valid)
+	val ciph1_mac = op1_buffer_after_decrypt_stage(511, 384)
+	val ciph2_mac = op2_buffer_after_decrypt_stage(511, 384)
 	when(aes_cipher_for_op1_mac_validation.io.output_valid) {
 		when(aes_cipher_for_op1_mac_validation.io.output_text =/= ciph1_mac) {
 			// If the MAC does not match, we set the decrypted_op1_val_buffer to 0
@@ -255,27 +256,26 @@ class SE(val debug : Boolean, val canChangeKey: Boolean) extends Module{
 	}
 	
 
-	val output_buffer_enc = RegEnable(Cat(encrypted_result_buffer, version_id(126,0), 1.U(1.W)), aes_cipher.io.output_valid)
-	val output_buffer_enc_valid = RegInit(false.B)
-	val output_buffer_enc_idle = RegInit(true.B)
+	val output_buffer_enc = Cat(encrypted_result_buffer, version_id(126,0), 1.U(1.W))
+	val output_buffer_valid = RegInit(false.B)
+	val output_buffer_idle = RegInit(true.B)
 
 	aes_cipher_for_output_mac.io.input_text := output_buffer_enc
-	aes_cipher_for_output_mac.io.input_valid := output_buffer_enc_idle && encrypted_result_valid_buffer
+	aes_cipher_for_output_mac.io.input_valid := output_buffer_idle && encrypted_result_valid_buffer
 	aes_cipher_for_output_mac.io.input_roundKeys := mac_key
-	val output_mac = RegEnable(aes_cipher_for_output_mac.io.output_text, aes_cipher_for_output_mac.io.output_valid)
-	val output_connect 		= Cat(output_mac, output_buffer_enc(511,128))
+	val output_connect 		= RegEnable(Cat(aes_cipher_for_output_mac.io.output_text, output_buffer_enc(511,128)), aes_cipher_for_output_mac.io.output_valid)
 	when(io.out.valid && io.out.ready) {
-		output_buffer_enc_idle := true.B
-	} .elsewhen(aes_cipher.io.input_valid) {
-		output_buffer_enc_idle := false.B
+		output_buffer_idle := true.B
+	} .elsewhen(aes_cipher_for_output_mac.io.input_valid) {
+		output_buffer_idle := false.B
 	}
 	when(io.out.valid && io.out.ready) {
-		output_buffer_enc_valid := false.B
-	} .elsewhen(aes_cipher.io.output_valid) {
-		output_buffer_enc_valid := true.B
+		output_buffer_valid := false.B
+	} .elsewhen(aes_cipher_for_output_mac.io.output_valid) {
+		output_buffer_valid := true.B
 	}
-	val output_gated = Mux(mac_checkout_1(pop_pointer1) && mac_checkout_2(push_pointer2), output_connect, 0xEEEE.U(512.W))
-	when(output_buffer_enc_valid) {
+	val output_gated = Mux(mac_checkout_1(pop_pointer1) && mac_checkout_2(pop_pointer2), output_connect, 0xEEEE.U(512.W))
+	when(output_buffer_valid) {
 		io.out.valid := true.B
 		io.out.result 			:= output_gated
 		io.out.output_type  := true.B
