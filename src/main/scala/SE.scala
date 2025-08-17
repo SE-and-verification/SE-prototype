@@ -255,27 +255,26 @@ class SE(val debug : Boolean, val canChangeKey: Boolean) extends Module{
 	}
 	
 
-	val output_buffer_enc = RegEnable(Cat(encrypted_result_buffer, version_id(126,0), 1.U(1.W)), aes_cipher.io.output_valid)
-	val output_buffer_enc_valid = RegInit(false.B)
-	val output_buffer_enc_idle = RegInit(true.B)
+	val output_buffer_enc = Cat(encrypted_result_buffer, version_id(126,0), 1.U(1.W))
+	val output_buffer_valid = RegInit(false.B)
+	val output_buffer_idle = RegInit(true.B)
 
 	aes_cipher_for_output_mac.io.input_text := output_buffer_enc
-	aes_cipher_for_output_mac.io.input_valid := output_buffer_enc_idle && encrypted_result_valid_buffer
+	aes_cipher_for_output_mac.io.input_valid := output_buffer_idle && encrypted_result_valid_buffer
 	aes_cipher_for_output_mac.io.input_roundKeys := mac_key
-	val output_mac = RegEnable(aes_cipher_for_output_mac.io.output_text, aes_cipher_for_output_mac.io.output_valid)
-	val output_connect 		= Cat(output_mac, output_buffer_enc(511,128))
+	val output_connect 		= RegEnable(Cat(aes_cipher_for_output_mac.io.output_text, output_buffer_enc(511,128)), aes_cipher_for_output_mac.io.output_valid)
 	when(io.out.valid && io.out.ready) {
-		output_buffer_enc_idle := true.B
-	} .elsewhen(aes_cipher.io.input_valid) {
-		output_buffer_enc_idle := false.B
+		output_buffer_idle := true.B
+	} .elsewhen(aes_cipher_for_output_mac.io.input_valid) {
+		output_buffer_idle := false.B
 	}
 	when(io.out.valid && io.out.ready) {
-		output_buffer_enc_valid := false.B
-	} .elsewhen(aes_cipher.io.output_valid) {
-		output_buffer_enc_valid := true.B
+		output_buffer_valid := false.B
+	} .elsewhen(aes_cipher_for_output_mac.io.output_valid) {
+		output_buffer_valid := true.B
 	}
-	val output_gated = Mux(mac_checkout_1(pop_pointer1) && mac_checkout_2(push_pointer2), output_connect, 0xEEEE.U(512.W))
-	when(output_buffer_enc_valid) {
+	val output_gated = Mux(mac_checkout_1(pop_pointer1) && mac_checkout_2(pop_pointer2), output_connect, 0xEEEE.U(512.W))
+	when(output_buffer_valid) {
 		io.out.valid := true.B
 		io.out.result 			:= output_gated
 		io.out.output_type  := true.B
