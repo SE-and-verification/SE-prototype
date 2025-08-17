@@ -39443,117 +39443,101 @@ module MaxPeriodFibonacciLFSR(
   assign io_out_62 = state_62; // @[PRNG.scala 78:10]
   assign io_out_63 = state_63; // @[PRNG.scala 78:10]
   always @(posedge clock) begin
-    state_0 <= reset | _T_2; // @[PRNG.scala 55:{49,49}]
     if (reset) begin // @[PRNG.scala 55:49]
-      state_1 <= 1'h0; // @[PRNG.scala 55:49]
+      state_0 <= 1'h0; // @[PRNG.scala 55:49]
     end else begin
-      state_1 <= state_0;
+      state_0 <= _T_2;
     end
+    state_1 <= reset | state_0; // @[PRNG.scala 55:{49,49}]
     if (reset) begin // @[PRNG.scala 55:49]
       state_2 <= 1'h0; // @[PRNG.scala 55:49]
     end else begin
       state_2 <= state_1;
     end
-    state_3 <= reset | state_2; // @[PRNG.scala 55:{49,49}]
     if (reset) begin // @[PRNG.scala 55:49]
-      state_4 <= 1'h0; // @[PRNG.scala 55:49]
+      state_3 <= 1'h0; // @[PRNG.scala 55:49]
     end else begin
-      state_4 <= state_3;
+      state_3 <= state_2;
     end
-    if (reset) begin // @[PRNG.scala 55:49]
-      state_5 <= 1'h0; // @[PRNG.scala 55:49]
-    end else begin
-      state_5 <= state_4;
-    end
+    state_4 <= reset | state_3; // @[PRNG.scala 55:{49,49}]
+    state_5 <= reset | state_4; // @[PRNG.scala 55:{49,49}]
     state_6 <= reset | state_5; // @[PRNG.scala 55:{49,49}]
     if (reset) begin // @[PRNG.scala 55:49]
       state_7 <= 1'h0; // @[PRNG.scala 55:49]
     end else begin
       state_7 <= state_6;
     end
-    state_8 <= reset | state_7; // @[PRNG.scala 55:{49,49}]
-    state_9 <= reset | state_8; // @[PRNG.scala 55:{49,49}]
-    state_10 <= reset | state_9; // @[PRNG.scala 55:{49,49}]
-    state_11 <= reset | state_10; // @[PRNG.scala 55:{49,49}]
     if (reset) begin // @[PRNG.scala 55:49]
-      state_12 <= 1'h0; // @[PRNG.scala 55:49]
+      state_8 <= 1'h0; // @[PRNG.scala 55:49]
     end else begin
-      state_12 <= state_11;
+      state_8 <= state_7;
     end
+    if (reset) begin // @[PRNG.scala 55:49]
+      state_9 <= 1'h0; // @[PRNG.scala 55:49]
+    end else begin
+      state_9 <= state_8;
+    end
+    if (reset) begin // @[PRNG.scala 55:49]
+      state_10 <= 1'h0; // @[PRNG.scala 55:49]
+    end else begin
+      state_10 <= state_9;
+    end
+    if (reset) begin // @[PRNG.scala 55:49]
+      state_11 <= 1'h0; // @[PRNG.scala 55:49]
+    end else begin
+      state_11 <= state_10;
+    end
+    state_12 <= reset | state_11; // @[PRNG.scala 55:{49,49}]
     if (reset) begin // @[PRNG.scala 55:49]
       state_13 <= 1'h0; // @[PRNG.scala 55:49]
     end else begin
       state_13 <= state_12;
     end
     state_14 <= reset | state_13; // @[PRNG.scala 55:{49,49}]
-    if (reset) begin // @[PRNG.scala 55:49]
-      state_15 <= 1'h0; // @[PRNG.scala 55:49]
-    end else begin
-      state_15 <= state_14;
-    end
-    if (reset) begin // @[PRNG.scala 55:49]
-      state_16 <= 1'h0; // @[PRNG.scala 55:49]
-    end else begin
-      state_16 <= state_15;
-    end
+    state_15 <= reset | state_14; // @[PRNG.scala 55:{49,49}]
+    state_16 <= reset | state_15; // @[PRNG.scala 55:{49,49}]
     if (reset) begin // @[PRNG.scala 55:49]
       state_17 <= 1'h0; // @[PRNG.scala 55:49]
     end else begin
       state_17 <= state_16;
     end
-    state_18 <= reset | state_17; // @[PRNG.scala 55:{49,49}]
+    if (reset) begin // @[PRNG.scala 55:49]
+      state_18 <= 1'h0; // @[PRNG.scala 55:49]
+    end else begin
+      state_18 <= state_17;
+    end
     if (reset) begin // @[PRNG.scala 55:49]
       state_19 <= 1'h0; // @[PRNG.scala 55:49]
     end else begin
       state_19 <= state_18;
     end
-    if (reset) begin // @[PRNG.scala 55:49]
-      state_20 <= 1'h0; // @[PRNG.scala 55:49]
-    end else begin
-      state_20 <= state_19;
-    end
+    state_20 <= reset | state_19; // @[PRNG.scala 55:{49,49}]
     if (reset) begin // @[PRNG.scala 55:49]
       state_21 <= 1'h0; // @[PRNG.scala 55:49]
     end else begin
       state_21 <= state_20;
     end
-    if (reset) begin // @[PRNG.scala 55:49]
-      state_22 <= 1'h0; // @[PRNG.scala 55:49]
-    end else begin
-      state_22 <= state_21;
-    end
-    if (reset) begin // @[PRNG.scala 55:49]
-      state_23 <= 1'h0; // @[PRNG.scala 55:49]
-    end else begin
-      state_23 <= state_22;
-    end
+    state_22 <= reset | state_21; // @[PRNG.scala 55:{49,49}]
+    state_23 <= reset | state_22; // @[PRNG.scala 55:{49,49}]
     if (reset) begin // @[PRNG.scala 55:49]
       state_24 <= 1'h0; // @[PRNG.scala 55:49]
     end else begin
       state_24 <= state_23;
     end
-    if (reset) begin // @[PRNG.scala 55:49]
-      state_25 <= 1'h0; // @[PRNG.scala 55:49]
-    end else begin
-      state_25 <= state_24;
-    end
-    if (reset) begin // @[PRNG.scala 55:49]
-      state_26 <= 1'h0; // @[PRNG.scala 55:49]
-    end else begin
-      state_26 <= state_25;
-    end
+    state_25 <= reset | state_24; // @[PRNG.scala 55:{49,49}]
+    state_26 <= reset | state_25; // @[PRNG.scala 55:{49,49}]
     state_27 <= reset | state_26; // @[PRNG.scala 55:{49,49}]
-    state_28 <= reset | state_27; // @[PRNG.scala 55:{49,49}]
+    if (reset) begin // @[PRNG.scala 55:49]
+      state_28 <= 1'h0; // @[PRNG.scala 55:49]
+    end else begin
+      state_28 <= state_27;
+    end
     if (reset) begin // @[PRNG.scala 55:49]
       state_29 <= 1'h0; // @[PRNG.scala 55:49]
     end else begin
       state_29 <= state_28;
     end
-    if (reset) begin // @[PRNG.scala 55:49]
-      state_30 <= 1'h0; // @[PRNG.scala 55:49]
-    end else begin
-      state_30 <= state_29;
-    end
+    state_30 <= reset | state_29; // @[PRNG.scala 55:{49,49}]
     if (reset) begin // @[PRNG.scala 55:49]
       state_31 <= 1'h0; // @[PRNG.scala 55:49]
     end else begin
@@ -39564,43 +39548,43 @@ module MaxPeriodFibonacciLFSR(
     end else begin
       state_32 <= state_31;
     end
+    state_33 <= reset | state_32; // @[PRNG.scala 55:{49,49}]
     if (reset) begin // @[PRNG.scala 55:49]
-      state_33 <= 1'h0; // @[PRNG.scala 55:49]
+      state_34 <= 1'h0; // @[PRNG.scala 55:49]
     end else begin
-      state_33 <= state_32;
+      state_34 <= state_33;
     end
-    state_34 <= reset | state_33; // @[PRNG.scala 55:{49,49}]
-    state_35 <= reset | state_34; // @[PRNG.scala 55:{49,49}]
-    state_36 <= reset | state_35; // @[PRNG.scala 55:{49,49}]
+    if (reset) begin // @[PRNG.scala 55:49]
+      state_35 <= 1'h0; // @[PRNG.scala 55:49]
+    end else begin
+      state_35 <= state_34;
+    end
+    if (reset) begin // @[PRNG.scala 55:49]
+      state_36 <= 1'h0; // @[PRNG.scala 55:49]
+    end else begin
+      state_36 <= state_35;
+    end
     if (reset) begin // @[PRNG.scala 55:49]
       state_37 <= 1'h0; // @[PRNG.scala 55:49]
     end else begin
       state_37 <= state_36;
     end
-    if (reset) begin // @[PRNG.scala 55:49]
-      state_38 <= 1'h0; // @[PRNG.scala 55:49]
-    end else begin
-      state_38 <= state_37;
-    end
-    if (reset) begin // @[PRNG.scala 55:49]
-      state_39 <= 1'h0; // @[PRNG.scala 55:49]
-    end else begin
-      state_39 <= state_38;
-    end
+    state_38 <= reset | state_37; // @[PRNG.scala 55:{49,49}]
+    state_39 <= reset | state_38; // @[PRNG.scala 55:{49,49}]
     state_40 <= reset | state_39; // @[PRNG.scala 55:{49,49}]
     state_41 <= reset | state_40; // @[PRNG.scala 55:{49,49}]
-    state_42 <= reset | state_41; // @[PRNG.scala 55:{49,49}]
     if (reset) begin // @[PRNG.scala 55:49]
-      state_43 <= 1'h0; // @[PRNG.scala 55:49]
+      state_42 <= 1'h0; // @[PRNG.scala 55:49]
     end else begin
-      state_43 <= state_42;
+      state_42 <= state_41;
     end
-    state_44 <= reset | state_43; // @[PRNG.scala 55:{49,49}]
+    state_43 <= reset | state_42; // @[PRNG.scala 55:{49,49}]
     if (reset) begin // @[PRNG.scala 55:49]
-      state_45 <= 1'h0; // @[PRNG.scala 55:49]
+      state_44 <= 1'h0; // @[PRNG.scala 55:49]
     end else begin
-      state_45 <= state_44;
+      state_44 <= state_43;
     end
+    state_45 <= reset | state_44; // @[PRNG.scala 55:{49,49}]
     if (reset) begin // @[PRNG.scala 55:49]
       state_46 <= 1'h0; // @[PRNG.scala 55:49]
     end else begin
@@ -40092,50 +40076,50 @@ module SE(
   wire [510:0] aes_cipher_for_op2_mac_validation_io_input_text_hi = {op2_buffer[383:0],127'hdeabeaf}; // @[Cat.scala 31:58]
   reg  mac_validated_op1; // @[SE.scala 140:40]
   reg  mac_validated_op2; // @[SE.scala 141:40]
-  wire [127:0] ciph1_mac = op1_buffer[511:384]; // @[SE.scala 143:35]
-  wire [127:0] ciph2_mac = op2_buffer[511:384]; // @[SE.scala 144:35]
   reg [383:0] decrypted_op1_val_buffer; // @[Reg.scala 16:16]
   reg [383:0] decrypted_op2_val_buffer; // @[Reg.scala 16:16]
   reg  op1_type_buffer_after_decrypt_stage; // @[Reg.scala 16:16]
   reg  op2_type_buffer_after_decrypt_stage; // @[Reg.scala 16:16]
   reg [511:0] op1_buffer_after_decrypt_stage; // @[Reg.scala 16:16]
   reg [511:0] op2_buffer_after_decrypt_stage; // @[Reg.scala 16:16]
-  wire  _GEN_385 = 3'h0 == push_pointer1 | mac_checkout_1_0; // @[SE.scala 156:{55,55} 72:33]
-  wire  _GEN_386 = 3'h1 == push_pointer1 | mac_checkout_1_1; // @[SE.scala 156:{55,55} 72:33]
-  wire  _GEN_387 = 3'h2 == push_pointer1 | mac_checkout_1_2; // @[SE.scala 156:{55,55} 72:33]
-  wire  _GEN_388 = 3'h3 == push_pointer1 | mac_checkout_1_3; // @[SE.scala 156:{55,55} 72:33]
-  wire  _GEN_389 = 3'h4 == push_pointer1 | mac_checkout_1_4; // @[SE.scala 156:{55,55} 72:33]
-  wire  _GEN_390 = 3'h5 == push_pointer1 | mac_checkout_1_5; // @[SE.scala 156:{55,55} 72:33]
-  wire  _GEN_391 = 3'h6 == push_pointer1 | mac_checkout_1_6; // @[SE.scala 156:{55,55} 72:33]
-  wire  _GEN_392 = 3'h7 == push_pointer1 | mac_checkout_1_7; // @[SE.scala 156:{55,55} 72:33]
-  wire  _GEN_401 = sha256_for_dataflow_io_inputValid ? 1'h0 : mac_validated_op1; // @[SE.scala 159:55 160:35 140:40]
-  wire  _GEN_410 = aes_cipher_for_op1_mac_validation_io_output_valid | _GEN_401; // @[SE.scala 151:65 158:35]
-  wire  _GEN_419 = 3'h0 == push_pointer2 | mac_checkout_2_0; // @[SE.scala 168:{55,55} 73:33]
-  wire  _GEN_420 = 3'h1 == push_pointer2 | mac_checkout_2_1; // @[SE.scala 168:{55,55} 73:33]
-  wire  _GEN_421 = 3'h2 == push_pointer2 | mac_checkout_2_2; // @[SE.scala 168:{55,55} 73:33]
-  wire  _GEN_422 = 3'h3 == push_pointer2 | mac_checkout_2_3; // @[SE.scala 168:{55,55} 73:33]
-  wire  _GEN_423 = 3'h4 == push_pointer2 | mac_checkout_2_4; // @[SE.scala 168:{55,55} 73:33]
-  wire  _GEN_424 = 3'h5 == push_pointer2 | mac_checkout_2_5; // @[SE.scala 168:{55,55} 73:33]
-  wire  _GEN_425 = 3'h6 == push_pointer2 | mac_checkout_2_6; // @[SE.scala 168:{55,55} 73:33]
-  wire  _GEN_426 = 3'h7 == push_pointer2 | mac_checkout_2_7; // @[SE.scala 168:{55,55} 73:33]
-  wire  _GEN_435 = sha256_for_dataflow_io_inputValid ? 1'h0 : mac_validated_op2; // @[SE.scala 171:55 172:35 141:40]
-  wire  _GEN_444 = aes_cipher_for_op2_mac_validation_io_output_valid | _GEN_435; // @[SE.scala 163:65 170:35]
-  reg  decrypted_op1_val_buffer_valid; // @[SE.scala 174:53]
-  reg  decrypted_op2_val_buffer_valid; // @[SE.scala 175:53]
-  wire  _GEN_447 = sha256_for_dataflow_io_outputValid ? 1'h0 : decrypted_op1_val_buffer_valid; // @[SE.scala 185:57 186:48 174:53]
-  wire  _GEN_448 = aes_invcipher_op1_io_output_valid | _GEN_447; // @[SE.scala 183:49 184:48]
-  wire  _GEN_451 = sha256_for_dataflow_io_outputValid ? 1'h0 : decrypted_op2_val_buffer_valid; // @[SE.scala 197:57 198:48 175:53]
-  wire  _GEN_452 = aes_invcipher_op2_io_output_valid | _GEN_451; // @[SE.scala 195:49 196:48]
+  wire [127:0] ciph1_mac = op1_buffer_after_decrypt_stage[511:384]; // @[SE.scala 150:55]
+  wire [127:0] ciph2_mac = op2_buffer_after_decrypt_stage[511:384]; // @[SE.scala 151:55]
+  wire  _GEN_385 = 3'h0 == push_pointer1 | mac_checkout_1_0; // @[SE.scala 157:{55,55} 72:33]
+  wire  _GEN_386 = 3'h1 == push_pointer1 | mac_checkout_1_1; // @[SE.scala 157:{55,55} 72:33]
+  wire  _GEN_387 = 3'h2 == push_pointer1 | mac_checkout_1_2; // @[SE.scala 157:{55,55} 72:33]
+  wire  _GEN_388 = 3'h3 == push_pointer1 | mac_checkout_1_3; // @[SE.scala 157:{55,55} 72:33]
+  wire  _GEN_389 = 3'h4 == push_pointer1 | mac_checkout_1_4; // @[SE.scala 157:{55,55} 72:33]
+  wire  _GEN_390 = 3'h5 == push_pointer1 | mac_checkout_1_5; // @[SE.scala 157:{55,55} 72:33]
+  wire  _GEN_391 = 3'h6 == push_pointer1 | mac_checkout_1_6; // @[SE.scala 157:{55,55} 72:33]
+  wire  _GEN_392 = 3'h7 == push_pointer1 | mac_checkout_1_7; // @[SE.scala 157:{55,55} 72:33]
+  wire  _GEN_401 = sha256_for_dataflow_io_inputValid ? 1'h0 : mac_validated_op1; // @[SE.scala 160:55 161:35 140:40]
+  wire  _GEN_410 = aes_cipher_for_op1_mac_validation_io_output_valid | _GEN_401; // @[SE.scala 152:65 159:35]
+  wire  _GEN_419 = 3'h0 == push_pointer2 | mac_checkout_2_0; // @[SE.scala 169:{55,55} 73:33]
+  wire  _GEN_420 = 3'h1 == push_pointer2 | mac_checkout_2_1; // @[SE.scala 169:{55,55} 73:33]
+  wire  _GEN_421 = 3'h2 == push_pointer2 | mac_checkout_2_2; // @[SE.scala 169:{55,55} 73:33]
+  wire  _GEN_422 = 3'h3 == push_pointer2 | mac_checkout_2_3; // @[SE.scala 169:{55,55} 73:33]
+  wire  _GEN_423 = 3'h4 == push_pointer2 | mac_checkout_2_4; // @[SE.scala 169:{55,55} 73:33]
+  wire  _GEN_424 = 3'h5 == push_pointer2 | mac_checkout_2_5; // @[SE.scala 169:{55,55} 73:33]
+  wire  _GEN_425 = 3'h6 == push_pointer2 | mac_checkout_2_6; // @[SE.scala 169:{55,55} 73:33]
+  wire  _GEN_426 = 3'h7 == push_pointer2 | mac_checkout_2_7; // @[SE.scala 169:{55,55} 73:33]
+  wire  _GEN_435 = sha256_for_dataflow_io_inputValid ? 1'h0 : mac_validated_op2; // @[SE.scala 172:55 173:35 141:40]
+  wire  _GEN_444 = aes_cipher_for_op2_mac_validation_io_output_valid | _GEN_435; // @[SE.scala 164:65 171:35]
+  reg  decrypted_op1_val_buffer_valid; // @[SE.scala 175:53]
+  reg  decrypted_op2_val_buffer_valid; // @[SE.scala 176:53]
+  wire  _GEN_447 = sha256_for_dataflow_io_outputValid ? 1'h0 : decrypted_op1_val_buffer_valid; // @[SE.scala 186:57 187:48 175:53]
+  wire  _GEN_448 = aes_invcipher_op1_io_output_valid | _GEN_447; // @[SE.scala 184:49 185:48]
+  wire  _GEN_451 = sha256_for_dataflow_io_outputValid ? 1'h0 : decrypted_op2_val_buffer_valid; // @[SE.scala 198:57 199:48 176:53]
+  wire  _GEN_452 = aes_invcipher_op2_io_output_valid | _GEN_451; // @[SE.scala 196:49 197:48]
   reg [7:0] inst_buffer_buf; // @[Reg.scala 16:16]
-  reg  result_hash_buffer_idle; // @[SE.scala 201:46]
-  wire  _seoperation_io_in_valid_T = decrypted_op1_val_buffer_valid & decrypted_op2_val_buffer_valid; // @[SE.scala 203:75]
-  wire [127:0] op1_bit = decrypted_op1_val_buffer[383:256]; // @[SE.scala 205:63]
-  wire [127:0] op2_bit = decrypted_op2_val_buffer[383:256]; // @[SE.scala 206:63]
-  wire  is_enc_const = 8'hb0 == inst_buffer_buf; // @[SE.scala 207:45]
+  reg  result_hash_buffer_idle; // @[SE.scala 202:46]
+  wire  _seoperation_io_in_valid_T = decrypted_op1_val_buffer_valid & decrypted_op2_val_buffer_valid; // @[SE.scala 204:75]
+  wire [127:0] op1_bit = decrypted_op1_val_buffer[383:256]; // @[SE.scala 206:63]
+  wire [127:0] op2_bit = decrypted_op2_val_buffer[383:256]; // @[SE.scala 207:63]
+  wire  is_enc_const = 8'hb0 == inst_buffer_buf; // @[SE.scala 208:45]
   wire [127:0] op1_plaintext_64 = is_enc_const | op1_type_buffer_after_decrypt_stage ? op1_buffer_after_decrypt_stage[
-    383:256] : {{64'd0}, op1_bit[127:64]}; // @[SE.scala 209:46]
+    383:256] : {{64'd0}, op1_bit[127:64]}; // @[SE.scala 210:46]
   wire [127:0] op2_plaintext_64 = op2_type_buffer_after_decrypt_stage ? op2_buffer_after_decrypt_stage[383:256] : {{64
-    'd0}, op2_bit[127:64]}; // @[SE.scala 210:46]
+    'd0}, op2_bit[127:64]}; // @[SE.scala 211:46]
   wire [511:0] sha256_for_dataflow_io_inputData_hi = {decrypted_op1_val_buffer[255:0],decrypted_op2_val_buffer[255:0]}; // @[Cat.scala 31:58]
   wire [7:0] bit64_randnum_lo_lo_lo = {bit64_randnum_prng_io_out_7,bit64_randnum_prng_io_out_6,
     bit64_randnum_prng_io_out_5,bit64_randnum_prng_io_out_4,bit64_randnum_prng_io_out_3,bit64_randnum_prng_io_out_2,
@@ -40167,43 +40151,43 @@ module SE(
   wire [383:0] non_enc_padded_result = {seoperation_io_result,bit64_randnum_hi,bit64_randnum_lo,_non_enc_padded_result_T
     }; // @[Cat.scala 31:58]
   reg [383:0] result_hash_buffer; // @[Reg.scala 16:16]
-  reg  result_hash_valid_buffer; // @[SE.scala 223:66]
-  wire  _GEN_455 = aes_cipher_io_input_valid | result_hash_buffer_idle; // @[SE.scala 226:48 227:41 201:46]
-  wire  _GEN_456 = sha256_for_dataflow_io_inputValid ? 1'h0 : _GEN_455; // @[SE.scala 224:49 225:41]
-  wire  _GEN_457 = aes_cipher_io_input_valid ? 1'h0 : result_hash_valid_buffer; // @[SE.scala 231:48 232:42 223:66]
-  wire  _GEN_458 = sha256_for_dataflow_io_outputValid | _GEN_457; // @[SE.scala 229:50 230:42]
-  reg  encrypt_buffer_idle; // @[SE.scala 236:42]
+  reg  result_hash_valid_buffer; // @[SE.scala 224:66]
+  wire  _GEN_455 = aes_cipher_io_input_valid | result_hash_buffer_idle; // @[SE.scala 227:48 228:41 202:46]
+  wire  _GEN_456 = sha256_for_dataflow_io_inputValid ? 1'h0 : _GEN_455; // @[SE.scala 225:49 226:41]
+  wire  _GEN_457 = aes_cipher_io_input_valid ? 1'h0 : result_hash_valid_buffer; // @[SE.scala 232:48 233:42 224:66]
+  wire  _GEN_458 = sha256_for_dataflow_io_outputValid | _GEN_457; // @[SE.scala 230:50 231:42]
+  reg  encrypt_buffer_idle; // @[SE.scala 237:42]
   reg [383:0] encrypted_result_buffer; // @[Reg.scala 16:16]
-  reg  encrypted_result_valid_buffer; // @[SE.scala 244:52]
-  wire  _GEN_460 = aes_cipher_for_output_mac_io_input_valid ? 1'h0 : encrypted_result_valid_buffer; // @[SE.scala 248:63 249:47 244:52]
-  wire  _GEN_461 = aes_cipher_io_output_valid | _GEN_460; // @[SE.scala 246:42 247:47]
-  wire  _GEN_462 = aes_cipher_for_output_mac_io_input_valid | encrypt_buffer_idle; // @[SE.scala 253:63 254:37 236:42]
-  wire  _GEN_463 = aes_cipher_io_input_valid ? 1'h0 : _GEN_462; // @[SE.scala 251:41 252:37]
+  reg  encrypted_result_valid_buffer; // @[SE.scala 245:52]
+  wire  _GEN_460 = aes_cipher_for_output_mac_io_input_valid ? 1'h0 : encrypted_result_valid_buffer; // @[SE.scala 249:63 250:47 245:52]
+  wire  _GEN_461 = aes_cipher_io_output_valid | _GEN_460; // @[SE.scala 247:42 248:47]
+  wire  _GEN_462 = aes_cipher_for_output_mac_io_input_valid | encrypt_buffer_idle; // @[SE.scala 254:63 255:37 237:42]
+  wire  _GEN_463 = aes_cipher_io_input_valid ? 1'h0 : _GEN_462; // @[SE.scala 252:41 253:37]
   wire [510:0] output_buffer_enc_hi = {encrypted_result_buffer,127'hdeabeaf}; // @[Cat.scala 31:58]
   wire [511:0] output_buffer_enc = {encrypted_result_buffer,127'hdeabeaf,1'h1}; // @[Cat.scala 31:58]
-  reg  output_buffer_valid; // @[SE.scala 259:42]
-  reg  output_buffer_idle; // @[SE.scala 260:41]
+  reg  output_buffer_valid; // @[SE.scala 260:42]
+  reg  output_buffer_idle; // @[SE.scala 261:41]
   wire [511:0] _output_connect_T_1 = {aes_cipher_for_output_mac_io_output_text,output_buffer_enc[511:128]}; // @[Cat.scala 31:58]
   reg [511:0] output_connect; // @[Reg.scala 16:16]
-  wire  _GEN_465 = aes_cipher_for_output_mac_io_input_valid ? 1'h0 : output_buffer_idle; // @[SE.scala 268:63 269:36 260:41]
-  wire  _GEN_466 = _T | _GEN_465; // @[SE.scala 266:44 267:36]
-  wire  _GEN_467 = aes_cipher_for_output_mac_io_output_valid | output_buffer_valid; // @[SE.scala 273:64 274:37 259:42]
-  wire  _GEN_470 = 3'h1 == pop_pointer1 ? mac_checkout_1_1 : mac_checkout_1_0; // @[SE.scala 276:{61,61}]
-  wire  _GEN_471 = 3'h2 == pop_pointer1 ? mac_checkout_1_2 : _GEN_470; // @[SE.scala 276:{61,61}]
-  wire  _GEN_472 = 3'h3 == pop_pointer1 ? mac_checkout_1_3 : _GEN_471; // @[SE.scala 276:{61,61}]
-  wire  _GEN_473 = 3'h4 == pop_pointer1 ? mac_checkout_1_4 : _GEN_472; // @[SE.scala 276:{61,61}]
-  wire  _GEN_474 = 3'h5 == pop_pointer1 ? mac_checkout_1_5 : _GEN_473; // @[SE.scala 276:{61,61}]
-  wire  _GEN_475 = 3'h6 == pop_pointer1 ? mac_checkout_1_6 : _GEN_474; // @[SE.scala 276:{61,61}]
-  wire  _GEN_476 = 3'h7 == pop_pointer1 ? mac_checkout_1_7 : _GEN_475; // @[SE.scala 276:{61,61}]
-  wire  _GEN_478 = 3'h1 == pop_pointer2 ? mac_checkout_2_1 : mac_checkout_2_0; // @[SE.scala 276:{61,61}]
-  wire  _GEN_479 = 3'h2 == pop_pointer2 ? mac_checkout_2_2 : _GEN_478; // @[SE.scala 276:{61,61}]
-  wire  _GEN_480 = 3'h3 == pop_pointer2 ? mac_checkout_2_3 : _GEN_479; // @[SE.scala 276:{61,61}]
-  wire  _GEN_481 = 3'h4 == pop_pointer2 ? mac_checkout_2_4 : _GEN_480; // @[SE.scala 276:{61,61}]
-  wire  _GEN_482 = 3'h5 == pop_pointer2 ? mac_checkout_2_5 : _GEN_481; // @[SE.scala 276:{61,61}]
-  wire  _GEN_483 = 3'h6 == pop_pointer2 ? mac_checkout_2_6 : _GEN_482; // @[SE.scala 276:{61,61}]
-  wire  _GEN_484 = 3'h7 == pop_pointer2 ? mac_checkout_2_7 : _GEN_483; // @[SE.scala 276:{61,61}]
-  wire [511:0] output_gated = _GEN_476 & _GEN_484 ? output_connect : 512'heeee; // @[SE.scala 276:31]
-  wire [511:0] _GEN_486 = output_buffer_valid ? output_gated : 512'h0; // @[SE.scala 277:35 279:49 283:49]
+  wire  _GEN_465 = aes_cipher_for_output_mac_io_input_valid ? 1'h0 : output_buffer_idle; // @[SE.scala 269:63 270:36 261:41]
+  wire  _GEN_466 = _T | _GEN_465; // @[SE.scala 267:44 268:36]
+  wire  _GEN_467 = aes_cipher_for_output_mac_io_output_valid | output_buffer_valid; // @[SE.scala 274:64 275:37 260:42]
+  wire  _GEN_470 = 3'h1 == pop_pointer1 ? mac_checkout_1_1 : mac_checkout_1_0; // @[SE.scala 277:{61,61}]
+  wire  _GEN_471 = 3'h2 == pop_pointer1 ? mac_checkout_1_2 : _GEN_470; // @[SE.scala 277:{61,61}]
+  wire  _GEN_472 = 3'h3 == pop_pointer1 ? mac_checkout_1_3 : _GEN_471; // @[SE.scala 277:{61,61}]
+  wire  _GEN_473 = 3'h4 == pop_pointer1 ? mac_checkout_1_4 : _GEN_472; // @[SE.scala 277:{61,61}]
+  wire  _GEN_474 = 3'h5 == pop_pointer1 ? mac_checkout_1_5 : _GEN_473; // @[SE.scala 277:{61,61}]
+  wire  _GEN_475 = 3'h6 == pop_pointer1 ? mac_checkout_1_6 : _GEN_474; // @[SE.scala 277:{61,61}]
+  wire  _GEN_476 = 3'h7 == pop_pointer1 ? mac_checkout_1_7 : _GEN_475; // @[SE.scala 277:{61,61}]
+  wire  _GEN_478 = 3'h1 == pop_pointer2 ? mac_checkout_2_1 : mac_checkout_2_0; // @[SE.scala 277:{61,61}]
+  wire  _GEN_479 = 3'h2 == pop_pointer2 ? mac_checkout_2_2 : _GEN_478; // @[SE.scala 277:{61,61}]
+  wire  _GEN_480 = 3'h3 == pop_pointer2 ? mac_checkout_2_3 : _GEN_479; // @[SE.scala 277:{61,61}]
+  wire  _GEN_481 = 3'h4 == pop_pointer2 ? mac_checkout_2_4 : _GEN_480; // @[SE.scala 277:{61,61}]
+  wire  _GEN_482 = 3'h5 == pop_pointer2 ? mac_checkout_2_5 : _GEN_481; // @[SE.scala 277:{61,61}]
+  wire  _GEN_483 = 3'h6 == pop_pointer2 ? mac_checkout_2_6 : _GEN_482; // @[SE.scala 277:{61,61}]
+  wire  _GEN_484 = 3'h7 == pop_pointer2 ? mac_checkout_2_7 : _GEN_483; // @[SE.scala 277:{61,61}]
+  wire [511:0] output_gated = _GEN_476 & _GEN_484 ? output_connect : 512'heeee; // @[SE.scala 277:31]
+  wire [511:0] _GEN_486 = output_buffer_valid ? output_gated : 512'h0; // @[SE.scala 278:35 280:49 284:49]
   SEOperation seoperation ( // @[SE.scala 55:33]
     .io_inst(seoperation_io_inst),
     .io_op1_input(seoperation_io_op1_input),
@@ -40343,11 +40327,11 @@ module SE(
   );
   assign io_in_ready = input_buffer_idle; // @[SE.scala 100:21]
   assign io_out_result = {{128'd0}, _GEN_486};
-  assign io_out_valid = output_buffer_valid; // @[SE.scala 277:35 278:30 282:30]
-  assign io_out_output_type = output_buffer_valid; // @[SE.scala 277:35 278:30 282:30]
-  assign seoperation_io_inst = inst_buffer_buf; // @[SE.scala 202:31]
-  assign seoperation_io_op1_input = op1_plaintext_64[63:0]; // @[SE.scala 211:31]
-  assign seoperation_io_op2_input = op2_plaintext_64[63:0]; // @[SE.scala 212:37]
+  assign io_out_valid = output_buffer_valid; // @[SE.scala 278:35 279:30 283:30]
+  assign io_out_output_type = output_buffer_valid; // @[SE.scala 278:35 279:30 283:30]
+  assign seoperation_io_inst = inst_buffer_buf; // @[SE.scala 203:31]
+  assign seoperation_io_op1_input = op1_plaintext_64[63:0]; // @[SE.scala 212:31]
+  assign seoperation_io_op2_input = op2_plaintext_64[63:0]; // @[SE.scala 213:37]
   assign aes_invcipher_op1_clock = clock;
   assign aes_invcipher_op1_reset = reset;
   assign aes_invcipher_op1_io_input_valid = input_buffer_valid & decrypt_buffer_idle; // @[SE.scala 126:79]
@@ -40368,159 +40352,159 @@ module SE(
     op2_type_buffer}; // @[Cat.scala 31:58]
   assign aes_cipher_for_output_mac_clock = clock;
   assign aes_cipher_for_output_mac_reset = reset;
-  assign aes_cipher_for_output_mac_io_input_valid = output_buffer_idle & encrypted_result_valid_buffer; // @[SE.scala 263:72]
+  assign aes_cipher_for_output_mac_io_input_valid = output_buffer_idle & encrypted_result_valid_buffer; // @[SE.scala 264:72]
   assign aes_cipher_for_output_mac_io_input_text = {output_buffer_enc_hi,1'h1}; // @[Cat.scala 31:58]
   assign sha256_for_dataflow_clock = clock;
   assign sha256_for_dataflow_reset = reset;
   assign sha256_for_dataflow_io_inputData = {sha256_for_dataflow_io_inputData_hi,inst_buffer_buf}; // @[Cat.scala 31:58]
   assign sha256_for_dataflow_io_inputValid = _seoperation_io_in_valid_T & result_hash_buffer_idle & mac_validated_op1 &
-    mac_validated_op2; // @[SE.scala 215:159]
+    mac_validated_op2; // @[SE.scala 216:159]
   assign aes_cipher_clock = clock;
   assign aes_cipher_reset = reset;
-  assign aes_cipher_io_input_valid = result_hash_valid_buffer & encrypt_buffer_idle; // @[SE.scala 239:77]
-  assign aes_cipher_io_input_text = result_hash_buffer; // @[SE.scala 238:57]
+  assign aes_cipher_io_input_valid = result_hash_valid_buffer & encrypt_buffer_idle; // @[SE.scala 240:77]
+  assign aes_cipher_io_input_text = result_hash_buffer; // @[SE.scala 239:57]
   assign bit64_randnum_prng_clock = clock;
   assign bit64_randnum_prng_reset = reset;
   always @(posedge clock) begin
-    if (aes_cipher_for_op1_mac_validation_io_output_valid) begin // @[SE.scala 151:65]
-      if (aes_cipher_for_op1_mac_validation_io_output_text != ciph1_mac) begin // @[SE.scala 152:86]
-        if (3'h0 == push_pointer1) begin // @[SE.scala 154:55]
-          mac_checkout_1_0 <= 1'h0; // @[SE.scala 154:55]
+    if (aes_cipher_for_op1_mac_validation_io_output_valid) begin // @[SE.scala 152:65]
+      if (aes_cipher_for_op1_mac_validation_io_output_text != ciph1_mac) begin // @[SE.scala 153:86]
+        if (3'h0 == push_pointer1) begin // @[SE.scala 155:55]
+          mac_checkout_1_0 <= 1'h0; // @[SE.scala 155:55]
         end
       end else begin
         mac_checkout_1_0 <= _GEN_385;
       end
     end
-    if (aes_cipher_for_op1_mac_validation_io_output_valid) begin // @[SE.scala 151:65]
-      if (aes_cipher_for_op1_mac_validation_io_output_text != ciph1_mac) begin // @[SE.scala 152:86]
-        if (3'h1 == push_pointer1) begin // @[SE.scala 154:55]
-          mac_checkout_1_1 <= 1'h0; // @[SE.scala 154:55]
+    if (aes_cipher_for_op1_mac_validation_io_output_valid) begin // @[SE.scala 152:65]
+      if (aes_cipher_for_op1_mac_validation_io_output_text != ciph1_mac) begin // @[SE.scala 153:86]
+        if (3'h1 == push_pointer1) begin // @[SE.scala 155:55]
+          mac_checkout_1_1 <= 1'h0; // @[SE.scala 155:55]
         end
       end else begin
         mac_checkout_1_1 <= _GEN_386;
       end
     end
-    if (aes_cipher_for_op1_mac_validation_io_output_valid) begin // @[SE.scala 151:65]
-      if (aes_cipher_for_op1_mac_validation_io_output_text != ciph1_mac) begin // @[SE.scala 152:86]
-        if (3'h2 == push_pointer1) begin // @[SE.scala 154:55]
-          mac_checkout_1_2 <= 1'h0; // @[SE.scala 154:55]
+    if (aes_cipher_for_op1_mac_validation_io_output_valid) begin // @[SE.scala 152:65]
+      if (aes_cipher_for_op1_mac_validation_io_output_text != ciph1_mac) begin // @[SE.scala 153:86]
+        if (3'h2 == push_pointer1) begin // @[SE.scala 155:55]
+          mac_checkout_1_2 <= 1'h0; // @[SE.scala 155:55]
         end
       end else begin
         mac_checkout_1_2 <= _GEN_387;
       end
     end
-    if (aes_cipher_for_op1_mac_validation_io_output_valid) begin // @[SE.scala 151:65]
-      if (aes_cipher_for_op1_mac_validation_io_output_text != ciph1_mac) begin // @[SE.scala 152:86]
-        if (3'h3 == push_pointer1) begin // @[SE.scala 154:55]
-          mac_checkout_1_3 <= 1'h0; // @[SE.scala 154:55]
+    if (aes_cipher_for_op1_mac_validation_io_output_valid) begin // @[SE.scala 152:65]
+      if (aes_cipher_for_op1_mac_validation_io_output_text != ciph1_mac) begin // @[SE.scala 153:86]
+        if (3'h3 == push_pointer1) begin // @[SE.scala 155:55]
+          mac_checkout_1_3 <= 1'h0; // @[SE.scala 155:55]
         end
       end else begin
         mac_checkout_1_3 <= _GEN_388;
       end
     end
-    if (aes_cipher_for_op1_mac_validation_io_output_valid) begin // @[SE.scala 151:65]
-      if (aes_cipher_for_op1_mac_validation_io_output_text != ciph1_mac) begin // @[SE.scala 152:86]
-        if (3'h4 == push_pointer1) begin // @[SE.scala 154:55]
-          mac_checkout_1_4 <= 1'h0; // @[SE.scala 154:55]
+    if (aes_cipher_for_op1_mac_validation_io_output_valid) begin // @[SE.scala 152:65]
+      if (aes_cipher_for_op1_mac_validation_io_output_text != ciph1_mac) begin // @[SE.scala 153:86]
+        if (3'h4 == push_pointer1) begin // @[SE.scala 155:55]
+          mac_checkout_1_4 <= 1'h0; // @[SE.scala 155:55]
         end
       end else begin
         mac_checkout_1_4 <= _GEN_389;
       end
     end
-    if (aes_cipher_for_op1_mac_validation_io_output_valid) begin // @[SE.scala 151:65]
-      if (aes_cipher_for_op1_mac_validation_io_output_text != ciph1_mac) begin // @[SE.scala 152:86]
-        if (3'h5 == push_pointer1) begin // @[SE.scala 154:55]
-          mac_checkout_1_5 <= 1'h0; // @[SE.scala 154:55]
+    if (aes_cipher_for_op1_mac_validation_io_output_valid) begin // @[SE.scala 152:65]
+      if (aes_cipher_for_op1_mac_validation_io_output_text != ciph1_mac) begin // @[SE.scala 153:86]
+        if (3'h5 == push_pointer1) begin // @[SE.scala 155:55]
+          mac_checkout_1_5 <= 1'h0; // @[SE.scala 155:55]
         end
       end else begin
         mac_checkout_1_5 <= _GEN_390;
       end
     end
-    if (aes_cipher_for_op1_mac_validation_io_output_valid) begin // @[SE.scala 151:65]
-      if (aes_cipher_for_op1_mac_validation_io_output_text != ciph1_mac) begin // @[SE.scala 152:86]
-        if (3'h6 == push_pointer1) begin // @[SE.scala 154:55]
-          mac_checkout_1_6 <= 1'h0; // @[SE.scala 154:55]
+    if (aes_cipher_for_op1_mac_validation_io_output_valid) begin // @[SE.scala 152:65]
+      if (aes_cipher_for_op1_mac_validation_io_output_text != ciph1_mac) begin // @[SE.scala 153:86]
+        if (3'h6 == push_pointer1) begin // @[SE.scala 155:55]
+          mac_checkout_1_6 <= 1'h0; // @[SE.scala 155:55]
         end
       end else begin
         mac_checkout_1_6 <= _GEN_391;
       end
     end
-    if (aes_cipher_for_op1_mac_validation_io_output_valid) begin // @[SE.scala 151:65]
-      if (aes_cipher_for_op1_mac_validation_io_output_text != ciph1_mac) begin // @[SE.scala 152:86]
-        if (3'h7 == push_pointer1) begin // @[SE.scala 154:55]
-          mac_checkout_1_7 <= 1'h0; // @[SE.scala 154:55]
+    if (aes_cipher_for_op1_mac_validation_io_output_valid) begin // @[SE.scala 152:65]
+      if (aes_cipher_for_op1_mac_validation_io_output_text != ciph1_mac) begin // @[SE.scala 153:86]
+        if (3'h7 == push_pointer1) begin // @[SE.scala 155:55]
+          mac_checkout_1_7 <= 1'h0; // @[SE.scala 155:55]
         end
       end else begin
         mac_checkout_1_7 <= _GEN_392;
       end
     end
-    if (aes_cipher_for_op2_mac_validation_io_output_valid) begin // @[SE.scala 163:65]
-      if (aes_cipher_for_op2_mac_validation_io_output_text != ciph2_mac) begin // @[SE.scala 164:85]
-        if (3'h0 == push_pointer2) begin // @[SE.scala 166:55]
-          mac_checkout_2_0 <= 1'h0; // @[SE.scala 166:55]
+    if (aes_cipher_for_op2_mac_validation_io_output_valid) begin // @[SE.scala 164:65]
+      if (aes_cipher_for_op2_mac_validation_io_output_text != ciph2_mac) begin // @[SE.scala 165:85]
+        if (3'h0 == push_pointer2) begin // @[SE.scala 167:55]
+          mac_checkout_2_0 <= 1'h0; // @[SE.scala 167:55]
         end
       end else begin
         mac_checkout_2_0 <= _GEN_419;
       end
     end
-    if (aes_cipher_for_op2_mac_validation_io_output_valid) begin // @[SE.scala 163:65]
-      if (aes_cipher_for_op2_mac_validation_io_output_text != ciph2_mac) begin // @[SE.scala 164:85]
-        if (3'h1 == push_pointer2) begin // @[SE.scala 166:55]
-          mac_checkout_2_1 <= 1'h0; // @[SE.scala 166:55]
+    if (aes_cipher_for_op2_mac_validation_io_output_valid) begin // @[SE.scala 164:65]
+      if (aes_cipher_for_op2_mac_validation_io_output_text != ciph2_mac) begin // @[SE.scala 165:85]
+        if (3'h1 == push_pointer2) begin // @[SE.scala 167:55]
+          mac_checkout_2_1 <= 1'h0; // @[SE.scala 167:55]
         end
       end else begin
         mac_checkout_2_1 <= _GEN_420;
       end
     end
-    if (aes_cipher_for_op2_mac_validation_io_output_valid) begin // @[SE.scala 163:65]
-      if (aes_cipher_for_op2_mac_validation_io_output_text != ciph2_mac) begin // @[SE.scala 164:85]
-        if (3'h2 == push_pointer2) begin // @[SE.scala 166:55]
-          mac_checkout_2_2 <= 1'h0; // @[SE.scala 166:55]
+    if (aes_cipher_for_op2_mac_validation_io_output_valid) begin // @[SE.scala 164:65]
+      if (aes_cipher_for_op2_mac_validation_io_output_text != ciph2_mac) begin // @[SE.scala 165:85]
+        if (3'h2 == push_pointer2) begin // @[SE.scala 167:55]
+          mac_checkout_2_2 <= 1'h0; // @[SE.scala 167:55]
         end
       end else begin
         mac_checkout_2_2 <= _GEN_421;
       end
     end
-    if (aes_cipher_for_op2_mac_validation_io_output_valid) begin // @[SE.scala 163:65]
-      if (aes_cipher_for_op2_mac_validation_io_output_text != ciph2_mac) begin // @[SE.scala 164:85]
-        if (3'h3 == push_pointer2) begin // @[SE.scala 166:55]
-          mac_checkout_2_3 <= 1'h0; // @[SE.scala 166:55]
+    if (aes_cipher_for_op2_mac_validation_io_output_valid) begin // @[SE.scala 164:65]
+      if (aes_cipher_for_op2_mac_validation_io_output_text != ciph2_mac) begin // @[SE.scala 165:85]
+        if (3'h3 == push_pointer2) begin // @[SE.scala 167:55]
+          mac_checkout_2_3 <= 1'h0; // @[SE.scala 167:55]
         end
       end else begin
         mac_checkout_2_3 <= _GEN_422;
       end
     end
-    if (aes_cipher_for_op2_mac_validation_io_output_valid) begin // @[SE.scala 163:65]
-      if (aes_cipher_for_op2_mac_validation_io_output_text != ciph2_mac) begin // @[SE.scala 164:85]
-        if (3'h4 == push_pointer2) begin // @[SE.scala 166:55]
-          mac_checkout_2_4 <= 1'h0; // @[SE.scala 166:55]
+    if (aes_cipher_for_op2_mac_validation_io_output_valid) begin // @[SE.scala 164:65]
+      if (aes_cipher_for_op2_mac_validation_io_output_text != ciph2_mac) begin // @[SE.scala 165:85]
+        if (3'h4 == push_pointer2) begin // @[SE.scala 167:55]
+          mac_checkout_2_4 <= 1'h0; // @[SE.scala 167:55]
         end
       end else begin
         mac_checkout_2_4 <= _GEN_423;
       end
     end
-    if (aes_cipher_for_op2_mac_validation_io_output_valid) begin // @[SE.scala 163:65]
-      if (aes_cipher_for_op2_mac_validation_io_output_text != ciph2_mac) begin // @[SE.scala 164:85]
-        if (3'h5 == push_pointer2) begin // @[SE.scala 166:55]
-          mac_checkout_2_5 <= 1'h0; // @[SE.scala 166:55]
+    if (aes_cipher_for_op2_mac_validation_io_output_valid) begin // @[SE.scala 164:65]
+      if (aes_cipher_for_op2_mac_validation_io_output_text != ciph2_mac) begin // @[SE.scala 165:85]
+        if (3'h5 == push_pointer2) begin // @[SE.scala 167:55]
+          mac_checkout_2_5 <= 1'h0; // @[SE.scala 167:55]
         end
       end else begin
         mac_checkout_2_5 <= _GEN_424;
       end
     end
-    if (aes_cipher_for_op2_mac_validation_io_output_valid) begin // @[SE.scala 163:65]
-      if (aes_cipher_for_op2_mac_validation_io_output_text != ciph2_mac) begin // @[SE.scala 164:85]
-        if (3'h6 == push_pointer2) begin // @[SE.scala 166:55]
-          mac_checkout_2_6 <= 1'h0; // @[SE.scala 166:55]
+    if (aes_cipher_for_op2_mac_validation_io_output_valid) begin // @[SE.scala 164:65]
+      if (aes_cipher_for_op2_mac_validation_io_output_text != ciph2_mac) begin // @[SE.scala 165:85]
+        if (3'h6 == push_pointer2) begin // @[SE.scala 167:55]
+          mac_checkout_2_6 <= 1'h0; // @[SE.scala 167:55]
         end
       end else begin
         mac_checkout_2_6 <= _GEN_425;
       end
     end
-    if (aes_cipher_for_op2_mac_validation_io_output_valid) begin // @[SE.scala 163:65]
-      if (aes_cipher_for_op2_mac_validation_io_output_text != ciph2_mac) begin // @[SE.scala 164:85]
-        if (3'h7 == push_pointer2) begin // @[SE.scala 166:55]
-          mac_checkout_2_7 <= 1'h0; // @[SE.scala 166:55]
+    if (aes_cipher_for_op2_mac_validation_io_output_valid) begin // @[SE.scala 164:65]
+      if (aes_cipher_for_op2_mac_validation_io_output_text != ciph2_mac) begin // @[SE.scala 165:85]
+        if (3'h7 == push_pointer2) begin // @[SE.scala 167:55]
+          mac_checkout_2_7 <= 1'h0; // @[SE.scala 167:55]
         end
       end else begin
         mac_checkout_2_7 <= _GEN_426;
@@ -40596,45 +40580,45 @@ module SE(
     if (aes_invcipher_op2_io_input_valid) begin // @[Reg.scala 17:18]
       op2_buffer_after_decrypt_stage <= op2_buffer; // @[Reg.scala 17:22]
     end
-    if (reset) begin // @[SE.scala 174:53]
-      decrypted_op1_val_buffer_valid <= 1'h0; // @[SE.scala 174:53]
+    if (reset) begin // @[SE.scala 175:53]
+      decrypted_op1_val_buffer_valid <= 1'h0; // @[SE.scala 175:53]
     end else begin
       decrypted_op1_val_buffer_valid <= _GEN_448;
     end
-    if (reset) begin // @[SE.scala 175:53]
-      decrypted_op2_val_buffer_valid <= 1'h0; // @[SE.scala 175:53]
+    if (reset) begin // @[SE.scala 176:53]
+      decrypted_op2_val_buffer_valid <= 1'h0; // @[SE.scala 176:53]
     end else begin
       decrypted_op2_val_buffer_valid <= _GEN_452;
     end
     if (aes_invcipher_op1_io_input_valid) begin // @[Reg.scala 17:18]
       inst_buffer_buf <= inst_buffer; // @[Reg.scala 17:22]
     end
-    result_hash_buffer_idle <= reset | _GEN_456; // @[SE.scala 201:{46,46}]
+    result_hash_buffer_idle <= reset | _GEN_456; // @[SE.scala 202:{46,46}]
     if (sha256_for_dataflow_io_outputValid) begin // @[Reg.scala 17:18]
       result_hash_buffer <= non_enc_padded_result; // @[Reg.scala 17:22]
     end
-    if (reset) begin // @[SE.scala 223:66]
-      result_hash_valid_buffer <= 1'h0; // @[SE.scala 223:66]
+    if (reset) begin // @[SE.scala 224:66]
+      result_hash_valid_buffer <= 1'h0; // @[SE.scala 224:66]
     end else begin
       result_hash_valid_buffer <= _GEN_458;
     end
-    encrypt_buffer_idle <= reset | _GEN_463; // @[SE.scala 236:{42,42}]
+    encrypt_buffer_idle <= reset | _GEN_463; // @[SE.scala 237:{42,42}]
     if (aes_cipher_io_output_valid) begin // @[Reg.scala 17:18]
       encrypted_result_buffer <= aes_cipher_io_output_text; // @[Reg.scala 17:22]
     end
-    if (reset) begin // @[SE.scala 244:52]
-      encrypted_result_valid_buffer <= 1'h0; // @[SE.scala 244:52]
+    if (reset) begin // @[SE.scala 245:52]
+      encrypted_result_valid_buffer <= 1'h0; // @[SE.scala 245:52]
     end else begin
       encrypted_result_valid_buffer <= _GEN_461;
     end
-    if (reset) begin // @[SE.scala 259:42]
-      output_buffer_valid <= 1'h0; // @[SE.scala 259:42]
-    end else if (_T) begin // @[SE.scala 271:44]
-      output_buffer_valid <= 1'h0; // @[SE.scala 272:37]
+    if (reset) begin // @[SE.scala 260:42]
+      output_buffer_valid <= 1'h0; // @[SE.scala 260:42]
+    end else if (_T) begin // @[SE.scala 272:44]
+      output_buffer_valid <= 1'h0; // @[SE.scala 273:37]
     end else begin
       output_buffer_valid <= _GEN_467;
     end
-    output_buffer_idle <= reset | _GEN_466; // @[SE.scala 260:{41,41}]
+    output_buffer_idle <= reset | _GEN_466; // @[SE.scala 261:{41,41}]
     if (aes_cipher_for_output_mac_io_output_valid) begin // @[Reg.scala 17:18]
       output_connect <= _output_connect_T_1; // @[Reg.scala 17:22]
     end

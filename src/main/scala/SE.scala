@@ -140,14 +140,15 @@ class SE(val debug : Boolean, val canChangeKey: Boolean) extends Module{
 	val mac_validated_op1 = RegInit(false.B)
 	val mac_validated_op2 = RegInit(false.B)
 
-	val ciph1_mac = op1_buffer(511, 384)
-	val ciph2_mac = op2_buffer(511, 384)
+
 	val decrypted_op1_val_buffer = RegEnable(aes_invcipher_op1.io.output_text, aes_invcipher_op1.io.output_valid) 
 	val decrypted_op2_val_buffer = RegEnable(aes_invcipher_op2.io.output_text, aes_invcipher_op2.io.output_valid) 
 	val op1_type_buffer_after_decrypt_stage = RegEnable(op1_type_buffer, aes_invcipher_op1.io.input_valid)
 	val op2_type_buffer_after_decrypt_stage = RegEnable(op2_type_buffer, aes_invcipher_op2.io.input_valid)
 	val op1_buffer_after_decrypt_stage = RegEnable(op1_buffer, aes_invcipher_op1.io.input_valid)
 	val op2_buffer_after_decrypt_stage = RegEnable(op2_buffer, aes_invcipher_op2.io.input_valid)
+	val ciph1_mac = op1_buffer_after_decrypt_stage(511, 384)
+	val ciph2_mac = op2_buffer_after_decrypt_stage(511, 384)
 	when(aes_cipher_for_op1_mac_validation.io.output_valid) {
 		when(aes_cipher_for_op1_mac_validation.io.output_text =/= ciph1_mac) {
 			// If the MAC does not match, we set the decrypted_op1_val_buffer to 0
