@@ -90,11 +90,11 @@ class SE(val debug : Boolean, val canChangeKey: Boolean) extends Module{
     VecInit(0x13.U(8.W), 0x11.U(8.W), 0x1d.U(8.W), 0x7f.U(8.W), 0xe3.U(8.W), 0x94.U(8.W), 0x4a.U(8.W), 0x17.U(8.W), 0xf3.U(8.W), 0x07.U(8.W), 0xa7.U(8.W), 0x8b.U(8.W), 0x4d.U(8.W), 0x2b.U(8.W), 0x30.U(8.W), 0xc5.U(8.W)))
 
 	// ----------buf_lv1----------
-	val inst_buffer 	= RegEnable(io.in.inst, io.in.valid)
-	val op1_buffer 		= RegEnable(io.in.op1, io.in.valid) // [hsh_A][Ciph_A]
-	val op2_buffer 		= RegEnable(io.in.op2, io.in.valid) // [hsh_B][Ciph_B]
-	val op1_type_buffer = RegEnable(io.in.op1_type, io.in.valid)
-	val op2_type_buffer = RegEnable(io.in.op2_type, io.in.valid)
+	val inst_buffer 	= RegEnable(io.in.inst, io.in.valid& io.in.ready)
+	val op1_buffer 		= RegEnable(io.in.op1, io.in.valid & io.in.ready) // [hsh_A][Ciph_A]
+	val op2_buffer 		= RegEnable(io.in.op2, io.in.valid& io.in.ready) // [hsh_B][Ciph_B]
+	val op1_type_buffer = RegEnable(io.in.op1_type, io.in.valid& io.in.ready)
+	val op2_type_buffer = RegEnable(io.in.op2_type, io.in.valid& io.in.ready)
 	val input_buffer_valid = RegInit(false.B)
 	val input_buffer_idle = RegInit(true.B)
 	io.in.ready := input_buffer_idle
