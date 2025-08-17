@@ -5,3 +5,5 @@ project/*
 target/*
 functional-library/src/verilator/test
 jgproject/
+check/
+check2
