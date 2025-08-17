@@ -1,4 +1,4 @@
-`define SE_DEPTH 8
+`define SE_DEPTH 3
 
 module fifo_single_read #(
     parameter integer DEPTH = `SE_DEPTH,   // power of two
@@ -198,7 +198,7 @@ module fifo_double_read #(
 
 endmodule
 
-module fifo_six_read #(
+module fifo_seven_read #(
     parameter integer DEPTH = `SE_DEPTH,   // power of two
     parameter integer WIDTH = 8
 )(
@@ -250,7 +250,12 @@ module fifo_six_read #(
     // absolute read port 6
     input  wire [$clog2(DEPTH)-1:0] read_addr_6,  // 0..DEPTH-1 (physical slot)
     output wire [WIDTH-1:0]         read_data_6,  // mem[read_addr]
-    output wire                     read_valid_6  // 1 if slot currently occupied
+    output wire                     read_valid_6,  // 1 if slot currently occupied
+
+    // absolute read port 7
+    input  wire [$clog2(DEPTH)-1:0] read_addr_7,  // 0..DEPTH-1 (physical slot)
+    output wire [WIDTH-1:0]         read_data_7,  // mem[read_addr]
+    output wire                     read_valid_7  // 1 if slot currently occupied
 );
 
     localparam AW = $clog2(DEPTH);
@@ -341,5 +346,10 @@ module fifo_six_read #(
     wire [AW-1:0] diff_6     = (read_addr_6 - rd_idx_6) & (DEPTH-1); // modulo DEPTH
     assign        read_valid_6 = (diff_6 < level);                 // compares AW+1 vs AW -> zero-extends diff
     assign        read_data_6  = mem[read_addr_6];
+
+    wire [AW-1:0] rd_idx_7   = rd_ptr[AW-1:0];
+    wire [AW-1:0] diff_7     = (read_addr_7 - rd_idx_7) & (DEPTH-1); // modulo DEPTH
+    assign        read_valid_7 = (diff_7 < level);                 // compares AW+1 vs AW -> zero-extends diff
+    assign        read_data_7  = mem[read_addr_7];
 
 endmodule
