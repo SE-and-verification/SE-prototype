@@ -1,4 +1,4 @@
-`define SE_DEPTH 8
+`define SE_DEPTH 3
 
 module fifo_single_read #(
     parameter integer DEPTH = `SE_DEPTH,   // power of two

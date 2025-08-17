@@ -4,4 +4,4 @@ obj_dir/*
 project/*
 target/*
 functional-library/src/verilator/test
-jgproject/
+jgproject*
