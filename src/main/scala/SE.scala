@@ -254,13 +254,13 @@ class SE(val debug : Boolean, val canChangeKey: Boolean) extends Module{
 	} .elsewhen(aes_cipher_for_output_mac.io.input_valid) {
 		encrypt_buffer_idle := true.B
 	}
-	
 
-	val output_buffer_enc = Cat(encrypted_result_buffer, version_id(126,0), 1.U(1.W))
+	val input_to_mac = Cat(encrypted_result_buffer, version_id(126,0), 1.U(1.W))
+	val output_buffer_enc = RegEnable(input_to_mac, aes_cipher_for_output_mac.io.input_valid)
 	val output_buffer_valid = RegInit(false.B)
 	val output_buffer_idle = RegInit(true.B)
 
-	aes_cipher_for_output_mac.io.input_text := output_buffer_enc
+	aes_cipher_for_output_mac.io.input_text := input_to_mac
 	aes_cipher_for_output_mac.io.input_valid := output_buffer_idle && encrypted_result_valid_buffer
 	aes_cipher_for_output_mac.io.input_roundKeys := mac_key
 	val output_connect 		= RegEnable(Cat(aes_cipher_for_output_mac.io.output_text, output_buffer_enc(511,128)), aes_cipher_for_output_mac.io.output_valid)
