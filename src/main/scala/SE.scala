@@ -274,7 +274,8 @@ class SE(val debug : Boolean, val canChangeKey: Boolean) extends Module{
 	} .elsewhen(aes_cipher_for_output_mac.io.output_valid) {
 		output_buffer_valid := true.B
 	}
-	val output_gated = Mux(mac_checkout_1(pop_pointer1) && mac_checkout_2(pop_pointer2), output_connect, 0xEEEE.U(512.W))
+	val mac_check_result = Mux(mac_checkout_1(pop_pointer1) && mac_checkout_2(pop_pointer2), true.B, false.B)
+	val output_gated = Mux(mac_check_result, output_connect, 0xEEEE.U(512.W))
 	when(output_buffer_valid) {
 		io.out.valid := true.B
 		io.out.result 			:= output_gated
