@@ -19,6 +19,18 @@ stopat sha256_for_dataflow.io_outputData*
 stopat aes_cipher.io_output_text
 stopat bit64_randnum_prng.io_out*
 
+stopat {aes_invcipher_op1.io_output_valid aes_invcipher_op2.io_output_valid aes_cipher_for_op1_mac_validation.io_output_valid
+        aes_cipher_for_op2_mac_validation.io_output_valid aes_cipher_for_output_mac.io_output_valid 
+        sha256_for_dataflow.io_outputValid aes_cipher.io_output_valid}
+
+assume {aes_invcipher_op1.io_output_valid == aes_invcipher_op1.io_input_valid}
+assume {aes_invcipher_op2.io_output_valid == aes_invcipher_op2.io_input_valid}
+assume {aes_cipher_for_op1_mac_validation.io_output_valid == aes_cipher_for_op1_mac_validation.io_input_valid}
+assume {aes_cipher_for_op2_mac_validation.io_output_valid == aes_cipher_for_op2_mac_validation.io_input_valid}
+assume {aes_cipher_for_output_mac.io_output_valid == aes_cipher_for_output_mac.io_input_valid}
+assume {sha256_for_dataflow.io_outputValid == sha256_for_dataflow.io_inputValid}
+assume {aes_cipher.io_output_valid == aes_cipher.io_input_valid}
+
 # set stop to 1 in an arbitrary cycle
 stopat stop_enable
 

@@ -40799,9 +40799,10 @@ se_check: assert property (@(posedge clock) disable iff (reset) se_finish |->
                           && (se_out_gated == se_out_data));
 
 
-wire seoperation_start = sha256_for_dataflow_io_outputValid;
+// Because ALU is combinational, it starts after decryption finishes
+reg seoperation_start;
 wire [135:0] seoperation_in_data = {seoperation_io_inst, seoperation_io_op1_input, seoperation_io_op2_input};
-wire seoperation_finish = sha256_for_dataflow_io_outputValid;
+wire seoperation_finish = seoperation_start;
 wire [63:0] seoperation_out_data = seoperation_io_result;
 wire [63:0] seoperation_VB_read_data;
 wire seoperation_VB_read_valid;
@@ -40810,9 +40811,15 @@ reg [$clog2(`SE_DEPTH)-1:0] seoperation_next;
 always @(posedge clock) begin
   if (reset) begin
     seoperation_next <= 0;
+    seoperation_start <= 0;
   end else if (seoperation_start) begin
     seoperation_next <= seoperation_next + 1;
   end
+  if (aes_invcipher_op1_io_output_valid)
+    seoperation_start <= 1;
+  else if (seoperation_start)
+    seoperation_start <= 0;
+
 end
 
 fifo_single_read #(
@@ -40836,9 +40843,14 @@ wire seoperation_op2_type_read = se_VB_read_data_1[0];
 wire [63:0] seoperation_op2_read = (seoperation_op2_type_read) ?
                                   se_VB_read_data_1[321:258] : aes_invcipher_op2_VB_read_data_1[383:320];
 
-seoperation_check: assert property (@(posedge clock) disable iff (reset) seoperation_start |->
-                                  (se_VB_read_valid_1 && aes_invcipher_op1_VB_read_valid_1 && aes_invcipher_op2_VB_read_valid_1)
-                                  && (seoperation_in_data == {seoperation_inst_read, seoperation_op1_read, seoperation_op2_read}));
+seoperation_check_0: assert property (@(posedge clock) disable iff (reset) seoperation_start |->
+                                  (se_VB_read_valid_1)
+                                  && (seoperation_in_data[135: 128] == {seoperation_inst_read}));
+seoperation_check_1: assert property (@(posedge clock) disable iff (reset) seoperation_start |->
+                                  (aes_invcipher_op1_VB_read_valid_1)
+                                  && (seoperation_in_data[127: 64] == seoperation_op1_read));
+seoperation_check_2: assert property (@(posedge clock) disable iff (reset) seoperation_start |->
+                                   aes_invcipher_op2_VB_read_valid_1 && (seoperation_in_data[63:0] == seoperation_op2_read));
 
 wire aes_invcipher_op1_start = aes_invcipher_op1_io_input_valid;
 wire [383:0] aes_invcipher_op1_in_data = aes_invcipher_op1_io_input_text;
