@@ -69,12 +69,8 @@ class SE(val debug : Boolean, val canChangeKey: Boolean) extends Module{
 	val aes_cipher_for_output_mac = Module(new AESMAC(true))
 	val sha256_for_dataflow = Module(new Sha256Accel)
 	val aes_cipher     			= Module(new AESEncrypt384(true))
-	val mac_checkout_1 = Reg(Vec(8, Bool()))
-	val mac_checkout_2 = Reg(Vec(8, Bool()))
-	val (push_pointer1, push_ptr_wrap1) = Counter(aes_cipher_for_op1_mac_validation.io.output_valid,8) // 3 bits for 8 registers
-	val (push_pointer2, push_ptr_wrap2) = Counter(aes_cipher_for_op2_mac_validation.io.output_valid,8) // 3 bits for 8 registers
-	val (pop_pointer1, pop_ptr_wrap1) = Counter(io.out.valid && io.out.ready,8) // 3 bits for 8 registers
-	val (pop_pointer2, pop_ptr_wrap2) = Counter(io.out.valid && io.out.ready,8) // 3 bits for 8 registers
+
+
 	// Original AES key
 	val expandedKey128 	= VecInit(
     VecInit(0x00.U(8.W), 0x01.U(8.W), 0x02.U(8.W), 0x03.U(8.W), 0x04.U(8.W), 0x05.U(8.W), 0x06.U(8.W), 0x07.U(8.W), 0x08.U(8.W), 0x09.U(8.W), 0x0a.U(8.W), 0x0b.U(8.W), 0x0c.U(8.W), 0x0d.U(8.W), 0x0e.U(8.W), 0x0f.U(8.W)),
@@ -149,12 +145,15 @@ class SE(val debug : Boolean, val canChangeKey: Boolean) extends Module{
 	val op2_buffer_after_decrypt_stage = RegEnable(op2_buffer, aes_invcipher_op2.io.input_valid)
 	val ciph1_mac = op1_buffer_after_decrypt_stage(511, 384)
 	val ciph2_mac = op2_buffer_after_decrypt_stage(511, 384)
+	val op1_mac_check_result_after_decrypt = RegInit(false.B)
+	val op2_mac_check_result_after_decrypt = RegInit(false.B)
+
 	when(aes_cipher_for_op1_mac_validation.io.output_valid) {
 		when(aes_cipher_for_op1_mac_validation.io.output_text =/= ciph1_mac) {
 			// If the MAC does not match, we set the decrypted_op1_val_buffer to 0
-			mac_checkout_1(push_pointer1) := false.B
+			op1_mac_check_result_after_decrypt := false.B
 		}.otherwise {
-			mac_checkout_1(push_pointer1) := true.B
+			op1_mac_check_result_after_decrypt := true.B
 		}
 		mac_validated_op1 := true.B
 	}.elsewhen(sha256_for_dataflow.io.inputValid) {
@@ -164,9 +163,9 @@ class SE(val debug : Boolean, val canChangeKey: Boolean) extends Module{
 	when(aes_cipher_for_op2_mac_validation.io.output_valid) {
 		when(aes_cipher_for_op2_mac_validation.io.output_text =/= ciph2_mac){
 			// If the MAC does not match, we set the decrypted_op2_val_buffer to 0
-			mac_checkout_2(push_pointer2) := false.B
+			op2_mac_check_result_after_decrypt := false.B
 		}.otherwise {
-			mac_checkout_2(push_pointer2) := true.B
+			op2_mac_check_result_after_decrypt := true.B
 		}
 		mac_validated_op2 := true.B
 	}.elsewhen(sha256_for_dataflow.io.inputValid) {
@@ -212,8 +211,11 @@ class SE(val debug : Boolean, val canChangeKey: Boolean) extends Module{
   seoperation.io.op1_input    := op1_plaintext_64 // Currently hardcoded (TEMP)
 	seoperation.io.op2_input    := op2_plaintext_64 // Currently hardcoded (TEMP)
 
+	val start_dataflow_hash_compute = decrypted_op1_val_buffer_valid && decrypted_op2_val_buffer_valid && result_hash_buffer_idle && mac_validated_op1 && mac_validated_op2
+	val op1_mac_check_result_after_dataflow_hash = RegNext(op1_mac_check_result_after_decrypt, start_dataflow_hash_compute)
+	val op2_mac_check_result_after_dataflow_hash = RegNext(op2_mac_check_result_after_decrypt, start_dataflow_hash_compute)
 	sha256_for_dataflow.io.inputData := Cat(decrypted_op1_val_buffer(255, 0), decrypted_op2_val_buffer(255, 0), inst_buffer_buf) // [hsh_A][hsh_B]
-	sha256_for_dataflow.io.inputValid := decrypted_op1_val_buffer_valid && decrypted_op2_val_buffer_valid && result_hash_buffer_idle && mac_validated_op1 && mac_validated_op2
+	sha256_for_dataflow.io.inputValid := start_dataflow_hash_compute
 	// Once we receive the result from the seoperation, we pad the result with RNG and latch them first.
 	// Note that ALU may need 3 to 4 clock cycles (after seOpValid being set high) to calculate the result
 	val bit64_randnum = PRNG(new MaxPeriodFibonacciLFSR(64, Some(scala.math.BigInt(46, scala.util.Random))))
@@ -235,11 +237,13 @@ class SE(val debug : Boolean, val canChangeKey: Boolean) extends Module{
 
 
 	val encrypt_buffer_idle = RegInit(true.B)
+	val start_encrypt = result_hash_valid_buffer && encrypt_buffer_idle
 	// Encrypt the padded result to get the final output
 	aes_cipher.io.input_text			:= result_hash_buffer
-	aes_cipher.io.input_valid 		:= result_hash_valid_buffer && encrypt_buffer_idle
+	aes_cipher.io.input_valid 		:= start_encrypt
 	aes_cipher.io.input_roundKeys 	:= key
-
+	val op1_mac_check_result_after_encrypt = RegNext(op1_mac_check_result_after_dataflow_hash, start_encrypt)
+	val op2_mac_check_result_after_encrypt = RegNext(op2_mac_check_result_after_dataflow_hash, start_encrypt)
 	// enc buf
 	val encrypted_result_buffer = RegEnable(aes_cipher.io.output_text, aes_cipher.io.output_valid)
 	val encrypted_result_valid_buffer = RegInit(false.B)
@@ -260,8 +264,10 @@ class SE(val debug : Boolean, val canChangeKey: Boolean) extends Module{
 	val output_buffer_valid = RegInit(false.B)
 	val output_buffer_idle = RegInit(true.B)
 
+	val start_output_mac = output_buffer_idle && encrypted_result_valid_buffer
+	val check_result_after_mac_compute = RegNext(op1_mac_check_result_after_encrypt && op2_mac_check_result_after_encrypt, start_output_mac)
 	aes_cipher_for_output_mac.io.input_text := input_to_mac
-	aes_cipher_for_output_mac.io.input_valid := output_buffer_idle && encrypted_result_valid_buffer
+	aes_cipher_for_output_mac.io.input_valid := start_output_mac
 	aes_cipher_for_output_mac.io.input_roundKeys := mac_key
 	val output_connect 		= RegEnable(Cat(aes_cipher_for_output_mac.io.output_text, output_buffer_enc(511,128)), aes_cipher_for_output_mac.io.output_valid)
 	when(io.out.valid && io.out.ready) {
@@ -274,7 +280,7 @@ class SE(val debug : Boolean, val canChangeKey: Boolean) extends Module{
 	} .elsewhen(aes_cipher_for_output_mac.io.output_valid) {
 		output_buffer_valid := true.B
 	}
-	val output_gated = Mux(mac_checkout_1(pop_pointer1) && mac_checkout_2(pop_pointer2), output_connect, 0xEEEE.U(512.W))
+	val output_gated = Mux(check_result_after_mac_compute, output_connect, 0xEEEE.U(512.W))
 	when(output_buffer_valid) {
 		io.out.valid := true.B
 		io.out.result 			:= output_gated
