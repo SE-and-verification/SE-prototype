@@ -5,3 +5,4 @@ project/*
 target/*
 functional-library/src/verilator/test
 jgproject*
+generated-src*
