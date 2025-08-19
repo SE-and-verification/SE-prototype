@@ -1,0 +1,15 @@
+function checks stats:
+
+seopeartion: 2221 seconds, Tri, 2.93 GB
+outputmac: 660 seconds, Tri
+sha256: 873 seconds, Tri
+decryiption: 5.63 seconds, Tri, 0.552 GB
+input_mac: 4.58 seconds, Mp, 0.549 GB
+se_output: 4868 seconds, Tri, 0.6GB
+1-1 check: 388 seconds, Tri
+
+
+
+buggy version:
+ciphertext_overwritten: 4012 seconds, Ht, 1.44 GB
+

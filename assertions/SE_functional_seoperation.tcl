@@ -26,4 +26,7 @@ assume {aes_cipher_io_input_valid==seoperation_start}
 # set stop to 1 in an arbitrary cycle
 stopat stop_enable
 
+assert -disable *
+assert -enable *seoperation_check*
 set_engine_mode {Mp N Tri Ht}
+prove -all

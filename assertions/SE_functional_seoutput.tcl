@@ -25,5 +25,8 @@ assume {aes_cipher_io_input_valid==aes_cipher_for_op1_mac_validation_finish}
 # set stop to 1 in an arbitrary cycle
 stopat stop_enable
 
+assert -disable *
+assert -enable *se_check*
 set_engine_mode {Mp N Tri Ht}
+set_prove_per_property_time_limit 100s
 # prove -all

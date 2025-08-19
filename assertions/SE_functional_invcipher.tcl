@@ -26,5 +26,8 @@ assume {aes_cipher_io_input_valid==aes_invcipher_op1_start}
 # set stop to 1 in an arbitrary cycle
 stopat stop_enable
 
+assert -disable *
+assert -enable *aes_invcipher_op*
+
 set_engine_mode {Mp N Tri Ht}
-# prove -all
+prove -all
