@@ -1,8 +1,8 @@
 set_elaborate_single_run_mode off
 
-analyze -sva assertions/SE_functional_abstract.sv assertions/fifo.sv
+analyze -sva assertions/SE_functional_Cipher_ow.sv assertions/fifo.sv
 elaborate -top SE -bbox_a 16384 -bbox_m SEOperation -bbox_m Sha256Accel -bbox_m AESDecrypt -bbox_m AESDecrypt_1 -bbox_m MaxPeriodFibonacciLFSR 
-
+get_design_info
 clock clock
 reset reset -non_resettable_regs 0
 
@@ -26,7 +26,7 @@ assume {aes_cipher_io_input_valid==aes_cipher_for_op1_mac_validation_finish}
 stopat stop_enable
 
 assert -disable *
-assert -enable *se_check*
+assert -enable *se_check_out_cipher*
 set_engine_mode {Mp N Tri Ht}
 set_prove_per_property_time_limit 100s
 prove -all

@@ -11,5 +11,6 @@ se_output: 4868 seconds, Tri, 0.6GB
 
 
 buggy version:
-ciphertext_overwritten: 4012 seconds, Ht, 1.44 GB
+ciphertext_ow: 4012 seconds, Ht, 1.44 GB
+MAC_ow: 10.6 seconds, Tri, 0.6GB
 

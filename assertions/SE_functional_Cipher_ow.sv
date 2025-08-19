@@ -40164,7 +40164,8 @@ module SE(
   wire  _GEN_482 = 3'h5 == pop_pointer2 ? mac_checkout_2_5 : _GEN_481; // @[SE.scala 277:{61,61}]
   wire  _GEN_483 = 3'h6 == pop_pointer2 ? mac_checkout_2_6 : _GEN_482; // @[SE.scala 277:{61,61}]
   wire  _GEN_484 = 3'h7 == pop_pointer2 ? mac_checkout_2_7 : _GEN_483; // @[SE.scala 277:{61,61}]
-  wire [511:0] output_gated = _GEN_476 & _GEN_484 ? output_connect : 512'heeee; // @[SE.scala 277:31]
+  wire [511:0] output_gated = mac_check_result ? output_connect : 512'heeee; // @[SE.scala 277:31]
+  wire mac_check_result = _GEN_476 & _GEN_484;
   wire [511:0] _GEN_486 = output_buffer_valid ? output_gated : 512'h0; // @[SE.scala 278:35 280:49 284:49]
   SEOperation seoperation ( // @[SE.scala 55:33]
     .io_inst(seoperation_io_inst),
@@ -40741,7 +40742,7 @@ end // initial
 `endif
 `endif // SYNTHESIS
 
-// Value Correspondence Check
+// Composition Check
 wire se_start = io_in_valid & io_in_ready;
 wire [1033:0] se_in_data = {io_in_inst, io_in_op1, io_in_op2, io_in_op1_type, io_in_op2_type};
 wire se_finish = io_out_valid & io_out_ready;
@@ -40791,19 +40792,46 @@ fifo_seven_read #(
   .read_valid_7(se_VB_read_valid_7)
 );
 
-wire op1_mac_result = (se_VB_read_data_7[1025: 898] != aes_cipher_for_op1_mac_validation_VB_read_data);
-wire op2_mac_result = (se_VB_read_data_7[513: 386] != aes_cipher_for_op2_mac_validation_VB_read_data);
-wire [127:0] se_out_gated_mac = (op1_mac_result || op2_mac_result) ? 0 : aes_cipher_for_output_mac_VB_read_data;
-wire [383:0] se_out_gated_ciphertext = (op1_mac_result || op2_mac_result) ? 384'heeee : aes_cipher_read_data_2;
+wire op1_mac_result = (se_VB_read_data_7 == aes_cipher_for_op1_mac_validation_VB_read_data);
+wire op2_mac_result = (se_VB_read_data_7 == aes_cipher_for_op2_mac_validation_VB_read_data);
+wire [127:0] se_out_mac = aes_cipher_for_output_mac_VB_read_data;
+wire [127:0] se_out_gated_mac = (op1_mac_result && op2_mac_result) ? aes_cipher_for_output_mac_VB_read_data : 0;
+wire [383:0] se_out_ciphertext = aes_cipher_read_data_2;
+wire [383:0] se_out_gated_ciphertext = (op1_mac_result && op2_mac_result) ? aes_cipher_read_data_2 : 384'heeee;
+wire [511:0] se_out_ungated_output = {se_out_mac, se_out_ciphertext};
 // wire [640:0] se_out_gated = (op1_mac_result || op2_mac_result) ? {640'heeee, 1'b1} : {128'b0, aes_cipher_for_output_mac_VB_read_data, aes_cipher_read_data_2, 1'b1};
-se_check_0: assert property (@(posedge clock) disable iff (reset) se_finish |->
-                          aes_cipher_for_op1_mac_validation_VB_read_valid && aes_cipher_for_op2_mac_validation_VB_read_valid && se_VB_read_valid_7 && aes_cipher_for_output_mac_VB_read_valid
-                          && (se_out_gated_mac == se_out_data[512 : 385]));
-se_check_1: assert property (@(posedge clock) disable iff (reset) se_finish |->
-                          aes_cipher_for_op1_mac_validation_VB_read_valid && aes_cipher_for_op2_mac_validation_VB_read_valid && se_VB_read_valid_7 && aes_cipher_read_valid_2
-                          && (se_out_gated_ciphertext == se_out_data[384 : 1]));
-se_check_2: assert property (@(posedge clock) disable iff (reset) se_finish |->
+// se_check_0: assert property (@(posedge clock) disable iff (reset) se_finish |->
+//                           aes_cipher_for_op1_mac_validation_VB_read_valid && aes_cipher_for_op2_mac_validation_VB_read_valid && se_VB_read_valid_7 && aes_cipher_for_output_mac_VB_read_valid
+//                           && (se_out_gated_mac == se_out_data[512 : 385]));
+genvar i;
+generate
+  for (i = 0; i < 128; i++) begin : se_check_out_mac_ungated
+    assert property (@(posedge clock) disable iff (reset)
+     se_finish |-> (se_out_mac[i] == output_connect[i+384]));
+  end
+endgenerate
+generate
+  for (i = 0; i < 384; i++) begin : se_check_out_cipher_ungated
+    assert property (@(posedge clock) disable iff (reset) 
+     se_finish |-> (se_out_ciphertext[i] == output_connect[i]));
+  end
+endgenerate
+// se_check_out_mac_ungated: assert property (@(posedge clock) disable iff (reset) se_finish |->
+//                           aes_cipher_for_op1_mac_validation_VB_read_valid && aes_cipher_for_op2_mac_validation_VB_read_valid && se_VB_read_valid_7 && aes_cipher_for_output_mac_VB_read_valid
+//                           && (se_out_mac == output_connect[511 : 384]));
+// se_check_1: assert property (@(posedge clock) disable iff (reset) se_finish |->
+//                           aes_cipher_for_op1_mac_validation_VB_read_valid && aes_cipher_for_op2_mac_validation_VB_read_valid && se_VB_read_valid_7 && aes_cipher_read_valid_2
+//                           && (se_out_gated_ciphertext == output_connect[384 : 1]));
+// se_check_out_cipher_ungated: assert property (@(posedge clock) disable iff (reset) se_finish |->
+//                           se_VB_read_valid_7 && aes_cipher_read_valid_2
+//                           && (se_out_ciphertext == output_connect[383 : 0]));
+se_check_mac_result: assert property (@(posedge clock) disable iff (reset) se_finish |->
+                          aes_cipher_for_op1_mac_validation_VB_read_valid && aes_cipher_for_op2_mac_validation_VB_read_valid && se_VB_read_valid_7 
+                          && (mac_check_result == (op1_mac_result && op2_mac_result)));
+se_check_constant: assert property (@(posedge clock) disable iff (reset) se_finish |->
                             se_out_data[640: 513] == 0 && se_out_data[0] == 1);
+se_check_valid: assert property (@(posedge clock) disable iff (reset) se_finish |->
+                            aes_cipher_for_op1_mac_validation_VB_read_valid && aes_cipher_for_op2_mac_validation_VB_read_valid && se_VB_read_valid_7 && aes_cipher_for_output_mac_VB_read_valid);
 
 
 
