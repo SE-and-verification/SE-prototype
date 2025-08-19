@@ -26,5 +26,8 @@ assume {aes_cipher_io_input_valid==aes_cipher_for_op1_mac_validation_start}
 # set stop to 1 in an arbitrary cycle
 stopat stop_enable
 
+assert -disable *
+assert -enable *aes_cipher_for_op1_mac_validation*
+
 set_engine_mode {Mp N Tri Ht}
-# prove -all
+prove -all

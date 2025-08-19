@@ -1,15 +1,15 @@
 set_elaborate_single_run_mode off
-check_spv -init
-
-analyze -sva assertions/SE.v
+analyze -sva assertions/SE_security_default.v
 elaborate -top SE
 
 clock clock
 reset reset -non_resettable_regs 0
 
-# Declassification
-stopat aes_cipher_io_output_text
-assume {!aes_cipher_io_output_valid |-> (aes_cipher_io_output_text==aes_cipher.io_output_text)}
+# Declassification, only allow output values of aes_cipher to flow when output_valid is low
+# stopat aes_cipher_for_output_mac_io_output_text
+# stopat aes_cipher_io_output_text
+# assume {!aes_cipher_for_output_mac.io_output_valid |-> (aes_cipher_for_output_mac.io_output_text==aes_cipher_for_output_mac_io_output_text)}
+# assume {!aes_cipher.io_output_valid |-> (aes_cipher.io_output_text==aes_cipher_io_output_text)}
 
 # Information Flow Properties
 check_spv -create -from {aes_invcipher_op1_io_output_text aes_invcipher_op2_io_output_text
@@ -26,5 +26,6 @@ check_spv -create -from {aes_invcipher_op1_io_output_text aes_invcipher_op2_io_o
                         aes_cipher_for_op1_mac_validation.cipher_io_roundKey_0 aes_cipher_for_op1_mac_validation.cipher_io_roundKey_1 aes_cipher_for_op1_mac_validation.cipher_io_roundKey_2 aes_cipher_for_op1_mac_validation.cipher_io_roundKey_3 aes_cipher_for_op1_mac_validation.cipher_io_roundKey_4 aes_cipher_for_op1_mac_validation.cipher_io_roundKey_5 aes_cipher_for_op1_mac_validation.cipher_io_roundKey_6 aes_cipher_for_op1_mac_validation.cipher_io_roundKey_7 aes_cipher_for_op1_mac_validation.cipher_io_roundKey_8 aes_cipher_for_op1_mac_validation.cipher_io_roundKey_9 aes_cipher_for_op1_mac_validation.cipher_io_roundKey_10 aes_cipher_for_op1_mac_validation.cipher_io_roundKey_11 aes_cipher_for_op1_mac_validation.cipher_io_roundKey_12 aes_cipher_for_op1_mac_validation.cipher_io_roundKey_13 aes_cipher_for_op1_mac_validation.cipher_io_roundKey_14 aes_cipher_for_op1_mac_validation.cipher_io_roundKey_15
                         aes_cipher_for_op2_mac_validation.cipher_io_roundKey_0 aes_cipher_for_op2_mac_validation.cipher_io_roundKey_1 aes_cipher_for_op2_mac_validation.cipher_io_roundKey_2 aes_cipher_for_op2_mac_validation.cipher_io_roundKey_3 aes_cipher_for_op2_mac_validation.cipher_io_roundKey_4 aes_cipher_for_op2_mac_validation.cipher_io_roundKey_5 aes_cipher_for_op2_mac_validation.cipher_io_roundKey_6 aes_cipher_for_op2_mac_validation.cipher_io_roundKey_7 aes_cipher_for_op2_mac_validation.cipher_io_roundKey_8 aes_cipher_for_op2_mac_validation.cipher_io_roundKey_9 aes_cipher_for_op2_mac_validation.cipher_io_roundKey_10 aes_cipher_for_op2_mac_validation.cipher_io_roundKey_11 aes_cipher_for_op2_mac_validation.cipher_io_roundKey_12 aes_cipher_for_op2_mac_validation.cipher_io_roundKey_13 aes_cipher_for_op2_mac_validation.cipher_io_roundKey_14 aes_cipher_for_op2_mac_validation.cipher_io_roundKey_15} -to {io_out_valid io_out_output_type io_out_result}
 
-set_engine_mode {Mp N Tri Ht}
 prove -all
+
+get_design_info
