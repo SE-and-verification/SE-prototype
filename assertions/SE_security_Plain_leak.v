@@ -1,4 +1,3 @@
-`include "assertions/fifo.sv"
 module SEControl(
   input  [7:0] io_inst_in,
   output [2:0] io_fu_op,
@@ -36455,22 +36454,23 @@ module Cipher(
     .io_state_out_14(MixColumnsModule_io_state_out_14),
     .io_state_out_15(MixColumnsModule_io_state_out_15)
   );
-  assign io_state_out_0 = _io_state_out_valid_T ? state_0 : 8'h0; // @[Cipher.scala 75:22]
-  assign io_state_out_1 = _io_state_out_valid_T ? state_1 : 8'h0; // @[Cipher.scala 75:22]
-  assign io_state_out_2 = _io_state_out_valid_T ? state_2 : 8'h0; // @[Cipher.scala 75:22]
-  assign io_state_out_3 = _io_state_out_valid_T ? state_3 : 8'h0; // @[Cipher.scala 75:22]
-  assign io_state_out_4 = _io_state_out_valid_T ? state_4 : 8'h0; // @[Cipher.scala 75:22]
-  assign io_state_out_5 = _io_state_out_valid_T ? state_5 : 8'h0; // @[Cipher.scala 75:22]
-  assign io_state_out_6 = _io_state_out_valid_T ? state_6 : 8'h0; // @[Cipher.scala 75:22]
-  assign io_state_out_7 = _io_state_out_valid_T ? state_7 : 8'h0; // @[Cipher.scala 75:22]
-  assign io_state_out_8 = _io_state_out_valid_T ? state_8 : 8'h0; // @[Cipher.scala 75:22]
-  assign io_state_out_9 = _io_state_out_valid_T ? state_9 : 8'h0; // @[Cipher.scala 75:22]
-  assign io_state_out_10 = _io_state_out_valid_T ? state_10 : 8'h0; // @[Cipher.scala 75:22]
-  assign io_state_out_11 = _io_state_out_valid_T ? state_11 : 8'h0; // @[Cipher.scala 75:22]
-  assign io_state_out_12 = _io_state_out_valid_T ? state_12 : 8'h0; // @[Cipher.scala 75:22]
-  assign io_state_out_13 = _io_state_out_valid_T ? state_13 : 8'h0; // @[Cipher.scala 75:22]
-  assign io_state_out_14 = _io_state_out_valid_T ? state_14 : 8'h0; // @[Cipher.scala 75:22]
-  assign io_state_out_15 = _io_state_out_valid_T ? state_15 : 8'h0; // @[Cipher.scala 75:22]
+  wire [7:0] free_0, free_1, free_2, free_3, free_4, free_5, free_6, free_7, free_8, free_9, free_10, free_11, free_12, free_13, free_14, free_15;
+  assign io_state_out_0 = _io_state_out_valid_T ? free_0 : 8'h0; // @[Cipher.scala 75:22]
+  assign io_state_out_1 = _io_state_out_valid_T ? free_1 : 8'h0; // @[Cipher.scala 75:22]
+  assign io_state_out_2 = _io_state_out_valid_T ? free_2 : 8'h0; // @[Cipher.scala 75:22]
+  assign io_state_out_3 = _io_state_out_valid_T ? free_3 : 8'h0; // @[Cipher.scala 75:22]
+  assign io_state_out_4 = _io_state_out_valid_T ? free_4 : 8'h0; // @[Cipher.scala 75:22]
+  assign io_state_out_5 = _io_state_out_valid_T ? free_5 : 8'h0; // @[Cipher.scala 75:22]
+  assign io_state_out_6 = _io_state_out_valid_T ? free_6 : 8'h0; // @[Cipher.scala 75:22]
+  assign io_state_out_7 = _io_state_out_valid_T ? free_7 : 8'h0; // @[Cipher.scala 75:22]
+  assign io_state_out_8 = _io_state_out_valid_T ? free_8 : 8'h0; // @[Cipher.scala 75:22]
+  assign io_state_out_9 = _io_state_out_valid_T ? free_9 : 8'h0; // @[Cipher.scala 75:22]
+  assign io_state_out_10 = _io_state_out_valid_T ? free_10 : 8'h0; // @[Cipher.scala 75:22]
+  assign io_state_out_11 = _io_state_out_valid_T ? free_11 : 8'h0; // @[Cipher.scala 75:22]
+  assign io_state_out_12 = _io_state_out_valid_T ? free_12 : 8'h0; // @[Cipher.scala 75:22]
+  assign io_state_out_13 = _io_state_out_valid_T ? free_13 : 8'h0; // @[Cipher.scala 75:22]
+  assign io_state_out_14 = _io_state_out_valid_T ? free_14 : 8'h0; // @[Cipher.scala 75:22]
+  assign io_state_out_15 = _io_state_out_valid_T ? free_15 : 8'h0; // @[Cipher.scala 75:22]
   assign io_state_out_valid = rounds == 4'hb; // @[Cipher.scala 74:32]
   assign AddRoundKeyModule_io_state_in_0 = STM == 2'h1 ? io_plaintext_0 : _T_6_0; // @[Cipher.scala 67:39]
   assign AddRoundKeyModule_io_state_in_1 = STM == 2'h1 ? io_plaintext_1 : _T_6_1; // @[Cipher.scala 67:39]
@@ -39864,7 +39864,7 @@ module SE(
   input          io_in_op2_type,
   output         io_in_ready,
   input          io_out_ready,
-  output [639:0] io_out_result,
+  output [640:0] io_out_result,
   output         io_out_valid,
   output         io_out_output_type
 );
@@ -40175,7 +40175,7 @@ module SE(
   reg  output_buffer_valid; // @[SE.scala 260:42]
   reg  output_buffer_idle; // @[SE.scala 261:41]
   wire [511:0] _output_connect_T_1 = {aes_cipher_for_output_mac_io_output_text,output_buffer_enc[511:128]}; // @[Cat.scala 31:58]
-  reg [511:0] output_connect; // @[Reg.scala 16:16]
+  reg [512:0] output_connect; // @[Reg.scala 16:16]
   wire  _GEN_466 = aes_cipher_for_output_mac_io_input_valid ? 1'h0 : output_buffer_idle; // @[SE.scala 269:63 270:36 261:41]
   wire  _GEN_467 = _T | _GEN_466; // @[SE.scala 267:44 268:36]
   wire  _GEN_468 = aes_cipher_for_output_mac_io_output_valid | output_buffer_valid; // @[SE.scala 274:64 275:37 260:42]
@@ -40194,8 +40194,8 @@ module SE(
   wire  _GEN_484 = 3'h6 == pop_pointer2 ? mac_checkout_2_6 : _GEN_483; // @[SE.scala 277:{65,65}]
   wire  _GEN_485 = 3'h7 == pop_pointer2 ? mac_checkout_2_7 : _GEN_484; // @[SE.scala 277:{65,65}]
   wire  mac_check_result = _GEN_477 & _GEN_485; // @[SE.scala 277:65]
-  wire [511:0] output_gated = mac_check_result ? output_connect : 512'heeee; // @[SE.scala 278:31]
-  wire [511:0] _GEN_487 = output_buffer_valid ? output_gated : 512'h0; // @[SE.scala 279:35 281:49 285:49]
+  wire [512:0] output_gated = mac_check_result ? output_connect : 513'heeee; // @[SE.scala 278:31]
+  wire [512:0] _GEN_487 = output_buffer_valid ? output_gated : 513'h0; // @[SE.scala 279:35 281:49 285:49]
   SEOperation seoperation ( // @[SE.scala 55:33]
     .io_inst(seoperation_io_inst),
     .io_op1_input(seoperation_io_op1_input),
@@ -40631,7 +40631,7 @@ module SE(
     end
     output_buffer_idle <= reset | _GEN_467; // @[SE.scala 261:{41,41}]
     if (aes_cipher_for_output_mac_io_output_valid) begin // @[Reg.scala 17:18]
-      output_connect <= _output_connect_T_1; // @[Reg.scala 17:22]
+      output_connect <= {_output_connect_T_1, op1_bit[0]}; // @[Reg.scala 17:22]
     end
   end
 // Register and memory initialization
@@ -40775,451 +40775,4 @@ end // initial
 `FIRRTL_AFTER_INITIAL
 `endif
 `endif // SYNTHESIS
-
-// Composition Check
-wire se_start = io_in_valid & io_in_ready;
-wire [1033:0] se_in_data = {io_in_inst, io_in_op1, io_in_op2, io_in_op1_type, io_in_op2_type};
-wire se_finish = io_out_valid & io_out_ready;
-wire [640:0] se_out_data = {io_out_result, io_out_output_type};
-wire [1033:0] se_VB_read_data_1, se_VB_read_data_2, se_VB_read_data_3, se_VB_read_data_4, se_VB_read_data_5, se_VB_read_data_6, se_VB_read_data_7;
-wire se_VB_read_valid_1, se_VB_read_valid_2, se_VB_read_valid_3, se_VB_read_valid_4, se_VB_read_valid_5, se_VB_read_valid_6, se_VB_read_valid_7;
-wire [$clog2(`SE_DEPTH)-1:0] se_VB_head;
-
-reg [$clog2(`SE_DEPTH)-1:0] se_next;
-always @(posedge clock) begin
-  if (reset) begin
-    se_next <= 0;
-  end else if (se_start) begin
-    se_next <= se_next + 1;
-  end
-end
-
-fifo_seven_read #(
-  .WIDTH(1034)
-) se_ValueBuffer (
-  .clk(clock),
-  .rst(reset),
-  .push(se_start),
-  .din(se_in_data),
-  .pop(se_finish),
-  .head(se_VB_head),
-  .read_addr_1(seoperation_next),                       // ALU Read
-  .read_data_1(se_VB_read_data_1),
-  .read_valid_1(se_VB_read_valid_1),
-  .read_addr_2(sha256_for_dataflow_next),               // SHA-256 Read
-  .read_data_2(se_VB_read_data_2),
-  .read_valid_2(se_VB_read_valid_2),
-  .read_addr_3(aes_invcipher_op1_next),                 // op1 Decryption Read
-  .read_data_3(se_VB_read_data_3),
-  .read_valid_3(se_VB_read_valid_3),
-  .read_addr_4(aes_invcipher_op2_next),                 // op2 Decryption Read
-  .read_data_4(se_VB_read_data_4),
-  .read_valid_4(se_VB_read_valid_4),
-  .read_addr_5(aes_cipher_for_op1_mac_validation_next),  // op1 MAC Read
-  .read_data_5(se_VB_read_data_5),
-  .read_valid_5(se_VB_read_valid_5),
-  .read_addr_6(aes_cipher_for_op2_mac_validation_next),  // op2 MAC Read          
-  .read_data_6(se_VB_read_data_6),
-  .read_valid_6(se_VB_read_valid_6),
-  .read_addr_7(se_VB_head),                             // SE output Read          
-  .read_data_7(se_VB_read_data_7),
-  .read_valid_7(se_VB_read_valid_7)
-);
-
-wire op1_mac_result = (se_VB_read_data_7 == aes_cipher_for_op1_mac_validation_VB_read_data);
-wire op2_mac_result = (se_VB_read_data_7 == aes_cipher_for_op2_mac_validation_VB_read_data);
-wire [127:0] se_out_mac = aes_cipher_for_output_mac_VB_read_data;
-wire [127:0] se_out_gated_mac = (op1_mac_result && op2_mac_result) ? aes_cipher_for_output_mac_VB_read_data : 0;
-wire [383:0] se_out_ciphertext = aes_cipher_read_data_2;
-wire [383:0] se_out_gated_ciphertext = (op1_mac_result && op2_mac_result) ? aes_cipher_read_data_2 : 384'heeee;
-wire [511:0] se_out_ungated_output = {se_out_mac, se_out_ciphertext};
-// wire [640:0] se_out_gated = (op1_mac_result || op2_mac_result) ? {640'heeee, 1'b1} : {128'b0, aes_cipher_for_output_mac_VB_read_data, aes_cipher_read_data_2, 1'b1};
-// se_check_0: assert property (@(posedge clock) disable iff (reset) se_finish |->
-//                           aes_cipher_for_op1_mac_validation_VB_read_valid && aes_cipher_for_op2_mac_validation_VB_read_valid && se_VB_read_valid_7 && aes_cipher_for_output_mac_VB_read_valid
-//                           && (se_out_gated_mac == se_out_data[512 : 385]));
-genvar i;
-generate
-  for (i = 0; i < 128; i++) begin : se_check_out_mac_ungated
-    assert property (@(posedge clock) disable iff (reset)
-     se_finish |-> (se_out_mac[i] == output_connect[i+384]));
-  end
-endgenerate
-generate
-  for (i = 0; i < 384; i++) begin : se_check_out_cipher_ungated
-    assert property (@(posedge clock) disable iff (reset) 
-     se_finish |-> (se_out_ciphertext[i] == output_connect[i]));
-  end
-endgenerate
-// se_check_out_mac_ungated: assert property (@(posedge clock) disable iff (reset) se_finish |->
-//                           aes_cipher_for_op1_mac_validation_VB_read_valid && aes_cipher_for_op2_mac_validation_VB_read_valid && se_VB_read_valid_7 && aes_cipher_for_output_mac_VB_read_valid
-//                           && (se_out_mac == output_connect[511 : 384]));
-// se_check_1: assert property (@(posedge clock) disable iff (reset) se_finish |->
-//                           aes_cipher_for_op1_mac_validation_VB_read_valid && aes_cipher_for_op2_mac_validation_VB_read_valid && se_VB_read_valid_7 && aes_cipher_read_valid_2
-//                           && (se_out_gated_ciphertext == output_connect[384 : 1]));
-// se_check_out_cipher_ungated: assert property (@(posedge clock) disable iff (reset) se_finish |->
-//                           se_VB_read_valid_7 && aes_cipher_read_valid_2
-//                           && (se_out_ciphertext == output_connect[383 : 0]));
-// se_check_2: assert property (@(posedge clock) disable iff (reset) se_finish |->
-//                           aes_cipher_for_op1_mac_validation_VB_read_valid && aes_cipher_for_op2_mac_validation_VB_read_valid && se_VB_read_valid_7 
-//                           && (mac_check_result |-> op1_mac_result));
-se_check_constant: assert property (@(posedge clock) disable iff (reset) se_finish |->
-                            se_out_data[640: 513] == 0 && se_out_data[0] == 1);
-se_check_valid: assert property (@(posedge clock) disable iff (reset) se_finish |->
-                            aes_cipher_for_op1_mac_validation_VB_read_valid && aes_cipher_for_op2_mac_validation_VB_read_valid && se_VB_read_valid_7 && aes_cipher_for_output_mac_VB_read_valid);
-
-
-
-// Because ALU is combinational, it starts after decryption finishes
-reg seoperation_start;
-wire [135:0] seoperation_in_data = {seoperation_io_inst, seoperation_io_op1_input, seoperation_io_op2_input};
-wire seoperation_finish = seoperation_start;
-wire [63:0] seoperation_out_data = seoperation_io_result;
-wire [63:0] seoperation_VB_read_data;
-wire seoperation_VB_read_valid;
-
-reg [$clog2(`SE_DEPTH)-1:0] seoperation_next;
-always @(posedge clock) begin
-  if (reset) begin
-    seoperation_next <= 0;
-    seoperation_start <= 0;
-  end else if (seoperation_start) begin
-    seoperation_next <= seoperation_next + 1;
-  end
-  if (aes_invcipher_op1_io_output_valid)
-    seoperation_start <= 1;
-  else if (seoperation_start)
-    seoperation_start <= 0;
-
-end
-
-fifo_single_read #(
-  .WIDTH(64)
-) seoperation_ValueBuffer (
-  .clk(clock),
-  .rst(reset),
-  .push(seoperation_finish),
-  .din(seoperation_out_data),
-  .pop(se_finish),
-  .read_addr(aes_cipher_next),
-  .read_data(seoperation_VB_read_data),
-  .read_valid(seoperation_VB_read_valid)
-);
-
-wire [7:0] seoperation_inst_read = se_VB_read_data_1[1033:1026];
-wire seoperation_op1_type_read = se_VB_read_data_1[1];
-wire [63:0] seoperation_op1_read = ((seoperation_inst_read == 8'hb0) || seoperation_op1_type_read) ?
-                                  se_VB_read_data_1[833:770] : aes_invcipher_op1_VB_read_data_1[383:320];
-wire seoperation_op2_type_read = se_VB_read_data_1[0];
-wire [63:0] seoperation_op2_read = (seoperation_op2_type_read) ?
-                                  se_VB_read_data_1[321:258] : aes_invcipher_op2_VB_read_data_1[383:320];
-
-seoperation_check_0: assert property (@(posedge clock) disable iff (reset) seoperation_start |->
-                                  (se_VB_read_valid_1)
-                                  && (seoperation_in_data[135: 128] == {seoperation_inst_read}));
-seoperation_check_1: assert property (@(posedge clock) disable iff (reset) seoperation_start |->
-                                  (aes_invcipher_op1_VB_read_valid_1)
-                                  && (seoperation_in_data[127: 64] == seoperation_op1_read));
-seoperation_check_2: assert property (@(posedge clock) disable iff (reset) seoperation_start |->
-                                   aes_invcipher_op2_VB_read_valid_1 && (seoperation_in_data[63:0] == seoperation_op2_read));
-
-wire aes_invcipher_op1_start = aes_invcipher_op1_io_input_valid;
-wire [383:0] aes_invcipher_op1_in_data = aes_invcipher_op1_io_input_text;
-wire aes_invcipher_op1_finish = aes_invcipher_op1_io_output_valid;
-wire [383:0] aes_invcipher_op1_out_data = aes_invcipher_op1_io_output_text;
-wire [383:0] aes_invcipher_op1_VB_read_data_1, aes_invcipher_op1_VB_read_data_2;
-wire aes_invcipher_op1_VB_read_valid_1, aes_invcipher_op1_VB_read_valid_2;
-
-reg [$clog2(`SE_DEPTH)-1:0] aes_invcipher_op1_next;
-always @(posedge clock) begin
-  if (reset) begin
-    aes_invcipher_op1_next <= 0;
-  end else if (aes_invcipher_op1_start) begin
-    aes_invcipher_op1_next <= aes_invcipher_op1_next + 1;
-  end
-
-end
-
-fifo_double_read  #(
-  .WIDTH(384)
-) aes_invcipher_op1_ValueBuffer (
-  .clk(clock),
-  .rst(reset),
-  .push(aes_invcipher_op1_finish),
-  .din(aes_invcipher_op1_out_data),
-  .pop(se_finish),
-  .read_addr_1(seoperation_next),                     // Read for ALU
-  .read_data_1(aes_invcipher_op1_VB_read_data_1),
-  .read_valid_1(aes_invcipher_op1_VB_read_valid_1),
-  .read_addr_2(sha256_for_dataflow_next),              // Read for SHA256
-  .read_data_2(aes_invcipher_op1_VB_read_data_2),
-  .read_valid_2(aes_invcipher_op1_VB_read_valid_2)
-);
-
-aes_invcipher_op1_check: assert property (@(posedge clock) disable iff (reset) aes_invcipher_op1_start |->
-                                          (se_VB_read_valid_3 && (se_VB_read_data_3[897:514] == aes_invcipher_op1_in_data)));
-                                          // || (!se_VB_read_valid_3 && se_start && se_in_data[897:514] == aes_invcipher_op1_in_data));
-
-
-wire aes_invcipher_op2_start = aes_invcipher_op2_io_input_valid;
-wire [383:0] aes_invcipher_op2_in_data = aes_invcipher_op2_io_input_text;
-wire aes_invcipher_op2_finish = aes_invcipher_op2_io_output_valid;
-wire [383:0] aes_invcipher_op2_out_data = aes_invcipher_op2_io_output_text;
-wire [383:0] aes_invcipher_op2_VB_read_data_1, aes_invcipher_op2_VB_read_data_2;
-wire aes_invcipher_op2_VB_read_valid_1, aes_invcipher_op2_VB_read_valid_2;
-
-reg [$clog2(`SE_DEPTH)-1:0] aes_invcipher_op2_next;
-always @(posedge clock) begin
-  if (reset) begin
-    aes_invcipher_op2_next <= 0;
-  end else if (aes_invcipher_op2_start) begin
-    aes_invcipher_op2_next <= aes_invcipher_op2_next + 1;
-  end
-end
-
-fifo_double_read #(
-  .WIDTH(384)
-) aes_invcipher_op2_ValueBuffer (
-  .clk(clock),
-  .rst(reset),
-  .push(aes_invcipher_op2_finish),
-  .din(aes_invcipher_op2_out_data),
-  .pop(se_finish),
-  .read_addr_1(seoperation_next),               // Read for ALU
-  .read_data_1(aes_invcipher_op2_VB_read_data_1),
-  .read_valid_1(aes_invcipher_op2_VB_read_valid_1),
-  .read_addr_2(sha256_for_dataflow_next),       // Read for SHA256
-  .read_data_2(aes_invcipher_op2_VB_read_data_2),
-  .read_valid_2(aes_invcipher_op2_VB_read_valid_2)
-);
-
-aes_invcipher_op2_check: assert property (@(posedge clock) disable iff (reset) aes_invcipher_op2_start |->
-                                          (se_VB_read_valid_4 && (se_VB_read_data_4[385:2] == aes_invcipher_op2_in_data)));
-                                          // || (!se_VB_read_valid_3 && se_start && se_in_data[897:514] == aes_invcipher_op2_in_data));
-
-
-wire aes_cipher_for_op1_mac_validation_start = aes_cipher_for_op1_mac_validation_io_input_valid;
-wire [511:0] aes_cipher_for_op1_mac_validation_in_data = aes_cipher_for_op1_mac_validation_io_input_text; // {{op1[383:0],127'hdeabeaf,op1_type}}
-wire aes_cipher_for_op1_mac_validation_finish = aes_cipher_for_op1_mac_validation_io_output_valid;
-wire [127:0] aes_cipher_for_op1_mac_validation_out_data = aes_cipher_for_op1_mac_validation_io_output_text;
-wire [127:0] aes_cipher_for_op1_mac_validation_VB_read_data;
-wire aes_cipher_for_op1_mac_validation_VB_read_valid;
-
-reg [$clog2(`SE_DEPTH)-1:0] aes_cipher_for_op1_mac_validation_next;
-always @(posedge clock) begin
-  if (reset) begin
-    aes_cipher_for_op1_mac_validation_next <= 0;
-  end else if (aes_cipher_for_op1_mac_validation_start) begin
-    aes_cipher_for_op1_mac_validation_next <= aes_cipher_for_op1_mac_validation_next + 1;
-  end
-end
-
-fifo_single_read #(
-  .WIDTH(128)
-) aes_cipher_for_op1_mac_validation_ValueBuffer (
-  .clk(clock),
-  .rst(reset),
-  .push(aes_cipher_for_op1_mac_validation_finish),
-  .din(aes_cipher_for_op1_mac_validation_out_data),
-  .pop(se_finish),
-  .read_addr(se_VB_head),
-  .read_data(aes_cipher_for_op1_mac_validation_VB_read_data),
-  .read_valid(aes_cipher_for_op1_mac_validation_VB_read_valid)
-);
-
-aes_cipher_for_op1_mac_validation_check: assert property (@(posedge clock) disable iff (reset) aes_cipher_for_op1_mac_validation_start |->
-                                          (se_VB_read_valid_5 && ({se_VB_read_data_5[897:514], 127'hdeabeaf, se_VB_read_data_5[1]} == aes_cipher_for_op1_mac_validation_in_data)));
-
-wire aes_cipher_for_op2_mac_validation_start = aes_cipher_for_op2_mac_validation_io_input_valid;
-wire [511:0] aes_cipher_for_op2_mac_validation_in_data = aes_cipher_for_op2_mac_validation_io_input_text;
-wire aes_cipher_for_op2_mac_validation_finish = aes_cipher_for_op2_mac_validation_io_output_valid;
-wire [127:0] aes_cipher_for_op2_mac_validation_out_data = aes_cipher_for_op2_mac_validation_io_output_text;
-wire [127:0] aes_cipher_for_op2_mac_validation_VB_read_data;
-wire aes_cipher_for_op2_mac_validation_VB_read_valid;
-
-reg [$clog2(`SE_DEPTH)-1:0] aes_cipher_for_op2_mac_validation_next;
-always @(posedge clock) begin
-  if (reset) begin
-    aes_cipher_for_op2_mac_validation_next <= 0;
-  end else if (aes_cipher_for_op2_mac_validation_start) begin
-    aes_cipher_for_op2_mac_validation_next <= aes_cipher_for_op2_mac_validation_next + 1;
-  end
-end
-
-fifo_single_read #(
-  .WIDTH(128)
-) aes_cipher_for_op2_mac_validation_ValueBuffer (
-  .clk(clock),
-  .rst(reset),
-  .push(aes_cipher_for_op2_mac_validation_finish),
-  .din(aes_cipher_for_op2_mac_validation_out_data),
-  .pop(se_finish),
-  .read_addr(se_VB_head),
-  .read_data(aes_cipher_for_op2_mac_validation_VB_read_data),
-  .read_valid(aes_cipher_for_op2_mac_validation_VB_read_valid)
-);
-
-aes_cipher_for_op2_mac_validation_check: assert property (@(posedge clock) disable iff (reset) aes_cipher_for_op2_mac_validation_start |->
-                                          (se_VB_read_valid_6 && ({se_VB_read_data_6[385:2], 127'hdeabeaf, se_VB_read_data_6[0]} == aes_cipher_for_op2_mac_validation_in_data)));
-
-
-wire aes_cipher_for_output_mac_start = aes_cipher_for_output_mac_io_input_valid;
-wire [511:0] aes_cipher_for_output_mac_in_data = aes_cipher_for_output_mac_io_input_text;
-wire aes_cipher_for_output_mac_finish = aes_cipher_for_output_mac_io_output_valid;
-wire [127:0] aes_cipher_for_output_mac_out_data = aes_cipher_for_output_mac_io_output_text;
-wire [127:0] aes_cipher_for_output_mac_VB_read_data;
-wire aes_cipher_for_output_mac_VB_read_valid;
-
-reg [$clog2(`SE_DEPTH)-1:0] aes_cipher_for_output_mac_next;
-always @(posedge clock) begin
-  if (reset) begin
-    aes_cipher_for_output_mac_next <= 0;
-  end else if (aes_cipher_for_output_mac_start) begin
-    aes_cipher_for_output_mac_next <= aes_cipher_for_output_mac_next + 1;
-  end
-end
-
-fifo_single_read #(
-  .WIDTH(128)
-) aes_cipher_for_output_mac_ValueBuffer (
-  .clk(clock),
-  .rst(reset),
-  .push(aes_cipher_for_output_mac_finish),
-  .din(aes_cipher_for_output_mac_out_data),
-  .pop(se_finish),
-  .read_addr(se_VB_head),
-  .read_data(aes_cipher_for_output_mac_VB_read_data),
-  .read_valid(aes_cipher_for_output_mac_VB_read_valid)
-);
-
-aes_cipher_for_output_mac_check: assert property (@(posedge clock) disable iff (reset) aes_cipher_for_output_mac_start |->
-                                                aes_cipher_read_valid_1 && ({aes_cipher_read_data_1,127'hdeabeaf,1'h1} == aes_cipher_for_output_mac_in_data));
-
-wire sha256_for_dataflow_start = sha256_for_dataflow_io_inputValid;
-wire [519:0] sha256_for_dataflow_in_data = sha256_for_dataflow_io_inputData;
-wire sha256_for_dataflow_finish = sha256_for_dataflow_io_outputValid;
-wire [255:0] sha256_for_dataflow_out_data = {sha256_for_dataflow_io_outputData_0, sha256_for_dataflow_io_outputData_1, sha256_for_dataflow_io_outputData_2, sha256_for_dataflow_io_outputData_3, sha256_for_dataflow_io_outputData_4, sha256_for_dataflow_io_outputData_5, sha256_for_dataflow_io_outputData_6, sha256_for_dataflow_io_outputData_7};
-wire [255:0] sha256_for_dataflow_VB_read_data;
-wire sha256_for_dataflow_VB_read_valid;
-
-reg [$clog2(`SE_DEPTH)-1:0] sha256_for_dataflow_next;
-always @(posedge clock) begin
-  if (reset) begin
-    sha256_for_dataflow_next <= 0;
-  end else if (sha256_for_dataflow_start) begin
-    sha256_for_dataflow_next <= sha256_for_dataflow_next + 1;
-  end
-end
-
-fifo_single_read #(
-  .WIDTH(256)
-) sha256_for_dataflow_ValueBuffer (
-  .clk(clock),
-  .rst(reset),
-  .push(sha256_for_dataflow_finish),
-  .din(sha256_for_dataflow_out_data),
-  .pop(se_finish),
-  .read_addr(aes_cipher_next),
-  .read_data(sha256_for_dataflow_VB_read_data),
-  .read_valid(sha256_for_dataflow_VB_read_valid)
-);
-
-sha256_for_dataflow_check: assert property (@(posedge clock) disable iff (reset) sha256_for_dataflow_start |->
-                                          se_VB_read_valid_1 && aes_invcipher_op1_VB_read_valid_2 && aes_invcipher_op2_VB_read_valid_2 &&
-                                          ({aes_invcipher_op1_VB_read_data_2[255:0] ,aes_invcipher_op2_VB_read_data_2[255:0], se_VB_read_data_2[1033:1026]} == sha256_for_dataflow_in_data));
-
-
-wire aes_cipher_start = aes_cipher_io_input_valid;
-wire [383:0] aes_cipher_in_data = aes_cipher_io_input_text;
-wire aes_cipher_finish = aes_cipher_io_output_valid;
-wire [383:0] aes_cipher_out_data = aes_cipher_io_output_text;
-wire [383:0] aes_cipher_read_data_1, aes_cipher_read_data_2;
-wire aes_cipher_read_valid_1, aes_cipher_read_valid_2;
-
-reg [$clog2(`SE_DEPTH)-1:0] aes_cipher_next;
-always @(posedge clock) begin
-  if (reset) begin
-    aes_cipher_next <= 0;
-  end else if (aes_cipher_start) begin
-    aes_cipher_next <= aes_cipher_next + 1;
-  end
-end
-
-fifo_double_read #(
-  .WIDTH(384)
-) aes_cipher_ValueBuffer (
-  .clk(clock),
-  .rst(reset),
-  .push(aes_cipher_finish),
-  .din(aes_cipher_out_data),
-  .pop(se_finish),
-  .read_addr_1(aes_cipher_for_output_mac_next),     // Read for output MAC
-  .read_data_1(aes_cipher_read_data_1),    
-  .read_valid_1(aes_cipher_read_valid_1),
-  .read_addr_2(se_VB_head),                            // Read for SE output
-  .read_data_2(aes_cipher_read_data_2),     
-  .read_valid_2(aes_cipher_read_valid_2)
-);
-
-aes_cipher_check: assert property (@(posedge clock) disable iff (reset) aes_cipher_start |->
-                                          seoperation_VB_read_valid && bit64_randnum_prng_VB_read_valid && sha256_for_dataflow_VB_read_valid &&
-                                          ({seoperation_VB_read_data, bit64_randnum_prng_VB_read_data, sha256_for_dataflow_VB_read_data} == aes_cipher_in_data));
-
-
-
-wire bit64_randnum_prng_finish = sha256_for_dataflow_io_outputValid;
-wire [63:0] bit64_randnum_prng_out_data = {bit64_randnum_prng_io_out_63, bit64_randnum_prng_io_out_62, bit64_randnum_prng_io_out_61, bit64_randnum_prng_io_out_60,
-                                          bit64_randnum_prng_io_out_59, bit64_randnum_prng_io_out_58, bit64_randnum_prng_io_out_57, bit64_randnum_prng_io_out_56,
-                                          bit64_randnum_prng_io_out_55, bit64_randnum_prng_io_out_54, bit64_randnum_prng_io_out_53, bit64_randnum_prng_io_out_52,
-                                          bit64_randnum_prng_io_out_51, bit64_randnum_prng_io_out_50, bit64_randnum_prng_io_out_49, bit64_randnum_prng_io_out_48,
-                                          bit64_randnum_prng_io_out_47, bit64_randnum_prng_io_out_46, bit64_randnum_prng_io_out_45, bit64_randnum_prng_io_out_44,
-                                          bit64_randnum_prng_io_out_43, bit64_randnum_prng_io_out_42, bit64_randnum_prng_io_out_41, bit64_randnum_prng_io_out_40,
-                                          bit64_randnum_prng_io_out_39, bit64_randnum_prng_io_out_38, bit64_randnum_prng_io_out_37, bit64_randnum_prng_io_out_36,
-                                          bit64_randnum_prng_io_out_35, bit64_randnum_prng_io_out_34, bit64_randnum_prng_io_out_33, bit64_randnum_prng_io_out_32,
-                                          bit64_randnum_prng_io_out_31, bit64_randnum_prng_io_out_30, bit64_randnum_prng_io_out_29, bit64_randnum_prng_io_out_28,
-                                          bit64_randnum_prng_io_out_27, bit64_randnum_prng_io_out_26, bit64_randnum_prng_io_out_25, bit64_randnum_prng_io_out_24,
-                                          bit64_randnum_prng_io_out_23, bit64_randnum_prng_io_out_22, bit64_randnum_prng_io_out_21, bit64_randnum_prng_io_out_20,
-                                          bit64_randnum_prng_io_out_19, bit64_randnum_prng_io_out_18, bit64_randnum_prng_io_out_17, bit64_randnum_prng_io_out_16,
-                                          bit64_randnum_prng_io_out_15, bit64_randnum_prng_io_out_14, bit64_randnum_prng_io_out_13, bit64_randnum_prng_io_out_12,
-                                          bit64_randnum_prng_io_out_11, bit64_randnum_prng_io_out_10, bit64_randnum_prng_io_out_9,  bit64_randnum_prng_io_out_8,
-                                          bit64_randnum_prng_io_out_7,  bit64_randnum_prng_io_out_6,  bit64_randnum_prng_io_out_5,  bit64_randnum_prng_io_out_4,
-                                          bit64_randnum_prng_io_out_3,  bit64_randnum_prng_io_out_2,  bit64_randnum_prng_io_out_1,  bit64_randnum_prng_io_out_0};
-wire [63:0] bit64_randnum_prng_VB_read_data;
-wire bit64_randnum_prng_VB_read_valid;
-
-fifo_single_read #(
-  .WIDTH(64)
-) bit64_randnum_prng_ValueBuffer (
-  .clk(clock),
-  .rst(reset),
-  .push(bit64_randnum_prng_finish),
-  .din(bit64_randnum_prng_out_data),
-  .pop(se_finish),
-  .read_addr(aes_cipher_next),
-  .read_data(bit64_randnum_prng_VB_read_data),
-  .read_valid(bit64_randnum_prng_VB_read_valid)
-);
-
-// 1-1 Correspondence Check
-reg [$clog2(`SE_DEPTH): 0] inst_counter;
-wire stop_enable;
-reg stop;
-always @(posedge clock) begin
-  if (reset) begin
-    inst_counter <= 0;
-  end
-  if (se_start && se_finish)
-    inst_counter <= inst_counter;
-  else if (se_finish)
-    inst_counter <= inst_counter - 1;
-  else if (se_start)
-    inst_counter <= inst_counter + 1;
-  if (stop_enable)
-    stop <= 1;
-end
-
-no_overflow: assert property (@(posedge clock) disable iff (reset) !(se_start && (inst_counter==`SE_DEPTH)));
-no_underflow: assert property (@(posedge clock) disable iff (reset) !(se_finish && (inst_counter==0)));
-inst_drain: assert property (@(posedge clock) disable iff (reset) stop |-> ##[0:$] (inst_counter==0));
-arbitrary_stop: assume property (stop |-> !io_in_valid);
-
 endmodule
