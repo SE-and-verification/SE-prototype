@@ -212,8 +212,8 @@ class SE(val debug : Boolean, val canChangeKey: Boolean) extends Module{
 	seoperation.io.op2_input    := op2_plaintext_64 // Currently hardcoded (TEMP)
 
 	val start_dataflow_hash_compute = decrypted_op1_val_buffer_valid && decrypted_op2_val_buffer_valid && result_hash_buffer_idle && mac_validated_op1 && mac_validated_op2
-	val op1_mac_check_result_after_dataflow_hash = RegNext(op1_mac_check_result_after_decrypt, start_dataflow_hash_compute)
-	val op2_mac_check_result_after_dataflow_hash = RegNext(op2_mac_check_result_after_decrypt, start_dataflow_hash_compute)
+	val op1_mac_check_result_after_dataflow_hash = RegEnable(op1_mac_check_result_after_decrypt, start_dataflow_hash_compute)
+	val op2_mac_check_result_after_dataflow_hash = RegEnable(op2_mac_check_result_after_decrypt, start_dataflow_hash_compute)
 	sha256_for_dataflow.io.inputData := Cat(decrypted_op1_val_buffer(255, 0), decrypted_op2_val_buffer(255, 0), inst_buffer_buf) // [hsh_A][hsh_B]
 	sha256_for_dataflow.io.inputValid := start_dataflow_hash_compute
 	// Once we receive the result from the seoperation, we pad the result with RNG and latch them first.
@@ -242,8 +242,8 @@ class SE(val debug : Boolean, val canChangeKey: Boolean) extends Module{
 	aes_cipher.io.input_text			:= result_hash_buffer
 	aes_cipher.io.input_valid 		:= start_encrypt
 	aes_cipher.io.input_roundKeys 	:= key
-	val op1_mac_check_result_after_encrypt = RegNext(op1_mac_check_result_after_dataflow_hash, start_encrypt)
-	val op2_mac_check_result_after_encrypt = RegNext(op2_mac_check_result_after_dataflow_hash, start_encrypt)
+	val op1_mac_check_result_after_encrypt = RegEnable(op1_mac_check_result_after_dataflow_hash, start_encrypt)
+	val op2_mac_check_result_after_encrypt = RegEnable(op2_mac_check_result_after_dataflow_hash, start_encrypt)
 	// enc buf
 	val encrypted_result_buffer = RegEnable(aes_cipher.io.output_text, aes_cipher.io.output_valid)
 	val encrypted_result_valid_buffer = RegInit(false.B)
@@ -265,7 +265,7 @@ class SE(val debug : Boolean, val canChangeKey: Boolean) extends Module{
 	val output_buffer_idle = RegInit(true.B)
 
 	val start_output_mac = output_buffer_idle && encrypted_result_valid_buffer
-	val check_result_after_mac_compute = RegNext(op1_mac_check_result_after_encrypt && op2_mac_check_result_after_encrypt, start_output_mac)
+	val check_result_after_mac_compute = RegEnable(op1_mac_check_result_after_encrypt && op2_mac_check_result_after_encrypt, start_output_mac)
 	aes_cipher_for_output_mac.io.input_text := input_to_mac
 	aes_cipher_for_output_mac.io.input_valid := start_output_mac
 	aes_cipher_for_output_mac.io.input_roundKeys := mac_key
