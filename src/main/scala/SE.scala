@@ -206,15 +206,16 @@ class SE(val debug : Boolean, val canChangeKey: Boolean) extends Module{
 	val op2_bit 	            = decrypted_op2_val_buffer(383, 256) // [plain_B][RdNum][verID_B]
 	val is_enc_const = (inst_buffer_buf === Instructions.ENC_CONST)
 
-	val op1_plaintext_64		= Mux(is_enc_const || op1_type_buffer_after_decrypt_stage, op1_buffer_after_decrypt_stage(383,256) ,op1_bit(127, 64)) // [plain_A]
-	val op2_plaintext_64		= Mux(op2_type_buffer_after_decrypt_stage, op2_buffer_after_decrypt_stage(383,256) ,op2_bit(127, 64)) // [plain_B]
+	val op1_plaintext_64		= Mux(is_enc_const,  op1_buffer_after_decrypt_stage(383,256), Mux(op1_type_buffer_after_decrypt_stage, op1_bit(127, 64), op1_buffer_after_decrypt_stage(383,256))) // [plain_A]
+	val op2_plaintext_64		= Mux(is_enc_const,  0.U, Mux(op2_type_buffer_after_decrypt_stage, op2_bit(127, 64), op2_buffer_after_decrypt_stage(383,256))) // [plain_B]
   seoperation.io.op1_input    := op1_plaintext_64 // Currently hardcoded (TEMP)
 	seoperation.io.op2_input    := op2_plaintext_64 // Currently hardcoded (TEMP)
 
 	val start_dataflow_hash_compute = decrypted_op1_val_buffer_valid && decrypted_op2_val_buffer_valid && result_hash_buffer_idle && mac_validated_op1 && mac_validated_op2
-	val op1_mac_check_result_after_dataflow_hash = RegEnable(op1_mac_check_result_after_decrypt, start_dataflow_hash_compute)
-	val op2_mac_check_result_after_dataflow_hash = RegEnable(op2_mac_check_result_after_decrypt, start_dataflow_hash_compute)
-	sha256_for_dataflow.io.inputData := Cat(decrypted_op1_val_buffer(255, 0), decrypted_op2_val_buffer(255, 0), inst_buffer_buf) // [hsh_A][hsh_B]
+	val op1_mac_check_result_after_dataflow_hash = RegEnable(op1_mac_check_result_after_decrypt || is_enc_const, start_dataflow_hash_compute)
+	val op2_mac_check_result_after_dataflow_hash = RegEnable(op2_mac_check_result_after_decrypt || is_enc_const, start_dataflow_hash_compute)
+	sha256_for_dataflow.io.inputData := Cat(Mux(op1_type_buffer_after_decrypt_stage, Cat(0.U(192.W),op1_buffer_after_decrypt_stage(383,256)),decrypted_op1_val_buffer(255, 0)), 
+																					Mux(op2_type_buffer_after_decrypt_stage, Cat(0.U(192.W),op2_buffer_after_decrypt_stage(383,256)),decrypted_op2_val_buffer(255, 0)), inst_buffer_buf) // [hsh_A][hsh_B]
 	sha256_for_dataflow.io.inputValid := start_dataflow_hash_compute
 	// Once we receive the result from the seoperation, we pad the result with RNG and latch them first.
 	// Note that ALU may need 3 to 4 clock cycles (after seOpValid being set high) to calculate the result
