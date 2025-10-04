@@ -10,8 +10,8 @@ import sha256._
 
 class SEInput(val canChangeKey: Boolean) extends Bundle {
 	val inst            = Input(UInt(8.W)) // Instruction encoding is defined in SEOperation/Instructions.scala
-	val op1             = Input(UInt(512.W)) // 128bit mac + 384 bit ciphertext
-	val op2             = Input(UInt(512.W)) // 128bit mac + 384 bit ciphertext
+	val op1             = Input(UInt(512.W)) // 128bit mac + 256 bit hash +  128 bit ciphertext
+	val op2             = Input(UInt(512.W)) // 128bit mac + 256 bit hash +  128 bit ciphertext
 	val valid           = Input(Bool())
 	val op1_type        = Input(Bool()) // 1 for encrypted, 0 for non-encrypted
 	val op2_type        = Input(Bool()) // 1 for encrypted, 0 for non-encrypted
@@ -68,7 +68,7 @@ class SE(val debug : Boolean, val canChangeKey: Boolean) extends Module{
 	val aes_cipher_for_op2_mac_validation = Module(new AESMAC(true))
 	val aes_cipher_for_output_mac = Module(new AESMAC(true))
 	val sha256_for_dataflow = Module(new Sha256Accel)
-	val aes_cipher     			= Module(new AESEncrypt384(true))
+	val aes_cipher     			= Module(new AESEncrypt(true))
 
 
 	// Original AES key
@@ -202,26 +202,25 @@ class SE(val debug : Boolean, val canChangeKey: Boolean) extends Module{
   seoperation.io.inst         := inst_buffer_buf
 	seoperation.io.in_valid 	:= decrypted_op1_val_buffer_valid && decrypted_op2_val_buffer_valid 
 
-	val op1_bit 	            = decrypted_op1_val_buffer(383, 256) // [plain_A][RdNum][verID_A]
-	val op2_bit 	            = decrypted_op2_val_buffer(383, 256) // [plain_B][RdNum][verID_B]
+	val op1_bit 	            = decrypted_op1_val_buffer // [plain_A][RdNum][verID_A]
+	val op2_bit 	            = decrypted_op2_val_buffer // [plain_B][RdNum][verID_B]
 	val is_enc_const = (inst_buffer_buf === Instructions.ENC_CONST)
 
-	val op1_plaintext_64		= Mux(is_enc_const,  op1_buffer_after_decrypt_stage(383,256), Mux(op1_type_buffer_after_decrypt_stage, op1_bit(127, 64), op1_buffer_after_decrypt_stage(383,256))) // [plain_A]
-	val op2_plaintext_64		= Mux(is_enc_const,  0.U, Mux(op2_type_buffer_after_decrypt_stage, op2_bit(127, 64), op2_buffer_after_decrypt_stage(383,256))) // [plain_B]
+	val op1_plaintext_64		= Mux(is_enc_const,  op1_buffer_after_decrypt_stage(383,320), Mux(op1_type_buffer_after_decrypt_stage, op1_bit(127, 64), op1_buffer_after_decrypt_stage(383,320))) // [plain_A]
+	val op2_plaintext_64		= Mux(is_enc_const,  0.U, Mux(op2_type_buffer_after_decrypt_stage, op2_bit(127, 64), op2_buffer_after_decrypt_stage(383,320))) // [plain_B]
   seoperation.io.op1_input    := op1_plaintext_64 // Currently hardcoded (TEMP)
 	seoperation.io.op2_input    := op2_plaintext_64 // Currently hardcoded (TEMP)
+	val encrypt_buffer_idle = RegInit(true.B)
 
-	val start_dataflow_hash_compute = decrypted_op1_val_buffer_valid && decrypted_op2_val_buffer_valid && result_hash_buffer_idle && mac_validated_op1 && mac_validated_op2
-	val op1_mac_check_result_after_dataflow_hash = RegEnable(op1_mac_check_result_after_decrypt || is_enc_const, start_dataflow_hash_compute)
-	val op2_mac_check_result_after_dataflow_hash = RegEnable(op2_mac_check_result_after_decrypt || is_enc_const, start_dataflow_hash_compute)
-	sha256_for_dataflow.io.inputData := Cat(Mux(op1_type_buffer_after_decrypt_stage, Cat(0.U(192.W),op1_buffer_after_decrypt_stage(383,256)),decrypted_op1_val_buffer(255, 0)), 
-																					Mux(op2_type_buffer_after_decrypt_stage, Cat(0.U(192.W),op2_buffer_after_decrypt_stage(383,256)),decrypted_op2_val_buffer(255, 0)), inst_buffer_buf) // [hsh_A][hsh_B]
-	sha256_for_dataflow.io.inputValid := start_dataflow_hash_compute
+	val start_dataflow_hash_compute_and_enc = decrypted_op1_val_buffer_valid && decrypted_op2_val_buffer_valid && result_hash_buffer_idle && mac_validated_op1 && mac_validated_op2 && encrypt_buffer_idle
+	sha256_for_dataflow.io.inputData := Cat(Mux(op1_type_buffer_after_decrypt_stage, Cat(0.U(192.W),op1_buffer_after_decrypt_stage(383,256)),op1_buffer_after_decrypt_stage(383, 128)), 
+																					Mux(op2_type_buffer_after_decrypt_stage, Cat(0.U(192.W),op2_buffer_after_decrypt_stage(383,256)),op2_buffer_after_decrypt_stage(383, 128)), inst_buffer_buf) // [hsh_A][hsh_B]
+	sha256_for_dataflow.io.inputValid := start_dataflow_hash_compute_and_enc
 	// Once we receive the result from the seoperation, we pad the result with RNG and latch them first.
 	// Note that ALU may need 3 to 4 clock cycles (after seOpValid being set high) to calculate the result
 	val bit64_randnum = PRNG(new MaxPeriodFibonacciLFSR(64, Some(scala.math.BigInt(46, scala.util.Random))))
 
-	val non_enc_padded_result = Cat(seoperation.io.result, bit64_randnum,  Cat(sha256_for_dataflow.io.outputData)) // [Plain_C][RdNum][hsh_A][hsh_B][inst]
+	val non_enc_padded_result = Cat(seoperation.io.result, bit64_randnum(63,1), op1_mac_check_result_after_decrypt & op2_mac_check_result_after_decrypt) // [Plain_C][RdNum][error bit]
 
 	val result_hash_buffer 					= RegEnable(non_enc_padded_result, sha256_for_dataflow.io.outputValid)
 	val result_hash_valid_buffer 			= RegInit(false.B)
@@ -237,15 +236,13 @@ class SE(val debug : Boolean, val canChangeKey: Boolean) extends Module{
 	}
 
 
-	val encrypt_buffer_idle = RegInit(true.B)
-	val start_encrypt = result_hash_valid_buffer && encrypt_buffer_idle
 	// Encrypt the padded result to get the final output
 	aes_cipher.io.input_text			:= result_hash_buffer
-	aes_cipher.io.input_valid 		:= start_encrypt
+	aes_cipher.io.input_valid 		:= start_dataflow_hash_compute_and_enc
 	aes_cipher.io.input_roundKeys 	:= key
-	val op1_mac_check_result_after_encrypt = RegEnable(op1_mac_check_result_after_dataflow_hash, start_encrypt)
-	val op2_mac_check_result_after_encrypt = RegEnable(op2_mac_check_result_after_dataflow_hash, start_encrypt)
+
 	// enc buf
+	val hash_buffer_after_encrypt = RegEnable(sha256_for_dataflow.io.outputData, sha256_for_dataflow.io.outputValid) // [hsh_C]
 	val encrypted_result_buffer = RegEnable(aes_cipher.io.output_text, aes_cipher.io.output_valid)
 	val encrypted_result_valid_buffer = RegInit(false.B)
 
@@ -260,13 +257,12 @@ class SE(val debug : Boolean, val canChangeKey: Boolean) extends Module{
 		encrypt_buffer_idle := true.B
 	}
 
-	val input_to_mac = Cat(encrypted_result_buffer, version_id(126,0), 1.U(1.W))
+	val input_to_mac = Cat( Cat(hash_buffer_after_encrypt),Cat( encrypted_result_buffer), Cat(version_id(126,0), 1.U(1.W)))
 	val output_buffer_enc = RegEnable(input_to_mac, aes_cipher_for_output_mac.io.input_valid)
 	val output_buffer_valid = RegInit(false.B)
 	val output_buffer_idle = RegInit(true.B)
 
 	val start_output_mac = output_buffer_idle && encrypted_result_valid_buffer
-	val check_result_after_mac_compute = RegEnable(op1_mac_check_result_after_encrypt && op2_mac_check_result_after_encrypt, start_output_mac)
 	aes_cipher_for_output_mac.io.input_text := input_to_mac
 	aes_cipher_for_output_mac.io.input_valid := start_output_mac
 	aes_cipher_for_output_mac.io.input_roundKeys := mac_key
@@ -281,7 +277,7 @@ class SE(val debug : Boolean, val canChangeKey: Boolean) extends Module{
 	} .elsewhen(aes_cipher_for_output_mac.io.output_valid) {
 		output_buffer_valid := true.B
 	}
-	val output_gated = Mux(check_result_after_mac_compute, output_connect, 0xEEEE.U(512.W))
+	val output_gated = output_connect
 	when(output_buffer_valid) {
 		io.out.valid := true.B
 		io.out.result 			:= output_gated
