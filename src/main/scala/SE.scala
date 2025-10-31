@@ -10,6 +10,9 @@ import sha256._
 
 class SEInput(val canChangeKey: Boolean) extends Bundle {
 	val inst            = Input(UInt(8.W)) // Instruction encoding is defined in SEOperation/Instructions.scala
+	val upgrade_input = Input(UInt(64.W)) // 1 for upgrade key, 0 for normal operation
+	val upgrade_valid = Input(Bool())
+	val upgrade_ready = Output(Bool())
 	val op1             = Input(UInt(512.W)) // 128bit mac + 256 bit hash +  128 bit ciphertext
 	val op2             = Input(UInt(512.W)) // 128bit mac + 256 bit hash +  128 bit ciphertext
 	val valid           = Input(Bool())
@@ -28,6 +31,10 @@ class SEOutput extends Bundle{
 	val result 				= Output(UInt(640.W))
 	val valid 				= Output(Bool())
 	val output_type   = Output(Bool()) // 1 for encrypted, 0 for non-encrypted
+
+	val upgrade_output = Output(UInt(192.W))
+	val upgrade_valid  = Output(Bool())
+	val upgrade_ready  = Input(Bool())
 }
 
 class SEIO(val canChangeKey: Boolean) extends Bundle {
@@ -69,7 +76,6 @@ class SE(val debug : Boolean, val canChangeKey: Boolean) extends Module{
 	val aes_cipher_for_output_mac = Module(new AESMAC(true))
 	val sha256_for_dataflow = Module(new Sha256Accel)
 	val aes_cipher     			= Module(new AESEncrypt(true))
-
 
 	// Original AES key
 	val expandedKey128 	= VecInit(
@@ -288,4 +294,32 @@ class SE(val debug : Boolean, val canChangeKey: Boolean) extends Module{
 		io.out.output_type := false.B
 	}
 
+	// separately handle upgrade output
+	val reg_upgrade_input = RegEnable(io.in.upgrade_input, io.in.upgrade_valid && io.in.ready)
+	val reg_upgrade_valid = RegInit(false.B)
+	when(io.in.upgrade_valid && io.in.ready) {
+		reg_upgrade_valid := true.B
+	} .elsewhen(io.out.upgrade_ready && io.out.upgrade_valid) {
+		reg_upgrade_valid := false.B
+	}
+	io.in.upgrade_ready := !reg_upgrade_valid
+	val aes_cipher_for_upgrade_mac = Module(new AESMAC(true))
+	aes_cipher_for_upgrade_mac.io.input_text		:= Cat(reg_upgrade_input, 0.U(193.W), Cat(version_id(126,0), 0.U(1.W))) // [Ciph_upgrade][RdNum][verID_upgrade]
+	aes_cipher_for_upgrade_mac.io.input_valid 		:= reg_upgrade_valid && io.out.upgrade_ready
+	aes_cipher_for_upgrade_mac.io.input_roundKeys 	:= mac_key
+
+	val upgrade_output_connect 		= RegEnable(Cat(aes_cipher_for_upgrade_mac.io.output_text, reg_upgrade_input), aes_cipher_for_upgrade_mac.io.output_valid)
+	val output_upgrade_valid = RegInit(false.B)
+	when(aes_cipher_for_upgrade_mac.io.output_valid) {
+		output_upgrade_valid := true.B
+	} .elsewhen(io.out.upgrade_ready && io.out.upgrade_valid) {
+		output_upgrade_valid := false.B
+	}
+	when(output_upgrade_valid) {
+		io.out.upgrade_valid := true.B
+		io.out.upgrade_output := upgrade_output_connect
+	}.otherwise{
+		io.out.upgrade_valid := false.B
+		io.out.upgrade_output := 0.U(512.W)
+	}
 }
