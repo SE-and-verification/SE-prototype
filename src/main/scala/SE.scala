@@ -226,7 +226,7 @@ class SE(val debug : Boolean, val canChangeKey: Boolean) extends Module{
 	// Note that ALU may need 3 to 4 clock cycles (after seOpValid being set high) to calculate the result
 	val bit64_randnum = PRNG(new MaxPeriodFibonacciLFSR(64, Some(scala.math.BigInt(46, scala.util.Random))))
 
-	val non_enc_padded_result = Cat(seoperation.io.result, bit64_randnum(63,1), op1_mac_check_result_after_decrypt & op2_mac_check_result_after_decrypt) // [Plain_C][RdNum][error bit]
+	val non_enc_padded_result = Cat(seoperation.io.result, bit64_randnum(63,1), op1_mac_check_result_after_decrypt & op2_mac_check_result_after_decrypt & op1_bit(0) & op2_bit(0)) // [Plain_C][RdNum][error bit]
 
 	val result_hash_buffer 					= RegEnable(non_enc_padded_result, sha256_for_dataflow.io.outputValid)
 	val result_hash_valid_buffer 			= RegInit(false.B)
