@@ -212,8 +212,8 @@ class SE(val debug : Boolean, val canChangeKey: Boolean) extends Module{
 	val op2_bit 	            = decrypted_op2_val_buffer // [plain_B][RdNum][verID_B]
 	val is_enc_const = (inst_buffer_buf === Instructions.ENC_CONST)
 
-	val op1_plaintext_64		= Mux(is_enc_const,  op1_buffer_after_decrypt_stage(127,64), Mux(op1_type_buffer_after_decrypt_stage, op1_bit(127, 64), op1_buffer_after_decrypt_stage(383,320))) // [plain_A]
-	val op2_plaintext_64		= Mux(is_enc_const,  0.U, Mux(op2_type_buffer_after_decrypt_stage, op2_bit(127, 64), op2_buffer_after_decrypt_stage(383,320))) // [plain_B]
+	val op1_plaintext_64		= Mux(is_enc_const,  op1_buffer_after_decrypt_stage(127,64), Mux(op1_type_buffer_after_decrypt_stage, op1_bit(127, 64), op1_buffer_after_decrypt_stage(127,64))) // [plain_A]
+	val op2_plaintext_64		= Mux(is_enc_const,  0.U, Mux(op2_type_buffer_after_decrypt_stage, op2_bit(127, 64), op2_buffer_after_decrypt_stage(127,64))) // [plain_B]
   seoperation.io.op1_input    := op1_plaintext_64 // Currently hardcoded (TEMP)
 	seoperation.io.op2_input    := op2_plaintext_64 // Currently hardcoded (TEMP)
 	val encrypt_buffer_idle = RegInit(true.B)
