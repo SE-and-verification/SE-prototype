@@ -219,8 +219,8 @@ class SE(val debug : Boolean, val canChangeKey: Boolean) extends Module{
 	val encrypt_buffer_idle = RegInit(true.B)
 
 	val start_dataflow_hash_compute_and_enc = decrypted_op1_val_buffer_valid && decrypted_op2_val_buffer_valid && result_hash_buffer_idle && mac_validated_op1 && mac_validated_op2 && encrypt_buffer_idle
-	sha256_for_dataflow.io.inputData := Cat(Mux(op1_type_buffer_after_decrypt_stage, Cat(0.U(192.W),op1_buffer_after_decrypt_stage(127,64)),op1_buffer_after_decrypt_stage(383, 128)), 
-																					Mux(op2_type_buffer_after_decrypt_stage, Cat(0.U(192.W),op2_buffer_after_decrypt_stage(127,64)),op2_buffer_after_decrypt_stage(383, 128)), inst_buffer_buf) // [hsh_A][hsh_B]
+	sha256_for_dataflow.io.inputData := Cat(Mux(op1_type_buffer_after_decrypt_stage, op1_buffer_after_decrypt_stage(383, 128), Cat(0.U(192.W),op1_buffer_after_decrypt_stage(127,64))), 
+																					Mux(op2_type_buffer_after_decrypt_stage, op2_buffer_after_decrypt_stage(383, 128), Cat(0.U(192.W),op2_buffer_after_decrypt_stage(127,64))), inst_buffer_buf) // [hsh_A][hsh_B]
 	sha256_for_dataflow.io.inputValid := start_dataflow_hash_compute_and_enc
 	// Once we receive the result from the seoperation, we pad the result with RNG and latch them first.
 	// Note that ALU may need 3 to 4 clock cycles (after seOpValid being set high) to calculate the result
@@ -232,12 +232,12 @@ class SE(val debug : Boolean, val canChangeKey: Boolean) extends Module{
 	val result_hash_valid_buffer 			= RegInit(false.B)
 	when(sha256_for_dataflow.io.inputValid) {
 		result_hash_buffer_idle := false.B
-	} .elsewhen(aes_cipher.io.input_valid) {
+	} .elsewhen(aes_cipher_for_output_mac.io.input_valid) {
 		result_hash_buffer_idle := true.B
 	}
 	when(sha256_for_dataflow.io.outputValid) {
 		result_hash_valid_buffer := true.B
-	} .elsewhen(aes_cipher.io.input_valid) {
+	} .elsewhen(aes_cipher_for_output_mac.io.input_valid) {
 		result_hash_valid_buffer := false.B
 	}
 
@@ -268,7 +268,7 @@ class SE(val debug : Boolean, val canChangeKey: Boolean) extends Module{
 	val output_buffer_valid = RegInit(false.B)
 	val output_buffer_idle = RegInit(true.B)
 
-	val start_output_mac = output_buffer_idle && encrypted_result_valid_buffer
+	val start_output_mac = output_buffer_idle && encrypted_result_valid_buffer && result_hash_valid_buffer
 	aes_cipher_for_output_mac.io.input_text := input_to_mac
 	aes_cipher_for_output_mac.io.input_valid := start_output_mac
 	aes_cipher_for_output_mac.io.input_roundKeys := mac_key
