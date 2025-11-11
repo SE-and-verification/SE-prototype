@@ -228,7 +228,8 @@ class SE(val debug : Boolean, val canChangeKey: Boolean) extends Module{
 
 	val non_enc_padded_result = Cat(seoperation.io.result, bit64_randnum(63,1), op1_mac_check_result_after_decrypt & op2_mac_check_result_after_decrypt & op1_bit(0) & op2_bit(0)) // [Plain_C][RdNum][error bit]
 
-	val result_hash_buffer 					= non_enc_padded_result
+	val result_hash_buffer 					= RegEnable(non_enc_padded_result, start_dataflow_hash_compute_and_enc)
+	val enc_valid_delay_by_one = RegNext(start_dataflow_hash_compute_and_enc)
 	val result_hash_valid_buffer 			= RegInit(false.B)
 	when(sha256_for_dataflow.io.inputValid) {
 		result_hash_buffer_idle := false.B
@@ -244,7 +245,7 @@ class SE(val debug : Boolean, val canChangeKey: Boolean) extends Module{
 
 	// Encrypt the padded result to get the final output
 	aes_cipher.io.input_text			:= result_hash_buffer
-	aes_cipher.io.input_valid 		:= start_dataflow_hash_compute_and_enc
+	aes_cipher.io.input_valid 		:= enc_valid_delay_by_one
 	aes_cipher.io.input_roundKeys 	:= key
 
 	// enc buf
