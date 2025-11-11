@@ -182,25 +182,25 @@ class SE(val debug : Boolean, val canChangeKey: Boolean) extends Module{
 
 	when(aes_invcipher_op1.io.input_valid) {
 		decrypted_op1_val_buffer_idle := false.B
-	} .elsewhen(sha256_for_dataflow.io.outputValid) {
+	} .elsewhen(sha256_for_dataflow.io.inputValid) {
 		decrypted_op1_val_buffer_idle := true.B
 	}
 
 	when(aes_invcipher_op1.io.output_valid) {
 		decrypted_op1_val_buffer_valid := true.B
-	} .elsewhen(sha256_for_dataflow.io.outputValid) {
+	} .elsewhen(sha256_for_dataflow.io.inputValid) {
 		decrypted_op1_val_buffer_valid := false.B
 	}
 
 	when(aes_invcipher_op2.io.input_valid) {
 		decrypted_op2_val_buffer_idle := false.B
-	} .elsewhen(sha256_for_dataflow.io.outputValid) {
+	} .elsewhen(sha256_for_dataflow.io.inputValid) {
 		decrypted_op2_val_buffer_idle := true.B
 	}
 
 	when(aes_invcipher_op2.io.output_valid) {
 		decrypted_op2_val_buffer_valid := true.B
-	} .elsewhen(sha256_for_dataflow.io.outputValid) {
+	} .elsewhen(sha256_for_dataflow.io.inputValid) {
 		decrypted_op2_val_buffer_valid := false.B
 	}
 	val inst_buffer_buf = RegEnable(inst_buffer, aes_invcipher_op1.io.input_valid) // [inst]
@@ -228,7 +228,7 @@ class SE(val debug : Boolean, val canChangeKey: Boolean) extends Module{
 
 	val non_enc_padded_result = Cat(seoperation.io.result, bit64_randnum(63,1), op1_mac_check_result_after_decrypt & op2_mac_check_result_after_decrypt & op1_bit(0) & op2_bit(0)) // [Plain_C][RdNum][error bit]
 
-	val result_hash_buffer 					= RegEnable(non_enc_padded_result, sha256_for_dataflow.io.outputValid)
+	val result_hash_buffer 					= non_enc_padded_result
 	val result_hash_valid_buffer 			= RegInit(false.B)
 	when(sha256_for_dataflow.io.inputValid) {
 		result_hash_buffer_idle := false.B
