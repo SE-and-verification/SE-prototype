@@ -3,76 +3,105 @@ package aes
 import chisel3._
 import chisel3.util._
 
-class CipherIO extends Bundle{
+class CipherIO(val unrollFactor: Int) extends Bundle {
+  require(unrollFactor >= 1)
   val plaintext = Input(Vec(Params.StateLength, UInt(8.W)))
   val roundKey = Input(Vec(Params.StateLength, UInt(8.W)))
+  /** Keys for combinational stages 1 .. unrollFactor-1 in the same cycle (stage 0 uses roundKey). Empty when unrollFactor == 1. */
+  val roundKeysTail = Input(Vec((unrollFactor - 1) max 0, Vec(Params.StateLength, UInt(8.W))))
   val start = Input(Bool())
   val state_out = Output(Vec(Params.StateLength, UInt(8.W)))
   val state_out_valid = Output(Bool())
 }
 // implements AES_Encrypt
 // change Nk=4 for AES128, NK=6 for AES192, Nk=8 for AES256
-class Cipher(Nk: Int, SubBytes_SCD: Boolean) extends Module {
+class Cipher(Nk: Int, SubBytes_SCD: Boolean, val unrollFactor: Int = 1) extends Module {
   require(Nk == 4 || Nk == 6 || Nk == 8)
+  require(unrollFactor >= 1)
   val KeyLength: Int = Nk * Params.rows
   val Nr: Int = Nk + 6 // 10, 12, 14 rounds
   val Nrplus1: Int = Nr + 1 // 10+1, 12+1, 14+1
 
-  val io = IO(new CipherIO)
+  val io = IO(new CipherIO(unrollFactor))
 
-  // Instantiate module objects
-  val AddRoundKeyModule = AddRoundKey()
-  val SubBytesModule = SubBytes(SubBytes_SCD)
-  val ShiftRowsModule = ShiftRows()
-  val MixColumnsModule = MixColumns()
+  val roundBits = log2Ceil(Nr + 3).W
+  val stageIdxW = log2Ceil(unrollFactor + 1).W
 
-  // Internal variables
+  // Initial AddRoundKey (AES round 0)
+  val AddRoundKeyInit = AddRoundKey()
+  AddRoundKeyInit.io.state_in := io.plaintext
+  AddRoundKeyInit.io.roundKey := io.roundKey
+
+  val SubBytesStages = Seq.fill(unrollFactor)(SubBytes(SubBytes_SCD))
+  val ShiftRowsStages = Seq.fill(unrollFactor)(ShiftRows())
+  val MixColumnsStages = Seq.fill(unrollFactor)(MixColumns())
+  val AddRoundKeyStages = Seq.fill(unrollFactor)(AddRoundKey())
+
   val initValues = Seq.fill(Params.StateLength)(0.U(8.W))
   val state = RegInit(VecInit(initValues))
-  val rounds = RegInit(0.U(4.W))
+  val rounds = RegInit(0.U(roundBits))
 
-  // STM
   val sIdle :: sInitialAR :: sBusy :: Nil = Enum(3)
   val STM = RegInit(sIdle)
+
+  val remaining = Wire(UInt(roundBits))
+  remaining := Mux(rounds > Nr.U, 0.U, (Nr + 1).U(roundBits) - rounds)
+  val stagesThisCycle = Wire(UInt(stageIdxW))
+  val ufConst = unrollFactor.U(stageIdxW)
+  stagesThisCycle := Mux(remaining < ufConst, remaining, ufConst).asTypeOf(UInt(stageIdxW))
+
+  val nextRounds = rounds +& stagesThisCycle
 
   switch(STM) {
     is(sIdle) {
       when(io.start) {
         STM := sInitialAR
-      } // Start cipher
+      }
       rounds := 0.U
     }
     is(sInitialAR) {
-      rounds := rounds + 1.U
+      rounds := 1.U
       STM := sBusy
     }
     is(sBusy) {
-      rounds := rounds + 1.U
-      when(rounds === Nr.U) {
+      rounds := nextRounds
+      when(nextRounds === Nrplus1.U) {
         STM := sIdle
       }
     }
   }
 
-  // SubBytes state
-  SubBytesModule.io.state_in := state
+  for (i <- 0 until unrollFactor) {
+    val roundIndex = rounds + i.U(roundBits)
+    val stageIn = if (i == 0) state else AddRoundKeyStages(i - 1).io.state_out
+    SubBytesStages(i).io.state_in := stageIn
+    ShiftRowsStages(i).io.state_in := SubBytesStages(i).io.state_out
+    MixColumnsStages(i).io.state_in := ShiftRowsStages(i).io.state_out
+    AddRoundKeyStages(i).io.state_in := Mux(roundIndex === Nr.U,
+      ShiftRowsStages(i).io.state_out,
+      MixColumnsStages(i).io.state_out)
+    AddRoundKeyStages(i).io.roundKey := (if (unrollFactor == 1 || i == 0) {
+      io.roundKey
+    } else {
+      io.roundKeysTail(i - 1)
+    })
+  }
 
-  // ShiftRows state
-  ShiftRowsModule.io.state_in := SubBytesModule.io.state_out
+  val busyStateOut = MuxLookup(
+    stagesThisCycle,
+    state,
+    Seq.tabulate(unrollFactor)(s => ((s + 1).U(stageIdxW), AddRoundKeyStages(s).io.state_out))
+  )
 
-  // MixColumns state
-  MixColumnsModule.io.state_in := ShiftRowsModule.io.state_out
+  state := Mux(STM =/= sIdle,
+    Mux(STM === sInitialAR, AddRoundKeyInit.io.state_out, busyStateOut),
+    VecInit(initValues))
 
-  // AddRoundKey state
-  AddRoundKeyModule.io.state_in := Mux(STM === sInitialAR, io.plaintext,
-    Mux(rounds === Nr.U, ShiftRowsModule.io.state_out, MixColumnsModule.io.state_out))
-  AddRoundKeyModule.io.roundKey := io.roundKey
+  val zeroOut = Wire(Vec(Params.StateLength, UInt(8.W)))
+  zeroOut := VecInit(initValues)
 
-  state := Mux(STM =/= sIdle, AddRoundKeyModule.io.state_out, VecInit(initValues))
-
-  // Set state_out_valid true when cipher ends
   io.state_out_valid := rounds === Nrplus1.U
-  io.state_out := Mux(rounds === Nrplus1.U, state, RegInit(VecInit(initValues)))
+  io.state_out := Mux(rounds === Nrplus1.U, state, zeroOut)
 
   // Debug statements
   //  printf("E_STM: %d, rounds: %d, valid: %d\n", STM, rounds, io.state_out_valid)
@@ -81,5 +110,6 @@ class Cipher(Nk: Int, SubBytes_SCD: Boolean) extends Module {
 }
 
 object Cipher {
-  def apply(Nk: Int, SubBytes_SCD: Boolean): Cipher = Module(new Cipher(Nk, SubBytes_SCD))
+  def apply(Nk: Int, SubBytes_SCD: Boolean, unrollFactor: Int = 1): Cipher =
+    Module(new Cipher(Nk, SubBytes_SCD, unrollFactor))
 }

@@ -20,67 +20,67 @@ import chisel3.util._
 class Sha256Accel extends Module {
 
     val io = IO(new Bundle {
-        // first must be raised for one cycle before starting an actual write
-
         val inputData = Input(UInt(520.W))
         val inputValid = Input(Bool())
 
         val outputData = Output(Vec(8, UInt(32.W)))
         val outputValid = Output(Bool())
     })
+
     val vec_data = RegEnable(io.inputData, io.inputValid)
-    val input_valid = RegInit(false.B)
-    val first = RegInit(true.B)
-    input_valid := Mux(io.inputValid, true.B, Mux(io.outputValid, false.B, input_valid))
+
     val accel = Module(new CompressionFunction)
 
-    first := Mux(io.inputValid, true.B, Mux(accel.io.first, false.B, first))
-    io.outputData := accel.io.out
-    val start = RegInit(false.B)
-    val ctr = RegInit(0.U(8.W))
-    io.outputValid := ctr === 63.U 
+    val ctr = RegInit(0.U(6.W))
 
-    accel.io.newChunk := (ctr === 0.U) && accel.io.shiftIn
-    accel.io.first := first && accel.io.shiftIn
-    when(ctr < 16.U) {
-        accel.io.wordIn := (vec_data >> (32.U*ctr))(31,0)
-    } .elsewhen(ctr === 16.U) {
-        // The first 16 words are the message schedule
-        accel.io.wordIn := Cat(vec_data(519, 512), 0.U(24.W))
-    }.elsewhen(ctr === 63.U) {
-        // The last word is the length of the message
-        accel.io.wordIn := 520.U(32.W)
-    } .otherwise {
-        accel.io.wordIn := 0.U
-    }
+    val first = RegInit(true.B)
+    first := Mux(io.inputValid, true.B, Mux(accel.io.shiftIn && (ctr === 1.U), false.B, first))
+
+    val start = RegInit(false.B)
     when(io.inputValid) {
         start := true.B
-    } .elsewhen(io.outputValid) {
+    }.elsewhen(accel.io.valid) {
         start := false.B
     }
 
-    when (start) {
-        accel.io.shiftIn := true.B
-    } .otherwise {
+    io.outputData := accel.io.out
+    io.outputValid := accel.io.valid
+
+    // Preamble at ctr === 0: chunk setup without shiftIn so the schedule stays aligned with compress.
+    when(start) {
+        accel.io.shiftIn := ctr =/= 0.U
+    }.otherwise {
         accel.io.shiftIn := false.B
     }
-    when (io.inputValid) {
-        first := true.B
+
+    accel.io.newChunk := start && (ctr === 0.U)
+    accel.io.first := first && start && (ctr === 0.U)
+
+    val schedStep = Mux(ctr === 0.U, 0.U(6.W), ctr - 1.U)
+    val wIdx0 = Cat(schedStep, 0.U(1.W))
+    val wIdx1 = Cat(schedStep, 1.U(1.W))
+
+    def scheduleWord(idx: UInt): UInt = {
+        MuxCase(
+            0.U(32.W),
+            Seq(
+                (idx < 16.U) -> ((vec_data >> (idx * 32.U))(31, 0)),
+                (idx === 16.U) -> Cat(vec_data(519, 512), 0.U(24.W)),
+                (idx === 63.U) -> 520.U(32.W)
+            )
+        )
+    }
+
+    accel.io.wordIn(0) := scheduleWord(wIdx0)
+    accel.io.wordIn(1) := scheduleWord(wIdx1)
+
+    when(io.inputValid) {
         ctr := 0.U
-    } .elsewhen (accel.io.shiftIn) {
-        first := false.B
+    }.elsewhen(start) {
+        when(ctr === 0.U) {
+            ctr := 1.U
+        }.elsewhen(accel.io.shiftIn) {
+            ctr := Mux(ctr === 32.U, 0.U, ctr + 1.U)
+        }
     }
-    when (ctr =/= 63.U && start) {
-        ctr := ctr + 1.U
-    } .otherwise{
-       ctr := 0.U
-    }
-
-    when (io.inputValid) { ctr := 0.U }
-    .otherwise {
-        accel.io.wordIn := 0.U
-    }
-
-    when (io.inputValid) { ctr := 0.U }
 }
-

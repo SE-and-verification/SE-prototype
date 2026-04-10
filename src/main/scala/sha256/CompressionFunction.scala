@@ -23,7 +23,7 @@ class CompressionFunction extends Module {
         val first = Input(Bool())
         val newChunk = Input(Bool())
         val shiftIn = Input(Bool())
-        val wordIn = Input(UInt(32.W))
+        val wordIn = Input(Vec(2, UInt(32.W)))
 
         val valid = Output(Bool())
         val out = Output(Vec(8, UInt(32.W)))
@@ -32,7 +32,7 @@ class CompressionFunction extends Module {
     val valid = RegInit(false.B)
     io.valid := valid
 
-    val i = RegInit(0.U(6.W))
+    val i = RegInit(0.U(7.W))
 
     val hash_val = RegInit(Constants.hashInit())
     io.out := hash_val
@@ -48,13 +48,41 @@ class CompressionFunction extends Module {
 
     val messageScheduleArray = Module(new MessageScheduleArray)
     messageScheduleArray.io.first := io.first | io.newChunk
-    messageScheduleArray.io.shiftIn := io.shiftIn
+    // Skip schedule advance on chunk setup so W[0],W[1] align with the first compress step (i=0).
+    val doScheduleShift = io.shiftIn && !io.first && !io.newChunk
+    messageScheduleArray.io.shiftIn := doScheduleShift
     messageScheduleArray.io.wordIn := io.wordIn
 
-    // Ensures validity
-    val first = RegNext(io.first)
-    val newChunk = RegNext(io.newChunk)
-    val shiftIn = RegNext(io.shiftIn)
+    val shiftDelayed = RegNext(doScheduleShift)
+
+    def shaRound(
+        ai: UInt,
+        bi: UInt,
+        ci: UInt,
+        di: UInt,
+        ei: UInt,
+        fi: UInt,
+        gi: UInt,
+        hi: UInt,
+        k: UInt,
+        w: UInt
+    ): (UInt, UInt, UInt, UInt, UInt, UInt, UInt, UInt) = {
+        val S1 = RotateRight(ei, 6) ^ RotateRight(ei, 11) ^ RotateRight(ei, 25)
+        val ch = (ei & fi) ^ ((~ei).asUInt & gi)
+        val T1 = hi + S1 + ch + k + w
+        val S0 = RotateRight(ai, 2) ^ RotateRight(ai, 13) ^ RotateRight(ai, 22)
+        val maj = (ai & bi) ^ (ai & ci) ^ (bi & ci)
+        val T2 = S0 + maj
+        val ao = T1 + T2
+        val bo = ai
+        val co = bi
+        val ddo = ci
+        val eo = di + T1
+        val fo = ei
+        val go = fi
+        val ho = gi
+        (ao, bo, co, ddo, eo, fo, go, ho)
+    }
 
     when (io.first | io.newChunk) {
         valid := false.B
@@ -72,7 +100,7 @@ class CompressionFunction extends Module {
         h := Constants.hashInit()(7)
         hash_val := Constants.hashInit()
 
-    } .elsewhen (io.newChunk) {
+    }.elsewhen (io.newChunk) {
         a := hash_val(0)
         b := hash_val(1)
         c := hash_val(2)
@@ -83,52 +111,60 @@ class CompressionFunction extends Module {
         h := hash_val(7)
     }
 
-    when (shiftIn) {
+    when (shiftDelayed) {
         val cur_i = i
+        val w0 = messageScheduleArray.io.wOut(0)
+        val w1 = messageScheduleArray.io.wOut(1)
 
-        val S1 = RotateRight(e, 6) ^ RotateRight(e, 11) ^ RotateRight(e, 25)
-        val ch = (e & f) ^ ((~e).asUInt & g)
-        val temp1 = h + S1 + ch + Constants.roundConstants()(cur_i) + messageScheduleArray.io.wOut
-        val S0 = RotateRight(a, 2) ^ RotateRight(a, 13) ^ RotateRight(a, 22)
-        val maj = (a & b) ^ (a & c) ^ (b & c)
-        val temp2 = S0 + maj
+        val (a0, b0, c0, d0, e0, f0, g0, h0) =
+            shaRound(a, b, c, d, e, f, g, h, Constants.roundConstants()(cur_i), w0)
+        val (a1, b1, c1, d1, e1, f1, g1, h1) =
+            shaRound(a0, b0, c0, d0, e0, f0, g0, h0, Constants.roundConstants()(cur_i + 1.U), w1)
 
-        h := g
-        g := f
-        f := e
-        e := d + temp1
-        d := c
-        c := b
-        b := a
-        a := temp1 + temp2
+        a := a1
+        b := b1
+        c := c1
+        d := d1
+        e := e1
+        f := f1
+        g := g1
+        h := h1
 
-        i := cur_i + 1.U
+        i := cur_i + 2.U
 
-        when (i === 63.U) {
+        when (cur_i === 62.U) {
             valid := true.B
 
-            a := temp1 + temp2 + hash_val(0)
-            b := a + hash_val(1)
-            c := b + hash_val(2)
-            d := c + hash_val(3)
-            e := d + temp1 + hash_val(4)
-            f := e + hash_val(5)
-            g := f + hash_val(6)
-            h := g + hash_val(7)
+            val n0 = hash_val(0) + a1
+            val n1 = hash_val(1) + b1
+            val n2 = hash_val(2) + c1
+            val n3 = hash_val(3) + d1
+            val n4 = hash_val(4) + e1
+            val n5 = hash_val(5) + f1
+            val n6 = hash_val(6) + g1
+            val n7 = hash_val(7) + h1
 
-            hash_val(0) := hash_val(0) + temp1 + temp2
-            hash_val(1) := hash_val(1) + a
-            hash_val(2) := hash_val(2) + b
-            hash_val(3) := hash_val(3) + c
-            hash_val(4) := hash_val(4) + d + temp1
-            hash_val(5) := hash_val(5) + e
-            hash_val(6) := hash_val(6) + f
-            hash_val(7) := hash_val(7) + g
+            a := n0
+            b := n1
+            c := n2
+            d := n3
+            e := n4
+            f := n5
+            g := n6
+            h := n7
 
-        } .otherwise {
+            hash_val(0) := n0
+            hash_val(1) := n1
+            hash_val(2) := n2
+            hash_val(3) := n3
+            hash_val(4) := n4
+            hash_val(5) := n5
+            hash_val(6) := n6
+            hash_val(7) := n7
+
+        }.otherwise {
             valid := false.B
         }
     }
 
 }
-

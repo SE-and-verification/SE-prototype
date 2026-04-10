@@ -18,6 +18,8 @@ class AESMAC(val rolled: Boolean) extends Module {
   val KeyLength: Int = 4 * Params.rows
   val Nr: Int = 10 // 10, 12, 14 rounds
   val Nrplus1: Int = Nr + 1 // 10+1, 12+1, 14+1
+  val CipherUnroll: Int = 2
+  val keyStepLast: Int = (Nrplus1 + CipherUnroll - 1) / CipherUnroll - 1
   val EKDepth: Int = 16 // enough memory for any expanded key
 
   val io = IO(new AESMACIO)
@@ -37,7 +39,7 @@ class AESMAC(val rolled: Boolean) extends Module {
   // val input_op1_vec = Wire(Vec(Params.StateLength, UInt(8.W)))
   // val input_op2_vec = Wire(Vec(Params.StateLength, UInt(8.W)))
 
-	// // Match the input type 
+	// // Match the input type
 	// for (i <- 0 until 16) {
 	// 	// Solve type mismatch (as type of aes_invcipher_XXXhlf.io.input_opX)
 	// 	input_op1_vec(i) := io.input_op1((15 - i) * 8 + 7, (15 - i) * 8)
@@ -95,7 +97,7 @@ class AESMAC(val rolled: Boolean) extends Module {
 		val b_input_vec =   Wire(Vec(16, UInt(8.W)))
 		val c_input_vec =   Wire(Vec(16, UInt(8.W)))
     val d_input_vec =   Wire(Vec(16, UInt(8.W)))
-    val cipher = Module(new Cipher(4, true))
+    val cipher = Module(new Cipher(4, true, CipherUnroll))
 
 		for (i <- 0 until 16) {
     	b_input_vec(i) := cipher.io.state_out(i) ^ input_text_vec2(i)
@@ -104,7 +106,7 @@ class AESMAC(val rolled: Boolean) extends Module {
   	}
     when(io.input_valid || cipher.io.state_out_valid){
       address := 0.U
-    }.elsewhen(address =/= Nr.U){
+    }.elsewhen(address =/= keyStepLast.U){
       address := address + 1.U
     }
     when(cipher.io.state_out_valid && cnter < 3.U){
@@ -112,11 +114,12 @@ class AESMAC(val rolled: Boolean) extends Module {
     }.elsewhen(io.input_valid){
       cnter := 0.U
     }
-    
+
 
     cipher.io.start := io.input_valid || (cipher.io.state_out_valid && cnter < 3.U)
 
-    cipher.io.roundKey := io.input_roundKeys(address)
+    cipher.io.roundKey := io.input_roundKeys(address << 1)
+    cipher.io.roundKeysTail(0) := io.input_roundKeys(Mux(address === keyStepLast.U, Nr.U, (address << 1) + 1.U))
 
     when(io.input_valid) {
       cipher.io.plaintext := input_text_vec1
@@ -136,5 +139,3 @@ class AESMAC(val rolled: Boolean) extends Module {
 
   }
 }
-
-

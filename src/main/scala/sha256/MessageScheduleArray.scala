@@ -15,7 +15,6 @@
 package sha256
 
 import chisel3._
-import chisel3.util._
 import utils.RotateRight
 
 class MessageScheduleArray extends Module {
@@ -23,47 +22,59 @@ class MessageScheduleArray extends Module {
     val io = IO(new Bundle {
         val first = Input(Bool())
         val shiftIn = Input(Bool())
-        val wordIn = Input(UInt(32.W))
-
-        // Output is one cycle behind shiftIn/wordIn
-        val wOut = Output(UInt(32.W))
+        val wordIn = Input(Vec(2, UInt(32.W)))
+        // One cycle behind shiftIn / wordIn; element j is the schedule word for round i+j (two-round step).
+        val wOut = Output(Vec(2, UInt(32.W)))
     })
 
-    val iReg = RegInit(0.U(6.W))
-    val i = Wire(UInt(6.W))
+    val iReg = RegInit(0.U(7.W))
+    val resetSched = io.first
 
-    val outWire = Wire(UInt(32.W))
-    val out = RegInit(0.U(32.W))
-    io.wOut := out
-    out := outWire
-
-    when (io.first) {
-        i := 0.U
-        iReg := 0.U
-    } .elsewhen (io.shiftIn) {
-        i := iReg + 1.U
-        iReg := iReg + 1.U
-    } .otherwise {
-        i := iReg
+    when (resetSched) {
+        when (io.shiftIn) {
+            iReg := 2.U
+        }.otherwise {
+            iReg := 0.U
+        }
+    }.elsewhen (io.shiftIn) {
+        iReg := iReg + 2.U
     }
 
-    val shreg = Module(new ShiftRegister(DEPTH = 16, WIDTH = 32))
-    shreg.io.rev := false.B
-    shreg.io.cyc := false.B
-    shreg.io.tap := false.B
+    val pairBase = Wire(UInt(7.W))
+    pairBase := Mux(resetSched && io.shiftIn, 0.U, iReg)
 
-    shreg.io.enable := io.shiftIn
-    shreg.io.input := outWire // output[0] == w[i-1]
+    def shiftedIn(cur: Vec[UInt], w: UInt): Vec[UInt] =
+        VecInit(Seq.tabulate(16)(k => if (k == 0) w else cur(k - 1)))
 
-    outWire := 0.U
+    def expandW(cur: Vec[UInt]): UInt = {
+        val s0 = RotateRight(cur(14), 7) ^ RotateRight(cur(14), 18) ^ (cur(14) >> 3).asUInt
+        val s1 = RotateRight(cur(1), 17) ^ RotateRight(cur(1), 19) ^ (cur(1) >> 10).asUInt
+        cur(15) + s0 + cur(6) + s1
+    }
+
+    val regs = Reg(Vec(16, UInt(32.W)))
+
+    val w0Wire = WireDefault(0.U(32.W))
+    val w1Wire = WireDefault(0.U(32.W))
+    val outPair = RegInit(VecInit(Seq(0.U(32.W), 0.U(32.W))))
+    io.wOut := outPair
+    outPair := VecInit(Seq(w0Wire, w1Wire))
+
     when (io.shiftIn) {
-        when (i < 16.U) {
-            outWire := io.wordIn
-        } .otherwise {
-            val s0 = RotateRight(shreg.io.output(14), 7) ^ RotateRight(shreg.io.output(14), 18) ^ (shreg.io.output(14) >> 3).asUInt
-            val s1 = RotateRight(shreg.io.output(1), 17) ^ RotateRight(shreg.io.output(1), 19) ^ (shreg.io.output(1) >> 10).asUInt
-            outWire := shreg.io.output(15) + s0 + shreg.io.output(6) + s1
+        when (pairBase < 16.U) {
+            w0Wire := io.wordIn(0)
+        }.otherwise {
+            w0Wire := expandW(regs)
         }
+        val after0 = shiftedIn(regs, w0Wire)
+        when (pairBase + 1.U < 16.U) {
+            w1Wire := io.wordIn(1)
+        }.otherwise {
+            w1Wire := expandW(after0)
+        }
+        regs := shiftedIn(after0, w1Wire)
+    }.otherwise {
+        w0Wire := 0.U
+        w1Wire := 0.U
     }
 }
-
