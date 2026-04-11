@@ -18,8 +18,6 @@ class AESMAC(val rolled: Boolean) extends Module {
   val KeyLength: Int = 4 * Params.rows
   val Nr: Int = 10 // 10, 12, 14 rounds
   val Nrplus1: Int = Nr + 1 // 10+1, 12+1, 14+1
-  val CipherUnroll: Int = 2
-  val keyStepLast: Int = (Nrplus1 + CipherUnroll - 1) / CipherUnroll - 1
   val EKDepth: Int = 16 // enough memory for any expanded key
 
   val io = IO(new AESMACIO)
@@ -97,7 +95,7 @@ class AESMAC(val rolled: Boolean) extends Module {
 		val b_input_vec =   Wire(Vec(16, UInt(8.W)))
 		val c_input_vec =   Wire(Vec(16, UInt(8.W)))
     val d_input_vec =   Wire(Vec(16, UInt(8.W)))
-    val cipher = Module(new Cipher(4, true, CipherUnroll))
+    val cipher = Module(new Cipher(4, true))
 
 		for (i <- 0 until 16) {
     	b_input_vec(i) := cipher.io.state_out(i) ^ input_text_vec2(i)
@@ -106,7 +104,7 @@ class AESMAC(val rolled: Boolean) extends Module {
   	}
     when(io.input_valid || cipher.io.state_out_valid){
       address := 0.U
-    }.elsewhen(address =/= keyStepLast.U){
+    }.elsewhen(address =/= Nr.U){
       address := address + 1.U
     }
     when(cipher.io.state_out_valid && cnter < 3.U){
@@ -118,8 +116,7 @@ class AESMAC(val rolled: Boolean) extends Module {
 
     cipher.io.start := io.input_valid || (cipher.io.state_out_valid && cnter < 3.U)
 
-    cipher.io.roundKey := io.input_roundKeys(address << 1)
-    cipher.io.roundKeysTail(0) := io.input_roundKeys(Mux(address === keyStepLast.U, Nr.U, (address << 1) + 1.U))
+    cipher.io.roundKey := io.input_roundKeys(address)
 
     when(io.input_valid) {
       cipher.io.plaintext := input_text_vec1
