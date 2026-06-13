@@ -2,6 +2,7 @@ package aes
 
 import chisel3._
 import chisel3.util._
+import chisel3.experimental.hierarchy._
 
 class AESMACIO extends Bundle{
 	val input_valid = Input(Bool())
@@ -14,13 +15,14 @@ class AESMACIO extends Bundle{
 // implements wrapper for AES cipher and inverse cipher
 // change Nk=4 for AES128, NK=6 for AES192, Nk=8 for AES256
 // change expandedKeyMemType= ROM, Mem, SyncReadMem
+@instantiable
 class AESMAC(val rolled: Boolean) extends Module {
   val KeyLength: Int = 4 * Params.rows
   val Nr: Int = 10 // 10, 12, 14 rounds
   val Nrplus1: Int = Nr + 1 // 10+1, 12+1, 14+1
   val EKDepth: Int = 16 // enough memory for any expanded key
 
-  val io = IO(new AESMACIO)
+  @public val io = IO(new AESMACIO)
 
   val input_text_vec1 	= Wire(Vec(16, UInt(8.W)))
   val input_text_vec2 	= Reg(Vec(16, UInt(8.W)))

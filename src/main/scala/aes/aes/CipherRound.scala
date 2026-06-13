@@ -2,6 +2,8 @@ package aes
 
 import chisel3._
 import chisel3.util._
+import chisel3.experimental.hierarchy._
+
 
 class CipherRoundIO extends Bundle{
   val input_valid = Input(Bool())
@@ -11,9 +13,10 @@ class CipherRoundIO extends Bundle{
   val output_valid = Output(Bool())
 }
 // implements AES_Encrypt round transforms
+@instantiable
 class CipherRound(transform: String, SubBytes_SCD: Boolean = false) extends Module {
   require(transform == "AddRoundKeyOnly" || transform == "NoMixColumns" || transform == "CompleteRound")
-  val io = IO(new CipherRoundIO)
+  @public val io = IO(new CipherRoundIO)
 
   // A well defined 'DontCare' or Initialization value
   val ZeroInit = VecInit.tabulate(Params.StateLength)((x:Int)=> 0.U(8.W))

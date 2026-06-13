@@ -2,6 +2,8 @@ package aes
 
 import chisel3._
 import chisel3.util._
+import chisel3.experimental.hierarchy._
+
 
 class CipherIO(val unrollFactor: Int) extends Bundle {
   require(unrollFactor >= 1)
@@ -15,6 +17,7 @@ class CipherIO(val unrollFactor: Int) extends Bundle {
 }
 // implements AES_Encrypt
 // change Nk=4 for AES128, NK=6 for AES192, Nk=8 for AES256
+@instantiable
 class Cipher(Nk: Int, SubBytes_SCD: Boolean, val unrollFactor: Int = 1) extends Module {
   require(Nk == 4 || Nk == 6 || Nk == 8)
   require(unrollFactor >= 1)
@@ -22,7 +25,7 @@ class Cipher(Nk: Int, SubBytes_SCD: Boolean, val unrollFactor: Int = 1) extends 
   val Nr: Int = Nk + 6 // 10, 12, 14 rounds
   val Nrplus1: Int = Nr + 1 // 10+1, 12+1, 14+1
 
-  val io = IO(new CipherIO(unrollFactor))
+  @public val io = IO(new CipherIO(unrollFactor))
 
   val roundBits = log2Ceil(Nr + 3).W
   val stageIdxW = log2Ceil(unrollFactor + 1).W

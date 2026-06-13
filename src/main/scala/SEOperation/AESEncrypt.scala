@@ -2,6 +2,7 @@ package aes
 
 import chisel3._
 import chisel3.util._
+import chisel3.experimental.hierarchy._
 
 class Encrypt384IO extends Bundle{
 	val input_valid = Input(Bool())
@@ -15,13 +16,14 @@ class Encrypt384IO extends Bundle{
 // implements wrapper for AES cipher and inverse cipher
 // change Nk=4 for AES128, NK=6 for AES192, Nk=8 for AES256
 // change expandedKeyMemType= ROM, Mem, SyncReadMem
+@instantiable
 class AESEncrypt384(val rolled: Boolean) extends Module {
   val KeyLength: Int = 4 * Params.rows
   val Nr: Int = 10 // 10, 12, 14 rounds
   val Nrplus1: Int = Nr + 1 // 10+1, 12+1, 14+1
   val EKDepth: Int = 16 // enough memory for any expanded key
 
-  val io = IO(new Encrypt384IO)
+  @public val io = IO(new Encrypt384IO)
 
   val input_text_vec1 	= Wire(Vec(16, UInt(8.W)))
   val input_text_vec2 	= Wire(Vec(16, UInt(8.W)))
@@ -33,13 +35,13 @@ class AESEncrypt384(val rolled: Boolean) extends Module {
   }
 
   if(!rolled){
-    val CipherRoundARK = Array.fill(3){
-      CipherRound("AddRoundKeyOnly", true)
-    }
-    val CipherRounds = Array.fill(3){Array.fill(Nr - 1) {
-      CipherRound("CompleteRound", true)
-    }}
-    val CipherRoundNMC =Array.fill(3){ CipherRound("NoMixColumns", true)}
+    val arkDef = Definition(new CipherRound("AddRoundKeyOnly", true))
+    val fullRoundDef = Definition(new CipherRound("CompleteRound", true))
+    val nmcDef = Definition(new CipherRound("NoMixColumns", true))
+
+    val CipherRoundARK = Array.fill(3) { Instance(arkDef) }
+    val CipherRoundNMC = Array.fill(3) { Instance(nmcDef) }
+    val CipherRounds   = Array.fill(3) { Array.fill(Nr - 1)(Instance(fullRoundDef)) }
 
     CipherRoundARK(0).io.input_valid := io.input_valid
     CipherRoundARK(0).io.state_in := input_text_vec1
@@ -87,9 +89,11 @@ class AESEncrypt384(val rolled: Boolean) extends Module {
     }.elsewhen(address =/= Nr.U){
       address := address + 1.U
     }
-    val cipher_A = Module(new Cipher(4, true))
-    val cipher_B = Module(new Cipher(4, true))
-    val cipher_C = Module(new Cipher(4, true))
+    val cipherDef = Definition(new Cipher(4, true))
+    val cipher_A = Instance(cipherDef)
+    val cipher_B = Instance(cipherDef)
+    val cipher_C = Instance(cipherDef)
+
     cipher_A.io.start := io.input_valid
     cipher_B.io.start := io.input_valid
     cipher_C.io.start := io.input_valid
@@ -118,23 +122,26 @@ class EncryptIO extends Bundle{
 // implements wrapper for AES cipher and inverse cipher
 // change Nk=4 for AES128, NK=6 for AES192, Nk=8 for AES256
 // change expandedKeyMemType= ROM, Mem, SyncReadMem
+@instantiable
 class AESEncrypt(val rolled: Boolean) extends Module {
   val KeyLength: Int = 4 * Params.rows
   val Nr: Int = 10 // 10, 12, 14 rounds
   val Nrplus1: Int = Nr + 1 // 10+1, 12+1, 14+1
   val EKDepth: Int = 16 // enough memory for any expanded key
 
-  val io = IO(new EncryptIO)
+  @public val io = IO(new EncryptIO)
   val input_text_vec 	= Wire(Vec(16, UInt(8.W)))
   for (i <- 0 until 16) {
     input_text_vec(i) := io.input_text((15 - i) * 8 + 7, (15 - i) * 8)
   }
   if(!rolled){
- val CipherRoundARK = CipherRound("AddRoundKeyOnly", true)
-  val CipherRounds = Array.fill(Nr - 1) {
-    CipherRound("CompleteRound", true)
-  }
-  val CipherRoundNMC = CipherRound("NoMixColumns", true)
+    val arkDef = Definition(new CipherRound("AddRoundKeyOnly", true))
+    val fullRoundDef = Definition(new CipherRound("CompleteRound", true))
+    val nmcDef = Definition(new CipherRound("NoMixColumns", true))
+
+    val CipherRoundARK = Instance(arkDef)
+    val CipherRounds   = Array.fill(Nr - 1)(Instance(fullRoundDef))
+    val CipherRoundNMC = Instance(nmcDef)
 
   CipherRoundARK.io.input_valid := io.input_valid
   CipherRoundARK.io.state_in := input_text_vec

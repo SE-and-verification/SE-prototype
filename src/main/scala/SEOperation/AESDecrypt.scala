@@ -2,6 +2,7 @@ package aes
 
 import chisel3._
 import chisel3.util._
+import chisel3.experimental.hierarchy._
 
 class Decrypt384IO extends Bundle{
 	val input_valid = Input(Bool())
@@ -15,6 +16,7 @@ class Decrypt384IO extends Bundle{
 // implements wrapper for AES cipher and inverse cipher
 // change Nk=4 for AES128, NK=6 for AES192, Nk=8 for AES256
 // change expandedKeyMemType= ROM, Mem, SyncReadMem
+@instantiable
 class AESDecrypt384(val rolled: Boolean, val index:Int = 0) extends Module {
   val KeyLength: Int = 4 * Params.rows
   val Nr: Int = 10 // 10, 12, 14 rounds
@@ -22,7 +24,7 @@ class AESDecrypt384(val rolled: Boolean, val index:Int = 0) extends Module {
   val EKDepth: Int = 16 // enough memory for any expanded key
 
 
-  val io = IO(new DecryptIO)
+  @public val io = IO(new Decrypt384IO)
 
 	val op1_vec 	= Wire(Vec(16, UInt(8.W)))
 	val op2_vec 	= Wire(Vec(16, UInt(8.W)))
@@ -36,19 +38,13 @@ class AESDecrypt384(val rolled: Boolean, val index:Int = 0) extends Module {
 
 
   if(!rolled){
-    // val InvCipherRoundARK = Array.fill(3){
-    val InvCipherRoundARK = Array.fill(2){
-      InvCipherRound("AddRoundKeyOnly", true)
-      }
-    // val InvCipherRounds = Array.fill(3){
-    val InvCipherRounds = Array.fill(2){ 
-      Array.fill(Nr - 1) {
-        InvCipherRound("CompleteRound", true)
-      }
-    }
-    val InvCipherRoundNMC = Array.fill(3){ 
-      InvCipherRound("NoInvMixColumns", true)
-    }
+    val arkDef = Definition(new InvCipherRound("AddRoundKeyOnly", true))
+    val fullRoundDef = Definition(new InvCipherRound("CompleteRound", true))
+    val nmcDef = Definition(new InvCipherRound("NoInvMixColumns", true))
+
+    val InvCipherRoundARK = Array.fill(3) { Instance(arkDef) }
+    val InvCipherRoundNMC = Array.fill(3) { Instance(nmcDef) }
+    val InvCipherRounds   = Array.fill(3) { Array.fill(Nr - 1)(Instance(fullRoundDef)) }
 
     InvCipherRoundARK(0).io.input_valid := io.input_valid
     InvCipherRoundARK(0).io.state_in := op1_vec
@@ -87,9 +83,13 @@ class AESDecrypt384(val rolled: Boolean, val index:Int = 0) extends Module {
     io.output_valid := InvCipherRoundNMC(0).io.output_valid && InvCipherRoundNMC(1).io.output_valid && InvCipherRoundNMC(2).io.output_valid
   }
   else{
-    val invcipher_A = InvCipher(4, true, index )
-    val invcipher_B = InvCipher(4, true, index+1 )
-    val invcipher_C = InvCipher(4, true, index+2 )
+    // Using the same index for all three parallel instances to share a single definition
+    val invDef = Definition(new InvCipher(4, true, index))
+    
+    val invcipher_A = Instance(invDef)
+    val invcipher_B = Instance(invDef)
+    val invcipher_C = Instance(invDef)
+
     val address = RegInit(0.U(log2Ceil(EKDepth).W))
     
     val tmp = RegInit(false.B)
@@ -129,6 +129,7 @@ class DecryptIO extends Bundle{
 // implements wrapper for AES cipher and inverse cipher
 // change Nk=4 for AES128, NK=6 for AES192, Nk=8 for AES256
 // change expandedKeyMemType= ROM, Mem, SyncReadMem
+@instantiable
 class AESDecrypt(val rolled: Boolean, val index:Int = 0) extends Module {
   val KeyLength: Int = 4 * Params.rows
   val Nr: Int = 10 // 10, 12, 14 rounds
@@ -136,7 +137,7 @@ class AESDecrypt(val rolled: Boolean, val index:Int = 0) extends Module {
   val EKDepth: Int = 16 // enough memory for any expanded key
 
 
-  val io = IO(new DecryptIO)
+  @public val io = IO(new DecryptIO)
 
 	val op1_vec 	= Wire(Vec(16, UInt(8.W)))
 
@@ -147,15 +148,13 @@ class AESDecrypt(val rolled: Boolean, val index:Int = 0) extends Module {
 
 
   if(!rolled){
-    // val InvCipherRoundARK = Array.fill(3){
-    val InvCipherRoundARK = InvCipherRound("AddRoundKeyOnly", true)
+    val arkDef = Definition(new InvCipherRound("AddRoundKeyOnly", true))
+    val fullRoundDef = Definition(new InvCipherRound("CompleteRound", true))
+    val nmcDef = Definition(new InvCipherRound("NoInvMixColumns", true))
 
-    // val InvCipherRounds = Array.fill(3){
-    val InvCipherRounds = Array.fill(Nr - 1) {
-        InvCipherRound("CompleteRound", true)
-      }
-
-    val InvCipherRoundNMC =  InvCipherRound("NoInvMixColumns", true)
+    val InvCipherRoundARK = Instance(arkDef)
+    val InvCipherRounds   = Array.fill(Nr - 1)(Instance(fullRoundDef))
+    val InvCipherRoundNMC = Instance(nmcDef)
 
 
     InvCipherRoundARK.io.input_valid := io.input_valid
@@ -186,21 +185,40 @@ class AESDecrypt(val rolled: Boolean, val index:Int = 0) extends Module {
     io.output_valid := InvCipherRoundNMC.io.output_valid
   }
   else{
-    val invcipher_A = InvCipher(4, true, index )
+    val invcipher_A = Module(new InvCipherBB)
     val address = RegInit(0.U(log2Ceil(EKDepth).W))
-    
-    val tmp = RegInit(false.B)
-    when(io.input_valid && ~tmp) {
-      address := Nr.U
-      tmp     := true.B
-    }.elsewhen(address =/= 0.U){
-      address := address - 1.U
-    }
-    invcipher_A.io.start := io.input_valid
-    invcipher_A.io.ciphertext := op1_vec
-    invcipher_A.io.roundKey := io.input_roundKeys(address)
 
-    io.output_text := Cat(invcipher_A.io.state_out)
-    io.output_valid := invcipher_A.io.state_out_valid 
+    // tmp: set on first input_valid, cleared on completion to allow back-to-back operations.
+    // initDone: distinguishes the sInitialAR cycle (decrement-by-1) from sBusy (decrement-by-4).
+    val tmp      = RegInit(false.B)
+    val initDone = RegInit(false.B)
+
+    when(invcipher_A.io.state_out_valid) {
+      tmp      := false.B
+      initDone := false.B
+    }.elsewhen(io.input_valid && !tmp) {
+      address  := Nr.U
+      tmp      := true.B
+      initDone := false.B
+    }.elsewhen(tmp && !initDone) {
+      address  := address - 1.U   // sInitialAR cycle: step from Nr to Nr-1
+      initDone := true.B
+    }.elsewhen(tmp && initDone && address =/= 0.U) {
+      address  := Mux(address > 4.U, address - 4.U, 0.U)  // sBusy: 4 rounds per cycle
+    }
+
+    // Helper: safe subtraction for key index (clamp at 0 to avoid UInt wrap)
+    def keyAt(offset: Int): Vec[UInt] =
+      io.input_roundKeys(Mux(address >= offset.U, address - offset.U, 0.U))
+
+    invcipher_A.io.start            := io.input_valid
+    invcipher_A.io.ciphertext       := op1_vec
+    invcipher_A.io.roundKey         := io.input_roundKeys(address)
+    invcipher_A.io.roundKeysTail(0) := keyAt(1)
+    invcipher_A.io.roundKeysTail(1) := keyAt(2)
+    invcipher_A.io.roundKeysTail(2) := keyAt(3)
+
+    io.output_text  := Cat(invcipher_A.io.state_out)
+    io.output_valid := invcipher_A.io.state_out_valid
   }
 }

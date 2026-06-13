@@ -11,8 +11,8 @@ src_dir    = $(base_dir)/src/main
 gen_dir    = $(base_dir)/generated-src
 out_dir    = $(base_dir)/outputs
 
-SBT_JAVA_HOME ?= /opt/homebrew/Cellar/openjdk@17/17.0.18/libexec/openjdk.jdk/Contents/Home
-SBT_JVM_FLAGS ?= -J-Xmx8G -J-Xss8m -J-XX:+UseG1GC
+SBT_JAVA_HOME ?= /
+SBT_JVM_FLAGS ?= -J-Xmx1500M -J-Xss8m -J-XX:+UseG1GC
 SBT = sbt -java-home $(SBT_JAVA_HOME) $(SBT_JVM_FLAGS)
 # SBT_FLAGS = -ivy $(HOME)/.ivy2
 

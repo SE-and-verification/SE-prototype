@@ -6,6 +6,7 @@ import aes._
 import se.seoperation._
 import chisel3.util.random._
 import sha256._
+import utils._
 
 
 class SEInput(val canChangeKey: Boolean) extends Bundle {
@@ -66,10 +67,12 @@ class SE(val debug : Boolean, val canChangeKey: Boolean) extends Module{
 	// Secondhlf: get Inst + Hash * 2 (Upper 128 bits of Ciph_X) -> Comparison part
   val aes_invcipher_op1 = Module(new AESDecrypt(true, 1))
 	val aes_invcipher_op2 = Module(new AESDecrypt(true, 3))
-	val aes_cipher_for_op1_mac_validation = Module(new AESMAC(true))
-	val aes_cipher_for_op2_mac_validation = Module(new AESMAC(true))
-	val aes_cipher_for_output_mac = Module(new AESMAC(true))
-	val sha256_for_dataflow = Module(new Sha256Accel)
+
+	val aes_cipher_for_op1_mac_validation = Module(new UnrolledMac)
+	val aes_cipher_for_op2_mac_validation = Module(new UnrolledMac)
+	val aes_cipher_for_output_mac         = Module(new UnrolledMac)
+
+	val sha256_for_dataflow = Module(new Sha256AccelBB)
 	val aes_cipher     			= Module(new AESEncrypt(true))
 
 	// Original AES key
@@ -151,7 +154,6 @@ class SE(val debug : Boolean, val canChangeKey: Boolean) extends Module{
 
 	when(aes_cipher_for_op1_mac_validation.io.output_valid) {
 		when(aes_cipher_for_op1_mac_validation.io.output_text =/= ciph1_mac) {
-			// If the MAC does not match, we set the decrypted_op1_val_buffer to 0
 			op1_mac_check_result_after_decrypt := false.B
 		}.otherwise {
 			op1_mac_check_result_after_decrypt := true.B
@@ -163,7 +165,6 @@ class SE(val debug : Boolean, val canChangeKey: Boolean) extends Module{
 
 	when(aes_cipher_for_op2_mac_validation.io.output_valid) {
 		when(aes_cipher_for_op2_mac_validation.io.output_text =/= ciph2_mac){
-			// If the MAC does not match, we set the decrypted_op2_val_buffer to 0
 			op2_mac_check_result_after_decrypt := false.B
 		}.otherwise {
 			op2_mac_check_result_after_decrypt := true.B
@@ -211,6 +212,7 @@ class SE(val debug : Boolean, val canChangeKey: Boolean) extends Module{
 	val op2_plaintext_64		= Mux(is_enc_const,  0.U, Mux(op2_type_buffer_after_decrypt_stage, op2_bit(127, 64), op2_buffer_after_decrypt_stage(127,64))) // [plain_B]
   seoperation.io.op1_input    := op1_plaintext_64 // Currently hardcoded (TEMP)
 	seoperation.io.op2_input    := op2_plaintext_64 // Currently hardcoded (TEMP)
+
 	val encrypt_buffer_idle = RegInit(true.B)
 
 	val start_dataflow_hash_compute_and_enc = decrypted_op1_val_buffer_valid && decrypted_op2_val_buffer_valid && result_hash_buffer_idle && mac_validated_op1 && mac_validated_op2 && encrypt_buffer_idle

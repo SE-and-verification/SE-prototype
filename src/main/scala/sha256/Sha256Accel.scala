@@ -16,16 +16,21 @@ package sha256
 
 import chisel3._
 import chisel3.util._
+import chisel3.experimental.hierarchy._
+import chisel3.util.HasBlackBoxPath
 
+class Sha256AccelIO extends Bundle {
+    val inputData = Input(UInt(520.W))
+    val inputValid = Input(Bool())
+
+    val outputData = Output(Vec(8, UInt(32.W)))
+    val outputValid = Output(Bool())
+}
+
+@instantiable
 class Sha256Accel extends Module {
 
-    val io = IO(new Bundle {
-        val inputData = Input(UInt(520.W))
-        val inputValid = Input(Bool())
-
-        val outputData = Output(Vec(8, UInt(32.W)))
-        val outputValid = Output(Bool())
-    })
+    @public val io = IO(new Sha256AccelIO)
 
     val vec_data = RegEnable(io.inputData, io.inputValid)
 
@@ -83,4 +88,10 @@ class Sha256Accel extends Module {
             ctr := Mux(ctr === 32.U, 0.U, ctr + 1.U)
         }
     }
+}
+
+class Sha256AccelBB extends BlackBox with HasBlackBoxPath {
+    override val desiredName = "Sha256Accel"
+    val io = IO(new Sha256AccelIO)
+    addPath(new java.io.File("generated-src/Sha256Accel.v").getAbsolutePath)
 }
