@@ -72,7 +72,7 @@ class SE(val debug : Boolean, val canChangeKey: Boolean) extends Module{
 	val aes_cipher_for_op2_mac_validation = Module(new UnrolledMac)
 	val aes_cipher_for_output_mac         = Module(new UnrolledMac)
 
-	val sha256_for_dataflow = Module(new Sha256AccelBB)
+	val sha256_for_dataflow = Module(new Sha256Accel)
 	val aes_cipher     			= Module(new AESEncrypt(true))
 
 	// Original AES key

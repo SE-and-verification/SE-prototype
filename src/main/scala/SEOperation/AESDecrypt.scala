@@ -185,7 +185,7 @@ class AESDecrypt(val rolled: Boolean, val index:Int = 0) extends Module {
     io.output_valid := InvCipherRoundNMC.io.output_valid
   }
   else{
-    val invcipher_A = Module(new InvCipherBB)
+    val invcipher_A = Module(new InvCipher(4, true, 1, 4))
     val address = RegInit(0.U(log2Ceil(EKDepth).W))
 
     // tmp: set on first input_valid, cleared on completion to allow back-to-back operations.
