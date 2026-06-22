@@ -169,21 +169,24 @@ class AESEncrypt(val rolled: Boolean) extends Module {
   io.output_text := CipherRoundNMC.io.state_out.asUInt
   }else{
     val address = RegInit(0.U(log2Ceil(EKDepth).W))
+    val tmp     = RegInit(false.B)
+    val cipher  = Module(new Cipher(4, true))
 
-    val tmp = RegInit(false.B)
-    when(io.input_valid && ~tmp) {
+    when(cipher.io.state_out_valid) {
+      tmp     := false.B
+      address := 0.U
+    }.elsewhen(io.input_valid && !tmp) {
       address := 0.U
       tmp     := true.B
-    }.elsewhen(address =/= Nr.U){
+    }.elsewhen(address =/= Nr.U) {
       address := address + 1.U
     }
-    val cipher = Module(new Cipher(4, true))
-    cipher.io.start := io.input_valid
+
+    cipher.io.start    := io.input_valid
     cipher.io.plaintext := input_text_vec
-    cipher.io.roundKey := io.input_roundKeys(address)
+    cipher.io.roundKey  := io.input_roundKeys(address)
 
-
-    io.output_text := Cat(cipher.io.state_out)
+    io.output_text  := Cat(cipher.io.state_out)
     io.output_valid := cipher.io.state_out_valid
   }
 }
