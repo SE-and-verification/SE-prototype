@@ -267,6 +267,8 @@ bit316_t SE::SECompute(bit316_t &op1, bit316_t &op2, __uint128_t cond, uint8_t i
 	SE::module->io_in_valid = true;
 	SE::module->io_out_ready = true;
 	SE::module->io_in_inst = inst;
+	SE::module->io_in_op1_type = 1;
+	SE::module->io_in_op2_type = 1;
 
 	// Copy the "vectorized" input.
 	// uint8_t op1[40]
@@ -329,13 +331,28 @@ bit316_t SE::SECompute(bit316_t &op1, bit316_t &op2, __uint128_t cond, uint8_t i
 	// SE::tick();
 	printf("io_out_valid\n");
 	unsigned int result_value[10] = {0};
-	for(int i = 0; i < 10; ++i) {
-		result_value[i] = SE::module->io_out_result[9 - i];
-	}
+	// 640-bit output layout (io_out_result[j] = bits[32j+31:32j]):
+	//   [0..3]  = enc_result_128 (AES-encrypted [result||random||error])
+	//   [4..11] = SHA256 hash (H[7]..H[0], word 4=H[7], word 11=H[0])
+	//   [12..15]= MAC, [16..19]=0
+	// Map into bit316_t (40 bytes):
+	//   bytes  0-7  (result_value[0..1]): SHA256 H[0]+H[1] as hash tag
+	//   bytes  8-23 (result_value[2..5]): SHA256 H[0..3] for hash comparison
+	//   bytes 24-39 (result_value[6..9]): enc_result_128 MSB-first
+	result_value[0] = SE::module->io_out_result[11]; // SHA256 H[0]
+	result_value[1] = SE::module->io_out_result[10]; // SHA256 H[1]
+	result_value[2] = SE::module->io_out_result[11]; // SHA256 H[0]
+	result_value[3] = SE::module->io_out_result[10]; // SHA256 H[1]
+	result_value[4] = SE::module->io_out_result[9];  // SHA256 H[2]
+	result_value[5] = SE::module->io_out_result[8];  // SHA256 H[3]
+	result_value[6] = SE::module->io_out_result[3];  // enc_result[127:96]
+	result_value[7] = SE::module->io_out_result[2];  // enc_result[95:64]
+	result_value[8] = SE::module->io_out_result[1];  // enc_result[63:32]
+	result_value[9] = SE::module->io_out_result[0];  // enc_result[31:0]
 	// Check output
 	unsigned int* check_output = SE::module->io_out_result;
 	printf("\tSE::module->io_out_result is: ");
-	for(int i = 0; i < 10; i++) {
+	for(int i = 0; i < 20; i++) {
         printf("%08x", check_output[i]);
     }
     printf("\n");

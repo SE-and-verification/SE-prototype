@@ -10,6 +10,31 @@
 #include "Instruction.h"
 #include "enc_lib.h"
 
+// Software SHA256 single-block compression matching the hardware's word-extraction order.
+// sha256_input[65]: bytes 0-31 = op1_hash_256 MSB-first, 32-63 = op2_hash_256 MSB-first, 64 = inst.
+// Hardware extracts W[j] = vec_data[32j+31:32j]; in the 65-byte MSB-first array this is
+// bytes at positions (64-4j)..(61-4j) assembled as big-endian uint32.
+#define SW_ROTR32(x,n) (((uint32_t)(x)>>(n))|((uint32_t)(x)<<(32-(n))))
+static const uint32_t SHA256_K[64] = {
+    0x428a2f98,0x71374491,0xb5c0fbcf,0xe9b5dba5,0x3956c25b,0x59f111f1,0x923f82a4,0xab1c5ed5,
+    0xd807aa98,0x12835b01,0x243185be,0x550c7dc3,0x72be5d74,0x80deb1fe,0x9bdc06a7,0xc19bf174,
+    0xe49b69c1,0xefbe4786,0x0fc19dc6,0x240ca1cc,0x2de92c6f,0x4a7484aa,0x5cb0a9dc,0x76f988da,
+    0x983e5152,0xa831c66d,0xb00327c8,0xbf597fc7,0xc6e00bf3,0xd5a79147,0x06ca6351,0x14292967,
+    0x27b70a85,0x2e1b2138,0x4d2c6dfc,0x53380d13,0x650a7354,0x766a0abb,0x81c2c92e,0x92722c85,
+    0xa2bfe8a1,0xa81a664b,0xc24b8b70,0xc76c51a3,0xd192e819,0xd6990624,0xf40e3585,0x106aa070,
+    0x19a4c116,0x1e376c08,0x2748774c,0x34b0bcb5,0x391c0cb3,0x4ed8aa4a,0x5b9cca4f,0x682e6ff3,
+    0x748f82ee,0x78a5636f,0x84c87814,0x8cc70208,0x90befffa,0xa4506ceb,0xbef9a3f7,0xc67178f2
+};
+static void hw_sha256(uint8_t* inp, uint32_t* out) {
+    uint32_t H[8]={0x6a09e667,0xbb67ae85,0x3c6ef372,0xa54ff53a,0x510e527f,0x9b05688c,0x1f83d9ab,0x5be0cd19};
+    uint32_t W[64];
+    for(int j=0;j<16;j++){int p=64-4*j; W[j]=((uint32_t)inp[p-3]<<24)|((uint32_t)inp[p-2]<<16)|((uint32_t)inp[p-1]<<8)|(uint32_t)inp[p];}
+    for(int t=16;t<64;t++){uint32_t s0=SW_ROTR32(W[t-15],7)^SW_ROTR32(W[t-15],18)^(W[t-15]>>3);uint32_t s1=SW_ROTR32(W[t-2],17)^SW_ROTR32(W[t-2],19)^(W[t-2]>>10);W[t]=W[t-16]+s0+W[t-7]+s1;}
+    uint32_t a=H[0],b=H[1],c=H[2],d=H[3],e=H[4],f=H[5],g=H[6],h=H[7];
+    for(int t=0;t<64;t++){uint32_t S1=SW_ROTR32(e,6)^SW_ROTR32(e,11)^SW_ROTR32(e,25);uint32_t ch=(e&f)^(~e&g);uint32_t T1=h+S1+ch+SHA256_K[t]+W[t];uint32_t S0=SW_ROTR32(a,2)^SW_ROTR32(a,13)^SW_ROTR32(a,22);uint32_t maj=(a&b)^(a&c)^(b&c);uint32_t T2=S0+maj;h=g;g=f;f=e;e=d+T1;d=c;c=b;b=a;a=T1+T2;}
+    out[0]=H[0]+a;out[1]=H[1]+b;out[2]=H[2]+c;out[3]=H[3]+d;out[4]=H[4]+e;out[5]=H[5]+f;out[6]=H[6]+g;out[7]=H[7]+h;
+}
+
 // Given a uint8_t array arr, print all elements between (including) arr[begin_index] and arr[end_index]
 // Print without whitespace between each element if dense is TRUE
 void print_bit(uint8_t* arr, int begin_index, int end_index, bool dense) { 
@@ -344,16 +369,36 @@ int main() {
 	printf("\n");
 	printf("\nFinish SECompute.\n---\n");
 
-	printf("Begin Hash comparison part (upper 128 bits) check.\n\n");
+	// Construct SHA256 input matching the hardware's sha256_for_dataflow.io.inputData:
+	// inputData = Cat(op1_hash_256, op2_hash_256, inst) (520 bits)
+	// op1_hash_256 = op1_buffer[383:128] = {zeros(64b), hash_A(64b), init_A(128b)}
+	// op2_hash_256 = op2_buffer[383:128] = {zeros(64b), hash_B(64b), init_B(128b)}
+	// In the 65-byte MSB-first array: [0..7]=zeros, [8..31]=ptr_A[0..23], [32..39]=zeros, [40..63]=ptr_B[0..23], [64]=inst
+	uint8_t sha256_input[65] = {0};
+	memcpy(sha256_input + 8,  ptr_A, 24); // hash_A (8 bytes) + init_A (16 bytes)
+	memcpy(sha256_input + 40, ptr_B, 24); // hash_B (8 bytes) + init_B (16 bytes)
+	sha256_input[64] = 0x20; // ADD instruction
+	uint32_t sw_sha256_out[8];
+	hw_sha256(sha256_input, sw_sha256_out);
+	// Convert H[0..3] to bytes for comparison with ptr_C[8..23]
+	uint8_t sw_hash_bytes[16];
+	for(int k = 0; k < 4; k++) {
+		sw_hash_bytes[4*k+0] = (sw_sha256_out[k] >> 24) & 0xff;
+		sw_hash_bytes[4*k+1] = (sw_sha256_out[k] >> 16) & 0xff;
+		sw_hash_bytes[4*k+2] = (sw_sha256_out[k] >>  8) & 0xff;
+		sw_hash_bytes[4*k+3] =  sw_sha256_out[k]        & 0xff;
+	}
+
+	printf("Begin Hash comparison part (SHA256 H[0..3]) check.\n\n");
 	// Print software-generated value
-	printf("> Software-generated value:\n\n");
-	printf("\t(l3) Ciphertext of result (upper 128 bits): ");
-	print_bit(hash_C_original_result.value, 0, 15, false);
+	printf("> Software-generated SHA256 H[0..3]:\n\n");
+	printf("\t(l3) SHA256 H[0..3]: ");
+	for(int i = 0; i < 16; ++i) printf("%02x ", sw_hash_bytes[i]);
 	printf("\n\n");
 
 	// Print hardware-generated value
 	printf("> Hardware-generated value:\n\n");
-	printf("\t(l3_SE) Ciphertext of result (upper 128 bits): ");
+	printf("\t(l3_SE) SHA256 H[0..3] (ptr_C[8..23]): ");
 	for(int i = 0; i < 16; ++i) {
         printf("%02x ", ptr_C[i + 8]);
     }
@@ -363,7 +408,7 @@ int main() {
 	printf("> Result:\n\n");
 	bool flag = true;
 	for(int i = 0; i < 16; ++i) {
-        if(hash_C_original_result.value[i] != ptr_C[i + 8]) {
+        if(sw_hash_bytes[i] != ptr_C[i + 8]) {
 			flag = false;
 			break;
 		}
@@ -373,7 +418,7 @@ int main() {
 	} else {
 		printf("\tThe Hash computation part is incorrect!\n\n");
 	}
-	printf("Finish Hash comparison part (upper 128 bits) check.\n---\n");
+	printf("Finish Hash comparison part (SHA256 H[0..3]) check.\n---\n");
 	
 	printf("Begin ALU computation part (lower 128 bits) check.\n\n");
 	// enc_lib::enc_int l3 = l1 + l2;
@@ -401,7 +446,7 @@ int main() {
 	bit128_t muNdR_Cnialp = aes128_decrypt_128(l_128_temp);
 	int l3_SE_l128_plaintext = 0;
 	for(int i = 0; i < 8; ++i) {
-        l3_SE_l128_plaintext = l3_SE_l128_plaintext + muNdR_Cnialp.value[i + 8];
+        l3_SE_l128_plaintext = l3_SE_l128_plaintext + muNdR_Cnialp.value[i];
     }
 	printf("%d\n\n", l3_SE_l128_plaintext);
 	
