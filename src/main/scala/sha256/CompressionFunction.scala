@@ -172,6 +172,8 @@ class CompressionFunction extends Module {
         }.otherwise {
             valid := false.B
         }
+    }.elsewhen(!io.first && !io.newChunk) {
+        valid := false.B
     }
 
 }
